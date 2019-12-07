@@ -18,30 +18,22 @@ import 'helper/Logger.dart';
 import 'helper/MaterialDesignIcons.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:devicelocale/devicelocale.dart';
 
 void main() {
 //  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(
     EasyLocalization(
-        child: MultiProvider(
+      child: MultiProvider(
         providers: [
-          ChangeNotifierProvider(builder: (context) => GeneralData()),
+          ChangeNotifierProvider(
+            create: (_) => GeneralData(),
+            builder: (context) => GeneralData(),
+          ),
         ],
         child: MyApp(),
       ),
     ),
   );
-}
-
-void SetLocale() {
-  if(gd.currentLocale == "sv_SE") {
-    gd.localeData.changeLocale(Locale("sv","SE"));
-  }
-  else {
-    //SET ENG
-    gd.localeData.changeLocale(Locale("en","US"));
-  }
 }
 
 class MyApp extends StatelessWidget {
@@ -51,12 +43,12 @@ class MyApp extends StatelessWidget {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
+
     gd.localeData = EasyLocalizationProvider.of(context).data;
-    SetLocale();
-    return 
-    EasyLocalizationProvider(
-        data: gd.localeData,
-        child: Selector<GeneralData, ThemeData>(
+
+    return EasyLocalizationProvider(
+      data: gd.localeData,
+      child: Selector<GeneralData, ThemeData>(
         selector: (_, generalData) => generalData.currentTheme,
         builder: (_, currentTheme, __) {
           return MaterialApp(
@@ -64,14 +56,17 @@ class MyApp extends StatelessWidget {
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
               EasylocaLizationDelegate(
-                locale: gd.localeData.locale,
-                path: 'lang'
-              )
+                  locale: gd.localeData.locale, path: 'assets/langs')
             ],
             locale: gd.localeData.savedLocale,
             supportedLocales: [
-              Locale('en', 'US'), 
-              Locale('sv', 'SE')
+              Locale('bg', 'BG'),
+              Locale('el', 'GR'),
+              Locale('en', 'US'),
+              Locale('sv', 'SE'),
+              Locale('vi', 'VN'),
+              Locale('zh', 'CN'),
+              Locale('zh', 'TW'),
             ],
             debugShowCheckedModeBanner: false,
             theme: currentTheme,
@@ -139,38 +134,9 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
     super.dispose();
   }
 
-  Future<void> initPlatformState() async {
-    List languages;
-    String currentLocale;
-
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    try {
-      languages = await Devicelocale.preferredLanguages;
-      print(languages);
-    } on PlatformException {
-      print("Error obtaining preferred languages");
-    }
-    try {
-      currentLocale = await Devicelocale.currentLocale;
-      print(currentLocale);
-    } on PlatformException {
-      print("Error obtaining current locale");
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      gd.currentLocale = currentLocale;
-    });
-  }
-
   @override
   void initState() {
     super.initState();
-    initPlatformState();
 
     WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
     WidgetsBinding.instance.addObserver(this);
@@ -219,16 +185,15 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
       log.w("build gd.mediaQueryHeight ${gd.mediaQueryHeight}");
     }
 
-    try {
-      for (String activeCamera in gd.activeCameras.keys) {
-        gd.requestCameraImage(activeCamera);
-      }
-    } catch (e) {
-      log.e("timer1Callback $e");
+    for (String entityId in gd.cameraInfosActive) {
+      gd.cameraInfosUpdate(entityId);
     }
   }
 
-  timer5Callback() {}
+  timer5Callback() {
+    //in case websocket fail for no reason.
+//    gd.httpApiStates();
+  }
 
   timer10Callback() {
     if (gd.connectionStatus != "Connected" && gd.autoConnect) {
@@ -238,9 +203,11 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
 
   timer30Callback() {
     if (gd.connectionStatus == "Connected") {
-      var outMsg = {"id": gd.socketId, "type": "get_states"};
-      var outMsgEncoded = json.encode(outMsg);
-      webSocket.send(outMsgEncoded);
+      gd.delayGetStatesTimer(5);
+//      use http
+//      var outMsg = {"id": gd.socketId, "type": "get_states"};
+//      var outMsgEncoded = json.encode(outMsg);
+//      webSocket.send(outMsgEncoded);
     }
   }
 
@@ -258,6 +225,7 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
     return Selector<GeneralData, String>(
       selector: (_, generalData) =>
           "${generalData.viewMode} | " +
+          "${Localizations.localeOf(context).languageCode} | " +
           "${generalData.baseSetting.itemsPerRow} | " +
           "${generalData.mediaQueryHeight} | " +
           "${generalData.connectionStatus} | " +

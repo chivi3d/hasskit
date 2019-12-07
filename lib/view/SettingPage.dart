@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hasskit/helper/GeneralData.dart';
@@ -6,6 +5,7 @@ import 'package:hasskit/helper/GoogleSign.dart';
 import 'package:hasskit/helper/Logger.dart';
 import 'package:hasskit/helper/MaterialDesignIcons.dart';
 import 'package:hasskit/helper/ThemeInfo.dart';
+import 'package:hasskit/model/LocalLanguage.dart';
 import 'package:hasskit/model/LoginData.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
@@ -34,6 +34,7 @@ class _SettingPageState extends State<SettingPage> {
     version: 'Unknown',
     buildNumber: 'Unknown',
   );
+
   @override
   void dispose() {
     _controller.removeListener(addressListener);
@@ -167,7 +168,8 @@ class _SettingPageState extends State<SettingPage> {
                             decoration: InputDecoration(
                               prefixText: gd.useSSL ? "https://" : "http://",
                               hintText: 'sample.duckdns.org:8123',
-                              labelText: Translate.getString("settings.new_connection", context),
+                              labelText: Translate.getString(
+                                  "settings.new_connection", context),
                               suffixIcon: Opacity(
                                 opacity: showCancel ? 1 : 0,
                                 child: IconButton(
@@ -197,7 +199,8 @@ class _SettingPageState extends State<SettingPage> {
                                   onChanged: (val) {
                                     gd.useSSL = val;
                                   }),
-                              Text(Translate.getString("settings.use_https", context)),
+                              Text(Translate.getString(
+                                  "settings.use_https", context)),
                               Expanded(child: Container()),
                               RaisedButton(
                                 onPressed: showConnect
@@ -206,13 +209,23 @@ class _SettingPageState extends State<SettingPage> {
                                           FocusScope.of(context)
                                               .requestFocus(new FocusNode());
                                         }
+
+                                        _controller.text =
+                                            _controller.text.trim();
+                                        _controller.text =
+                                            _controller.text.toLowerCase();
+                                        _controller.text = _controller.text
+                                            .replaceAll("https://", "");
+                                        _controller.text = _controller.text
+                                            .replaceAll("http://", "");
+                                        if (_controller.text.contains("/"))
+                                          _controller.text =
+                                              _controller.text.split("/")[0];
+
                                         gd.loginDataCurrent = LoginData(
                                             url: gd.useSSL
-                                                ? "https://" +
-                                                    gd.trimUrl(_controller.text)
-                                                : "http://" +
-                                                    gd.trimUrl(
-                                                        _controller.text));
+                                                ? "https://" + _controller.text
+                                                : "http://" + _controller.text);
                                         log.w(
                                             "gd.loginDataCurrent.url ${gd.loginDataCurrent.url}");
                                         //prevent autoConnect hijack gd.loginDataCurrent.url
@@ -239,7 +252,8 @@ class _SettingPageState extends State<SettingPage> {
                                         );
                                       }
                                     : null,
-                                child: Text(Translate.getString("settings.connect", context)),
+                                child: Text(Translate.getString(
+                                    "settings.connect", context)),
                               ),
                             ],
                           )
@@ -278,6 +292,13 @@ class _SettingPageState extends State<SettingPage> {
                 title: Translate.getString("settings.layout", context),
               ),
               _LayoutSelector(),
+              SliverHeaderNormal(
+                icon: Icon(
+                  MaterialDesignIcons.getIconDataFromIconName("mdi:web"),
+                ),
+                title: Translate.getString("settings.language", context),
+              ),
+              LocalLanguagePicker(),
               SliverHeaderNormal(
                 icon: Icon(
                   MaterialDesignIcons.getIconDataFromIconName(
@@ -429,6 +450,7 @@ class _SettingPageState extends State<SettingPage> {
   Future<void> _initPackageInfo() async {
     final PackageInfo info = await PackageInfo.fromPlatform();
     setState(() {
+//      log.d("_packageInfo $_packageInfo");
       _packageInfo = info;
     });
   }
@@ -462,7 +484,8 @@ class _ThemeSelector extends StatelessWidget {
                             Image.asset("assets/images/icon_transparent.png"),
                             Spacer(),
                             Text(
-                              Translate.getString("theme_selector.dark", context),
+                              Translate.getString(
+                                  "theme_selector.dark", context),
                               style: TextStyle(color: Colors.white),
                               textScaleFactor: gd.textScaleFactor,
                             ),
@@ -496,7 +519,8 @@ class _ThemeSelector extends StatelessWidget {
                             Image.asset("assets/images/icon_transparent.png"),
                             Spacer(),
                             Text(
-                              Translate.getString("theme_selector.light", context),
+                              Translate.getString(
+                                  "theme_selector.light", context),
                               style: TextStyle(color: Colors.black),
                               textScaleFactor: gd.textScaleFactor,
                             ),
@@ -555,7 +579,8 @@ class _LayoutSelector extends StatelessWidget {
                             ),
                             Spacer(),
                             Text(
-                              Translate.getString("settings.3_buttons", context),
+                              Translate.getString(
+                                  "settings.3_buttons", context),
                               style: Theme.of(context).textTheme.body1,
                               overflow: TextOverflow.ellipsis,
                               textScaleFactor: gd.textScaleFactor,
@@ -593,7 +618,8 @@ class _LayoutSelector extends StatelessWidget {
                             ),
                             Spacer(),
                             Text(
-                              Translate.getString("settings.4_buttons", context),
+                              Translate.getString(
+                                  "settings.4_buttons", context),
                               style: Theme.of(context).textTheme.body1,
                               overflow: TextOverflow.ellipsis,
                               textScaleFactor: gd.textScaleFactor,

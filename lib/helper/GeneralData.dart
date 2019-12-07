@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'dart:core';
 import 'dart:math';
 import 'dart:ui';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flushbar/flushbar.dart';
@@ -15,7 +14,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hasskit/helper/ThemeInfo.dart';
 import 'package:hasskit/helper/WebSocket.dart';
 import 'package:hasskit/model/BaseSetting.dart';
-import 'package:hasskit/model/CameraThumbnail.dart';
+import 'package:hasskit/model/CameraInfo.dart';
 import 'package:hasskit/model/Entity.dart';
 import 'package:hasskit/model/EntityOverride.dart';
 import 'package:hasskit/model/LoginData.dart';
@@ -216,8 +215,8 @@ class GeneralData with ChangeNotifier {
 
   void socketGetStates(List<dynamic> message) {
 //    log.d('socketGetStates $message');
-    _entities.clear();
-    _entities = {};
+
+    List<String> previousEntitiesList = entities.keys.toList();
 
     for (dynamic mess in message) {
       Entity entity = Entity.fromJson(mess);
@@ -225,60 +224,28 @@ class GeneralData with ChangeNotifier {
         log.e('socketGetStates entity.entityId');
         continue;
       }
+
+//      if (entity.entityId.contains("fan.")) {
+//        log.w("\n socketGetStates ${entity.entityId} mess $mess");
+//      }
+
+      if (previousEntitiesList.contains(entity.entityId))
+        previousEntitiesList.remove(entity.entityId);
+
       _entities[entity.entityId] = entity;
     }
 
-    log.d('socketGetStates total entities ${_entities.length}');
+    if (previousEntitiesList.length > 0) {
+      for (String entityId in previousEntitiesList) {
+        log.e(
+            "Remove $entityId from _entities, it's no longer in recent get_states");
+        _entities.remove(entityId);
+      }
+    }
+
+//    log.d('socketGetStates total entities ${_entities.length}');
     notifyListeners();
   }
-
-//  List<String> lovelaceEntities = [];
-//
-//  void socketLovelaceConfig(dynamic message) {
-//    log.d('getLovelaceConfig $message');
-//
-//    List<dynamic> viewsParse = message['result']['views'];
-////    log.d('viewsParse.length ${viewsParse.length}');
-//
-//    for (var viewParse in viewsParse) {
-//      List<dynamic> badgesParse = viewParse['badges'];
-//      for (var badgeParse in badgesParse) {
-//        badgeParse = processEntityId(badgeParse.toString());
-////        log.d('badgeParse $badgeParse');
-//        if (isEntityNameValid(badgeParse) &&
-//            !lovelaceEntities.contains(badgeParse)) {
-//          lovelaceEntities.add(badgeParse);
-//        }
-//      }
-//
-//      List<dynamic> cardsParse = viewParse['cards'];
-//
-//      for (var cardParse in cardsParse) {
-//        var type = cardParse['type'];
-//        if (type == 'entities' || type == 'glance') {
-//          List<dynamic> entitiesParse = cardParse['entities'];
-//          for (var entityParse in entitiesParse) {
-//            entityParse = processEntityId(entityParse.toString());
-////            log.d('entityParse 1 $entityParse');
-//            if (isEntityNameValid(entityParse) &&
-//                !lovelaceEntities.contains(entityParse)) {
-//              lovelaceEntities.add(entityParse);
-//            }
-//          }
-//        } else {
-//          var entityParse = cardParse['entity'];
-//          entityParse = processEntityId(entityParse.toString());
-////          log.d('entityParse 2 $entityParse');
-//          if (isEntityNameValid(entityParse) &&
-//              !lovelaceEntities.contains(entityParse)) {
-//            lovelaceEntities.add(entityParse);
-//          }
-//        }
-//      }
-//    }
-//
-//    notifyListeners();
-//  }
 
   void socketSubscribeEvents(dynamic message) {
     String entityId;
@@ -293,15 +260,14 @@ class GeneralData with ChangeNotifier {
       return;
     }
 
-//    log.w("socketSubscribeEvents $entityId");
-
-//    if (entityId.contains("light."))
-//    log.w(
-//        "socketSubscribeEvents new_state ${message['event']['data']['new_state'].toString()}");
-
     eventEntityUpdate(entityId);
     _entities[entityId] =
         Entity.fromJson(message['event']['data']['new_state']);
+
+//    if (_entities[entityId].entityId.contains("fan.")) {
+//      log.w(
+//          "\n socketSubscribeEvents $entityId message $message['event']['data']['new_state']");
+//    }
 
     notifyListeners();
   }
@@ -361,115 +327,52 @@ class GeneralData with ChangeNotifier {
     return entityId;
   }
 
-  Map<String, CameraThumbnail> cameraThumbnails = {};
-  Map<String, DateTime> activeCameras = {};
-  Map<String, ImageProvider> cameraThumbnailsOld = {};
-  Map<int, String> cameraThumbnailsId = {};
-
-  ImageProvider getCameraThumbnailOld(String entityId) {
-    if (cameraThumbnailsOld[entityId] == null) {
-      cameraThumbnailsOld[entityId] = AssetImage('assets/images/loader.png');
+  Map<String, CameraInfo> cameraInfos = {};
+  List<String> cameraInfosActive = [];
+  cameraInfoGet(String entityId) {
+    if (!cameraInfos.containsKey(entityId)) {
+      cameraInfos[entityId] = CameraInfo(
+        entityId: entityId,
+        updatedTime: DateTime.now().subtract(Duration(days: 1)),
+        requestingTime: DateTime.now().subtract(Duration(days: 1)),
+        currentImage: AssetImage("assets/images/loader.png"),
+        previousImage: AssetImage("assets/images/loader.png"),
+      );
     }
-    return cameraThumbnailsOld[entityId];
+    return cameraInfos[entityId];
   }
 
-  ImageProvider getCameraThumbnail(String entityId) {
-    if (cameraThumbnails[entityId] == null) {
-      return cameraThumbnailsOld[entityId];
-    }
-    return cameraThumbnails[entityId].image;
-  }
+  Future<void> cameraInfosUpdate(String entityId) async {
+    CameraInfo cameraInfo = gd.cameraInfoGet(entityId);
 
-  DateTime getCameraLastUpdate(String entityId) {
-    if (cameraThumbnails[entityId] == null) {
-      return DateTime.now().subtract(Duration(days: 1));
-    }
-    return cameraThumbnails[entityId].receivedDateTime;
-  }
-
-  void requestCameraImage(String entityId, {bool force = false}) {
-    if (entityId == null ||
-        activeCameras[entityId] != null &&
-            activeCameras[entityId].isAfter(DateTime.now())) {
+    if (cameraInfo.requestingTime.isAfter(DateTime.now())) {
+//      log.d("updateImage $entityId requestingTime.isAfter");
       return;
     }
 
-    if (cameraThumbnails[entityId] == null ||
-        cameraThumbnails[entityId]
-            .receivedDateTime
-            .isBefore(DateTime.now().subtract(Duration(seconds: 10)))) {
-      var outMsg = {
-        'id': gd.socketId,
-        'type': 'camera_thumbnail',
-        'entity_id': entityId,
-      };
-      webSocket.send(jsonEncode(outMsg));
-      activeCameras[entityId] = DateTime.now().add(Duration(seconds: 10));
-//      log.d('requestCameraImage $entityId');
-    }
-  }
+//    log.d("CameraInfo.updateImage $entityId");
+    cameraInfo.requestingTime = DateTime.now().add(Duration(seconds: 10));
+    final url = gd.currentUrl +
+        gd.entities[entityId].entityPicture +
+        "&time=" +
+        DateTime.now().millisecondsSinceEpoch.toString();
+    final response = await http.get(url);
 
-  void camerasThumbnailUpdate(String entityId, String content) async {
-    CameraThumbnail cameraThumbnail = CameraThumbnail(
-      entityId: entityId,
-      receivedDateTime: DateTime.now(),
-      image: MemoryImage(base64Decode(content)),
-    );
-    cameraThumbnails[entityId] = cameraThumbnail;
-//    log.d('camerasThumbnailUpdate $entityId');
-//    log.d('cameraThumbnails.length ${cameraThumbnails.length}');
-    notifyListeners();
-    await Future.delayed(const Duration(milliseconds: 1000));
-    cameraThumbnailsOld[entityId] = cameraThumbnails[entityId].image;
-//    log.d('oldImage.length ${cameraThumbnailsOld.length}');
-    notifyListeners();
-  }
-
-  String timePassed(DateTime previousTime) {
-    var totalDiff = DateTime.now().difference(previousTime).inMilliseconds;
-    var duration = Duration(milliseconds: totalDiff);
-    var format =
-        '${duration.inDays}:${duration.inHours.remainder(24)}:${duration.inMinutes.remainder(60)}:${(duration.inSeconds.remainder(60))}';
-    var spit = format.split(':');
-    var recVal = '';
-    bool lessThanASecond = true;
-
-    var day = int.parse(spit[0]);
-    var hour = int.parse(spit[1]);
-    var minute = int.parse(spit[2]);
-    var second = int.parse(spit[3]);
-
-    if (day > 365) {
-      return '...';
-    }
-    if (day > 0) {
-      String s = ' day, ';
-      if (day > 1) {
-        s = ' days, ';
+    if (response.statusCode == 200) {
+      try {
+//        log.d(
+//            "CameraInfo.updateImage $entityId response.statusCode == 200 url $url");
+        cameraInfo.previousImage = cameraInfo.currentImage;
+        cameraInfo.currentImage = NetworkImage(url);
+        cameraInfo.updatedTime = DateTime.now();
+        notifyListeners();
+      } catch (e) {
+        log.w("CameraInfo.updateImage $entityId catch $e");
       }
-      recVal = recVal + day.toString() + s;
-      lessThanASecond = false;
+    } else {
+      log.w(
+          "CameraInfo.updateImage $entityId error response.statusCode ${response.statusCode}");
     }
-    if (hour > 0 || !lessThanASecond) {
-      String s = ' hour, ';
-      if (hour > 1) {
-        s = ' hours, ';
-      }
-      recVal = recVal + hour.toString() + s;
-      lessThanASecond = false;
-    }
-    if (minute > 0 || !lessThanASecond) {
-      String s = ' minute, ';
-      if (minute > 1) {
-        s = ' minutes, ';
-      }
-      recVal = recVal + minute.toString() + s;
-      lessThanASecond = false;
-    }
-    String s = ' s';
-    recVal = recVal + second.toString() + s;
-
-    return recVal;
   }
 
   ThemeData get currentTheme {
@@ -1223,7 +1126,8 @@ class GeneralData with ChangeNotifier {
     _delayGetStates?.cancel();
     _delayGetStates = null;
 
-    _delayGetStates = Timer(Duration(seconds: seconds), delayGetStates);
+//    _delayGetStates = Timer(Duration(seconds: seconds), delayGetStates);
+    _delayGetStates = Timer(Duration(seconds: seconds), httpApiStates);
   }
 
   void delayGetStates() {
@@ -1675,6 +1579,7 @@ class GeneralData with ChangeNotifier {
     "mdi:brightness-7",
     "mdi:camera",
     "mdi:candle",
+    "mdi:candycane",
     "mdi:cast",
     "mdi:ceiling-light",
     "mdi:check-outline",
@@ -1709,6 +1614,7 @@ class GeneralData with ChangeNotifier {
     "mdi:music-note",
     "mdi:music-note-off",
     "mdi:page-layout-sidebar-right",
+    "mdi:pine-tree",
     "mdi:power",
     "mdi:power-cycle",
     "mdi:power-off",
@@ -2221,6 +2127,31 @@ class GeneralData with ChangeNotifier {
 
   int webViewSupportMax = 3;
 
-  String currentLocale;
   var localeData;
+
+  void httpApiStates() async {
+    var client = new http.Client();
+    var url = gd.currentUrl + "/api/states";
+    Map<String, String> headers = {
+      'content-type': 'application/json',
+      'Authorization': 'Bearer ${gd.loginDataCurrent.longToken}',
+    };
+
+    log.d("httpApiStates $url");
+
+    try {
+      var response = await http.get(url, headers: headers);
+      if (response.statusCode == 200) {
+        log.w("httpApiStates response.statusCode ${response.statusCode}");
+        var jsonResponse = jsonDecode(response.body);
+//        log.d("httpApiStates jsonResponse $jsonResponse");
+        socketGetStates(jsonResponse);
+      } else {
+        print(
+            "httpApiStates Request failed with status: ${response.statusCode}.");
+      }
+    } finally {
+      client.close();
+    }
+  }
 }

@@ -4,9 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_widgets/flutter_widgets.dart';
 import 'package:hasskit/helper/GeneralData.dart';
 import 'package:hasskit/helper/ThemeInfo.dart';
-import 'package:hasskit/model/CameraThumbnail.dart';
+import 'package:hasskit/model/CameraInfo.dart';
 import 'package:provider/provider.dart';
-import 'package:hasskit/helper/LocaleHelper.dart';
 
 class EntityCamera extends StatelessWidget {
   final String entityId;
@@ -23,32 +22,27 @@ class EntityCamera extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-//    log.w("Widget build EntityRectangle $entityId");
+    CameraInfo cameraInfo = gd.cameraInfoGet(entityId);
 
-//    return Selector<GeneralData, Map<String, Entity>>(
-//      selector: (_, generalData) => generalData.entities,
-//      builder: (_, entity, __) {
-    return Selector<GeneralData, CameraThumbnail>(
-      selector: (_, generalData) => generalData.cameraThumbnails[entityId],
+    return Selector<GeneralData, String>(
+      selector: (_, generalData) => ""
+          "${generalData.cameraInfos[entityId].updatedTime}"
+          "",
       builder: (context, data, child) {
-        var timeDiff =
-            DateTime.now().difference(gd.getCameraLastUpdate(entityId));
+        var timeDiff = DateTime.now().difference(cameraInfo.updatedTime);
+//        log.d("EntityCamera.Selector $entityId timeDiff $timeDiff");
         return VisibilityDetector(
           key: Key(entityId),
           onVisibilityChanged: (VisibilityInfo info) {
-            if (info.visibleFraction > 0.5 &&
-                !gd.activeCameras.containsKey(entityId)) {
-              gd.activeCameras[entityId] =
-                  DateTime.now().subtract(Duration(days: 1));
-//              log.w(
-//                  "EntityRectangle Add Camera $entityId ${info.visibleFraction}");
-            }
-
-            if (info.visibleFraction <= 0.5 &&
-                gd.activeCameras.containsKey(entityId)) {
-              gd.activeCameras.remove(entityId);
-//              log.e(
-//                  "EntityRectangle Remove Camera $entityId ${info.visibleFraction}");
+            if (info.visibleFraction > 0.5) {
+              if (!gd.cameraInfosActive.contains(entityId)) {
+                gd.cameraInfosActive.add(entityId);
+                gd.cameraInfosUpdate(entityId);
+              }
+            } else {
+              if (gd.cameraInfosActive.contains(entityId)) {
+                gd.cameraInfosActive.remove(entityId);
+              }
             }
           },
           child: InkWell(
@@ -68,12 +62,13 @@ class EntityCamera extends StatelessWidget {
                             fit: StackFit.expand,
                             alignment: Alignment.center,
                             children: <Widget>[
+                              Container(color: ThemeInfo.colorBackgroundDark),
                               Image(
-                                image: gd.getCameraThumbnailOld(entityId),
+                                image: cameraInfo.previousImage,
                                 fit: BoxFit.cover,
                               ),
                               Image(
-                                image: gd.getCameraThumbnail(entityId),
+                                image: cameraInfo.currentImage,
                                 fit: BoxFit.cover,
                               ),
                             ],
@@ -92,19 +87,34 @@ class EntityCamera extends StatelessWidget {
                         padding: EdgeInsets.all(8),
                         child: Row(
                           children: <Widget>[
-                            Text(
-                              gd.entities[entityId].getOverrideName,
-                              style: Theme.of(context).textTheme.body1,
-                              textScaleFactor: gd.textScaleFactor,
-                            ),
                             Expanded(
-                              child: Container(),
+                              child: Text(
+                                //"${Translate.getString('global.last_update', context)}: ${printDuration(timeDiff, abbreviated: true, tersity: DurationTersity.second, delimiter: ', ', conjugation: ' and ')} ago"
+                                gd.entities[entityId].getOverrideName,
+                                style: Theme.of(context).textTheme.body1,
+                                textScaleFactor: gd.textScaleFactor,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
-                            Text(
-                              "${Translate.getString('global.last_update', context)}: ${printDuration(timeDiff, abbreviated: true, tersity: DurationTersity.second, delimiter: ', ', conjugation: ' and ')} ago",
-                              style: Theme.of(context).textTheme.body1,
-                              textScaleFactor: gd.textScaleFactor,
-                            ),
+                            timeDiff.inDays >= 1
+                                ? Text(
+                                    "...",
+                                    style: Theme.of(context).textTheme.body1,
+                                    textScaleFactor: gd.textScaleFactor,
+                                  )
+                                : timeDiff.inSeconds < 20
+                                    ? Text(
+                                        "Few seconds ago",
+                                        style:
+                                            Theme.of(context).textTheme.body1,
+                                        textScaleFactor: gd.textScaleFactor,
+                                      )
+                                    : Text(
+                                        "${printDuration(timeDiff, abbreviated: false, tersity: DurationTersity.second, spacer: ' ', delimiter: ' ', conjugation: ' and ')} ago",
+                                        style:
+                                            Theme.of(context).textTheme.body1,
+                                        textScaleFactor: gd.textScaleFactor,
+                                      ),
                           ],
                         ),
                       ),

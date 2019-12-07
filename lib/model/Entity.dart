@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hasskit/helper/GeneralData.dart';
@@ -39,10 +38,8 @@ class Entity {
 //Fan
   List<String> speedList;
   bool oscillating;
-  String speedLevel;
   String speed;
   int angle;
-  int directSpeed;
   //Light
   int supportedFeatures;
   int brightness;
@@ -98,10 +95,8 @@ class Entity {
     //fan
     this.speedList,
     this.oscillating,
-    this.speedLevel,
     this.speed,
     this.angle,
-    this.directSpeed,
     //light
     this.supportedFeatures,
     this.brightness,
@@ -205,19 +200,16 @@ class Entity {
         oscillating: json['attributes']['oscillating'] != null
             ? json['attributes']['oscillating']
             : false,
-        speedLevel: json['attributes']['speed_level'].toString() != null
-            ? json['attributes']['speed_level'].toString()
-            : "0",
-        speed: json['attributes']['speed'].toString() != null
-            ? json['attributes']['speed'].toString()
-            : "0",
+        speed: json['attributes']['direct_speed'].toString() != null
+            ? json['attributes']['direct_speed'].toString()
+            : json['attributes']['speed_level'].toString() != null
+                ? json['attributes']['speed_level'].toString()
+                : json['attributes']['speed'].toString() != null
+                    ? json['attributes']['speed'].toString()
+                    : "0",
         angle: int.tryParse(json['attributes']['angle'].toString()) != null
             ? int.tryParse(json['attributes']['angle'].toString())
             : 0,
-        directSpeed:
-            int.tryParse(json['attributes']['direct_speed'].toString()) != null
-                ? int.tryParse(json['attributes']['direct_speed'].toString())
-                : 0,
         //supported_features
         supportedFeatures: int.tryParse(
                     json['attributes']['supported_features'].toString()) !=
@@ -418,18 +410,18 @@ class Entity {
         gd.entitiesOverride[entityId].icon.length > 0) {
       return gd.entitiesOverride[entityId].icon;
     }
-    return "";
+    return null;
   }
 
   String get getDefaultIcon {
-    if (twoStateIcons() != null) {
-      return twoStateIcons();
-    }
-    if (getOverrideIcon != "") {
+    if (getOverrideIcon != null) {
+      if (twoStateIcons(getOverrideIcon) != null)
+        return twoStateIcons(getOverrideIcon);
       return getOverrideIcon;
     }
 
-    if (icon != null && icon != "null") {
+    if (icon != null && icon != "null" && twoStateIcons(icon) != null) {
+      if (twoStateIcons(icon) != null) return twoStateIcons(icon);
       return icon;
     }
 
@@ -499,40 +491,42 @@ class Entity {
     return 'mdi:help-circle';
   }
 
-  String twoStateIcons() {
-    if (isStateOn && icon == "mdi:bell") return "mdi:bell-ring";
-    if (!isStateOn && icon == "mdi:bell-ring") return "mdi:bell";
+  String twoStateIcons(String currentIcon) {
+    if (isStateOn && currentIcon == "mdi:bell") return "mdi:bell-ring";
+    if (!isStateOn && currentIcon == "mdi:bell-ring") return "mdi:bell";
 
-    if (isStateOn && icon == "mdi:blinds") return "mdi:blinds-open";
-    if (!isStateOn && icon == "mdi:blinds-open") return "mdi:blinds";
+    if (isStateOn && currentIcon == "mdi:blinds") return "mdi:blinds-open";
+    if (!isStateOn && currentIcon == "mdi:blinds-open") return "mdi:blinds";
 
-    if (isStateOn && icon == "mdi:door-closed") return "mdi:door-open";
-    if (!isStateOn && icon == "mdi:door-open") return "mdi:door-closed";
+    if (isStateOn && currentIcon == "mdi:door-closed") return "mdi:door-open";
+    if (!isStateOn && currentIcon == "mdi:door-open") return "mdi:door-closed";
 
-    if (isStateOn && icon == "mdi:fan-off") return "mdi:fan";
-    if (!isStateOn && icon == "mdi:fan") return "mdi:fan-off";
+    if (isStateOn && currentIcon == "mdi:fan-off") return "mdi:fan";
+    if (!isStateOn && currentIcon == "mdi:fan") return "mdi:fan-off";
 
-    if (isStateOn && icon == "mdi:garage") return "mdi:garage-open";
-    if (!isStateOn && icon == "mdi:garage-open") return "mdi:garage";
+    if (isStateOn && currentIcon == "mdi:garage") return "mdi:garage-open";
+    if (!isStateOn && currentIcon == "mdi:garage-open") return "mdi:garage";
 
-    if (isStateOn && icon == "mdi:lightbulb") return "mdi:lightbulb-on";
-    if (!isStateOn && icon == "mdi:lightbulb-on") return "mdi:lightbulb";
+    if (isStateOn && currentIcon == "mdi:lightbulb") return "mdi:lightbulb-on";
+    if (!isStateOn && currentIcon == "mdi:lightbulb-on") return "mdi:lightbulb";
 
-    if (isStateOn && icon == "mdi:lightbulb-outline")
+    if (isStateOn && currentIcon == "mdi:lightbulb-outline")
       return "mdi:lightbulb-on-outline";
-    if (!isStateOn && icon == "mdi:lightbulb-on-outline")
+    if (!isStateOn && currentIcon == "mdi:lightbulb-on-outline")
       return "mdi:lightbulb-outline";
 
-    if (isStateOn && icon == "mdi:lock") return "mdi:lock-open";
-    if (!isStateOn && icon == "mdi:lock-open") return "mdi:lock";
-    if (isStateOn && icon == "mdi:window-closed") return "mdi:window-open";
-    if (!isStateOn && icon == "mdi:window-open") return "mdi:window-closed";
-    if (isStateOn && icon == "mdi:walk") return "mdi:run";
-    if (!isStateOn && icon == "mdi:run") return "mdi:walk";
+    if (isStateOn && currentIcon == "mdi:lock") return "mdi:lock-open";
+    if (!isStateOn && currentIcon == "mdi:lock-open") return "mdi:lock";
+    if (isStateOn && currentIcon == "mdi:window-closed")
+      return "mdi:window-open";
+    if (!isStateOn && currentIcon == "mdi:window-open")
+      return "mdi:window-closed";
+    if (isStateOn && currentIcon == "mdi:walk") return "mdi:run";
+    if (!isStateOn && currentIcon == "mdi:run") return "mdi:walk";
 
-    if (isStateOn && icon == "mdi:window-shutter")
+    if (isStateOn && currentIcon == "mdi:window-shutter")
       return "mdi:window-shutter-open";
-    if (!isStateOn && icon == "mdi:window-shutter-open")
+    if (!isStateOn && currentIcon == "mdi:window-shutter-open")
       return "mdi:window-shutter";
 
     return null;
@@ -662,50 +656,67 @@ class Entity {
 
   String get getStateDisplay {
     if (isStateOn && entityId.contains("fan.")) {
-      if (speedLevel != null && speedLevel.length > 0 && speedLevel != "null")
-        return speedLevel;
       if (speed != null && speed.length > 0 && speed != "null") return speed;
     }
-
     return state;
   }
 
   String getStateDisplayTranslated(BuildContext context) {
     if (isStateOn && entityId.contains("fan.")) {
-      if (speedLevel != null && speedLevel.length > 0 && speedLevel != "null") {
-        if(speedLevel.toLowerCase() == "high") return Translate.getString("states.fan_high", context);
-        if(speedLevel.toLowerCase() == "mediumhigh") return Translate.getString("states.fan_high_medium", context);
-        if(speedLevel.toLowerCase() == "medium") return Translate.getString("states.fan_medium", context);
-        if(speedLevel.toLowerCase() == "mediumlow") return Translate.getString("states.fan_medium_low", context);
-        if(speedLevel.toLowerCase() == "low") return Translate.getString("states.fan_low", context);
-        if(speedLevel.toLowerCase() == "lowest") return Translate.getString("states.fan_lowest", context);
-        return speedLevel;
-      }
       if (speed != null && speed.length > 0 && speed != "null") {
-        if(speed.toLowerCase() == "high") return Translate.getString("states.fan_high", context);
-        if(speed.toLowerCase() == "mediumhigh") return Translate.getString("states.fan_high_medium", context);
-        if(speed.toLowerCase() == "medium") return Translate.getString("states.fan_medium", context);
-        if(speed.toLowerCase() == "mediumlow") return Translate.getString("states.fan_medium_low", context);
-        if(speed.toLowerCase() == "low") return Translate.getString("states.fan_low", context);
-        if(speed.toLowerCase() == "lowest") return Translate.getString("states.fan_lowest", context);
+        if (speed.toLowerCase() == "high")
+          return Translate.getString("states.fan_high", context);
+        if (speed.toLowerCase() == "mediumhigh")
+          return Translate.getString("states.fan_high_medium", context);
+        if (speed.toLowerCase() == "medium")
+          return Translate.getString("states.fan_medium", context);
+        if (speed.toLowerCase() == "mediumlow")
+          return Translate.getString("states.fan_medium_low", context);
+        if (speed.toLowerCase() == "low")
+          return Translate.getString("states.fan_low", context);
+        if (speed.toLowerCase() == "lowest")
+          return Translate.getString("states.fan_lowest", context);
         return speed;
       }
     }
 
-    if(state.toLowerCase() == "off") return Translate.getString("states.off", context);
-    if(state.toLowerCase() == "on") return Translate.getString("states.on", context);
-    if(state.toLowerCase() == "closed") return Translate.getString("states.closed", context);
-    if(state.toLowerCase() == "open") return Translate.getString("states.open", context);
-    if(state.toLowerCase() == "locked") return Translate.getString("states.locked", context);
-    if(state.toLowerCase() == "unlocked") return Translate.getString("states.unlocked", context);
-    if(state.toLowerCase() == "disarmed") return Translate.getString("states.disarmed", context);
-    if(state.toLowerCase().contains("armed")) {
-      if(state.toLowerCase().contains("away")) return Translate.getString("states.armed_away", context);
-      if(state.toLowerCase().contains("home")) return Translate.getString("states.armed_home", context);
-      if(state.toLowerCase().contains("night")) return Translate.getString("states.armed_night", context);
+    if (state.toLowerCase() == "on")
+      return Translate.getString("states.on", context);
+    if (state.toLowerCase() == "turning on...")
+      return Translate.getString("states.turning_on", context);
+    if (state.toLowerCase() == "off")
+      return Translate.getString("states.off", context);
+    if (state.toLowerCase() == "turning off...")
+      return Translate.getString("states.turning_off", context);
+    if (state.toLowerCase() == "closed")
+      return Translate.getString("states.closed", context);
+    if (state.toLowerCase() == "closing...")
+      return Translate.getString("states.closing", context);
+    if (state.toLowerCase() == "open")
+      return Translate.getString("states.open", context);
+    if (state.toLowerCase() == "opening...")
+      return Translate.getString("states.opening", context);
+    if (state.toLowerCase() == "locked")
+      return Translate.getString("states.locked", context);
+    if (state.toLowerCase() == "locking...")
+      return Translate.getString("states.locking", context);
+    if (state.toLowerCase() == "unlocked")
+      return Translate.getString("states.unlocked", context);
+    if (state.toLowerCase() == "unlocking...")
+      return Translate.getString("states.unlocking", context);
+    if (state.toLowerCase() == "disarmed")
+      return Translate.getString("states.disarmed", context);
+    if (state.toLowerCase().contains("armed")) {
+      if (state.toLowerCase().contains("away"))
+        return Translate.getString("states.armed_away", context);
+      if (state.toLowerCase().contains("home"))
+        return Translate.getString("states.armed_home", context);
+      if (state.toLowerCase().contains("night"))
+        return Translate.getString("states.armed_night", context);
       return Translate.getString("states.armed", context);
     }
-    if(state.toLowerCase().contains("pending")) return Translate.getString("states.arm_pending", context);
+    if (state.toLowerCase().contains("pending"))
+      return Translate.getString("states.arm_pending", context);
 
     if(state.toLowerCase() == "not_home") return Translate.getString("states.not_home", context);
     if(state.toLowerCase() == "home") return Translate.getString("states.home", context);

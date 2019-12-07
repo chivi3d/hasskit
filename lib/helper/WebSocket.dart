@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:hasskit/helper/GeneralData.dart';
 import 'package:web_socket_channel/io.dart';
@@ -103,9 +102,7 @@ class WebSocket {
         gd.subscribeEventsId = 0;
         gd.longTokenId = 0;
         gd.getStatesId = 0;
-//        gd.cameraThumbnailsId.clear();
-//        gd.cameraRequestTime.clear();
-//        gd.cameraActives.clear();
+        gd.cameraInfosActive.clear();
       }
     }
   }
@@ -114,7 +111,7 @@ class WebSocket {
   /// Sends a message to the server
   /// ---------------------------------------------------------
   send(String message) {
-//    log.w("send BEFORE $message");
+    log.w("send BEFORE $message");
 //    log.d("gd.firebaseCurrentUser==null ${gd.firebaseCurrentUser == null}");
     if (_channel != null) {
       if (_channel.sink != null && connected) {
@@ -135,9 +132,7 @@ class WebSocket {
         if (type == 'get_states') {
           gd.getStatesId = id;
         }
-        if (type == 'camera_thumbnail' && decode['entity_id'] != null) {
-          gd.cameraThumbnailsId[id] = decode['entity_id'];
-        }
+
 //        log.w("send AFTER $message");
         _channel.sink.add(message);
 //        log.d('WebSocket send: id $id type $type $message');
@@ -261,6 +256,7 @@ class WebSocket {
         {
           var success = decode['success'];
           if (!success) {
+            log.e("!success $message");
             break;
           }
 
@@ -283,22 +279,21 @@ class WebSocket {
             send(json.encode(outMsg));
           } else if (id == gd.subscribeEventsId) {
             log.e('8. id == gd.subscribeEventsId');
-            outMsg = {"id": gd.socketId, "type": "get_states"};
-            send(json.encode(outMsg));
-          } else if (id == gd.getStatesId) {
-            log.e('9 id == gd.getStatesId');
-            gd.socketGetStates(decode['result']);
-          } else if (id == gd.cameraStreamId) {
+            gd.httpApiStates();
+//            use http
+//            outMsg = {"id": gd.socketId, "type": "get_states"};
+//            send(json.encode(outMsg));
+          }
+//          use http
+//          else if (id == gd.getStatesId) {
+//            log.e('9 id == gd.getStatesId');
+//            gd.socketGetStates(decode['result']);
+//          }
+          else if (id == gd.cameraStreamId) {
             log.e('10 id == gd.cameraStreamId');
             gd.cameraStreamUrl = gd.currentUrl + decode['result']["url"];
             log.e(
                 "11 cameraStreamId ${gd.cameraStreamId} cameraStreamUrl ${gd.cameraStreamUrl}");
-          } else if (gd.cameraThumbnailsId.containsKey(id) &&
-              decode['result'] != null &&
-              decode['result']['content'] != null) {
-//            log.e('12 id == gd.cameraThumbnailsId.containsKey(id)');
-            var content = decode['result']['content'];
-            gd.camerasThumbnailUpdate(gd.cameraThumbnailsId[id], content);
           } else {
 //            log.w('result==null $decode');
           }

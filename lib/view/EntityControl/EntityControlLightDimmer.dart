@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:hasskit/helper/GeneralData.dart';
 import 'package:hasskit/helper/Logger.dart';
 import 'package:hasskit/helper/MaterialDesignIcons.dart';
-import 'package:hasskit/helper/ThemeInfo.dart';
 import 'package:hasskit/helper/WebSocket.dart';
 import 'package:hasskit/model/Entity.dart';
 import 'package:hasskit/view/EntityControl/RgbColorSelector.dart';
@@ -111,7 +110,6 @@ class LightSliderState extends State<LightSlider> {
             buttonValue = mapValue;
           }
         }
-        var colorForeground = ThemeInfo.colorBottomSheetReverse;
         Color sliderColor;
         if (!gd.entities[widget.entityId].isStateOn) {
           sliderColor = Color.fromRGBO(128, 128, 128, 1.0);
@@ -176,41 +174,40 @@ class LightSliderState extends State<LightSlider> {
                     height: buttonHeight,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(width: 4, color: colorForeground),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black54,
+                          blurRadius:
+                              0.0, // has the effect of softening the shadow
+                          spreadRadius:
+                              1.0, // has the effect of extending the shadow
+                          offset: Offset(
+                            0.0, // horizontal, move right 10
+                            0.0, // vertical, move down 10
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   Positioned(
-                    top: 4,
+                    top: 0,
                     child: Container(
-                      width: buttonWidth - 8,
-                      height: buttonHeight - 8 > 0 ? buttonHeight - 8 : 0,
+                      width: buttonWidth,
+                      height: buttonHeight > 0 ? buttonHeight : 0,
                       decoration: BoxDecoration(
                         color: sliderColor,
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(16),
                       ),
                       alignment: Alignment.bottomCenter,
                       child: Container(
-                        width: buttonWidth - 8,
-                        height: buttonValue - 8 > 0 ? buttonValue - 8 : 0,
+                        width: buttonWidth,
+                        height: buttonValue > 0 ? buttonValue : 0,
                         alignment: Alignment.topCenter,
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(12),
-                              bottomRight: Radius.circular(12)),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black54,
-                              blurRadius:
-                                  0.5, // has the effect of softening the shadow
-                              spreadRadius:
-                                  0.5, // has the effect of extending the shadow
-                              offset: Offset(
-                                0.0, // horizontal, move right 10
-                                0.5,
-                              ),
-                            ),
-                          ],
+                              bottomLeft: Radius.circular(16),
+                              bottomRight: Radius.circular(16)),
                         ),
                         child: SizedBox(
                           width: 50,
@@ -219,35 +216,22 @@ class LightSliderState extends State<LightSlider> {
                             MaterialDesignIcons.getIconDataFromIconName(
                                 gd.entities[widget.entityId].getDefaultIcon),
                             size: 45,
-                            color: ThemeInfo.colorIconInActive,
+                            color: sliderColor,
                           ),
                         ),
                       ),
                     ),
                   ),
                   Positioned(
-                    top: 4,
+                    top: 0,
                     child: Container(
-                      width: buttonWidth - 8,
+                      width: buttonWidth,
                       height: upperPartHeight,
                       decoration: BoxDecoration(
                         color: sliderColor,
                         borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(12),
-                            topRight: Radius.circular(12)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black54,
-                            blurRadius:
-                                0.5, // has the effect of softening the shadow
-                            spreadRadius:
-                                0.5, // has the effect of extending the shadow
-                            offset: Offset(
-                              0.0, // horizontal, move right 10
-                              -0.5, // vertical, move down 10
-                            ),
-                          ),
-                        ],
+                            topLeft: Radius.circular(16),
+                            topRight: Radius.circular(16)),
                       ),
                       alignment: Alignment.center,
                       child: Text(

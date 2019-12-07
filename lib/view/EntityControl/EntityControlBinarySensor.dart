@@ -290,11 +290,13 @@ String stateString(String deviceClass, bool isStateOn, BuildContext context) {
     if (isStateOn) {
       return Translate.getString("global.open", context);
     }
+
     return Translate.getString("global.closed", context);
   }
 
   if (isStateOn) {
     return Translate.getString("global.on", context);
   }
+
   return Translate.getString("global.off", context);
 }

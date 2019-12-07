@@ -25,48 +25,54 @@ class _EntityControlFanState extends State<EntityControlFan> {
   double startPosX;
   double startPosY;
   double upperPartHeight = 30.0;
-  double buttonWidthInner = 82.0;
-  double buttonHeightInner = 82.0;
-  double onPos = 300.0 - 30 - 82.0 - 4.0;
-  double offPos = 4.0;
+  double buttonHeightInner = 80.0;
   double diffY = 0;
   double snap = 10;
   int division = 4;
   int currentStep = 0;
   int changingStep = 0;
   double stepLength;
+  DateTime draggingTime = DateTime.now();
 
   @override
   void initState() {
     super.initState();
+    setDiffY();
+    setState(() {});
+  }
+
+  void setDiffY() {
+    if (draggingTime.isAfter(DateTime.now())) return;
+
     Entity entity = gd.entities[widget.entityId];
     division = entity.speedList.length - 1;
     stepLength =
-        (buttonHeight - upperPartHeight - buttonHeightInner - 8) / division;
+        (buttonHeight - upperPartHeight - buttonHeightInner) / division;
     print(
         "entityId ${widget.entityId} division $division steps stepLength $stepLength");
 
     if (entity.isStateOn &&
         entity.speed != null &&
+        int.tryParse(entity.speed) != null &&
+        int.tryParse(entity.speed) >= 0 &&
+        int.tryParse(entity.speed) <= 100) {
+      diffY = (buttonHeight - buttonHeightInner - upperPartHeight) *
+          int.tryParse(entity.speed) /
+          100;
+//      log.d(
+//          "CASE 1 entity.speed ${entity.speed} speedList ${entity.speedList} currentStep  $currentStep diffY $diffY");
+    } else if (entity.isStateOn &&
+        entity.speed != null &&
         entity.speedList != null &&
         entity.speedList.indexOf(entity.speed) >= 0) {
       currentStep = entity.speedList.indexOf(entity.speed);
-      log.d(
-          "entity.speed ${entity.speed} speedList ${entity.speedList} currentStep  $currentStep");
       changingStep = currentStep;
       diffY = currentStep * stepLength;
+//      log.d(
+//          "CASE 2 entity.speed ${entity.speed} speedList ${entity.speedList} currentStep  $currentStep diffY $diffY");
+    } else {
+      diffY = 0;
     }
-    if (entity.isStateOn &&
-        entity.speedLevel != null &&
-        entity.speedLevel.indexOf(entity.speedLevel) >= 0) {
-      currentStep = entity.speedList.indexOf(entity.speedLevel);
-      log.d(
-          "entity.speedLevel ${entity.speedLevel} speedList ${entity.speedList} currentStep  $currentStep");
-      changingStep = currentStep;
-      diffY = currentStep * stepLength;
-    }
-
-    setState(() {});
   }
 
   @override
@@ -77,10 +83,11 @@ class _EntityControlFanState extends State<EntityControlFan> {
           "${generalData.entities[widget.entityId].isStateOn} | " +
           "${generalData.entities[widget.entityId].speedList} | " +
           "${generalData.entities[widget.entityId].speed} | " +
-          "${generalData.entities[widget.entityId].speedLevel} | " +
           "${generalData.entities[widget.entityId].angle} | " +
           "${generalData.entities[widget.entityId].oscillating} | ",
       builder: (context, data, child) {
+//        log.d("EntityControlFan return Selector");
+        setDiffY();
         return new GestureDetector(
           onVerticalDragStart: (DragStartDetails details) =>
               _onVerticalDragStart(context, details),
@@ -104,49 +111,44 @@ class _EntityControlFanState extends State<EntityControlFan> {
                           ? ThemeInfo.colorIconActive
                           : ThemeInfo.colorIconInActive,
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        width: 4,
-                        color: ThemeInfo.colorBottomSheetReverse,
-                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black54,
+                          blurRadius:
+                              0.0, // has the effect of softening the shadow
+                          spreadRadius:
+                              1.0, // has the effect of extending the shadow
+                          offset: Offset(
+                            0.0, // horizontal, move right 10
+                            0.0, // vertical, move down 10
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   Positioned(
-                    bottom: 4 + diffY,
+                    bottom: 0,
                     child: Container(
-                      width: buttonWidthInner,
-                      height: buttonHeightInner,
+                      alignment: Alignment.topCenter,
+                      width: buttonWidth,
+                      height: buttonHeightInner + diffY,
                       padding: const EdgeInsets.all(2.0),
                       decoration: new BoxDecoration(
                         borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(12),
-                            bottomRight: Radius.circular(12)),
-                        color: currentStep > 0 ||
-                                gd.entities[widget.entityId].isStateOn
+                            bottomLeft: Radius.circular(16),
+                            bottomRight: Radius.circular(16)),
+                        color: gd.entities[widget.entityId].isStateOn
                             ? Colors.white.withOpacity(1)
                             : Colors.white.withOpacity(1),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black54,
-                            blurRadius:
-                                1.0, // has the effect of softening the shadow
-                            spreadRadius:
-                                0.5, // has the effect of extending the shadow
-                            offset: Offset(
-                              0.0, // horizontal, move right 10
-                              1.0, // vertical, move down 10
-                            ),
-                          ),
-                        ],
                       ),
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           Icon(
                               MaterialDesignIcons.getIconDataFromIconName(
                                   gd.entities[widget.entityId].getDefaultIcon),
                               size: 50,
-                              color: currentStep > 0 ||
-                                      gd.entities[widget.entityId].isStateOn
+                              color: gd.entities[widget.entityId].isStateOn
                                   ? ThemeInfo.colorIconActive
                                   : ThemeInfo.colorIconInActive),
                           SizedBox(height: 4),
@@ -161,33 +163,21 @@ class _EntityControlFanState extends State<EntityControlFan> {
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.center,
                           ),
+                          SizedBox(height: 4),
                         ],
                       ),
                     ),
                   ),
                   Positioned(
-                    top: 4,
+                    top: 0,
                     child: Container(
-                      width: buttonWidth - 8,
+                      width: buttonWidth,
                       height: upperPartHeight,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(12),
-                            topRight: Radius.circular(12)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black54,
-                            blurRadius:
-                                0.5, // has the effect of softening the shadow
-                            spreadRadius:
-                                0.5, // has the effect of extending the shadow
-                            offset: Offset(
-                              0.0, // horizontal, move right 10
-                              -0.5, // vertical, move down 10
-                            ),
-                          ),
-                        ],
+                            topLeft: Radius.circular(16),
+                            topRight: Radius.circular(16)),
                       ),
                       alignment: Alignment.center,
                       child: Oscillating(entityId: widget.entityId),
@@ -205,6 +195,7 @@ class _EntityControlFanState extends State<EntityControlFan> {
   _onVerticalDragStart(BuildContext context, DragStartDetails details) {
     final RenderBox box = context.findRenderObject();
     final Offset localOffset = box.globalToLocal(details.globalPosition);
+    draggingTime = DateTime.now().add(Duration(minutes: 1));
     setState(() {
       startPosX = localOffset.dx;
       startPosY = localOffset.dy;
@@ -214,6 +205,7 @@ class _EntityControlFanState extends State<EntityControlFan> {
   }
 
   _onVerticalDragEnd(BuildContext context, DragEndDetails details) {
+    draggingTime = DateTime.now().subtract(Duration(minutes: 1));
     for (int i = division; i >= 0; i--) {
       if (diffY >= i * stepLength - stepLength / 2) {
         diffY = i * stepLength;
@@ -241,6 +233,16 @@ class _EntityControlFanState extends State<EntityControlFan> {
         "id": gd.socketId,
         "type": "call_service",
         "domain": "fan",
+        "service": "turn_on",
+        "service_data": {
+          "entity_id": widget.entityId,
+        }
+      };
+      gd.setState(gd.entities[widget.entityId], 'on', json.encode(outMsg));
+      outMsg = {
+        "id": gd.socketId,
+        "type": "call_service",
+        "domain": "fan",
         "service": "set_speed",
         "service_data": {
           "entity_id": widget.entityId,
@@ -257,11 +259,12 @@ class _EntityControlFanState extends State<EntityControlFan> {
   _onVerticalDragUpdate(BuildContext context, DragUpdateDetails details) {
     final RenderBox box = context.findRenderObject();
     final Offset localOffset = box.globalToLocal(details.globalPosition);
+    draggingTime = DateTime.now().add(Duration(minutes: 1));
     setState(() {
       currentPosX = localOffset.dx;
       currentPosY = localOffset.dy - currentStep * stepLength;
       diffY = startPosY - currentPosY;
-      diffY = diffY.clamp(0.0, onPos - 4);
+      diffY = diffY.clamp(0.0, buttonHeight);
       for (int i = division; i >= 0; i--) {
         if (diffY >= i * stepLength - stepLength / 2) {
           changingStep = i;

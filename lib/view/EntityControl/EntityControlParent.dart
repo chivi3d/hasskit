@@ -114,7 +114,7 @@ class _EntityControlParentState extends State<EntityControlParent> {
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    SizedBox(height: 24),
+                    SizedBox(height: 48),
                     Container(
                       height: 50,
                       child: Stack(
@@ -455,7 +455,7 @@ class __IconSelectionState extends State<_IconSelection> {
           height: gd.mediaQueryHeight -
               kBottomNavigationBarHeight -
               kToolbarHeight -
-              30,
+              100,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(8),
@@ -485,7 +485,8 @@ class __IconSelectionState extends State<_IconSelection> {
                             gd.entitiesOverride[widget.entityId] =
                                 entityOverride;
                           }
-
+                          log.d(
+                              "SliverChildBuilderDelegate ${gd.iconsOverride[index]}");
                           widget.clickChangeIcon();
 
                           gd.entitiesOverrideSave(true);
