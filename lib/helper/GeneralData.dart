@@ -1064,7 +1064,6 @@ class GeneralData with ChangeNotifier {
       return;
     }
 
-    log.w("toggleStatus ${entity.entityId}");
     eventEntity(entity.entityId);
     delayGetStatesTimer(5);
     entity.toggleState();

@@ -334,6 +334,7 @@ class Entity {
       "service_data": {"entity_id": entityId}
     };
 
+    log.d("toggleState $entityId - $state");
     var message = json.encode(outMsg);
     webSocket.send(message);
   }
