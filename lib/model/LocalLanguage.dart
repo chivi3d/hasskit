@@ -96,6 +96,24 @@ class _LocalLanguagePickerState extends State<LocalLanguagePicker> {
                   value: "${map.languageCode}_${map.countryCode}",
                   child: Row(
                     children: <Widget>[
+//                      SizedBox(
+//                        width: 22,
+//                        height: 22,
+//                        child: Container(
+//                            decoration: BoxDecoration(
+//                              border: Border.all(
+//                                color: ThemeInfo.colorIconActive,
+//                                width: 1.0,
+//                              ),
+//                            ),
+//                            alignment: Alignment.center,
+//                            child: AutoSizeText(
+//                              map.languageCode,
+//                              style: Theme.of(context).textTheme.body1,
+//                              overflow: TextOverflow.ellipsis,
+//                              textScaleFactor: gd.textScaleFactor,
+//                            )),
+//                      ),
                       SizedBox(width: 30),
                       Text(
                         gd.textToDisplay(
