@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hasskit/helper/GeneralData.dart';
@@ -36,116 +34,52 @@ class _LocalLanguagePickerState extends State<LocalLanguagePicker> {
     LocalLanguage(
       languageCode: "sv",
       countryCode: "SE",
-      displayName: "Svenka",
+      displayName: "Swedish",
       translator: "Tyre88",
     ),
     LocalLanguage(
       languageCode: "vi",
       countryCode: "VN",
-      displayName: "Tiếng Việt",
+      displayName: "Vietnamese",
       translator: "tuanha2000vn",
     ),
     LocalLanguage(
       languageCode: "bg",
       countryCode: "BG",
-      displayName: "България",
+      displayName: "Bulgarian",
       translator: "kirichkov",
     ),
     LocalLanguage(
       languageCode: "el",
       countryCode: "GR",
-      displayName: "ελληνικά",
+      displayName: "Greece",
       translator: "smartHomeHub",
     ),
     LocalLanguage(
       languageCode: "zh",
       countryCode: "CN",
       displayName:
-          "中文简体", //Simplified Chinese or 中文简体 (zh-CN) is used in China. Traditional Chinese or 中文繁体 (zh-TW) is used in Taiwan
+          "Chinese Simplified", //Simplified Chinese or 中文简体 (zh-CN) is used in China. Traditional Chinese or 中文繁体 (zh-TW) is used in Taiwan
       translator: "thor",
     ),
     LocalLanguage(
       languageCode: "zh",
       countryCode: "TW",
       displayName:
-          "中文繁体", //Simplified Chinese or 中文简体 (zh-CN) is used in China. Traditional Chinese or 中文繁体 (zh-TW) is used in Taiwan
+          "Chinese Traditional", //Simplified Chinese or 中文简体 (zh-CN) is used in China. Traditional Chinese or 中文繁体 (zh-TW) is used in Taiwan
       translator: "bluefoxlee",
     ),
   ];
 
-  String languageCode;
-  String countryCode;
   @override
   void initState() {
     super.initState();
     log.d("_LocalLanguagePickerState ${gd.localeData.savedLocale}");
+    localLanguages.sort((a, b) => (a.displayName).compareTo(b.displayName));
   }
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> pickerWidgets = [];
-
-    localLanguages.sort((a, b) =>
-        (a.languageCode.toString() + "-" + a.languageCode.toString()).compareTo(
-            b.languageCode.toString() + "-" + b.languageCode.toString()));
-
-    int selectedIndex = 0;
-    int i = 0;
-
-    for (var localLanguage in localLanguages) {
-      log.d(
-          "${gd.localeData.savedLocale} i = $i ${localLanguage.languageCode}_${localLanguage.countryCode}");
-      if (gd.localeData.savedLocale != null &&
-          gd.localeData.savedLocale.toString() ==
-              "${localLanguage.languageCode}_${localLanguage.countryCode}") {
-        selectedIndex = i;
-        log.d("selectedIndex $selectedIndex");
-      }
-      i++;
-      var pickerWidget = Row(
-        children: <Widget>[
-//          SizedBox(width: 4),
-          SizedBox(width: 30),
-          SizedBox(
-            width: 20,
-            height: 15,
-            child: Image.asset(
-              "assets/flags/${localLanguage.countryCode.toLowerCase()}.png",
-              fit: BoxFit.cover,
-            ),
-          ),
-          SizedBox(width: 10),
-//          SizedBox(
-//            width: 50,
-//            child: Text(
-//              "${localLanguage.languageCode}-${localLanguage.countryCode}",
-//              style: Theme.of(context).textTheme.body1,
-//              textScaleFactor: gd.textScaleFactor,
-//              overflow: TextOverflow.ellipsis,
-//            ),
-//          ),
-          Expanded(
-            child: Text(
-              "${localLanguage.displayName} - ©${gd.textToDisplay(localLanguage.translator)} (${localLanguage.languageCode}-${localLanguage.countryCode})",
-              style: Theme.of(context).textTheme.body1,
-              textScaleFactor: gd.textScaleFactor,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-//          SizedBox(width: 8),
-//          Text(
-//            "by ${gd.textToDisplay(localLanguage.creditor)}",
-//            style: Theme.of(context).textTheme.body1,
-//            textScaleFactor: gd.textScaleFactor,
-//            overflow: TextOverflow.ellipsis,
-//          ),
-        ],
-      );
-      pickerWidgets.add(pickerWidget);
-    }
-    FixedExtentScrollController _scrollController =
-        FixedExtentScrollController(initialItem: selectedIndex);
-
     return SliverList(
       delegate: SliverChildListDelegate(
         [
@@ -153,56 +87,42 @@ class _LocalLanguagePickerState extends State<LocalLanguagePicker> {
             padding: EdgeInsets.all(4),
             margin: EdgeInsets.all(8),
             decoration: BoxDecoration(
-//                color: ThemeInfo.colorBottomSheet.withOpacity(0.5),
-                gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      ThemeInfo.colorBackgroundDark.withOpacity(0.5),
-                      ThemeInfo.colorBackgroundDark.withOpacity(0.0),
-                      ThemeInfo.colorBackgroundDark.withOpacity(0.5),
-                    ]),
+                color: ThemeInfo.colorBottomSheet.withOpacity(0.5),
                 borderRadius: BorderRadius.circular(8)),
-            height: 150,
-            child: CupertinoPicker(
-              diameterRatio: 1000,
-              scrollController: _scrollController,
-              magnification: 0.8,
-//              backgroundColor: ThemeInfo.colorBackgroundDark.withOpacity(0.8),
-              backgroundColor: Colors.transparent,
-              children: pickerWidgets,
-              itemExtent: 40,
-              //height of each item
-              looping: true,
-              onSelectedItemChanged: (int index) {
+            child: DropdownButton<String>(
+              value: gd.localeData.savedLocale.toString(),
+              items: localLanguages.map((LocalLanguage map) {
+                return DropdownMenuItem<String>(
+                  value: "${map.languageCode}_${map.countryCode}",
+                  child: Row(
+                    children: <Widget>[
+                      SizedBox(width: 30),
+                      Text(
+                        gd.textToDisplay(
+                            "${map.displayName} - © ${map.translator}"),
+                        style: Theme.of(context).textTheme.body1,
+                        overflow: TextOverflow.ellipsis,
+                        textScaleFactor: gd.textScaleFactor,
+                      ),
+                    ],
+                  ),
+                );
+              }).toList(),
+              onChanged: (String newValue) {
                 setState(() {
-                  languageCode = localLanguages[index].languageCode;
-                  countryCode = localLanguages[index].countryCode;
-                  delaySwitchLanguageTimer(2);
+                  var languageCode = newValue.split("_")[0];
+                  var countryCode = newValue.split("_")[1];
+                  log.d(
+                      "newValue $newValue languageCode $languageCode countryCode $countryCode");
+                  gd.localeData.changeLocale(Locale(
+                    languageCode,
+                    countryCode,
+                  ));
                 });
               },
             ),
-          )
+          ),
         ],
-      ),
-    );
-  }
-
-  Timer _delaySwitchLanguage;
-
-  void delaySwitchLanguageTimer(int seconds) {
-    _delaySwitchLanguage?.cancel();
-    _delaySwitchLanguage = null;
-
-    _delaySwitchLanguage =
-        Timer(Duration(seconds: seconds), delaySwitchLanguage);
-  }
-
-  void delaySwitchLanguage() {
-    gd.localeData.changeLocale(
-      Locale(
-        languageCode,
-        countryCode,
       ),
     );
   }

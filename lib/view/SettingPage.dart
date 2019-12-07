@@ -450,7 +450,7 @@ class _SettingPageState extends State<SettingPage> {
   Future<void> _initPackageInfo() async {
     final PackageInfo info = await PackageInfo.fromPlatform();
     setState(() {
-      log.d("_packageInfo $_packageInfo");
+//      log.d("_packageInfo $_packageInfo");
       _packageInfo = info;
     });
   }
