@@ -186,7 +186,7 @@ class Entity {
             : [],
         oscillating: json['attributes']['oscillating'] != null
             ? json['attributes']['oscillating']
-            : false,
+            : null,
         speed: json['attributes']['speed_level'] != null
             ? json['attributes']['speed_level']
             : json['attributes']['direct_speed'] != null
