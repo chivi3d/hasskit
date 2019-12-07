@@ -17,7 +17,7 @@ class EntityControlFan extends StatefulWidget {
 }
 
 class _EntityControlFanState extends State<EntityControlFan> {
-  double buttonValue = 150;
+  double buttonValue;
   double buttonHeight = 300.0;
   double buttonWidth = 90.0;
   double currentPosX;
@@ -25,54 +25,21 @@ class _EntityControlFanState extends State<EntityControlFan> {
   double startPosX;
   double startPosY;
   double upperPartHeight = 30.0;
-  double buttonHeightInner = 80.0;
-  double diffY = 0;
-  double snap = 10;
+  double lowerPartHeight = 80.0;
+  double buttonValueOnTapDown;
   int division = 4;
   int currentStep = 0;
-  int changingStep = 0;
   double stepLength;
-  DateTime draggingTime = DateTime.now();
+  bool isSliding = false;
 
   @override
   void initState() {
     super.initState();
-    setDiffY();
-    setState(() {});
-  }
-
-  void setDiffY() {
-    if (draggingTime.isAfter(DateTime.now())) return;
-
+    buttonValue = lowerPartHeight;
+    buttonValueOnTapDown = lowerPartHeight;
     Entity entity = gd.entities[widget.entityId];
     division = entity.speedList.length - 1;
-    stepLength =
-        (buttonHeight - upperPartHeight - buttonHeightInner) / division;
-    print(
-        "entityId ${widget.entityId} division $division steps stepLength $stepLength");
-
-    if (entity.isStateOn &&
-        entity.speed != null &&
-        int.tryParse(entity.speed) != null &&
-        int.tryParse(entity.speed) >= 0 &&
-        int.tryParse(entity.speed) <= 100) {
-      diffY = (buttonHeight - buttonHeightInner - upperPartHeight) *
-          int.tryParse(entity.speed) /
-          100;
-//      log.d(
-//          "CASE 1 entity.speed ${entity.speed} speedList ${entity.speedList} currentStep  $currentStep diffY $diffY");
-    } else if (entity.isStateOn &&
-        entity.speed != null &&
-        entity.speedList != null &&
-        entity.speedList.indexOf(entity.speed) >= 0) {
-      currentStep = entity.speedList.indexOf(entity.speed);
-      changingStep = currentStep;
-      diffY = currentStep * stepLength;
-//      log.d(
-//          "CASE 2 entity.speed ${entity.speed} speedList ${entity.speedList} currentStep  $currentStep diffY $diffY");
-    } else {
-      diffY = 0;
-    }
+    stepLength = (buttonHeight - upperPartHeight - lowerPartHeight) / division;
   }
 
   @override
@@ -86,8 +53,18 @@ class _EntityControlFanState extends State<EntityControlFan> {
           "${generalData.entities[widget.entityId].angle} | " +
           "${generalData.entities[widget.entityId].oscillating} | ",
       builder: (context, data, child) {
-//        log.d("EntityControlFan return Selector");
-        setDiffY();
+        if (!isSliding) {
+          var entity = gd.entities[widget.entityId];
+          if (!entity.isStateOn) {
+            buttonValue = lowerPartHeight;
+          } else {
+            if (entity.speedList.contains(entity.speed)) {
+              currentStep = entity.speedList.indexOf(entity.speed);
+              buttonValue = lowerPartHeight + currentStep * stepLength;
+            }
+          }
+        }
+
         return new GestureDetector(
           onVerticalDragStart: (DragStartDetails details) =>
               _onVerticalDragStart(context, details),
@@ -131,7 +108,7 @@ class _EntityControlFanState extends State<EntityControlFan> {
                     child: Container(
                       alignment: Alignment.topCenter,
                       width: buttonWidth,
-                      height: buttonHeightInner + diffY,
+                      height: buttonValue,
                       padding: const EdgeInsets.all(2.0),
                       decoration: new BoxDecoration(
                         borderRadius: BorderRadius.only(
@@ -195,7 +172,8 @@ class _EntityControlFanState extends State<EntityControlFan> {
   _onVerticalDragStart(BuildContext context, DragStartDetails details) {
     final RenderBox box = context.findRenderObject();
     final Offset localOffset = box.globalToLocal(details.globalPosition);
-    draggingTime = DateTime.now().add(Duration(minutes: 1));
+    buttonValueOnTapDown = buttonValue;
+    isSliding = true;
     setState(() {
       startPosX = localOffset.dx;
       startPosY = localOffset.dy;
@@ -205,72 +183,70 @@ class _EntityControlFanState extends State<EntityControlFan> {
   }
 
   _onVerticalDragEnd(BuildContext context, DragEndDetails details) {
-    draggingTime = DateTime.now().subtract(Duration(minutes: 1));
-    for (int i = division; i >= 0; i--) {
-      if (diffY >= i * stepLength - stepLength / 2) {
-        diffY = i * stepLength;
-        currentStep = i;
-        break;
+    setState(() {
+      isSliding = false;
+      for (int i = division; i >= 0; i--) {
+        if (buttonValue - lowerPartHeight >= i * stepLength - stepLength / 2) {
+          currentStep = i;
+          buttonValue = lowerPartHeight + currentStep * stepLength;
+          break;
+        }
       }
-    }
-    log.d("_onVerticalDragEnd currentStep $currentStep diffY $diffY");
+      log.d(
+          "_onVerticalDragEnd currentStep $currentStep buttonValue $buttonValue");
 
-    var outMsg;
+      var outMsg;
 
-    if (currentStep == 0) {
-      outMsg = {
-        "id": gd.socketId,
-        "type": "call_service",
-        "domain": "fan",
-        "service": "turn_off",
-        "service_data": {
-          "entity_id": widget.entityId,
-        }
-      };
-      gd.setState(gd.entities[widget.entityId], 'off', json.encode(outMsg));
-    } else {
-      outMsg = {
-        "id": gd.socketId,
-        "type": "call_service",
-        "domain": "fan",
-        "service": "turn_on",
-        "service_data": {
-          "entity_id": widget.entityId,
-        }
-      };
-      gd.setState(gd.entities[widget.entityId], 'on', json.encode(outMsg));
-      outMsg = {
-        "id": gd.socketId,
-        "type": "call_service",
-        "domain": "fan",
-        "service": "set_speed",
-        "service_data": {
-          "entity_id": widget.entityId,
-          "speed": gd.entities[widget.entityId].speedList[currentStep],
-        }
-      };
-      gd.setFanSpeed(
-          gd.entities[widget.entityId],
-          gd.entities[widget.entityId].speedList[currentStep],
-          json.encode(outMsg));
-    }
+      if (currentStep == 0) {
+        outMsg = {
+          "id": gd.socketId,
+          "type": "call_service",
+          "domain": "fan",
+          "service": "turn_off",
+          "service_data": {
+            "entity_id": widget.entityId,
+          }
+        };
+        gd.setState(gd.entities[widget.entityId], 'off', json.encode(outMsg));
+      } else {
+        outMsg = {
+          "id": gd.socketId,
+          "type": "call_service",
+          "domain": "fan",
+          "service": "turn_on",
+          "service_data": {
+            "entity_id": widget.entityId,
+          }
+        };
+        gd.setState(gd.entities[widget.entityId], 'on', json.encode(outMsg));
+        outMsg = {
+          "id": gd.socketId,
+          "type": "call_service",
+          "domain": "fan",
+          "service": "set_speed",
+          "service_data": {
+            "entity_id": widget.entityId,
+            "speed": gd.entities[widget.entityId].speedList[currentStep],
+          }
+        };
+        gd.setFanSpeed(
+            gd.entities[widget.entityId],
+            gd.entities[widget.entityId].speedList[currentStep],
+            json.encode(outMsg));
+      }
+    });
   }
 
   _onVerticalDragUpdate(BuildContext context, DragUpdateDetails details) {
     final RenderBox box = context.findRenderObject();
     final Offset localOffset = box.globalToLocal(details.globalPosition);
-    draggingTime = DateTime.now().add(Duration(minutes: 1));
+    isSliding = true;
     setState(() {
       currentPosX = localOffset.dx;
-      currentPosY = localOffset.dy - currentStep * stepLength;
-      diffY = startPosY - currentPosY;
-      diffY = diffY.clamp(0.0, buttonHeight);
-      for (int i = division; i >= 0; i--) {
-        if (diffY >= i * stepLength - stepLength / 2) {
-          changingStep = i;
-          break;
-        }
-      }
+      currentPosY = localOffset.dy;
+      buttonValue = buttonValueOnTapDown + startPosY - currentPosY;
+      buttonValue =
+          buttonValue.clamp(lowerPartHeight, buttonHeight - upperPartHeight);
     });
   }
 }

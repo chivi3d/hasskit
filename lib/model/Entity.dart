@@ -187,13 +187,14 @@ class Entity {
         oscillating: json['attributes']['oscillating'] != null
             ? json['attributes']['oscillating']
             : false,
-        speed: json['attributes']['direct_speed'].toString() != null
-            ? json['attributes']['direct_speed'].toString()
-            : json['attributes']['speed_level'].toString() != null
-                ? json['attributes']['speed_level'].toString()
-                : json['attributes']['speed'].toString() != null
-                    ? json['attributes']['speed'].toString()
+        speed: json['attributes']['speed_level'] != null
+            ? json['attributes']['speed_level']
+            : json['attributes']['direct_speed'] != null
+                ? json['attributes']['direct_speed']
+                : json['attributes']['speed'] != null
+                    ? json['attributes']['speed']
                     : "0",
+
         angle: int.tryParse(json['attributes']['angle'].toString()) != null
             ? int.tryParse(json['attributes']['angle'].toString())
             : 0,

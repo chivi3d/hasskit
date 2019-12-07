@@ -264,10 +264,14 @@ class GeneralData with ChangeNotifier {
     _entities[entityId] =
         Entity.fromJson(message['event']['data']['new_state']);
 
-//    if (_entities[entityId].entityId.contains("fan.")) {
-//      log.w(
-//          "\n socketSubscribeEvents $entityId message $message['event']['data']['new_state']");
-//    }
+    if (_entities[entityId] != null &&
+        _entities[entityId].entityId.contains("fan.")) {
+      log.w(
+          "\n socketSubscribeEvents $entityId message $message['event']['data']['new_state']");
+      if (!_entities.containsKey(entityId)) {
+        log.e("_entities.containsKey($entityId");
+      }
+    }
 
     notifyListeners();
   }
