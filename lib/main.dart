@@ -65,6 +65,7 @@ class MyApp extends StatelessWidget {
               Locale('en', 'US'),
               Locale('sv', 'SE'),
               Locale('vi', 'VN'),
+              Locale('zh', 'CN'),
               Locale('zh', 'TW'),
             ],
             debugShowCheckedModeBanner: false,
