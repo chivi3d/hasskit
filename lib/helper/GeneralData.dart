@@ -91,8 +91,24 @@ class GeneralData with ChangeNotifier {
     }
   }
 
+  double _mediaQueryShortestSide = 0;
+
+  double get mediaQueryShortestSide => _mediaQueryShortestSide;
+
+  set mediaQueryShortestSide(double val) {
+//    log.d('mediaQueryShortestSide $val');
+    if (val == null) {
+      throw new ArgumentError();
+    }
+    if (_mediaQueryShortestSide != val) {
+      _mediaQueryShortestSide = val;
+      notifyListeners();
+    }
+  }
+
   double get textScaleFactor {
-    return mediaQueryWidth / 411.42857142857144;
+    return 1.0;
+//    return mediaQueryWidth / 411.42857142857144;
   }
 
   int _lastSelectedRoom = 0;
@@ -678,6 +694,7 @@ class GeneralData with ChangeNotifier {
         tempEntityId: "sensor.temperature_158d0002e98f27",
         favorites: [
           "WebView1",
+          "WebView3",
           "fan.acorn_fan",
           "climate.air_conditioner_1",
           "cover.cover_06",
@@ -2145,16 +2162,44 @@ class GeneralData with ChangeNotifier {
     try {
       var response = await http.get(url, headers: headers);
       if (response.statusCode == 200) {
-        log.w("httpApiStates response.statusCode ${response.statusCode}");
+//        log.w("httpApiStates response.statusCode ${response.statusCode}");
         var jsonResponse = jsonDecode(response.body);
 //        log.d("httpApiStates jsonResponse $jsonResponse");
         socketGetStates(jsonResponse);
       } else {
-        print(
+        log.e(
             "httpApiStates Request failed with status: ${response.statusCode}.");
       }
     } finally {
       client.close();
+    }
+  }
+
+  int _buttonExtend = 120;
+
+  int get buttonExtend => _buttonExtend;
+
+  set buttonExtend(int val) {
+    if (val == null) {
+      throw new ArgumentError();
+    }
+    if (_buttonExtend != val) {
+      _buttonExtend = val;
+      notifyListeners();
+    }
+  }
+
+  int _cameraExtend = 300;
+
+  int get cameraExtend => _cameraExtend;
+
+  set cameraExtend(int val) {
+    if (val == null) {
+      throw new ArgumentError();
+    }
+    if (_cameraExtend != val) {
+      _cameraExtend = val;
+      notifyListeners();
     }
   }
 }

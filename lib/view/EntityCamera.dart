@@ -108,12 +108,14 @@ class EntityCamera extends StatelessWidget {
                                         style:
                                             Theme.of(context).textTheme.body1,
                                         textScaleFactor: gd.textScaleFactor,
+                                        overflow: TextOverflow.ellipsis,
                                       )
                                     : Text(
                                         "${printDuration(timeDiff, abbreviated: false, tersity: DurationTersity.second, spacer: ' ', delimiter: ' ', conjugation: ' and ')} ago",
                                         style:
                                             Theme.of(context).textTheme.body1,
                                         textScaleFactor: gd.textScaleFactor,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
                           ],
                         ),

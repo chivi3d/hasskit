@@ -22,11 +22,11 @@ class BaseSetting {
   String lastArmType;
   List<String> notificationDevices;
   List<String> colorPicker;
-  double webView1Ratio = 0.7;
+  double webView1Ratio = 1.0;
   String webView1Url = "https://embed.windy.com";
   double webView2Ratio = 1.0;
   String webView2Url = "https://www.yahoo.com/news/weather";
-  double webView3Ratio = 1.2;
+  double webView3Ratio = 1.0;
   String webView3Url = "https://livescore.com";
 
   BaseSetting({

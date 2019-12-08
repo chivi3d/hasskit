@@ -291,7 +291,7 @@ class _SettingPageState extends State<SettingPage> {
                 ),
                 title: Translate.getString("settings.layout", context),
               ),
-              _LayoutSelector(),
+              LayoutSelector(),
               SliverHeaderNormal(
                 icon: Icon(
                   MaterialDesignIcons.getIconDataFromIconName("mdi:web"),
@@ -549,98 +549,192 @@ class _ThemeSelector extends StatelessWidget {
   }
 }
 
-class _LayoutSelector extends StatelessWidget {
+//class _LayoutSelector extends StatelessWidget {
+//  @override
+//  Widget build(BuildContext context) {
+//    return SliverFixedExtentList(
+//      itemExtent: 58,
+//      delegate: SliverChildListDelegate(
+//        [
+//          Container(
+//            child: Row(
+//              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//              crossAxisAlignment: CrossAxisAlignment.stretch,
+//              children: <Widget>[
+//                Expanded(
+//                  child: InkWell(
+//                    onTap: () {
+//                      gd.baseSetting.itemsPerRow = 3;
+//                      gd.baseSettingSave(true);
+//                    },
+//                    child: Card(
+//                      elevation: 1,
+//                      color: ThemeInfo.colorBottomSheet.withOpacity(0.8),
+//                      child: Padding(
+//                        padding: const EdgeInsets.all(8.0),
+//                        child: Row(
+//                          children: <Widget>[
+//                            Icon(
+//                              MaterialDesignIcons.getIconDataFromIconName(
+//                                  "mdi:view-module"),
+//                              size: 32,
+//                            ),
+//                            Spacer(),
+//                            Text(
+//                              Translate.getString(
+//                                  "settings.3_buttons", context),
+//                              style: Theme.of(context).textTheme.body1,
+//                              overflow: TextOverflow.ellipsis,
+//                              textScaleFactor: gd.textScaleFactor,
+//                            ),
+//                            Spacer(),
+//                            Icon(
+//                              Icons.check_circle,
+//                              color: gd.baseSetting.itemsPerRow == 3
+//                                  ? Colors.amber
+//                                  : Colors.transparent,
+//                            ),
+//                          ],
+//                        ),
+//                      ),
+//                    ),
+//                  ),
+//                ),
+//                Expanded(
+//                  child: InkWell(
+//                    onTap: () {
+//                      gd.baseSetting.itemsPerRow = 4;
+//                      gd.baseSettingSave(true);
+//                    },
+//                    child: Card(
+//                      elevation: 1,
+//                      color: ThemeInfo.colorBottomSheet.withOpacity(0.8),
+//                      child: Padding(
+//                        padding: const EdgeInsets.all(8.0),
+//                        child: Row(
+//                          children: <Widget>[
+//                            Icon(
+//                              MaterialDesignIcons.getIconDataFromIconName(
+//                                  "mdi:view-comfy"),
+//                              size: 32,
+//                            ),
+//                            Spacer(),
+//                            Text(
+//                              Translate.getString(
+//                                  "settings.4_buttons", context),
+//                              style: Theme.of(context).textTheme.body1,
+//                              overflow: TextOverflow.ellipsis,
+//                              textScaleFactor: gd.textScaleFactor,
+//                            ),
+//                            Spacer(),
+//                            Icon(
+//                              Icons.check_circle,
+//                              color: gd.baseSetting.itemsPerRow == 4
+//                                  ? Colors.amber
+//                                  : Colors.transparent,
+//                            ),
+//                          ],
+//                        ),
+//                      ),
+//                    ),
+//                  ),
+//                ),
+//              ],
+//            ),
+//          ),
+//        ],
+//      ),
+//    );
+//  }
+//}
+
+class LayoutSelector extends StatefulWidget {
+  @override
+  _LayoutSelectorState createState() => _LayoutSelectorState();
+}
+
+class _LayoutSelectorState extends State<LayoutSelector> {
+  int buttonExtend;
+  int cameraExtend;
+  @override
+  void initState() {
+    super.initState();
+    buttonExtend = gd.buttonExtend;
+    cameraExtend = gd.cameraExtend;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SliverFixedExtentList(
-      itemExtent: 58,
+    return SliverList(
       delegate: SliverChildListDelegate(
         [
-          Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Expanded(
-                  child: InkWell(
-                    onTap: () {
-                      gd.baseSetting.itemsPerRow = 3;
-                      gd.baseSettingSave(true);
+          Row(
+            children: <Widget>[
+              SizedBox(width: 8),
+              Icon(
+                MaterialDesignIcons.getIconDataFromIconName(
+                    "mdi:toggle-switch"),
+                size: 28,
+              ),
+              SizedBox(width: 8),
+              Expanded(
+                child: Slider(
+                    label: "${buttonExtend.toString()}",
+//                    divisions: 40,
+                    value: buttonExtend.toDouble(),
+                    min: 80,
+                    max: 160,
+                    onChanged: (double val) {
+                      setState(() {
+                        buttonExtend = val.toInt();
+                      });
                     },
-                    child: Card(
-                      elevation: 1,
-                      color: ThemeInfo.colorBottomSheet.withOpacity(0.8),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          children: <Widget>[
-                            Icon(
-                              MaterialDesignIcons.getIconDataFromIconName(
-                                  "mdi:view-module"),
-                              size: 32,
-                            ),
-                            Spacer(),
-                            Text(
-                              Translate.getString(
-                                  "settings.3_buttons", context),
-                              style: Theme.of(context).textTheme.body1,
-                              overflow: TextOverflow.ellipsis,
-                              textScaleFactor: gd.textScaleFactor,
-                            ),
-                            Spacer(),
-                            Icon(
-                              Icons.check_circle,
-                              color: gd.baseSetting.itemsPerRow == 3
-                                  ? Colors.amber
-                                  : Colors.transparent,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: InkWell(
-                    onTap: () {
-                      gd.baseSetting.itemsPerRow = 4;
-                      gd.baseSettingSave(true);
+                    onChangeEnd: (double val) {
+                      setState(() {
+                        buttonExtend = val.toInt();
+                        gd.buttonExtend = buttonExtend;
+                      });
+                    }),
+              ),
+              Icon(
+                MaterialDesignIcons.getIconDataFromIconName(
+                    "mdi:toggle-switch"),
+                size: 48,
+              ),
+            ],
+          ),
+          Row(
+            children: <Widget>[
+              SizedBox(width: 8),
+              Icon(
+                MaterialDesignIcons.getIconDataFromIconName("mdi:webcam"),
+                size: 28,
+              ),
+              SizedBox(width: 8),
+              Expanded(
+                child: Slider(
+                    label: "${cameraExtend.toString()}",
+//                    divisions: 40,
+                    value: cameraExtend.toDouble(),
+                    min: 200,
+                    max: 400,
+                    onChanged: (double val) {
+                      setState(() {
+                        cameraExtend = val.toInt();
+                      });
                     },
-                    child: Card(
-                      elevation: 1,
-                      color: ThemeInfo.colorBottomSheet.withOpacity(0.8),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          children: <Widget>[
-                            Icon(
-                              MaterialDesignIcons.getIconDataFromIconName(
-                                  "mdi:view-comfy"),
-                              size: 32,
-                            ),
-                            Spacer(),
-                            Text(
-                              Translate.getString(
-                                  "settings.4_buttons", context),
-                              style: Theme.of(context).textTheme.body1,
-                              overflow: TextOverflow.ellipsis,
-                              textScaleFactor: gd.textScaleFactor,
-                            ),
-                            Spacer(),
-                            Icon(
-                              Icons.check_circle,
-                              color: gd.baseSetting.itemsPerRow == 4
-                                  ? Colors.amber
-                                  : Colors.transparent,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+                    onChangeEnd: (double val) {
+                      setState(() {
+                        cameraExtend = val.toInt();
+                        gd.cameraExtend = cameraExtend;
+                      });
+                    }),
+              ),
+              Icon(
+                MaterialDesignIcons.getIconDataFromIconName("mdi:webcam"),
+                size: 48,
+              ),
+            ],
           ),
         ],
       ),

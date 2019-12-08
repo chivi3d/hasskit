@@ -12,20 +12,26 @@ import 'package:flutter/gestures.dart';
 import 'package:hasskit/helper/LocaleHelper.dart';
 
 class SliverWebView extends StatelessWidget {
-  final String webViewsId;
-  const SliverWebView({@required this.webViewsId});
+  final List<String> webViews;
+  const SliverWebView({@required this.webViews});
   @override
   Widget build(BuildContext context) {
-    return SliverList(
-      delegate: SliverChildBuilderDelegate(
-        (BuildContext context, int index) {
-          return WebView(
-            webViewsId: webViewsId,
-          );
-        },
-        addAutomaticKeepAlives: false,
-        childCount: 1,
+    List<Widget> webviewsWidget = [];
+
+    for (int i = 0; i < webViews.length; i++) {
+      var webViewWidget = WebView(
+        webViewsId: webViews[i],
+      );
+      webviewsWidget.add(webViewWidget);
+    }
+
+    var wrapCentered = Center(
+      child: Wrap(
+        children: webviewsWidget,
       ),
+    );
+    return SliverList(
+      delegate: SliverChildListDelegate([wrapCentered]),
     );
   }
 }
@@ -33,7 +39,9 @@ class SliverWebView extends StatelessWidget {
 class WebView extends StatefulWidget {
   final String webViewsId;
 
-  const WebView({@required this.webViewsId});
+  const WebView({
+    @required this.webViewsId,
+  });
 
   @override
   _WebViewState createState() => _WebViewState();
@@ -53,6 +61,7 @@ class _WebViewState extends State<WebView> {
   bool showSpin = true;
   bool showAddress = false;
   bool pinWebView = true;
+  double width;
 
   @override
   void initState() {
@@ -67,9 +76,28 @@ class _WebViewState extends State<WebView> {
 
   @override
   Widget build(BuildContext context) {
+    var totalWidth = MediaQuery.of(context).size.width;
+//    if (MediaQuery.of(context).orientation == Orientation.portrait) {
+//      totalWidth = MediaQuery.of(context).size.height;
+//    }
+    var totalItemPerRow =
+        MediaQuery.of(context).size.shortestSide ~/ gd.cameraExtend;
+
+    if (totalItemPerRow < 1) totalItemPerRow = 1;
+    var totalSpaceBetween = 8 * totalItemPerRow - 1;
+
+    width = (totalWidth - totalSpaceBetween) / totalItemPerRow;
+
+    log.w("totalWidth $totalWidth "
+        "gd.cameraExtend ${gd.cameraExtend} "
+        "totalItemPerRow $totalItemPerRow "
+        "totalSpaceBetween $totalSpaceBetween "
+        "width $width");
+
     return Container(
-      padding: EdgeInsets.all(12),
-      height: ratio * gd.mediaQueryWidth,
+      padding: EdgeInsets.all(4),
+      width: width,
+      height: ratio * width,
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,

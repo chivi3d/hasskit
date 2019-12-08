@@ -222,27 +222,21 @@ class EntityIcon extends StatelessWidget {
     var iconWidget;
     var entity = gd.entities[entityId];
     if (entity.entityId.contains("climate.")) {
-      iconWidget = FittedBox(
-        child: Stack(
-          alignment: Alignment.center,
-          children: <Widget>[
-            Icon(
-              Icons.brightness_1,
-              color: gd.climateModeToColor(entity.state),
+      iconWidget = Container(
+        alignment: Alignment.center,
+        padding: EdgeInsets.all(2),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: gd.climateModeToColor(entity.state),
+        ),
+        child: FittedBox(
+          child: Text(
+            "${entity.getTemperature.toInt()}",
+            style: ThemeInfo.textNameButtonActive.copyWith(
+              color: ThemeInfo.colorBottomSheet,
             ),
-            Column(
-              children: <Widget>[
-                Text(
-                  "${entity.getTemperature.toInt()}",
-                  style: ThemeInfo.textNameButtonActive.copyWith(
-                    color: ThemeInfo.colorBottomSheet,
-                  ),
-                  textScaleFactor:
-                      gd.textScaleFactor * 0.8 * 3 / gd.baseSetting.itemsPerRow,
-                ),
-              ],
-            ),
-          ],
+            textScaleFactor: gd.textScaleFactor,
+          ),
         ),
       );
     } else if (entity.entityId.contains("alarm_control_panel")) {

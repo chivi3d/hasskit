@@ -123,10 +123,9 @@ class SliverNavigationBar extends StatelessWidget {
         return CupertinoSliverNavigationBar(
           leading: temperatureWidget,
           backgroundColor: ThemeInfo.colorBottomSheet.withOpacity(0.5),
-          largeTitle: Text(
+          largeTitle: AutoSizeText(
             gd.getRoomName(roomIndex),
             style: TextStyle(color: ThemeInfo.colorBottomSheetReverse),
-            textScaleFactor: gd.textScaleFactor,
             overflow: TextOverflow.ellipsis,
           ),
           trailing: Container(

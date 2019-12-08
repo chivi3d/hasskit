@@ -12,12 +12,14 @@ import '../EntityButton.dart';
 
 class SliverEntitiesNormal extends StatelessWidget {
   final int roomIndex;
-  final int itemPerRow;
+  final int extend;
+  final double aspectRatio;
   final List<Entity> entities;
 
   const SliverEntitiesNormal({
     @required this.roomIndex,
-    @required this.itemPerRow,
+    @required this.extend,
+    @required this.aspectRatio,
     @required this.entities,
   });
   @override
@@ -26,14 +28,14 @@ class SliverEntitiesNormal extends StatelessWidget {
       padding: EdgeInsets.all(12),
       sliver: SliverGrid(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: itemPerRow,
+          crossAxisCount: gd.mediaQueryWidth ~/ extend,
           mainAxisSpacing: 8,
           crossAxisSpacing: 8,
-          childAspectRatio: itemPerRow <= 2 ? 8 / 5.5 : 8 / 5,
+          childAspectRatio: aspectRatio,
         ),
         delegate: SliverChildBuilderDelegate(
           (context, index) {
-            return itemPerRow <= 1
+            return entities[index].entityType == EntityType.cameras
                 ? EntityCamera(
                     entityId: entities[index].entityId,
                     borderColor: Colors.transparent,
@@ -251,13 +253,16 @@ class SliverEntitiesEdit extends StatelessWidget {
 class SliverEntitiesSort extends StatelessWidget {
   final int roomIndex;
   final int rowNumber;
-  final int itemPerRow;
+  final int extend;
+  final double aspectRatio;
+
   final List<Entity> entities;
 
   const SliverEntitiesSort({
     @required this.roomIndex,
     @required this.rowNumber,
-    @required this.itemPerRow,
+    @required this.extend,
+    @required this.aspectRatio,
     @required this.entities,
   });
 
@@ -267,15 +272,17 @@ class SliverEntitiesSort extends StatelessWidget {
       return SliverEntitiesNormal(
         roomIndex: roomIndex,
         entities: entities,
-        itemPerRow: itemPerRow,
+        extend: extend,
+        aspectRatio: aspectRatio,
       );
     }
 
-    double spacing = 8;
-    double edge = 8;
+    var totalWidth = MediaQuery.of(context).size.width;
+    var totalItemPerRow = MediaQuery.of(context).size.shortestSide ~/ extend;
+    if (totalItemPerRow < 1) totalItemPerRow = 1;
+    var totalSpaceBetween = 8 * totalItemPerRow - 1;
+    var width = (totalWidth - totalSpaceBetween - 8 * 2) / totalItemPerRow;
 
-    var width = (gd.mediaQueryWidth - (edge * 2 + spacing * itemPerRow - 1)) /
-        itemPerRow;
     List<Widget> entityShape = [];
 
     for (Entity entity in entities) {
@@ -283,8 +290,8 @@ class SliverEntitiesSort extends StatelessWidget {
         scale: 1,
         child: Container(
           width: width,
-          height: itemPerRow == 1 ? width / 8 * 5 : width / 8 * 5,
-          child: itemPerRow == 1
+          height: width * 1 / aspectRatio,
+          child: entity.entityType == EntityType.cameras
               ? EntityCamera(
                   entityId: entity.entityId,
                   borderColor: ThemeInfo.colorIconActive,
@@ -310,8 +317,8 @@ class SliverEntitiesSort extends StatelessWidget {
 
     var wrap = ReorderableWrap(
       needsLongPressDraggable: false,
-      spacing: spacing,
-      runSpacing: spacing,
+      spacing: 8,
+      runSpacing: 8,
       padding: const EdgeInsets.all(0),
       children: entityShape,
       onReorder: _onReorder,
@@ -331,7 +338,7 @@ class SliverEntitiesSort extends StatelessWidget {
     );
 
     return SliverPadding(
-      padding: EdgeInsets.all(edge),
+      padding: EdgeInsets.all(8),
       sliver: SliverList(
         delegate: SliverChildListDelegate([wrapCentered]),
       ),

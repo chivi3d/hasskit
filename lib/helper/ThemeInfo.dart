@@ -18,12 +18,13 @@ class ThemeInfo {
     ),
   ];
 
-  static const TextStyle textNameButtonActive = TextStyle(
+  static TextStyle textNameButtonActive = TextStyle(
     color: Color.fromRGBO(0, 0, 0, 1),
-    fontSize: 15,
+    fontSize: 14,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w600,
     fontFamily: "Roboto",
+    height: 1.15,
   );
 
   static TextStyle get textNameButtonInActive {
@@ -37,10 +38,11 @@ class ThemeInfo {
 
   static const TextStyle textStatusButtonActive = TextStyle(
     color: Color.fromRGBO(0, 0, 0, 0.5),
-    fontSize: 15,
+    fontSize: 14,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w500,
     fontFamily: "Roboto",
+    height: 1.15,
   );
 
   static TextStyle get textStatusButtonInActive {

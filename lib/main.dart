@@ -40,9 +40,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     gd = Provider.of<GeneralData>(context, listen: false);
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
+//    SystemChrome.setPreferredOrientations([
+//      DeviceOrientation.portraitUp,
+//    ]);
 
     gd.localeData = EasyLocalizationProvider.of(context).data;
 
@@ -105,12 +105,6 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
         if (gd.lastLifecycleState == AppLifecycleState.resumed) {
           log.w("didChangeAppLifecycleState ${gd.lastLifecycleState}");
 
-          gd.mediaQueryWidth = MediaQuery.of(context).size.width;
-          log.w(
-              "didChangeAppLifecycleState gd.mediaQueryWidth ${gd.mediaQueryWidth}");
-          gd.mediaQueryHeight = MediaQuery.of(context).size.height;
-          log.w(
-              "didChangeAppLifecycleState gd.mediaQueryWidth ${gd.mediaQueryHeight}");
           if (gd.autoConnect) {
             {
               if (gd.connectionStatus != "Connected") {
@@ -173,7 +167,8 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
     log.w("mainInitState START await loginDataInstance.loadLoginData");
     log.w("mainInitState...");
     log.w("mainInitState gd.loginDataListString");
-    await Future.delayed(const Duration(milliseconds: 500));
+
+//    await Future.delayed(const Duration(milliseconds: 500));
     gd.loginDataListString = await gd.getString('loginDataList');
     await gd.getSettings("mainInitState");
   }
@@ -181,13 +176,6 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
   timer200Callback() {}
 
   timer1Callback() {
-    if (gd.mediaQueryHeight == 0) {
-      gd.mediaQueryWidth = MediaQuery.of(context).size.width;
-      log.w("build gd.mediaQueryWidth ${gd.mediaQueryWidth}");
-      gd.mediaQueryHeight = MediaQuery.of(context).size.height;
-      log.w("build gd.mediaQueryHeight ${gd.mediaQueryHeight}");
-    }
-
     for (String entityId in gd.cameraInfosActive) {
       gd.cameraInfosUpdate(entityId);
     }
@@ -217,7 +205,11 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
   timer60Callback() {}
 
   _afterLayout(_) async {
-    await Future.delayed(const Duration(milliseconds: 1000));
+//    await Future.delayed(const Duration(milliseconds: 1000));
+
+    gd.mediaQueryWidth = MediaQuery.of(context).size.width;
+    gd.mediaQueryHeight = MediaQuery.of(context).size.height;
+    gd.mediaQueryShortestSide = MediaQuery.of(context).size.shortestSide;
     showLoading = false;
     log.w("showLoading $showLoading");
     setState(() {});
@@ -225,6 +217,19 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    log.d(
+        "gd.mediaQueryShortestSide ${gd.mediaQueryShortestSide} orientation ${MediaQuery.of(context).orientation}");
+    gd.mediaQueryShortestSide < 600
+        ? SystemChrome.setPreferredOrientations([
+            DeviceOrientation.portraitUp,
+          ])
+        : SystemChrome.setPreferredOrientations([
+            DeviceOrientation.portraitUp,
+            DeviceOrientation.portraitDown,
+            DeviceOrientation.landscapeRight,
+            DeviceOrientation.landscapeLeft,
+          ]);
+
     return Selector<GeneralData, String>(
       selector: (_, generalData) =>
           "${generalData.viewMode} | " +
@@ -236,7 +241,7 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
       builder: (context, data, child) {
         return Scaffold(
           body: ModalProgressHUD(
-            inAsyncCall: showLoading || gd.mediaQueryHeight == 0,
+            inAsyncCall: showLoading,
             opacity: 1,
             progressIndicator: SpinKitThreeBounce(
               size: 40,

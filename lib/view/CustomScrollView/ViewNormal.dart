@@ -101,128 +101,96 @@ class ViewNormal extends StatelessWidget {
         webView1.length + row1.length + row1Cam.length > 0
             ? SliverHeaderNormal(icon: Icon(Icons.looks_one), title: '')
             : gd.emptySliver,
-        webView1.contains("WebView1")
+        webView1.length > 0
             ? SliverWebView(
-                webViewsId: "WebView1",
-              )
-            : gd.emptySliver,
-        webView1.contains("WebView2")
-            ? SliverWebView(
-                webViewsId: "WebView2",
-              )
-            : gd.emptySliver,
-        webView1.contains("WebView3")
-            ? SliverWebView(
-                webViewsId: "WebView3",
+                webViews: webView1,
               )
             : gd.emptySliver,
         row1.length > 0
             ? SliverEntitiesNormal(
                 roomIndex: roomIndex,
-                itemPerRow: gd.baseSetting.itemsPerRow,
+                aspectRatio: 8 / 5,
+                extend: gd.buttonExtend,
                 entities: row1,
               )
             : gd.emptySliver,
         row1Cam.length > 0
             ? SliverEntitiesNormal(
                 roomIndex: roomIndex,
-                itemPerRow: 1,
+                aspectRatio: 8 / 5,
+                extend: gd.cameraExtend,
                 entities: row1Cam,
               )
             : gd.emptySliver,
         webView2.length + row2.length + row2Cam.length > 0
             ? SliverHeaderNormal(icon: Icon(Icons.looks_two), title: '')
             : gd.emptySliver,
-        webView2.contains("WebView1")
+        webView2.length > 0
             ? SliverWebView(
-                webViewsId: "WebView1",
-              )
-            : gd.emptySliver,
-        webView2.contains("WebView2")
-            ? SliverWebView(
-                webViewsId: "WebView2",
-              )
-            : gd.emptySliver,
-        webView2.contains("WebView3")
-            ? SliverWebView(
-                webViewsId: "WebView3",
+                webViews: webView2,
               )
             : gd.emptySliver,
         row2.length > 0
             ? SliverEntitiesNormal(
                 roomIndex: roomIndex,
-                itemPerRow: gd.baseSetting.itemsPerRow,
+                aspectRatio: 8 / 5,
+                extend: gd.buttonExtend,
                 entities: row2,
               )
             : gd.emptySliver,
         row2Cam.length > 0
             ? SliverEntitiesNormal(
                 roomIndex: roomIndex,
-                itemPerRow: 1,
+                aspectRatio: 8 / 5,
+                extend: gd.cameraExtend,
                 entities: row2Cam,
               )
             : gd.emptySliver,
         webView3.length + row3.length + row3Cam.length > 0
             ? SliverHeaderNormal(icon: Icon(Icons.looks_3), title: '')
             : gd.emptySliver,
-        webView3.contains("WebView1")
+        webView3.length > 0
             ? SliverWebView(
-                webViewsId: "WebView1",
-              )
-            : gd.emptySliver,
-        webView3.contains("WebView2")
-            ? SliverWebView(
-                webViewsId: "WebView2",
-              )
-            : gd.emptySliver,
-        webView3.contains("WebView3")
-            ? SliverWebView(
-                webViewsId: "WebView3",
+                webViews: webView3,
               )
             : gd.emptySliver,
         row3.length > 0
             ? SliverEntitiesNormal(
                 roomIndex: roomIndex,
-                itemPerRow: gd.baseSetting.itemsPerRow,
+                aspectRatio: 8 / 5,
+                extend: gd.buttonExtend,
                 entities: row3,
               )
             : gd.emptySliver,
         row3Cam.length > 0
             ? SliverEntitiesNormal(
                 roomIndex: roomIndex,
-                itemPerRow: 1,
+                aspectRatio: 8 / 5,
+                extend: gd.cameraExtend,
                 entities: row3Cam,
               )
             : gd.emptySliver,
         webView4.length + row4.length + row4.length > 0
             ? SliverHeaderNormal(icon: Icon(Icons.looks_4), title: '')
             : gd.emptySliver,
-        webView4.contains("WebView1")
+        webView4.length > 0
             ? SliverWebView(
-                webViewsId: "WebView1",
-              )
-            : gd.emptySliver,
-        webView4.contains("WebView2")
-            ? SliverWebView(
-                webViewsId: "WebView2",
-              )
-            : gd.emptySliver,
-        webView4.contains("WebView3")
-            ? SliverWebView(
-                webViewsId: "WebView3",
+                webViews: webView4,
               )
             : gd.emptySliver,
         row4.length > 0
             ? SliverEntitiesNormal(
                 roomIndex: roomIndex,
-                itemPerRow: gd.baseSetting.itemsPerRow,
+                aspectRatio: 8 / 5,
+                extend: gd.buttonExtend,
                 entities: row4,
               )
             : gd.emptySliver,
         row4Cam.length > 0
             ? SliverEntitiesNormal(
                 roomIndex: roomIndex,
-                itemPerRow: 1,
+                aspectRatio: 8 / 5,
+                extend: gd.cameraExtend,
                 entities: row4Cam,
               )
             : gd.emptySliver,
