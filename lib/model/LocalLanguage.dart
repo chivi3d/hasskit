@@ -69,6 +69,12 @@ class _LocalLanguagePickerState extends State<LocalLanguagePicker> {
           "Chinese Traditional", //Simplified Chinese or 中文简体 (zh-CN) is used in China. Traditional Chinese or 中文繁体 (zh-TW) is used in Taiwan
       translator: "bluefoxlee",
     ),
+    LocalLanguage(
+      languageCode: "ru",
+      countryCode: "RU",
+      displayName: "Russian",
+      translator: "antropophob",
+    ),
   ];
 
   @override

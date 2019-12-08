@@ -95,6 +95,13 @@ class _ViewEditState extends State<ViewEdit> {
         BackgroundImageSelector(roomIndex: widget.roomIndex),
         TemperatureSelector(roomIndex: widget.roomIndex),
 //        HumiditySelector(roomIndex: widget.roomIndex),
+        SliverHeaderEdit(
+          title: "Embeded Website",
+          icon: Icon(MaterialDesignIcons.getIconDataFromIconName("mdi:web")),
+        ),
+        WebViewItems(
+          roomIndex: widget.roomIndex,
+        ),
         SliverList(
           delegate: SliverChildListDelegate(
             [
@@ -140,13 +147,6 @@ class _ViewEditState extends State<ViewEdit> {
               ),
             ],
           ),
-        ),
-        SliverHeaderEdit(
-          title: "Embeded Website...",
-          icon: Icon(MaterialDesignIcons.getIconDataFromIconName("mdi:web")),
-        ),
-        WebViewItems(
-          roomIndex: widget.roomIndex,
         ),
         SliverHeaderEdit(
           title: "Selected devices...",

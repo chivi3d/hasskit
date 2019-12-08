@@ -336,6 +336,7 @@ class _SettingPageState extends State<SettingPage> {
                               child: RaisedButton(
                                 onPressed: _launchDiscord,
                                 child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
                                     SizedBox(
                                       width: 32,
@@ -360,6 +361,7 @@ class _SettingPageState extends State<SettingPage> {
                               child: RaisedButton(
                                 onPressed: _launchFacebook,
                                 child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
                                     SizedBox(
                                       width: 32,
