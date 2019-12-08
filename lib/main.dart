@@ -63,6 +63,7 @@ class MyApp extends StatelessWidget {
               Locale('bg', 'BG'),
               Locale('el', 'GR'),
               Locale('en', 'US'),
+              Locale('he', 'IL'),
               Locale('nl', 'NL'),
               Locale('ru', 'RU'),
               Locale('sv', 'SE'),

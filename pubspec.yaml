@@ -96,8 +96,6 @@ flutter:
   assets:
     - assets/background_images/
     - assets/images/
-    # https://github.com/bytepark/country_icons/tree/master/icons/flags/png
-    - assets/flags/
     - assets/langs/
 
   # An image asset can refer to one or more resolution-specific "variants", see
