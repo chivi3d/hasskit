@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:hasskit/helper/GeneralData.dart';
 import 'package:hasskit/helper/Logger.dart';
@@ -107,17 +108,22 @@ class _EntityControlAlarmPanelState extends State<EntityControlAlarmPanel> {
           borderRadius: BorderRadius.circular(8.0),
         ),
         margin: EdgeInsets.all(8),
-        child: new OutlineButton(
+        child: OutlineButton(
           shape: RoundedRectangleBorder(
             borderRadius: new BorderRadius.circular(8.0),
           ),
-          child: new Text(text,
-              style: TextStyle(
-                fontSize: 15.0,
-                fontWeight: FontWeight.bold,
-                color: getColor(),
-              ),
-              textAlign: TextAlign.center),
+          child: AutoSizeText(
+            text,
+            style: TextStyle(
+              fontSize: 10.0,
+              fontWeight: FontWeight.bold,
+              color: getColor(),
+              height: 1.0,
+            ),
+            textAlign: TextAlign.center,
+            textScaleFactor: gd.textScaleFactorFix,
+            overflow: TextOverflow.ellipsis,
+          ),
           onPressed: () => {
             setState(() {
               if (gd.baseSetting.lastArmType != armType) {
@@ -202,10 +208,15 @@ class _EntityControlAlarmPanelState extends State<EntityControlAlarmPanel> {
                         horizontal: 20.0,
                         vertical: 5,
                       ),
-                      child: new Text(
+                      child: AutoSizeText(
                         _readableState.toUpperCase(),
-                        style: new TextStyle(
-                            fontSize: 10, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                          height: 1.0,
+                        ),
+                        textScaleFactor: gd.textScaleFactorFix,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ),
@@ -254,9 +265,13 @@ class _EntityControlAlarmPanelState extends State<EntityControlAlarmPanel> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      alarmSelectionButton(Translate.getString("alarm_panel.arm_home", context), "arm_home"),
+                      alarmSelectionButton(
+                          Translate.getString("alarm_panel.arm_home", context),
+                          "arm_home"),
                       alarmButton("0"),
-                      alarmSelectionButton(Translate.getString("alarm_panel.arm_away", context), "arm_away")
+                      alarmSelectionButton(
+                          Translate.getString("alarm_panel.arm_away", context),
+                          "arm_away")
                     ],
                   )
                 ],

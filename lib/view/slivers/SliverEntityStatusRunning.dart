@@ -8,12 +8,10 @@ import 'package:provider/provider.dart';
 class SliverEntityStatusRunning extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var buttonSize = (MediaQuery.of(context).size.width / gd.layoutButtonCount);
+    var buttonSize = (gd.mediaQueryWidth / gd.layoutButtonCount);
 
-    if (gd.isTablet &&
-        MediaQuery.of(context).orientation == Orientation.landscape) {
-      buttonSize =
-          (MediaQuery.of(context).size.longestSide / gd.layoutButtonCount);
+    if (gd.isTablet && gd.mediaQueryOrientation == Orientation.landscape) {
+      buttonSize = gd.mediaQueryLongestSide / gd.layoutButtonCount;
     }
 
     return Selector<GeneralData, String>(

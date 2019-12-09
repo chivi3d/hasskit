@@ -207,9 +207,6 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
   _afterLayout(_) async {
 //    await Future.delayed(const Duration(milliseconds: 1000));
 
-    gd.mediaQueryWidth = MediaQuery.of(context).size.width;
-    gd.mediaQueryHeight = MediaQuery.of(context).size.height;
-    gd.mediaQueryShortestSide = MediaQuery.of(context).size.shortestSide;
     showLoading = false;
     log.w("showLoading $showLoading");
     setState(() {});
@@ -218,10 +215,9 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     gd.mediaQueryContext = context;
-    if (gd.mediaQueryShortestSide > 600) {
+    if (gd.isTablet) {
       log.w(
-          "gd.isTablet ${gd.isTablet} gd.mediaQueryShortestSide ${gd.mediaQueryShortestSide} orientation ${MediaQuery.of(context).orientation}");
-      gd.isTablet = true;
+          "gd.isTablet ${gd.isTablet} gd.mediaQueryShortestSide ${gd.mediaQueryShortestSide} orientation ${gd.mediaQueryOrientation}");
       SystemChrome.setPreferredOrientations([
         DeviceOrientation.portraitUp,
         DeviceOrientation.portraitDown,
@@ -230,8 +226,7 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
       ]);
     } else {
       log.w(
-          "gd.isTablet ${gd.isTablet} gd.mediaQueryShortestSide ${gd.mediaQueryShortestSide} orientation ${MediaQuery.of(context).orientation}");
-      gd.isTablet = false;
+          "gd.isTablet ${gd.isTablet} gd.mediaQueryShortestSide ${gd.mediaQueryShortestSide} orientation ${gd.mediaQueryOrientation}");
       SystemChrome.setPreferredOrientations([
         DeviceOrientation.portraitUp,
       ]);

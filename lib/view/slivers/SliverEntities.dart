@@ -278,17 +278,15 @@ class SliverEntitiesSort extends StatelessWidget {
       );
     }
 
-    var totalWidth = MediaQuery.of(context).size.width;
-//    if (MediaQuery.of(context).orientation == Orientation.portrait) {
-//      totalWidth = MediaQuery.of(context).size.height;
-//    }
+    var totalWidth = gd.mediaQueryWidth;
+
     var totalItemPerRow =
         isCamera ? gd.layoutCameraCount : gd.layoutButtonCount;
     if (totalItemPerRow < 1) totalItemPerRow = 1;
     var totalSpaceBetween = 8 * totalItemPerRow - 1;
     var width = (totalWidth - totalSpaceBetween - 8 * 2) / totalItemPerRow;
     log.d(
-        "MediaQuery.of(context).size.width ${MediaQuery.of(context).size.width} totalWidth $totalWidth  totalItemPerRow $totalItemPerRow");
+        "gd.mediaQueryWidth ${gd.mediaQueryWidth} totalWidth $totalWidth  totalItemPerRow $totalItemPerRow");
     List<Widget> entityShape = [];
 
     for (Entity entity in entities) {

@@ -61,64 +61,30 @@ class GeneralData with ChangeNotifier {
     return value;
   }
 
-  double _mediaQueryWidth = 411.42857142857144;
+//  double _mediaQueryWidth = 411.42857142857144;
 
-  double get mediaQueryWidth => _mediaQueryWidth;
-
-  set mediaQueryWidth(double val) {
-//    log.d('mediaQueryWidth $val');
-    if (val == null) {
-      throw new ArgumentError();
-    }
-    if (_mediaQueryWidth != val) {
-      _mediaQueryWidth = val;
-      notifyListeners();
-    }
+  double get mediaQueryWidth {
+    return MediaQuery.of(mediaQueryContext).size.width;
   }
 
-  double _mediaQueryHeight = 0;
-
-  double get mediaQueryHeight => _mediaQueryHeight;
-
-  set mediaQueryHeight(double val) {
-//    log.d('mediaQueryHeight $val');
-    if (val == null) {
-      throw new ArgumentError();
-    }
-    if (_mediaQueryHeight != val) {
-      _mediaQueryHeight = val;
-      notifyListeners();
-    }
+  double get mediaQueryHeight {
+    return MediaQuery.of(mediaQueryContext).size.height;
   }
 
-  double _mediaQueryShortestSide = 0;
-
-  double get mediaQueryShortestSide => _mediaQueryShortestSide;
-
-  set mediaQueryShortestSide(double val) {
-//    log.d('mediaQueryShortestSide $val');
-    if (val == null) {
-      throw new ArgumentError();
-    }
-    if (_mediaQueryShortestSide != val) {
-      _mediaQueryShortestSide = val;
-      notifyListeners();
-    }
+  double get mediaQueryShortestSide {
+    return MediaQuery.of(mediaQueryContext).size.shortestSide;
   }
 
-  bool _isTablet = false;
+  double get mediaQueryLongestSide {
+    return MediaQuery.of(mediaQueryContext).size.longestSide;
+  }
 
-  bool get isTablet => _isTablet;
+  Orientation get mediaQueryOrientation {
+    return MediaQuery.of(mediaQueryContext).orientation;
+  }
 
-  set isTablet(bool val) {
-//    log.d('mediaQueryShortestSide $val');
-    if (val == null) {
-      throw new ArgumentError();
-    }
-    if (_isTablet != val) {
-      _isTablet = val;
-      notifyListeners();
-    }
+  bool get isTablet {
+    return mediaQueryShortestSide >= 500;
   }
 
   double get textScaleFactorFix {
@@ -127,15 +93,10 @@ class GeneralData with ChangeNotifier {
 
   double get textScaleFactor {
     int totalRowButton = layoutButtonCount;
-    if (!isTablet ||
-        MediaQuery.of(mediaQueryContext).orientation == Orientation.portrait) {
-      return (MediaQuery.of(mediaQueryContext).size.width /
-              411.42857142857144) *
-          (3 / totalRowButton);
+    if (!isTablet || mediaQueryOrientation == Orientation.portrait) {
+      return (mediaQueryWidth / 411.42857142857144) * (3 / totalRowButton);
     }
-    return (MediaQuery.of(mediaQueryContext).size.longestSide /
-            411.42857142857144) *
-        (3 / totalRowButton);
+    return (mediaQueryLongestSide / 411.42857142857144) * (3 / totalRowButton);
   }
 
   int _lastSelectedRoom = 0;
@@ -2240,23 +2201,20 @@ class GeneralData with ChangeNotifier {
     if (!isTablet) return 1;
 
     if (baseSetting.tabletLayout == 36) {
-      if (MediaQuery.of(mediaQueryContext).orientation ==
-          Orientation.portrait) {
+      if (gd.mediaQueryOrientation == Orientation.portrait) {
         return 1;
       }
       return 2;
     }
 
     if (baseSetting.tabletLayout == 69) {
-      if (MediaQuery.of(mediaQueryContext).orientation ==
-          Orientation.portrait) {
+      if (gd.mediaQueryOrientation == Orientation.portrait) {
         return 2;
       }
       return 3;
     }
     if (baseSetting.tabletLayout == 912) {
-      if (MediaQuery.of(mediaQueryContext).orientation ==
-          Orientation.portrait) {
+      if (gd.mediaQueryOrientation == Orientation.portrait) {
         return 3;
       }
       return 4;
@@ -2267,22 +2225,19 @@ class GeneralData with ChangeNotifier {
   int get layoutButtonCount {
     if (!isTablet) return baseSetting.phoneLayout;
     if (baseSetting.tabletLayout == 36) {
-      if (MediaQuery.of(mediaQueryContext).orientation ==
-          Orientation.portrait) {
+      if (gd.mediaQueryOrientation == Orientation.portrait) {
         return 3;
       }
       return 6;
     }
     if (baseSetting.tabletLayout == 69) {
-      if (MediaQuery.of(mediaQueryContext).orientation ==
-          Orientation.portrait) {
+      if (gd.mediaQueryOrientation == Orientation.portrait) {
         return 6;
       }
       return 9;
     }
     if (baseSetting.tabletLayout == 912) {
-      if (MediaQuery.of(mediaQueryContext).orientation ==
-          Orientation.portrait) {
+      if (gd.mediaQueryOrientation == Orientation.portrait) {
         return 9;
       }
       return 12;
