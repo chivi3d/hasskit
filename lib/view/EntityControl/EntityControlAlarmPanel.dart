@@ -120,6 +120,7 @@ class _EntityControlAlarmPanelState extends State<EntityControlAlarmPanel> {
               color: getColor(),
               height: 1.0,
             ),
+            maxLines: 3,
             textAlign: TextAlign.center,
             textScaleFactor: gd.textScaleFactorFix,
             overflow: TextOverflow.ellipsis,
