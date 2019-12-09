@@ -102,7 +102,7 @@ class _RgbColorSelectorState extends State<RgbColorSelector> {
         ),
         actions: <Widget>[
           RaisedButton(
-            child: Text(Translate.getString("globa.reset", context)),
+            child: Text(Translate.getString("global.reset", context)),
             onPressed: () {
               setState(
                 () {
