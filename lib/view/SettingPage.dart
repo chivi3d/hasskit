@@ -491,6 +491,7 @@ class _ThemeSelector extends StatelessWidget {
                                   "theme_selector.dark", context),
                               style: TextStyle(color: Colors.white),
                               textScaleFactor: gd.textScaleFactorFix,
+                              overflow: TextOverflow.ellipsis,
                             ),
                             Spacer(),
                             Icon(
@@ -526,6 +527,7 @@ class _ThemeSelector extends StatelessWidget {
                                   "theme_selector.light", context),
                               style: TextStyle(color: Colors.black),
                               textScaleFactor: gd.textScaleFactorFix,
+                              overflow: TextOverflow.ellipsis,
                             ),
                             Spacer(),
                             Icon(
