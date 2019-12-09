@@ -40,7 +40,7 @@ class ThemeInfo {
     color: Color.fromRGBO(0, 0, 0, 0.5),
     fontSize: 16,
     fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.w600,
     fontFamily: "Roboto",
     height: 1.0,
   );
