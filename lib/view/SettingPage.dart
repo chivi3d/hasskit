@@ -200,8 +200,12 @@ class _SettingPageState extends State<SettingPage> {
                                   onChanged: (val) {
                                     gd.useSSL = val;
                                   }),
-                              Text(Translate.getString(
-                                  "settings.use_https", context)),
+                              Text(
+                                Translate.getString(
+                                    "settings.use_https", context),
+                                textScaleFactor: gd.textScaleFactorFix,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                               Expanded(child: Container()),
                               RaisedButton(
                                 onPressed: showConnect
@@ -253,8 +257,12 @@ class _SettingPageState extends State<SettingPage> {
                                         );
                                       }
                                     : null,
-                                child: Text(Translate.getString(
-                                    "settings.connect", context)),
+                                child: Text(
+                                  Translate.getString(
+                                      "settings.connect", context),
+                                  textScaleFactor: gd.textScaleFactorFix,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
                             ],
                           )
@@ -324,6 +332,7 @@ class _SettingPageState extends State<SettingPage> {
                             style: Theme.of(context).textTheme.body1,
                             textAlign: TextAlign.justify,
                             textScaleFactor: gd.textScaleFactorFix,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ),
@@ -352,6 +361,7 @@ class _SettingPageState extends State<SettingPage> {
                                       "Discord ",
                                       style: TextStyle(color: Colors.black),
                                       textScaleFactor: gd.textScaleFactorFix,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                   ],
                                 ),
@@ -377,6 +387,7 @@ class _SettingPageState extends State<SettingPage> {
                                       "Facebook",
                                       style: TextStyle(color: Colors.black),
                                       textScaleFactor: gd.textScaleFactorFix,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                   ],
                                 ),
@@ -402,6 +413,7 @@ class _SettingPageState extends State<SettingPage> {
                             style: Theme.of(context).textTheme.body1,
                             textAlign: TextAlign.center,
                             textScaleFactor: gd.textScaleFactorFix,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ),

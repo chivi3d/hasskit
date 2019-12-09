@@ -158,7 +158,7 @@ class _EntityButtonDisplayState extends State<EntityButtonDisplay> {
                 Expanded(
                   flex: 3,
                   child: Container(
-                    padding: EdgeInsets.all(4),
+                    padding: EdgeInsets.all(4 * gd.textScaleFactor),
                     child: gd.showSpin ||
                             gd.entities[widget.entityId].state.contains("...")
                         ? FittedBox(
@@ -187,7 +187,7 @@ class _EntityButtonDisplayState extends State<EntityButtonDisplay> {
             Expanded(
               child: Container(
                 alignment: Alignment.bottomLeft,
-                padding: EdgeInsets.all(4),
+                padding: EdgeInsets.all(4 * gd.textScaleFactor),
                 child: Text(
                   "${gd.textToDisplay(gd.entities[widget.entityId].getOverrideName)}",
                   style: gd.entities[widget.entityId].isStateOn
@@ -244,7 +244,7 @@ class EntityIcon extends StatelessWidget {
     if (entity.entityId.contains("climate.")) {
       iconWidget = Container(
         alignment: Alignment.center,
-        padding: EdgeInsets.all(4),
+        padding: EdgeInsets.all(4 * gd.textScaleFactor),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: gd.climateModeToColor(entity.state),
