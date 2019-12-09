@@ -107,7 +107,7 @@ class EntityControlClimate extends StatelessWidget {
                     gd.textToDisplay(hvacMode),
                     style: Theme.of(context).textTheme.subhead,
                     overflow: TextOverflow.ellipsis,
-                    textScaleFactor: gd.textScaleFactor,
+                    textScaleFactor: gd.textScaleFactorFix,
                     textAlign: TextAlign.right,
                   ),
                 ),

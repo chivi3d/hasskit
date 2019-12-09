@@ -37,8 +37,8 @@ class ViewSort extends StatelessWidget {
         row1.length > 0
             ? SliverEntitiesSort(
                 roomIndex: roomIndex,
-                aspectRatio: 8 / 5,
-                extend: gd.buttonExtend,
+                aspectRatio: 8 / 8,
+                isCamera: false,
                 entities: row1,
                 rowNumber: 1,
               )
@@ -47,7 +47,7 @@ class ViewSort extends StatelessWidget {
             ? SliverEntitiesSort(
                 roomIndex: roomIndex,
                 aspectRatio: 8 / 5,
-                extend: gd.cameraExtend,
+                isCamera: true,
                 entities: row1Cam,
                 rowNumber: 1,
               )
@@ -58,8 +58,8 @@ class ViewSort extends StatelessWidget {
         row2.length > 0
             ? SliverEntitiesSort(
                 roomIndex: roomIndex,
-                aspectRatio: 8 / 5,
-                extend: gd.buttonExtend,
+                aspectRatio: 8 / 8,
+                isCamera: false,
                 entities: row2,
                 rowNumber: 2,
               )
@@ -68,7 +68,7 @@ class ViewSort extends StatelessWidget {
             ? SliverEntitiesSort(
                 roomIndex: roomIndex,
                 aspectRatio: 8 / 5,
-                extend: gd.cameraExtend,
+                isCamera: true,
                 entities: row2Cam,
                 rowNumber: 2,
               )
@@ -79,8 +79,8 @@ class ViewSort extends StatelessWidget {
         row3.length > 0
             ? SliverEntitiesSort(
                 roomIndex: roomIndex,
-                aspectRatio: 8 / 5,
-                extend: gd.buttonExtend,
+                aspectRatio: 8 / 8,
+                isCamera: false,
                 entities: row3,
                 rowNumber: 3,
               )
@@ -89,7 +89,7 @@ class ViewSort extends StatelessWidget {
             ? SliverEntitiesSort(
                 roomIndex: roomIndex,
                 aspectRatio: 8 / 5,
-                extend: gd.cameraExtend,
+                isCamera: true,
                 entities: row3Cam,
                 rowNumber: 3,
               )
@@ -100,8 +100,8 @@ class ViewSort extends StatelessWidget {
         row4.length > 0
             ? SliverEntitiesSort(
                 roomIndex: roomIndex,
-                aspectRatio: 8 / 5,
-                extend: gd.buttonExtend,
+                aspectRatio: 8 / 8,
+                isCamera: false,
                 entities: row4,
                 rowNumber: 4,
               )
@@ -110,7 +110,7 @@ class ViewSort extends StatelessWidget {
             ? SliverEntitiesSort(
                 roomIndex: roomIndex,
                 aspectRatio: 8 / 5,
-                extend: gd.cameraExtend,
+                isCamera: true,
                 entities: row4Cam,
                 rowNumber: 4,
               )

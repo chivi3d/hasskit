@@ -122,7 +122,7 @@ class _EntityControlBinarySensorState extends State<EntityControlBinarySensor> {
                                 Text(
                                   '$formattedChangedTime',
                                   style: Theme.of(context).textTheme.subtitle,
-                                  textScaleFactor: gd.textScaleFactor,
+                                  textScaleFactor: gd.textScaleFactorFix,
                                   overflow: TextOverflow.ellipsis,
                                   textAlign: TextAlign.right,
                                 ),
@@ -135,7 +135,8 @@ class _EntityControlBinarySensorState extends State<EntityControlBinarySensor> {
                                           style: Theme.of(context)
                                               .textTheme
                                               .subtitle,
-                                          textScaleFactor: gd.textScaleFactor,
+                                          textScaleFactor:
+                                              gd.textScaleFactorFix,
                                           overflow: TextOverflow.ellipsis,
                                         )
                                       : duration != null
@@ -145,7 +146,7 @@ class _EntityControlBinarySensorState extends State<EntityControlBinarySensor> {
                                                   .textTheme
                                                   .subtitle,
                                               textScaleFactor:
-                                                  gd.textScaleFactor,
+                                                  gd.textScaleFactorFix,
                                               overflow: TextOverflow.ellipsis,
                                             )
                                           : Text(""),
@@ -215,7 +216,7 @@ class _EntityControlBinarySensorState extends State<EntityControlBinarySensor> {
                             child: Text(
                               "$formattedChangedTime",
                               maxLines: 1,
-                              textScaleFactor: gd.textScaleFactor,
+                              textScaleFactor: gd.textScaleFactorFix,
                             ),
                           ),
                         ],
@@ -238,7 +239,7 @@ class _EntityControlBinarySensorState extends State<EntityControlBinarySensor> {
     try {
       var response = await http.get(url, headers: headers);
       if (response.statusCode == 200) {
-        log.w("response.statusCode ${response.statusCode}");
+//        log.w("response.statusCode ${response.statusCode}");
         var jsonResponse = jsonDecode(response.body);
         gd.sensors = [];
 
@@ -266,7 +267,7 @@ class _EntityControlBinarySensorState extends State<EntityControlBinarySensor> {
         setState(() {
           inAsyncCall = false;
         });
-        print("Request failed with status: ${response.statusCode}.");
+        log.e("Request failed with status: ${response.statusCode}.");
       }
     } catch (e) {
       inAsyncCall = false;

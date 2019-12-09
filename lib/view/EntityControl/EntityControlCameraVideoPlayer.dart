@@ -57,7 +57,7 @@ class _EntityControlCameraVideoPlayerState
         try {
           if (gd.cameraStreamUrl != null && gd.cameraStreamUrl.length > 100) {
             return RotatedBox(
-              quarterTurns: 1,
+              quarterTurns: gd.isTablet ? 0 : 1,
               child: ModalProgressHUD(
                 inAsyncCall: !_controller.value.initialized,
                 opacity: 1,
@@ -79,7 +79,7 @@ class _EntityControlCameraVideoPlayerState
             );
           } else {
             return RotatedBox(
-              quarterTurns: 1,
+              quarterTurns: gd.isTablet ? 0 : 1,
               child: ModalProgressHUD(
                 inAsyncCall: false,
                 opacity: 1,
@@ -89,46 +89,49 @@ class _EntityControlCameraVideoPlayerState
                 ),
                 color: ThemeInfo.colorBackgroundDark,
                 child: Stack(
-                    children: <Widget> [Container(
-                    color: ThemeInfo.colorBackgroundDark,
-                    child: Center(
-                      child: AspectRatio(
-                          aspectRatio: 1.7,
-                          child: WebView(
-                            initialUrl:
-                                gd.currentUrl + entity.entityPicture,
-                            gestureRecognizers: null,
-                            javascriptMode: JavascriptMode.unrestricted,
-                            initialMediaPlaybackPolicy:
-                                AutoMediaPlaybackPolicy.always_allow,
-                            onWebViewCreated:
-                                (WebViewController webViewController) {
+                  children: <Widget>[
+                    Container(
+                      color: ThemeInfo.colorBackgroundDark,
+                      child: Center(
+                        child: AspectRatio(
+                            aspectRatio: 1.7,
+                            child: WebView(
+                              initialUrl: gd.currentUrl + entity.entityPicture,
+                              gestureRecognizers: null,
+                              javascriptMode: JavascriptMode.unrestricted,
+                              initialMediaPlaybackPolicy:
+                                  AutoMediaPlaybackPolicy.always_allow,
+                              onWebViewCreated:
+                                  (WebViewController webViewController) {
                                 webController = webViewController;
-                            },
-                            onPageFinished: (String urlVal) async {
-                              setState(() {
-                                showSpin = false;
-                              });
-                            },
-                          )),
-                    ),
-                  ),
-                  showSpin
-                  ? Container(
-                      color: ThemeInfo.colorBackgroundDark.withOpacity(1),
-                      child: SpinKitThreeBounce(
-                        size: 40,
-                        color: ThemeInfo.colorIconActive.withOpacity(0.5),
+                              },
+                              onPageFinished: (String urlVal) async {
+                                setState(() {
+                                  showSpin = false;
+                                });
+                              },
+                            )),
                       ),
-                    )
-                  : Container(),],
+                    ),
+                    showSpin
+                        ? Container(
+                            color: ThemeInfo.colorBackgroundDark.withOpacity(1),
+                            child: SpinKitThreeBounce(
+                              size: 40,
+                              color: ThemeInfo.colorIconActive.withOpacity(0.5),
+                            ),
+                          )
+                        : Container(),
+                  ],
                 ),
               ),
             );
           }
         } catch (e) {
           return Container(
-            child: Center(child: AutoSizeText("$Translate.getString(\"global.error\", context): $e")),
+            child: Center(
+                child: AutoSizeText(
+                    "$Translate.getString(\"global.error\", context): $e")),
           );
         }
       },

@@ -102,15 +102,22 @@ class ServerSelectPanel extends StatelessWidget {
                       Text(loginData.getUrl,
                           style: Theme.of(context).textTheme.subhead,
                           maxLines: 2,
-                          textScaleFactor: gd.textScaleFactor,
+                          textScaleFactor: gd.textScaleFactorFix,
                           overflow: TextOverflow.ellipsis),
                       Text(
                           gd.loginDataCurrent.getUrl == loginData.getUrl
-                              ? "Status: " + (gd.connectionStatus == "Connected" ? Translate.getString("global.connected", context) : Translate.getString("global.disconnected", context))
-                              : Translate.getString("global.last_access", context) + ": ${loginData.timeSinceLastAccess}",
+                              ? "Status: " +
+                                  (gd.connectionStatus == "Connected"
+                                      ? Translate.getString(
+                                          "global.connected", context)
+                                      : Translate.getString(
+                                          "global.disconnected", context))
+                              : Translate.getString(
+                                      "global.last_access", context) +
+                                  ": ${loginData.timeSinceLastAccess}",
                           style: Theme.of(context).textTheme.body1,
                           maxLines: 5,
-                          textScaleFactor: gd.textScaleFactor,
+                          textScaleFactor: gd.textScaleFactorFix,
                           overflow: TextOverflow.ellipsis),
                     ],
                   ),

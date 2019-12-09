@@ -68,8 +68,8 @@ class SinglePage extends StatelessWidget {
           "${generalData.viewMode} |" +
           "${generalData.connectionStatus} |" +
           "${MediaQuery.of(context).orientation} |" +
-          "${generalData.buttonExtend} |" +
-          "${generalData.cameraExtend} |" +
+          "${generalData.baseSetting.phoneLayout} |" +
+          "${generalData.baseSetting.tabletLayout} |" +
           "${generalData.mediaQueryHeight} |" +
           "${generalData.roomList.length} |" +
           "${generalData.entities.length} |" +

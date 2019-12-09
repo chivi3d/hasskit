@@ -12,14 +12,14 @@ import '../EntityButton.dart';
 
 class SliverEntitiesNormal extends StatelessWidget {
   final int roomIndex;
-  final int extend;
   final double aspectRatio;
+  final bool isCamera;
   final List<Entity> entities;
 
   const SliverEntitiesNormal({
     @required this.roomIndex,
-    @required this.extend,
     @required this.aspectRatio,
+    @required this.isCamera,
     @required this.entities,
   });
   @override
@@ -28,7 +28,8 @@ class SliverEntitiesNormal extends StatelessWidget {
       padding: EdgeInsets.all(12),
       sliver: SliverGrid(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: gd.mediaQueryWidth ~/ extend,
+          crossAxisCount:
+              isCamera ? gd.layoutCameraCount : gd.layoutButtonCount,
           mainAxisSpacing: 8,
           crossAxisSpacing: 8,
           childAspectRatio: aspectRatio,
@@ -253,7 +254,7 @@ class SliverEntitiesEdit extends StatelessWidget {
 class SliverEntitiesSort extends StatelessWidget {
   final int roomIndex;
   final int rowNumber;
-  final int extend;
+  final bool isCamera;
   final double aspectRatio;
 
   final List<Entity> entities;
@@ -261,7 +262,7 @@ class SliverEntitiesSort extends StatelessWidget {
   const SliverEntitiesSort({
     @required this.roomIndex,
     @required this.rowNumber,
-    @required this.extend,
+    @required this.isCamera,
     @required this.aspectRatio,
     @required this.entities,
   });
@@ -272,17 +273,22 @@ class SliverEntitiesSort extends StatelessWidget {
       return SliverEntitiesNormal(
         roomIndex: roomIndex,
         entities: entities,
-        extend: extend,
+        isCamera: isCamera,
         aspectRatio: aspectRatio,
       );
     }
 
     var totalWidth = MediaQuery.of(context).size.width;
-    var totalItemPerRow = MediaQuery.of(context).size.shortestSide ~/ extend;
+//    if (MediaQuery.of(context).orientation == Orientation.portrait) {
+//      totalWidth = MediaQuery.of(context).size.height;
+//    }
+    var totalItemPerRow =
+        isCamera ? gd.layoutCameraCount : gd.layoutButtonCount;
     if (totalItemPerRow < 1) totalItemPerRow = 1;
     var totalSpaceBetween = 8 * totalItemPerRow - 1;
     var width = (totalWidth - totalSpaceBetween - 8 * 2) / totalItemPerRow;
-
+    log.d(
+        "MediaQuery.of(context).size.width ${MediaQuery.of(context).size.width} totalWidth $totalWidth  totalItemPerRow $totalItemPerRow");
     List<Widget> entityShape = [];
 
     for (Entity entity in entities) {
@@ -333,14 +339,14 @@ class SliverEntitiesSort extends StatelessWidget {
       },
     );
 
-    var wrapCentered = Center(
-      child: wrap,
-    );
+//    var wrapCentered = Center(
+//      child: wrap,
+//    );
 
     return SliverPadding(
       padding: EdgeInsets.all(8),
       sliver: SliverList(
-        delegate: SliverChildListDelegate([wrapCentered]),
+        delegate: SliverChildListDelegate([wrap]),
       ),
     );
   }

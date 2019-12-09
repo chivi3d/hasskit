@@ -217,24 +217,32 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    log.d(
-        "gd.mediaQueryShortestSide ${gd.mediaQueryShortestSide} orientation ${MediaQuery.of(context).orientation}");
-    gd.mediaQueryShortestSide < 600
-        ? SystemChrome.setPreferredOrientations([
-            DeviceOrientation.portraitUp,
-          ])
-        : SystemChrome.setPreferredOrientations([
-            DeviceOrientation.portraitUp,
-            DeviceOrientation.portraitDown,
-            DeviceOrientation.landscapeRight,
-            DeviceOrientation.landscapeLeft,
-          ]);
+    gd.mediaQueryContext = context;
+    if (gd.mediaQueryShortestSide > 600) {
+      log.w(
+          "gd.isTablet ${gd.isTablet} gd.mediaQueryShortestSide ${gd.mediaQueryShortestSide} orientation ${MediaQuery.of(context).orientation}");
+      gd.isTablet = true;
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+        DeviceOrientation.landscapeRight,
+        DeviceOrientation.landscapeLeft,
+      ]);
+    } else {
+      log.w(
+          "gd.isTablet ${gd.isTablet} gd.mediaQueryShortestSide ${gd.mediaQueryShortestSide} orientation ${MediaQuery.of(context).orientation}");
+      gd.isTablet = false;
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+      ]);
+    }
 
     return Selector<GeneralData, String>(
       selector: (_, generalData) =>
           "${generalData.viewMode} | " +
           "${Localizations.localeOf(context).languageCode} | " +
-          "${generalData.baseSetting.itemsPerRow} | " +
+          "${generalData.baseSetting.phoneLayout} | " +
+          "${generalData.baseSetting.tabletLayout} | " +
           "${generalData.mediaQueryHeight} | " +
           "${generalData.connectionStatus} | " +
           "${generalData.roomList.length} | ",
@@ -263,7 +271,7 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
                     title: Text(
                       gd.getRoomName(0),
                       maxLines: 1,
-                      textScaleFactor: gd.textScaleFactor,
+                      textScaleFactor: gd.textScaleFactorFix,
                       overflow: TextOverflow.ellipsis,
                       style:
                           TextStyle(color: ThemeInfo.colorBottomSheetReverse),
@@ -276,7 +284,7 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
 //                  gd.getRoomName(gd.lastSelectedRoom + 1),
                       Translate.getString("global.rooms", context),
                       maxLines: 1,
-                      textScaleFactor: gd.textScaleFactor,
+                      textScaleFactor: gd.textScaleFactorFix,
                       overflow: TextOverflow.ellipsis,
                       style:
                           TextStyle(color: ThemeInfo.colorBottomSheetReverse),
@@ -289,7 +297,7 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
                     title: Text(
                       Translate.getString("global.settings", context),
                       maxLines: 1,
-                      textScaleFactor: gd.textScaleFactor,
+                      textScaleFactor: gd.textScaleFactorFix,
                       overflow: TextOverflow.ellipsis,
                       style:
                           TextStyle(color: ThemeInfo.colorBottomSheetReverse),

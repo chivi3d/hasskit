@@ -44,8 +44,8 @@ class _EntityControlCameraWebViewState
       builder: (context, data, child) {
         log.d("Selector showSpin $showSpin url $url");
         return RotatedBox(
-          quarterTurns:
-              Theme.of(context).platform == TargetPlatform.android ? 1 : 0,
+          quarterTurns: 0,
+//              Theme.of(context).platform == TargetPlatform.android ? 1 : 0,
           child: Stack(
             children: <Widget>[
               Container(

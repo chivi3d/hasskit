@@ -149,7 +149,7 @@ class _EntityControlParentState extends State<EntityControlParent> {
                                                   .textTheme
                                                   .title,
                                               textScaleFactor:
-                                                  gd.textScaleFactor,
+                                                  gd.textScaleFactorFix,
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
                                               textAlign: TextAlign.center,
@@ -444,7 +444,7 @@ class __IconSelectionState extends State<_IconSelection> {
               Translate.getString("edit.select_icon", context),
               style: Theme.of(context).textTheme.title,
               overflow: TextOverflow.ellipsis,
-              textScaleFactor: gd.textScaleFactor,
+              textScaleFactor: gd.textScaleFactorFix,
             ),
           ),
         ),
@@ -499,13 +499,14 @@ class __IconSelectionState extends State<_IconSelection> {
                             children: <Widget>[
                               index == 0
                                   ? Text(
-                                      Translate.getString("edit.reset_icon", context),
+                                      Translate.getString(
+                                          "edit.reset_icon", context),
                                       style: ThemeInfo.textStatusButtonInActive
                                           .copyWith(
                                               color: ThemeInfo
                                                   .colorBottomSheetReverse
                                                   .withOpacity(0.75)),
-                                      textScaleFactor: gd.textScaleFactor,
+                                      textScaleFactor: gd.textScaleFactorFix,
                                       overflow: TextOverflow.ellipsis,
                                       textAlign: TextAlign.center,
                                       maxLines: 3,

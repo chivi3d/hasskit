@@ -91,7 +91,7 @@ class Status2ndRowItem extends StatelessWidget {
                 child: AutoSizeText(
                   "${gd.textToDisplay(gd.entities[entityId].getOverrideName)}",
                   style: ThemeInfo.textNameButtonActive,
-                  textScaleFactor: gd.textScaleFactor * 0.75,
+                  textScaleFactor: gd.textScaleFactorFix,
                   overflow: TextOverflow.ellipsis,
 //                  textAlign: TextAlign.center,
                   maxLines: 2,

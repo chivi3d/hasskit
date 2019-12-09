@@ -108,7 +108,7 @@ class SliverNavigationBar extends StatelessWidget {
 //                    SizedBox(width: 2),
                       AutoSizeText(
                         "${tempState.toStringAsFixed(1)}°",
-                        textScaleFactor: gd.textScaleFactor,
+                        textScaleFactor: gd.textScaleFactorFix,
                         style:
                             TextStyle(color: ThemeInfo.colorBottomSheetReverse),
                       ),

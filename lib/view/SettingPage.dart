@@ -108,7 +108,8 @@ class _SettingPageState extends State<SettingPage> {
       selector: (_, generalData) => ("${generalData.useSSL} | "
           "${generalData.currentTheme} | "
           "${generalData.connectionStatus} | "
-          "${generalData.baseSetting.itemsPerRow} | "
+          "${generalData.baseSetting.phoneLayout} | "
+          "${generalData.baseSetting.tabletLayout} | "
           "${generalData.loginDataList.length} | "),
       builder: (_, string, __) {
         return Container(
@@ -137,7 +138,7 @@ class _SettingPageState extends State<SettingPage> {
                 largeTitle: Text(
                   Translate.getString("global.settings", context),
                   style: TextStyle(color: ThemeInfo.colorBottomSheetReverse),
-                  textScaleFactor: gd.textScaleFactor,
+                  textScaleFactor: gd.textScaleFactorFix,
                   overflow: TextOverflow.ellipsis,
                 ),
 //            trailing: IconButton(
@@ -322,7 +323,7 @@ class _SettingPageState extends State<SettingPage> {
                             Translate.getString("settings.about_info", context),
                             style: Theme.of(context).textTheme.body1,
                             textAlign: TextAlign.justify,
-                            textScaleFactor: gd.textScaleFactor,
+                            textScaleFactor: gd.textScaleFactorFix,
                           ),
                         ),
                       ),
@@ -350,7 +351,7 @@ class _SettingPageState extends State<SettingPage> {
                                     Text(
                                       "Discord ",
                                       style: TextStyle(color: Colors.black),
-                                      textScaleFactor: gd.textScaleFactor,
+                                      textScaleFactor: gd.textScaleFactorFix,
                                     ),
                                   ],
                                 ),
@@ -375,7 +376,7 @@ class _SettingPageState extends State<SettingPage> {
                                     Text(
                                       "Facebook",
                                       style: TextStyle(color: Colors.black),
-                                      textScaleFactor: gd.textScaleFactor,
+                                      textScaleFactor: gd.textScaleFactorFix,
                                     ),
                                   ],
                                 ),
@@ -400,7 +401,7 @@ class _SettingPageState extends State<SettingPage> {
                             "Build: ${_packageInfo.buildNumber}",
                             style: Theme.of(context).textTheme.body1,
                             textAlign: TextAlign.center,
-                            textScaleFactor: gd.textScaleFactor,
+                            textScaleFactor: gd.textScaleFactorFix,
                           ),
                         ),
                       ),
@@ -489,7 +490,7 @@ class _ThemeSelector extends StatelessWidget {
                               Translate.getString(
                                   "theme_selector.dark", context),
                               style: TextStyle(color: Colors.white),
-                              textScaleFactor: gd.textScaleFactor,
+                              textScaleFactor: gd.textScaleFactorFix,
                             ),
                             Spacer(),
                             Icon(
@@ -524,7 +525,7 @@ class _ThemeSelector extends StatelessWidget {
                               Translate.getString(
                                   "theme_selector.light", context),
                               style: TextStyle(color: Colors.black),
-                              textScaleFactor: gd.textScaleFactor,
+                              textScaleFactor: gd.textScaleFactorFix,
                             ),
                             Spacer(),
                             Icon(
@@ -585,7 +586,7 @@ class _ThemeSelector extends StatelessWidget {
 //                                  "settings.3_buttons", context),
 //                              style: Theme.of(context).textTheme.body1,
 //                              overflow: TextOverflow.ellipsis,
-//                              textScaleFactor: gd.textScaleFactor,
+//                              textScaleFactor: gd.textScaleFactorFix,
 //                            ),
 //                            Spacer(),
 //                            Icon(
@@ -624,7 +625,7 @@ class _ThemeSelector extends StatelessWidget {
 //                                  "settings.4_buttons", context),
 //                              style: Theme.of(context).textTheme.body1,
 //                              overflow: TextOverflow.ellipsis,
-//                              textScaleFactor: gd.textScaleFactor,
+//                              textScaleFactor: gd.textScaleFactorFix,
 //                            ),
 //                            Spacer(),
 //                            Icon(
@@ -654,13 +655,26 @@ class LayoutSelector extends StatefulWidget {
 }
 
 class _LayoutSelectorState extends State<LayoutSelector> {
-  int buttonExtend;
-  int cameraExtend;
+  final Map<int, Widget> phoneSegment = const <int, Widget>{
+    2: Text('2'),
+    3: Text('3'),
+    4: Text('4'),
+  };
+  final Map<int, Widget> tabletSegment = const <int, Widget>{
+    69: Text('6-9'),
+    912: Text('9-12'),
+    3: Text('3'),
+    6: Text('6'),
+    9: Text('9'),
+    12: Text('12'),
+  };
+  int phoneValue;
+  int tabletValue;
   @override
   void initState() {
     super.initState();
-    buttonExtend = gd.buttonExtend;
-    cameraExtend = gd.cameraExtend;
+    phoneValue = gd.baseSetting.phoneLayout;
+    tabletValue = gd.baseSetting.tabletLayout;
   }
 
   @override
@@ -668,73 +682,22 @@ class _LayoutSelectorState extends State<LayoutSelector> {
     return SliverList(
       delegate: SliverChildListDelegate(
         [
-          Row(
-            children: <Widget>[
-              SizedBox(width: 8),
-              Icon(
-                MaterialDesignIcons.getIconDataFromIconName(
-                    "mdi:toggle-switch"),
-                size: 28,
-              ),
-              SizedBox(width: 8),
-              Expanded(
-                child: Slider(
-                    label: "${buttonExtend.toString()}",
-//                    divisions: 40,
-                    value: buttonExtend.toDouble(),
-                    min: 80,
-                    max: 160,
-                    onChanged: (double val) {
-                      setState(() {
-                        buttonExtend = val.toInt();
-                      });
-                    },
-                    onChangeEnd: (double val) {
-                      setState(() {
-                        buttonExtend = val.toInt();
-                        gd.buttonExtend = buttonExtend;
-                      });
-                    }),
-              ),
-              Icon(
-                MaterialDesignIcons.getIconDataFromIconName(
-                    "mdi:toggle-switch"),
-                size: 48,
-              ),
-            ],
-          ),
-          Row(
-            children: <Widget>[
-              SizedBox(width: 8),
-              Icon(
-                MaterialDesignIcons.getIconDataFromIconName("mdi:webcam"),
-                size: 28,
-              ),
-              SizedBox(width: 8),
-              Expanded(
-                child: Slider(
-                    label: "${cameraExtend.toString()}",
-//                    divisions: 40,
-                    value: cameraExtend.toDouble(),
-                    min: 200,
-                    max: 400,
-                    onChanged: (double val) {
-                      setState(() {
-                        cameraExtend = val.toInt();
-                      });
-                    },
-                    onChangeEnd: (double val) {
-                      setState(() {
-                        cameraExtend = val.toInt();
-                        gd.cameraExtend = cameraExtend;
-                      });
-                    }),
-              ),
-              Icon(
-                MaterialDesignIcons.getIconDataFromIconName("mdi:webcam"),
-                size: 48,
-              ),
-            ],
+          CupertinoSegmentedControl<int>(
+            padding: EdgeInsets.all(12),
+            children: gd.isTablet ? tabletSegment : phoneSegment,
+            onValueChanged: (int val) {
+              setState(() {
+                if (gd.isTablet) {
+                  tabletValue = val;
+                  gd.baseSetting.tabletLayout = val;
+                } else {
+                  phoneValue = val;
+                  gd.baseSetting.phoneLayout = val;
+                }
+                gd.baseSettingSave(true);
+              });
+            },
+            groupValue: gd.isTablet ? tabletValue : phoneValue,
           ),
         ],
       ),

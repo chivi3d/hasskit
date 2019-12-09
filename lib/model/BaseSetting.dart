@@ -17,7 +17,8 @@ const List<String> baseSettingDefaultColor = [
 ];
 
 class BaseSetting {
-  int itemsPerRow;
+  int phoneLayout;
+  int tabletLayout;
   int themeIndex;
   String lastArmType;
   List<String> notificationDevices;
@@ -30,7 +31,8 @@ class BaseSetting {
   String webView3Url = "https://livescore.com";
 
   BaseSetting({
-    @required this.itemsPerRow,
+    @required this.phoneLayout,
+    @required this.tabletLayout,
     @required this.themeIndex,
     @required this.lastArmType,
     @required this.notificationDevices,
@@ -44,7 +46,8 @@ class BaseSetting {
   });
 
   Map<String, dynamic> toJson() => {
-        'itemsPerRow': itemsPerRow,
+        'phoneLayout': phoneLayout,
+        'tabletLayout': tabletLayout,
         'themeIndex': themeIndex,
         'lastArmType': lastArmType,
         'notificationDevices': notificationDevices,
@@ -59,7 +62,8 @@ class BaseSetting {
 
   factory BaseSetting.fromJson(Map<String, dynamic> json) {
     return BaseSetting(
-      itemsPerRow: json['itemsPerRow'] != null ? json['itemsPerRow'] : 3,
+      phoneLayout: json['phoneLayout'] != null ? json['phoneLayout'] : 3,
+      tabletLayout: json['tabletLayout'] != null ? json['tabletLayout'] : 69,
       themeIndex: json['themeIndex'] != null ? json['themeIndex'] : 1,
       lastArmType:
           json['lastArmType'] != null ? json['lastArmType'] : "arm_away",
@@ -77,7 +81,7 @@ class BaseSetting {
               "0xffAB47BC",
             ],
       webView1Ratio:
-          json['webView1Ratio'] != null ? json['webView1Ratio'] : 0.7,
+          json['webView1Ratio'] != null ? json['webView1Ratio'] : 1.0,
       webView1Url: json['webView1Url'] != null
           ? json['webView1Url']
           : "https://embed.windy.com",
@@ -87,7 +91,7 @@ class BaseSetting {
           ? json['webView2Url']
           : "https://www.yahoo.com/news/weather",
       webView3Ratio:
-          json['webView3Ratio'] != null ? json['webView3Ratio'] : 1.2,
+          json['webView3Ratio'] != null ? json['webView3Ratio'] : 1.0,
       webView3Url: json['webView3Url'] != null
           ? json['webView3Url']
           : "https://livescore.com",

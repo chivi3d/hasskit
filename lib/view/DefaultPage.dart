@@ -34,7 +34,7 @@ class DefaultPage extends StatelessWidget {
                 style: Theme.of(context).textTheme.caption,
                 textAlign: TextAlign.justify,
                 maxLines: 3,
-                textScaleFactor: gd.textScaleFactor,
+                textScaleFactor: gd.textScaleFactorFix,
                 overflow: TextOverflow.ellipsis,
               ),
             ],

@@ -67,7 +67,7 @@ class ViewNormal extends StatelessWidget {
                 padding: EdgeInsets.all(12),
                 sliver: SliverGrid(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: gd.baseSetting.itemsPerRow,
+                    crossAxisCount: gd.layoutCameraCount,
                     mainAxisSpacing: 8.0,
                     crossAxisSpacing: 10.0,
                     childAspectRatio: 1,
@@ -82,7 +82,7 @@ class ViewNormal extends StatelessWidget {
                         child: Opacity(
                           opacity: 0.5,
                           child: IconButton(
-                            iconSize: 60 * 3 / gd.baseSetting.itemsPerRow,
+                            iconSize: 60 * 3 / gd.layoutCameraCount,
                             onPressed: () {
                               gd.viewMode = ViewMode.edit;
                             },
@@ -109,8 +109,8 @@ class ViewNormal extends StatelessWidget {
         row1.length > 0
             ? SliverEntitiesNormal(
                 roomIndex: roomIndex,
-                aspectRatio: 8 / 5,
-                extend: gd.buttonExtend,
+                aspectRatio: 8 / 8,
+                isCamera: false,
                 entities: row1,
               )
             : gd.emptySliver,
@@ -118,7 +118,7 @@ class ViewNormal extends StatelessWidget {
             ? SliverEntitiesNormal(
                 roomIndex: roomIndex,
                 aspectRatio: 8 / 5,
-                extend: gd.cameraExtend,
+                isCamera: true,
                 entities: row1Cam,
               )
             : gd.emptySliver,
@@ -133,8 +133,8 @@ class ViewNormal extends StatelessWidget {
         row2.length > 0
             ? SliverEntitiesNormal(
                 roomIndex: roomIndex,
-                aspectRatio: 8 / 5,
-                extend: gd.buttonExtend,
+                aspectRatio: 8 / 8,
+                isCamera: false,
                 entities: row2,
               )
             : gd.emptySliver,
@@ -142,7 +142,7 @@ class ViewNormal extends StatelessWidget {
             ? SliverEntitiesNormal(
                 roomIndex: roomIndex,
                 aspectRatio: 8 / 5,
-                extend: gd.cameraExtend,
+                isCamera: true,
                 entities: row2Cam,
               )
             : gd.emptySliver,
@@ -157,8 +157,8 @@ class ViewNormal extends StatelessWidget {
         row3.length > 0
             ? SliverEntitiesNormal(
                 roomIndex: roomIndex,
-                aspectRatio: 8 / 5,
-                extend: gd.buttonExtend,
+                aspectRatio: 8 / 8,
+                isCamera: false,
                 entities: row3,
               )
             : gd.emptySliver,
@@ -166,7 +166,7 @@ class ViewNormal extends StatelessWidget {
             ? SliverEntitiesNormal(
                 roomIndex: roomIndex,
                 aspectRatio: 8 / 5,
-                extend: gd.cameraExtend,
+                isCamera: false,
                 entities: row3Cam,
               )
             : gd.emptySliver,
@@ -181,8 +181,8 @@ class ViewNormal extends StatelessWidget {
         row4.length > 0
             ? SliverEntitiesNormal(
                 roomIndex: roomIndex,
-                aspectRatio: 8 / 5,
-                extend: gd.buttonExtend,
+                aspectRatio: 8 / 8,
+                isCamera: false,
                 entities: row4,
               )
             : gd.emptySliver,
@@ -190,7 +190,7 @@ class ViewNormal extends StatelessWidget {
             ? SliverEntitiesNormal(
                 roomIndex: roomIndex,
                 aspectRatio: 8 / 5,
-                extend: gd.cameraExtend,
+                isCamera: true,
                 entities: row4Cam,
               )
             : gd.emptySliver,

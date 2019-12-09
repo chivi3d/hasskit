@@ -123,7 +123,7 @@ class _LocalLanguagePickerState extends State<LocalLanguagePicker> {
                             "${map.displayName} - © ${map.translator}"),
                         style: Theme.of(context).textTheme.body1,
                         overflow: TextOverflow.ellipsis,
-                        textScaleFactor: gd.textScaleFactor,
+                        textScaleFactor: gd.textScaleFactorFix,
                       ),
                     ],
                   ),

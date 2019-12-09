@@ -106,9 +106,34 @@ class GeneralData with ChangeNotifier {
     }
   }
 
-  double get textScaleFactor {
+  bool _isTablet = false;
+
+  bool get isTablet => _isTablet;
+
+  set isTablet(bool val) {
+//    log.d('mediaQueryShortestSide $val');
+    if (val == null) {
+      throw new ArgumentError();
+    }
+    if (_isTablet != val) {
+      _isTablet = val;
+      notifyListeners();
+    }
+  }
+
+  double get textScaleFactorFix {
     return 1.0;
-//    return mediaQueryWidth / 411.42857142857144;
+  }
+
+  double get textScaleFactor {
+    int totalRowButton = layoutButtonCount;
+    if (!isTablet ||
+        MediaQuery.of(mediaQueryContext).orientation == Orientation.portrait) {
+      return (mediaQueryWidth / 411.42857142857144) * (3 / totalRowButton);
+    }
+    return (MediaQuery.of(mediaQueryContext).size.longestSide /
+            411.42857142857144) *
+        (3 / totalRowButton);
   }
 
   int _lastSelectedRoom = 0;
@@ -1350,7 +1375,8 @@ class GeneralData with ChangeNotifier {
   }
 
   BaseSetting baseSetting = BaseSetting(
-      itemsPerRow: 3,
+      phoneLayout: 3,
+      tabletLayout: 69,
       themeIndex: 1,
       lastArmType: "arm_home",
       notificationDevices: [],
@@ -1377,7 +1403,8 @@ class GeneralData with ChangeNotifier {
         baseSetting = BaseSetting.fromJson(val);
       } else {
         log.w('CAN NOT FIND baseSetting adding default data');
-        baseSetting.itemsPerRow = 3;
+        baseSetting.phoneLayout = 3;
+        baseSetting.tabletLayout = 69;
         baseSetting.themeIndex = 1;
         baseSetting.lastArmType = "arm_away";
         baseSetting.notificationDevices = [];
@@ -1410,7 +1437,8 @@ class GeneralData with ChangeNotifier {
 
     try {
       var jsonBaseSetting = {
-        'itemsPerRow': baseSetting.itemsPerRow,
+        'phoneLayout': baseSetting.phoneLayout,
+        'tabletLayout': baseSetting.tabletLayout,
         'themeIndex': baseSetting.themeIndex,
         'lastArmType': baseSetting.lastArmType,
         'notificationDevices': baseSetting.notificationDevices,
@@ -1439,7 +1467,8 @@ class GeneralData with ChangeNotifier {
 
   BaseSetting baseSettingHassKitDemo = BaseSetting(
     themeIndex: 1,
-    itemsPerRow: 3,
+    phoneLayout: 3,
+    tabletLayout: 69,
     lastArmType: "arm_away",
     colorPicker: [
       "0xffEEEEEE",
@@ -2175,31 +2204,71 @@ class GeneralData with ChangeNotifier {
     }
   }
 
-  int _buttonExtend = 120;
+//  int _phoneLayout = 3;
+//
+//  int get phoneLayout => _phoneLayout;
+//
+//  set phoneLayout(int val) {
+//    if (val == null) {
+//      throw new ArgumentError();
+//    }
+//    if (_phoneLayout != val) {
+//      _phoneLayout = val;
+//      notifyListeners();
+//    }
+//  }
+//
+//  int _tabletLayout = 69;
+//
+//  int get tabletLayout => _tabletLayout;
+//
+//  set tabletLayout(int val) {
+//    if (val == null) {
+//      throw new ArgumentError();
+//    }
+//    if (_tabletLayout != val) {
+//      _tabletLayout = val;
+//      notifyListeners();
+//    }
+//  }
 
-  int get buttonExtend => _buttonExtend;
+  BuildContext mediaQueryContext;
+  int get layoutCameraCount {
+    if (!isTablet) return 1;
 
-  set buttonExtend(int val) {
-    if (val == null) {
-      throw new ArgumentError();
+    if (baseSetting.tabletLayout == 69) {
+      if (MediaQuery.of(mediaQueryContext).orientation ==
+          Orientation.portrait) {
+        return 2;
+      }
+      return 3;
     }
-    if (_buttonExtend != val) {
-      _buttonExtend = val;
-      notifyListeners();
+    if (baseSetting.tabletLayout == 912) {
+      if (MediaQuery.of(mediaQueryContext).orientation ==
+          Orientation.portrait) {
+        return 3;
+      }
+      return 4;
     }
+    return baseSetting.tabletLayout ~/ 3;
   }
 
-  int _cameraExtend = 300;
-
-  int get cameraExtend => _cameraExtend;
-
-  set cameraExtend(int val) {
-    if (val == null) {
-      throw new ArgumentError();
+  int get layoutButtonCount {
+    if (!isTablet) return baseSetting.phoneLayout;
+    if (baseSetting.tabletLayout == 69) {
+      if (MediaQuery.of(mediaQueryContext).orientation ==
+          Orientation.portrait) {
+        return 6;
+      }
+      return 9;
     }
-    if (_cameraExtend != val) {
-      _cameraExtend = val;
-      notifyListeners();
+    if (baseSetting.tabletLayout == 912) {
+      if (MediaQuery.of(mediaQueryContext).orientation ==
+          Orientation.portrait) {
+        return 9;
+      }
+      return 12;
     }
+    return baseSetting.tabletLayout;
   }
 }

@@ -45,7 +45,7 @@ class _BackgroundImageSelectorState extends State<BackgroundImageSelector> {
               style: Theme.of(context).textTheme.subhead,
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
-              textScaleFactor: gd.textScaleFactor,
+              textScaleFactor: gd.textScaleFactorFix,
             ),
           ),
 
@@ -110,7 +110,7 @@ class _BackgroundImageSelectorState extends State<BackgroundImageSelector> {
                                   child: Text(
                                 "${gd.roomList[widget.roomIndex].name} Background Image",
                                 overflow: TextOverflow.ellipsis,
-                                textScaleFactor: gd.textScaleFactor,
+                                textScaleFactor: gd.textScaleFactorFix,
                                 maxLines: 1,
                               )),
                               Container(
