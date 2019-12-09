@@ -129,7 +129,9 @@ class GeneralData with ChangeNotifier {
     int totalRowButton = layoutButtonCount;
     if (!isTablet ||
         MediaQuery.of(mediaQueryContext).orientation == Orientation.portrait) {
-      return (mediaQueryWidth / 411.42857142857144) * (3 / totalRowButton);
+      return (MediaQuery.of(mediaQueryContext).size.width /
+              411.42857142857144) *
+          (3 / totalRowButton);
     }
     return (MediaQuery.of(mediaQueryContext).size.longestSide /
             411.42857142857144) *
@@ -266,9 +268,10 @@ class GeneralData with ChangeNotifier {
         continue;
       }
 
-//      if (entity.entityId.contains("fan.")) {
-//        log.w("\n socketGetStates ${entity.entityId} mess $mess");
-//      }
+      if (entity.entityId.contains("device_tracker.")) {
+        log.w(
+            "\n socketGetStates ${entity.entityId} state ${entity.state} isStateOn ${entity.isStateOn} mess $mess");
+      }
 
       if (previousEntitiesList.contains(entity.entityId))
         previousEntitiesList.remove(entity.entityId);
@@ -2236,6 +2239,14 @@ class GeneralData with ChangeNotifier {
   int get layoutCameraCount {
     if (!isTablet) return 1;
 
+    if (baseSetting.tabletLayout == 36) {
+      if (MediaQuery.of(mediaQueryContext).orientation ==
+          Orientation.portrait) {
+        return 1;
+      }
+      return 2;
+    }
+
     if (baseSetting.tabletLayout == 69) {
       if (MediaQuery.of(mediaQueryContext).orientation ==
           Orientation.portrait) {
@@ -2255,6 +2266,13 @@ class GeneralData with ChangeNotifier {
 
   int get layoutButtonCount {
     if (!isTablet) return baseSetting.phoneLayout;
+    if (baseSetting.tabletLayout == 36) {
+      if (MediaQuery.of(mediaQueryContext).orientation ==
+          Orientation.portrait) {
+        return 3;
+      }
+      return 6;
+    }
     if (baseSetting.tabletLayout == 69) {
       if (MediaQuery.of(mediaQueryContext).orientation ==
           Orientation.portrait) {

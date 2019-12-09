@@ -84,7 +84,9 @@ class _EntityControlParentState extends State<EntityControlParent> {
             entity.entityId.contains("group.") ||
             entity.entityId.contains("scene.")) {
           entityControl = EntityControlToggle(entityId: widget.entityId);
-        } else if (entity.entityId.contains("binary_sensor.")) {
+        } else if (entity.entityId.contains("binary_sensor.")
+//            ||            entity.entityId.contains("device_tracker.") //Need more data check
+            ) {
           entityControl = EntityControlBinarySensor(
             entityId: widget.entityId,
           );

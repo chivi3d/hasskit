@@ -661,6 +661,7 @@ class _LayoutSelectorState extends State<LayoutSelector> {
     4: Text('4'),
   };
   final Map<int, Widget> tabletSegment = const <int, Widget>{
+    36: Text('3-6'),
     69: Text('6-9'),
     912: Text('9-12'),
     3: Text('3'),

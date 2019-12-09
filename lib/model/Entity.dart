@@ -525,6 +525,10 @@ class Entity {
         state.toLowerCase() != 'unavailable') {
       return true;
     }
+    if (entityId.split('.')[0] == 'device_tracker' &&
+        state.toLowerCase() == 'home') {
+      return true;
+    }
     return false;
   }
 
