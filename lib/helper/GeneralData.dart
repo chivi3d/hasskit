@@ -229,10 +229,10 @@ class GeneralData with ChangeNotifier {
         continue;
       }
 
-      if (entity.entityId.contains("device_tracker.")) {
-        log.w(
-            "\n socketGetStates ${entity.entityId} state ${entity.state} isStateOn ${entity.isStateOn} mess $mess");
-      }
+//      if (entity.entityId.contains("device_tracker.")) {
+//        log.w(
+//            "\n socketGetStates ${entity.entityId} state ${entity.state} isStateOn ${entity.isStateOn} mess $mess");
+//      }
 
       if (previousEntitiesList.contains(entity.entityId))
         previousEntitiesList.remove(entity.entityId);

@@ -332,7 +332,6 @@ class _SettingPageState extends State<SettingPage> {
                             style: Theme.of(context).textTheme.body1,
                             textAlign: TextAlign.justify,
                             textScaleFactor: gd.textScaleFactorFix,
-                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ),
@@ -497,15 +496,16 @@ class _ThemeSelector extends StatelessWidget {
                         child: Row(
                           children: <Widget>[
                             Image.asset("assets/images/icon_transparent.png"),
-                            Spacer(),
-                            Text(
-                              Translate.getString(
-                                  "theme_selector.dark", context),
-                              style: TextStyle(color: Colors.white),
-                              textScaleFactor: gd.textScaleFactorFix,
-                              overflow: TextOverflow.ellipsis,
+                            Expanded(
+                              child: Text(
+                                Translate.getString(
+                                    "theme_selector.dark", context),
+                                style: TextStyle(color: Colors.white),
+                                textScaleFactor: gd.textScaleFactorFix,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
+                              ),
                             ),
-                            Spacer(),
                             Icon(
                               Icons.check_circle,
                               color: Theme.of(context).brightness ==
@@ -533,15 +533,16 @@ class _ThemeSelector extends StatelessWidget {
                         child: Row(
                           children: <Widget>[
                             Image.asset("assets/images/icon_transparent.png"),
-                            Spacer(),
-                            Text(
-                              Translate.getString(
-                                  "theme_selector.light", context),
-                              style: TextStyle(color: Colors.black),
-                              textScaleFactor: gd.textScaleFactorFix,
-                              overflow: TextOverflow.ellipsis,
+                            Expanded(
+                              child: Text(
+                                Translate.getString(
+                                    "theme_selector.light", context),
+                                style: TextStyle(color: Colors.black),
+                                textScaleFactor: gd.textScaleFactorFix,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
+                              ),
                             ),
-                            Spacer(),
                             Icon(
                               Icons.check_circle,
                               color: Theme.of(context).brightness ==
@@ -563,105 +564,6 @@ class _ThemeSelector extends StatelessWidget {
     );
   }
 }
-
-//class _LayoutSelector extends StatelessWidget {
-//  @override
-//  Widget build(BuildContext context) {
-//    return SliverFixedExtentList(
-//      itemExtent: 58,
-//      delegate: SliverChildListDelegate(
-//        [
-//          Container(
-//            child: Row(
-//              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//              crossAxisAlignment: CrossAxisAlignment.stretch,
-//              children: <Widget>[
-//                Expanded(
-//                  child: InkWell(
-//                    onTap: () {
-//                      gd.baseSetting.itemsPerRow = 3;
-//                      gd.baseSettingSave(true);
-//                    },
-//                    child: Card(
-//                      elevation: 1,
-//                      color: ThemeInfo.colorBottomSheet.withOpacity(0.8),
-//                      child: Padding(
-//                        padding: const EdgeInsets.all(8.0),
-//                        child: Row(
-//                          children: <Widget>[
-//                            Icon(
-//                              MaterialDesignIcons.getIconDataFromIconName(
-//                                  "mdi:view-module"),
-//                              size: 32,
-//                            ),
-//                            Spacer(),
-//                            Text(
-//                              Translate.getString(
-//                                  "settings.3_buttons", context),
-//                              style: Theme.of(context).textTheme.body1,
-//                              overflow: TextOverflow.ellipsis,
-//                              textScaleFactor: gd.textScaleFactorFix,
-//                            ),
-//                            Spacer(),
-//                            Icon(
-//                              Icons.check_circle,
-//                              color: gd.baseSetting.itemsPerRow == 3
-//                                  ? Colors.amber
-//                                  : Colors.transparent,
-//                            ),
-//                          ],
-//                        ),
-//                      ),
-//                    ),
-//                  ),
-//                ),
-//                Expanded(
-//                  child: InkWell(
-//                    onTap: () {
-//                      gd.baseSetting.itemsPerRow = 4;
-//                      gd.baseSettingSave(true);
-//                    },
-//                    child: Card(
-//                      elevation: 1,
-//                      color: ThemeInfo.colorBottomSheet.withOpacity(0.8),
-//                      child: Padding(
-//                        padding: const EdgeInsets.all(8.0),
-//                        child: Row(
-//                          children: <Widget>[
-//                            Icon(
-//                              MaterialDesignIcons.getIconDataFromIconName(
-//                                  "mdi:view-comfy"),
-//                              size: 32,
-//                            ),
-//                            Spacer(),
-//                            Text(
-//                              Translate.getString(
-//                                  "settings.4_buttons", context),
-//                              style: Theme.of(context).textTheme.body1,
-//                              overflow: TextOverflow.ellipsis,
-//                              textScaleFactor: gd.textScaleFactorFix,
-//                            ),
-//                            Spacer(),
-//                            Icon(
-//                              Icons.check_circle,
-//                              color: gd.baseSetting.itemsPerRow == 4
-//                                  ? Colors.amber
-//                                  : Colors.transparent,
-//                            ),
-//                          ],
-//                        ),
-//                      ),
-//                    ),
-//                  ),
-//                ),
-//              ],
-//            ),
-//          ),
-//        ],
-//      ),
-//    );
-//  }
-//}
 
 class LayoutSelector extends StatefulWidget {
   @override

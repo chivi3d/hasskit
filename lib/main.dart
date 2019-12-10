@@ -216,8 +216,6 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     gd.mediaQueryContext = context;
     if (gd.isTablet) {
-      log.w(
-          "gd.isTablet ${gd.isTablet} gd.mediaQueryShortestSide ${gd.mediaQueryShortestSide} orientation ${gd.mediaQueryOrientation}");
       SystemChrome.setPreferredOrientations([
         DeviceOrientation.portraitUp,
         DeviceOrientation.portraitDown,
@@ -225,13 +223,12 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
         DeviceOrientation.landscapeLeft,
       ]);
     } else {
-      log.w(
-          "gd.isTablet ${gd.isTablet} gd.mediaQueryShortestSide ${gd.mediaQueryShortestSide} orientation ${gd.mediaQueryOrientation}");
       SystemChrome.setPreferredOrientations([
         DeviceOrientation.portraitUp,
       ]);
     }
-
+    log.w(
+        "gd.isTablet ${gd.isTablet} gd.mediaQueryShortestSide ${gd.mediaQueryShortestSide} gd.mediaQueryLongestSide ${gd.mediaQueryLongestSide} orientation ${gd.mediaQueryOrientation}");
     return Selector<GeneralData, String>(
       selector: (_, generalData) =>
           "${generalData.viewMode} | " +

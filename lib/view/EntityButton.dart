@@ -121,7 +121,7 @@ class _EntityButtonDisplayState extends State<EntityButtonDisplay> {
           ? ThemeInfo.colorBackgroundActive
           : ThemeInfo.colorEntityBackground,
       shape: SquircleBorder(
-        superRadius: gd.entities[widget.entityId].isStateOn ? 6 : 10,
+        superRadius: 10,
 //        side: BorderSide(
 //          color: gd.entities[widget.entityId].isStateOn
 //              ? ThemeInfo.colorIconActive
@@ -152,7 +152,6 @@ class _EntityButtonDisplayState extends State<EntityButtonDisplay> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Expanded(

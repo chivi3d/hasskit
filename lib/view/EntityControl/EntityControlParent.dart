@@ -113,7 +113,7 @@ class _EntityControlParentState extends State<EntityControlParent> {
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    SizedBox(height: 48),
+                    SizedBox(height: gd.mediaQueryLongestSide > 600 ? 48 : 24),
                     Container(
                       height: 50,
                       child: Stack(
