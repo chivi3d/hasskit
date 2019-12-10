@@ -2244,4 +2244,12 @@ class GeneralData with ChangeNotifier {
     }
     return baseSetting.tabletLayout;
   }
+
+  /// Returns a formatted date string.
+  String dateToString(DateTime date) =>
+      date.day.toString().padLeft(2, '0') +
+      '/' +
+      date.month.toString().padLeft(2, '0') +
+      '/' +
+      date.year.toString();
 }

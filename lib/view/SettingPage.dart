@@ -4,11 +4,13 @@ import 'package:hasskit/helper/GeneralData.dart';
 import 'package:hasskit/helper/GoogleSign.dart';
 import 'package:hasskit/helper/Logger.dart';
 import 'package:hasskit/helper/MaterialDesignIcons.dart';
+import 'package:hasskit/helper/RateMyApp.dart';
 import 'package:hasskit/helper/ThemeInfo.dart';
 import 'package:hasskit/model/LocalLanguage.dart';
 import 'package:hasskit/model/LoginData.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
+import 'package:rate_my_app/rate_my_app.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:validators/validators.dart';
 import 'slivers/SliverHeader.dart';
@@ -141,12 +143,6 @@ class _SettingPageState extends State<SettingPage> {
                   textScaleFactor: gd.textScaleFactorFix,
                   overflow: TextOverflow.ellipsis,
                 ),
-//            trailing: IconButton(
-//              icon: Icon(Icons.palette),
-//              onPressed: () {
-//                gd.themeChange();
-//              },
-//            ),
               ),
               SliverHeaderNormal(
                 icon: Icon(
@@ -308,6 +304,62 @@ class _SettingPageState extends State<SettingPage> {
                 title: Translate.getString("settings.language", context),
               ),
               LocalLanguagePicker(),
+              SliverList(
+                  delegate: SliverChildListDelegate([
+                Container(
+                  child: RaisedButton(
+                    onPressed: () => rateMyApp
+                        .showRateDialog(
+                          context,
+                          title: 'Rate This App',
+                          message:
+                              'If you like this app, please take a little bit of your time to review it!\n\nIt really helps us and it shouldn\'t take you more than one minute.',
+                          rateButton: 'Rate',
+                          noButton: 'No Thanks',
+                          laterButton: 'Maybe Later',
+                          ignoreIOS: false,
+                          dialogStyle: DialogStyle(),
+                        )
+                        .then((v) => setState(() {})),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(
+                          MaterialDesignIcons.getIconDataFromIconName(
+                              "mdi:star-outline"),
+                        ),
+                        Icon(
+                          MaterialDesignIcons.getIconDataFromIconName(
+                              "mdi:star-outline"),
+                        ),
+                        Icon(
+                          MaterialDesignIcons.getIconDataFromIconName(
+                              "mdi:star-outline"),
+                        ),
+                        Text(
+                          " Rate HassKit ",
+                          style: TextStyle(color: Colors.black),
+                          textScaleFactor: gd.textScaleFactorFix,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Icon(
+                          MaterialDesignIcons.getIconDataFromIconName(
+                              "mdi:star-outline"),
+                        ),
+                        Icon(
+                          MaterialDesignIcons.getIconDataFromIconName(
+                              "mdi:star-outline"),
+                        ),
+                        Icon(
+                          MaterialDesignIcons.getIconDataFromIconName(
+                              "mdi:star-outline"),
+                        ),
+                      ],
+                    ),
+                  ),
+                  padding: EdgeInsets.all(12),
+                ),
+              ])),
               SliverHeaderNormal(
                 icon: Icon(
                   MaterialDesignIcons.getIconDataFromIconName(

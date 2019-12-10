@@ -12,6 +12,7 @@ import 'package:hasskit/view/PageViewBuilder.dart';
 import 'package:hasskit/view/SettingPage.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:provider/provider.dart';
+import 'package:rate_my_app/rate_my_app.dart';
 import 'helper/GeneralData.dart';
 import 'helper/GoogleSign.dart';
 import 'helper/Logger.dart';
@@ -19,8 +20,9 @@ import 'helper/MaterialDesignIcons.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
 
+import 'helper/RateMyApp.dart';
+
 void main() {
-//  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(
     EasyLocalization(
       child: MultiProvider(
@@ -40,10 +42,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     gd = Provider.of<GeneralData>(context, listen: false);
-//    SystemChrome.setPreferredOrientations([
-//      DeviceOrientation.portraitUp,
-//    ]);
-
     gd.localeData = EasyLocalizationProvider.of(context).data;
 
     return EasyLocalizationProvider(
@@ -159,6 +157,34 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
         Timer.periodic(Duration(seconds: 60), (Timer t) => timer60Callback());
 
     mainInitState();
+
+    rateMyApp.init().then(
+      (_) {
+        print('Minimum days : ' + rateMyApp.minDays.toString());
+        print('Minimum launches : ' + rateMyApp.minLaunches.toString());
+        print('Base launch : ' + gd.dateToString(rateMyApp.baseLaunchDate));
+        print('Launches : ' + rateMyApp.launches.toString());
+        print(
+            'Do not open again ? ' + (rateMyApp.doNotOpenAgain ? 'Yes' : 'No'));
+
+        print('Are conditions met ? ' +
+            (rateMyApp.shouldOpenDialog ? 'Yes' : 'No'));
+
+        if (rateMyApp.shouldOpenDialog) {
+          rateMyApp.showRateDialog(
+            context,
+            title: 'Rate This App',
+            message:
+                'If you like this app, please take a little bit of your time to review it!\n\nIt really helps us and it shouldn\'t take you more than one minute.',
+            rateButton: 'Rate',
+            noButton: 'No Thanks',
+            laterButton: 'Maybe Later',
+            ignoreIOS: false,
+            dialogStyle: DialogStyle(),
+          );
+        }
+      },
+    );
   }
 
   mainInitState() async {
