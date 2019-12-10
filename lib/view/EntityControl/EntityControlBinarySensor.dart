@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hasskit/helper/GeneralData.dart';
 import 'package:hasskit/helper/Logger.dart';
+import 'package:hasskit/helper/SquircleBorder.dart';
 import 'package:hasskit/helper/ThemeInfo.dart';
 import 'package:hasskit/model/Sensor.dart';
 import 'package:http/http.dart' as http;
@@ -96,26 +97,27 @@ class _EntityControlBinarySensorState extends State<EntityControlBinarySensor> {
                             child: Row(
                               children: <Widget>[
                                 SizedBox(width: 14),
-                                Container(
-                                  padding: EdgeInsets.all(2),
-                                  alignment: Alignment.center,
-                                  width: 40,
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: rec.isStateOn
-                                        ? ThemeInfo.colorIconActive
-                                            .withOpacity(0.25)
-                                        : ThemeInfo.colorIconInActive
-                                            .withOpacity(0),
-                                    border: Border.all(
+                                Material(
+                                  color: rec.isStateOn
+                                      ? ThemeInfo.colorIconActive
+                                          .withOpacity(0.25)
+                                      : ThemeInfo.colorIconInActive
+                                          .withOpacity(0),
+                                  shape: SquircleBorder(
+                                    side: BorderSide(
                                       color: ThemeInfo.colorIconActive,
-                                      width: 2.0,
+                                      width: 1.0,
                                     ),
                                   ),
-                                  child: FittedBox(
-                                    child: Text(
-                                        "${stateString(deviceClass, binarySensorsReversed[index].isStateOn, context)}"),
+                                  child: Container(
+                                    padding: EdgeInsets.all(2),
+                                    alignment: Alignment.center,
+                                    width: 40,
+                                    height: 40,
+                                    child: FittedBox(
+                                      child: Text(
+                                          "${stateString(deviceClass, binarySensorsReversed[index].isStateOn, context)}"),
+                                    ),
                                   ),
                                 ),
                                 SizedBox(width: 8),

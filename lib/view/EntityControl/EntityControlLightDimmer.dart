@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hasskit/helper/GeneralData.dart';
@@ -72,7 +73,7 @@ class LightSlider extends StatefulWidget {
 
 class LightSliderState extends State<LightSlider> {
   double buttonHeight = 300.0;
-  double buttonWidth = 90.0;
+  double buttonWidth = 126.0;
   double currentPosX;
   double currentPosY;
   double startPosX;
@@ -228,7 +229,7 @@ class LightSliderState extends State<LightSlider> {
                       width: buttonWidth,
                       height: upperPartHeight,
                       decoration: BoxDecoration(
-                        color: sliderColor,
+                        color: Colors.white,
                         borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(16),
                             topRight: Radius.circular(16)),
@@ -242,7 +243,7 @@ class LightSliderState extends State<LightSlider> {
                             .toString(),
                         style: TextStyle(
                           fontSize: 20,
-                          color: Colors.black54,
+                          color: sliderColor,
                         ),
                       ),
                     ),

@@ -1,12 +1,14 @@
 import 'dart:convert';
+
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:hasskit/helper/GeneralData.dart';
+import 'package:hasskit/helper/LocaleHelper.dart';
 import 'package:hasskit/helper/Logger.dart';
+import 'package:hasskit/helper/SquircleBorder.dart';
 import 'package:hasskit/helper/ThemeInfo.dart';
 import 'package:hasskit/model/BaseSetting.dart';
-import 'package:hasskit/helper/LocaleHelper.dart';
 
 class RgbColorSelector extends StatefulWidget {
   final String entityId;
@@ -46,15 +48,20 @@ class _RgbColorSelectorState extends State<RgbColorSelector> {
               gd.stringToColor(gd.baseSetting.colorPicker[selectedIndex]);
           openColorPicker();
         },
-        child: Container(
-          margin: EdgeInsets.all(5),
-          padding: EdgeInsets.all(2.0),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: ThemeInfo.colorBottomSheetReverse,
-          ),
-          child: CircleAvatar(
-            backgroundColor: gd.stringToColor(gd.baseSetting.colorPicker[i]),
+        child: Padding(
+          padding: const EdgeInsets.all(2.0),
+          child: Material(
+            color: gd.stringToColor(gd.baseSetting.colorPicker[i]),
+            shape: SquircleBorder(
+              side: BorderSide(
+                color: ThemeInfo.colorBottomSheetReverse,
+                width: 1.0,
+              ),
+            ),
+            child: Container(
+              width: 40,
+              height: 40,
+            ),
           ),
         ),
       );

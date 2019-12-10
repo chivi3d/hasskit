@@ -1,4 +1,5 @@
 import 'dart:ui';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -121,14 +122,14 @@ class _EntityButtonDisplayState extends State<EntityButtonDisplay> {
           ? ThemeInfo.colorBackgroundActive
           : ThemeInfo.colorEntityBackground,
       shape: SquircleBorder(
-        superRadius: 10,
+//        superRadius: 10,
 //        side: BorderSide(
 //          color: gd.entities[widget.entityId].isStateOn
 //              ? ThemeInfo.colorIconActive
 //              : Colors.transparent,
 //          width: 1.0,
 //        ),
-      ),
+          ),
 //    return ClipRRect(
 //      borderRadius:
 //          BorderRadius.all(Radius.circular(8 * 3 / gd.baseSetting.itemsPerRow)),
@@ -241,20 +242,20 @@ class EntityIcon extends StatelessWidget {
     var iconWidget;
     var entity = gd.entities[entityId];
     if (entity.entityId.contains("climate.")) {
-      iconWidget = Container(
-        alignment: Alignment.center,
-        padding: EdgeInsets.all(4 * gd.textScaleFactor),
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: gd.climateModeToColor(entity.state),
-        ),
-        child: AutoSizeText(
-          "${entity.getTemperature.toInt()}",
-          style: ThemeInfo.textNameButtonActive.copyWith(
-            color: ThemeInfo.colorBottomSheet,
-            fontSize: 100,
+      iconWidget = Material(
+        color: gd.climateModeToColor(entity.state),
+        shape: SquircleBorder(),
+        child: Container(
+          alignment: Alignment.center,
+          padding: EdgeInsets.all(4 * gd.textScaleFactor),
+          child: AutoSizeText(
+            "${entity.getTemperature.toInt()}",
+            style: ThemeInfo.textNameButtonActive.copyWith(
+              color: ThemeInfo.colorBottomSheet,
+              fontSize: 100,
+            ),
+            textScaleFactor: gd.textScaleFactor,
           ),
-          textScaleFactor: gd.textScaleFactor,
         ),
       );
     } else if (entity.entityId.contains("alarm_control_panel")) {

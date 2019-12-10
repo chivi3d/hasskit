@@ -1,12 +1,14 @@
 import 'dart:convert';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:hasskit/helper/GeneralData.dart';
+import 'package:hasskit/helper/LocaleHelper.dart';
 import 'package:hasskit/helper/Logger.dart';
 import 'package:hasskit/helper/MaterialDesignIcons.dart';
+import 'package:hasskit/helper/SquircleBorder.dart';
 import 'package:hasskit/helper/ThemeInfo.dart';
 import 'package:provider/provider.dart';
-import 'package:hasskit/helper/LocaleHelper.dart';
 
 class EntityControlAlarmPanel extends StatefulWidget {
   final String entityId;
@@ -183,21 +185,23 @@ class _EntityControlAlarmPanelState extends State<EntityControlAlarmPanel> {
               Stack(
                 alignment: Alignment.bottomCenter,
                 children: <Widget>[
-                  Container(
-                    width: 100,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
+                  Material(
+                    color: Colors.transparent,
+                    shape: SquircleBorder(
+                      side: BorderSide(
                         color: alarmColor,
-                        width: 4.0,
+                        width: 2.0,
                       ),
                     ),
-                    alignment: Alignment.center,
-                    child: Icon(
-                      MaterialDesignIcons.getIconDataFromIconName(alarmIcon),
-                      size: 50,
-                      color: alarmColor,
+                    child: Container(
+                      width: 100,
+                      height: 100,
+                      alignment: Alignment.center,
+                      child: Icon(
+                        MaterialDesignIcons.getIconDataFromIconName(alarmIcon),
+                        size: 50,
+                        color: alarmColor,
+                      ),
                     ),
                   ),
                   Container(

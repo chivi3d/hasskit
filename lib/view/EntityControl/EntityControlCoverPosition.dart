@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hasskit/helper/GeneralData.dart';
@@ -42,7 +43,7 @@ class CoverSlider extends StatefulWidget {
 
 class CoverSliderState extends State<CoverSlider> {
   double buttonHeight = 300.0;
-  double buttonWidth = 90.0;
+  double buttonWidth = 126.0;
   double currentPosX;
   double currentPosY;
   double startPosX;

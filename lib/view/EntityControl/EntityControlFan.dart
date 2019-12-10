@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:hasskit/helper/GeneralData.dart';
@@ -19,7 +20,7 @@ class EntityControlFan extends StatefulWidget {
 class _EntityControlFanState extends State<EntityControlFan> {
   double buttonValue;
   double buttonHeight = 300.0;
-  double buttonWidth = 90.0;
+  double buttonWidth = 126.0;
   double currentPosX;
   double currentPosY;
   double startPosX;
