@@ -1,11 +1,12 @@
 import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hasskit/helper/GeneralData.dart';
+import 'package:hasskit/helper/LocaleHelper.dart';
 import 'package:hasskit/helper/Logger.dart';
 import 'package:hasskit/helper/MaterialDesignIcons.dart';
 import 'package:hasskit/helper/WebSocket.dart';
-import 'package:hasskit/helper/LocaleHelper.dart';
 
 enum EntityType {
   lightSwitches,
@@ -68,6 +69,7 @@ class Entity {
   List<String> soundModeList;
   String soundModeRaw;
   String entityPicture;
+  String unitOfMeasurement;
 
   Entity({
     this.entityId,
@@ -119,6 +121,8 @@ class Entity {
     this.soundModeList,
     this.soundModeRaw = "",
     this.entityPicture = "",
+    //
+    this.unitOfMeasurement = "",
   });
 
   factory Entity.fromJson(Map<String, dynamic> json) {
@@ -288,6 +292,9 @@ class Entity {
             : "",
         entityPicture: json['attributes']['entity_picture'].toString() != null
             ? json['attributes']['entity_picture'].toString()
+            : "",
+        unitOfMeasurement: json['attributes']['unit_of_measurement'] != null
+            ? json['attributes']['unit_of_measurement'].toString()
             : "",
       );
     } catch (e) {

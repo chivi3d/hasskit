@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:core';
 import 'dart:math';
 import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flushbar/flushbar.dart';
@@ -229,10 +230,10 @@ class GeneralData with ChangeNotifier {
         continue;
       }
 
-//      if (entity.entityId.contains("device_tracker.")) {
-//        log.w(
-//            "\n socketGetStates ${entity.entityId} state ${entity.state} isStateOn ${entity.isStateOn} mess $mess");
-//      }
+      if (entity.entityId.contains("sensor.")) {
+        log.w(
+            "\n socketGetStates ${entity.entityId} state ${entity.state} isStateOn ${entity.isStateOn} mess $mess");
+      }
 
       if (previousEntitiesList.contains(entity.entityId))
         previousEntitiesList.remove(entity.entityId);
