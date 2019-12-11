@@ -1,8 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
+
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hasskit/helper/LocaleHelper.dart';
@@ -13,13 +16,11 @@ import 'package:hasskit/view/SettingPage.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:provider/provider.dart';
 import 'package:rate_my_app/rate_my_app.dart';
+
 import 'helper/GeneralData.dart';
 import 'helper/GoogleSign.dart';
 import 'helper/Logger.dart';
 import 'helper/MaterialDesignIcons.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:easy_localization/easy_localization.dart';
-
 import 'helper/RateMyApp.dart';
 
 void main() {
@@ -42,10 +43,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     gd = Provider.of<GeneralData>(context, listen: false);
-    gd.localeData = EasyLocalizationProvider.of(context).data;
+    var data = EasyLocalizationProvider.of(context).data;
 
     return EasyLocalizationProvider(
-      data: gd.localeData,
+      data: data,
       child: Selector<GeneralData, ThemeData>(
         selector: (_, generalData) => generalData.currentTheme,
         builder: (_, currentTheme, __) {
@@ -54,13 +55,13 @@ class MyApp extends StatelessWidget {
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
               EasylocaLizationDelegate(
-                  locale: gd.localeData.locale, path: 'assets/langs')
+                  locale: data.locale, path: 'assets/langs')
             ],
-            locale: gd.localeData.savedLocale,
+            locale: data.savedLocale,
             supportedLocales: [
+              Locale('en', 'US'), //MUST BE FIRST FOR DEFAULT LANGUAGE
               Locale('bg', 'BG'),
               Locale('el', 'GR'),
-              Locale('en', 'US'),
               Locale('he', 'IL'),
               Locale('nl', 'NL'),
               Locale('ru', 'RU'),

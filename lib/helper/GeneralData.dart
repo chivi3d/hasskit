@@ -230,10 +230,10 @@ class GeneralData with ChangeNotifier {
         continue;
       }
 
-      if (entity.entityId.contains("sensor.")) {
-        log.w(
-            "\n socketGetStates ${entity.entityId} state ${entity.state} isStateOn ${entity.isStateOn} mess $mess");
-      }
+//      if (entity.entityId.contains("sensor.")) {
+//        log.w(
+//            "\n socketGetStates ${entity.entityId} state ${entity.state} isStateOn ${entity.isStateOn} mess $mess");
+//      }
 
       if (previousEntitiesList.contains(entity.entityId))
         previousEntitiesList.remove(entity.entityId);
@@ -2141,7 +2141,7 @@ class GeneralData with ChangeNotifier {
 
   int webViewSupportMax = 3;
 
-  var localeData;
+//  var localeData;
 
   void httpApiStates() async {
     var client = new http.Client();

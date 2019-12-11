@@ -11,7 +11,7 @@
         "ok": "Ok",
         "left": "Left",
         "right": "Right",
-        "connect_hass": "Please Connect To Home Assistant",
+        "connect_hass": "Please Connect To\nHome Assistant",
         "last_update": "Last update",
         "cancel": "Cancel",
         "settings": "Settings",

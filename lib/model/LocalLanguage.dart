@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hasskit/helper/GeneralData.dart';
@@ -92,12 +93,27 @@ class _LocalLanguagePickerState extends State<LocalLanguagePicker> {
   @override
   void initState() {
     super.initState();
-    log.d("_LocalLanguagePickerState ${gd.localeData.savedLocale}");
     localLanguages.sort((a, b) => (a.displayName).compareTo(b.displayName));
   }
 
   @override
   Widget build(BuildContext context) {
+    var data = EasyLocalizationProvider.of(context).data;
+    var localizations = Localizations.localeOf(context);
+    var selectedValue;
+
+    if (data.savedLocale != null) {
+      selectedValue =
+          "${data.savedLocale.languageCode}_${data.savedLocale.countryCode}";
+    } else {
+      selectedValue =
+          "${localizations.languageCode}_${localizations.countryCode}";
+    }
+
+    log.d("data.savedLocale ${data.savedLocale}");
+    log.d("localizations $localizations");
+    log.d("selectedValue $selectedValue");
+
     return SliverList(
       delegate: SliverChildListDelegate(
         [
@@ -108,10 +124,7 @@ class _LocalLanguagePickerState extends State<LocalLanguagePicker> {
                 color: ThemeInfo.colorBottomSheet.withOpacity(0.5),
                 borderRadius: BorderRadius.circular(8)),
             child: DropdownButton<String>(
-              value: gd.localeData.savedLocale != null &&
-                      gd.localeData.savedLocale.toString() != null
-                  ? gd.localeData.savedLocale.toString()
-                  : "en_US",
+              value: selectedValue,
               items: localLanguages.map((LocalLanguage map) {
                 return DropdownMenuItem<String>(
                   value: "${map.languageCode}_${map.countryCode}",
@@ -135,7 +148,7 @@ class _LocalLanguagePickerState extends State<LocalLanguagePicker> {
                   var countryCode = newValue.split("_")[1];
                   log.d(
                       "newValue $newValue languageCode $languageCode countryCode $countryCode");
-                  gd.localeData.changeLocale(Locale(
+                  data.changeLocale(Locale(
                     languageCode,
                     countryCode,
                   ));
