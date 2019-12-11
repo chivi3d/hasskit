@@ -683,8 +683,6 @@ class GeneralData with ChangeNotifier {
         imageIndex: 12,
         tempEntityId: "sensor.temperature_158d0002e98f27",
         favorites: [
-          "WebView1",
-          "WebView3",
           "fan.acorn_fan",
           "climate.air_conditioner_1",
           "cover.cover_06",
@@ -702,6 +700,7 @@ class GeneralData with ChangeNotifier {
         entities: [
           "camera.camera_1",
           "camera.camera_2",
+          "WebView1",
         ],
         row3: [
           "switch.socket_sonoff_s20",
@@ -764,6 +763,7 @@ class GeneralData with ChangeNotifier {
           "cover.cover_08",
           "switch.socket_sonoff_s20",
           "switch.tuya_neo_coolcam_10a",
+          "WebView1",
         ],
         entities: [],
         row3: [],
