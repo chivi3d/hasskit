@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hasskit/helper/GeneralData.dart';
 import 'package:hasskit/helper/GoogleSign.dart';
+import 'package:hasskit/helper/LocaleHelper.dart';
 import 'package:hasskit/helper/Logger.dart';
 import 'package:hasskit/helper/MaterialDesignIcons.dart';
 import 'package:hasskit/helper/RateMyApp.dart';
@@ -13,10 +14,10 @@ import 'package:provider/provider.dart';
 import 'package:rate_my_app/rate_my_app.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:validators/validators.dart';
-import 'slivers/SliverHeader.dart';
+
 import 'HomeAssistantLogin.dart';
 import 'ServerSelectPanel.dart';
-import 'package:hasskit/helper/LocaleHelper.dart';
+import 'slivers/SliverHeader.dart';
 
 class SettingPage extends StatefulWidget {
   @override
@@ -304,62 +305,65 @@ class _SettingPageState extends State<SettingPage> {
                 title: Translate.getString("settings.language", context),
               ),
               LocalLanguagePicker(),
-              SliverList(
-                  delegate: SliverChildListDelegate([
-                Container(
-                  child: RaisedButton(
-                    onPressed: () => rateMyApp
-                        .showRateDialog(
-                          context,
-                          title: 'Rate This App',
-                          message:
-                              'If you like this app, please take a little bit of your time to review it!\n\nIt really helps us and it shouldn\'t take you more than one minute.',
-                          rateButton: 'Rate',
-                          noButton: 'No Thanks',
-                          laterButton: 'Maybe Later',
-                          ignoreIOS: false,
-                          dialogStyle: DialogStyle(),
-                        )
-                        .then((v) => setState(() {})),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          MaterialDesignIcons.getIconDataFromIconName(
-                              "mdi:star-outline"),
+              rateMyApp.doNotOpenAgain &&
+                      Theme.of(context).platform == TargetPlatform.iOS
+                  ? gd.emptySliver
+                  : SliverList(
+                      delegate: SliverChildListDelegate([
+                      Container(
+                        child: RaisedButton(
+                          onPressed: () => rateMyApp
+                              .showRateDialog(
+                                context,
+                                title: 'Rate This App',
+                                message:
+                                    'If you like this app, please take a little bit of your time to review it!\n\nIt really helps us and it shouldn\'t take you more than one minute.',
+                                rateButton: 'Rate',
+                                noButton: 'No Thanks',
+                                laterButton: 'Maybe Later',
+                                ignoreIOS: false,
+                                dialogStyle: DialogStyle(),
+                              )
+                              .then((v) => setState(() {})),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(
+                                MaterialDesignIcons.getIconDataFromIconName(
+                                    "mdi:star-outline"),
+                              ),
+                              Icon(
+                                MaterialDesignIcons.getIconDataFromIconName(
+                                    "mdi:star-outline"),
+                              ),
+                              Icon(
+                                MaterialDesignIcons.getIconDataFromIconName(
+                                    "mdi:star-outline"),
+                              ),
+                              Text(
+                                " Rate HassKit ",
+                                style: TextStyle(color: Colors.black),
+                                textScaleFactor: gd.textScaleFactorFix,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              Icon(
+                                MaterialDesignIcons.getIconDataFromIconName(
+                                    "mdi:star-outline"),
+                              ),
+                              Icon(
+                                MaterialDesignIcons.getIconDataFromIconName(
+                                    "mdi:star-outline"),
+                              ),
+                              Icon(
+                                MaterialDesignIcons.getIconDataFromIconName(
+                                    "mdi:star-outline"),
+                              ),
+                            ],
+                          ),
                         ),
-                        Icon(
-                          MaterialDesignIcons.getIconDataFromIconName(
-                              "mdi:star-outline"),
-                        ),
-                        Icon(
-                          MaterialDesignIcons.getIconDataFromIconName(
-                              "mdi:star-outline"),
-                        ),
-                        Text(
-                          " Rate HassKit ",
-                          style: TextStyle(color: Colors.black),
-                          textScaleFactor: gd.textScaleFactorFix,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        Icon(
-                          MaterialDesignIcons.getIconDataFromIconName(
-                              "mdi:star-outline"),
-                        ),
-                        Icon(
-                          MaterialDesignIcons.getIconDataFromIconName(
-                              "mdi:star-outline"),
-                        ),
-                        Icon(
-                          MaterialDesignIcons.getIconDataFromIconName(
-                              "mdi:star-outline"),
-                        ),
-                      ],
-                    ),
-                  ),
-                  padding: EdgeInsets.all(12),
-                ),
-              ])),
+                        padding: EdgeInsets.all(12),
+                      ),
+                    ])),
               SliverHeaderNormal(
                 icon: Icon(
                   MaterialDesignIcons.getIconDataFromIconName(

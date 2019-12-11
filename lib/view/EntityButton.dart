@@ -14,14 +14,11 @@ class EntityButton extends StatelessWidget {
   final String entityId;
   final Function onTapCallback;
   final Function onLongPressCallback;
-  final Color borderColor;
-  final String indicatorIcon;
-  const EntityButton(
-      {@required this.entityId,
-      @required this.onTapCallback,
-      @required this.onLongPressCallback,
-      @required this.borderColor,
-      @required this.indicatorIcon});
+  const EntityButton({
+    @required this.entityId,
+    @required this.onTapCallback,
+    @required this.onLongPressCallback,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -154,11 +151,13 @@ class _EntityButtonDisplayState extends State<EntityButtonDisplay> {
           children: <Widget>[
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
                 Expanded(
                   flex: 3,
                   child: Container(
-                    padding: EdgeInsets.all(4 * gd.textScaleFactor),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 4 * gd.textScaleFactor),
                     child: gd.showSpin ||
                             gd.entities[widget.entityId].state.contains("...")
                         ? FittedBox(
@@ -172,8 +171,9 @@ class _EntityButtonDisplayState extends State<EntityButtonDisplay> {
                             style: gd.entities[widget.entityId].isStateOn
                                 ? ThemeInfo.textStatusButtonActive
                                 : ThemeInfo.textStatusButtonInActive,
-                            maxLines: 3,
+                            maxLines: 2,
                             textScaleFactor: gd.textScaleFactor,
+                            textAlign: TextAlign.left,
                             overflow: TextOverflow.ellipsis,
                           ),
                   ),
@@ -193,6 +193,7 @@ class _EntityButtonDisplayState extends State<EntityButtonDisplay> {
                   style: gd.entities[widget.entityId].isStateOn
                       ? ThemeInfo.textNameButtonActive
                       : ThemeInfo.textNameButtonInActive,
+                  textAlign: TextAlign.left,
                   maxLines: 3,
                   textScaleFactor: gd.textScaleFactor,
                   overflow: TextOverflow.ellipsis,

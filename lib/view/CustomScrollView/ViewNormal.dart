@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:hasskit/helper/GeneralData.dart';
 import 'package:hasskit/helper/ThemeInfo.dart';
 import 'package:hasskit/model/Entity.dart';
-import 'package:hasskit/view/slivers/SliverHeader.dart';
 import 'package:hasskit/view/slivers/SliverEntities.dart';
-import 'package:hasskit/view/slivers/SliverNavigationBar.dart';
 import 'package:hasskit/view/slivers/SliverEntityStatusRunning.dart';
-import 'package:hasskit/view/slivers/SliverWebView.dart';
+import 'package:hasskit/view/slivers/SliverHeader.dart';
+import 'package:hasskit/view/slivers/SliverNavigationBar.dart';
 
 class ViewNormal extends StatelessWidget {
   final int roomIndex;
@@ -16,16 +15,12 @@ class ViewNormal extends StatelessWidget {
   Widget build(BuildContext context) {
 //    log.w("Widget build CustomScrollViewNormal");
 
-    var webView1 = webViewByRow(roomIndex, 1);
     var row1 = entityFilterByRow(roomIndex, 1, false);
     var row1Cam = entityFilterByRow(roomIndex, 1, true);
-    var webView2 = webViewByRow(roomIndex, 2);
     var row2 = entityFilterByRow(roomIndex, 2, false);
     var row2Cam = entityFilterByRow(roomIndex, 2, true);
-    var webView3 = webViewByRow(roomIndex, 3);
     var row3 = entityFilterByRow(roomIndex, 3, false);
     var row3Cam = entityFilterByRow(roomIndex, 3, true);
-    var webView4 = webViewByRow(roomIndex, 4);
     var row4 = entityFilterByRow(roomIndex, 4, false);
     var row4Cam = entityFilterByRow(roomIndex, 4, true);
 
@@ -40,16 +35,12 @@ class ViewNormal extends StatelessWidget {
 //        "");
 
     bool showAddFirstButton = false;
-    if (webView1.length +
-            row1.length +
+    if (row1.length +
             row1Cam.length +
-            webView2.length +
             row2.length +
             row2Cam.length +
-            webView3.length +
             row3.length +
             row3Cam.length +
-            webView4.length +
             row4.length +
             row4Cam.length <
         1) {
@@ -98,13 +89,8 @@ class ViewNormal extends StatelessWidget {
                 ),
               )
             : gd.emptySliver,
-        webView1.length + row1.length + row1Cam.length > 0
+        row1.length + row1Cam.length > 0
             ? SliverHeaderNormal(icon: Icon(Icons.looks_one), title: '')
-            : gd.emptySliver,
-        webView1.length > 0
-            ? SliverWebView(
-                webViews: webView1,
-              )
             : gd.emptySliver,
         row1.length > 0
             ? SliverEntitiesNormal(
@@ -122,13 +108,8 @@ class ViewNormal extends StatelessWidget {
                 entities: row1Cam,
               )
             : gd.emptySliver,
-        webView2.length + row2.length + row2Cam.length > 0
+        row2.length + row2Cam.length > 0
             ? SliverHeaderNormal(icon: Icon(Icons.looks_two), title: '')
-            : gd.emptySliver,
-        webView2.length > 0
-            ? SliverWebView(
-                webViews: webView2,
-              )
             : gd.emptySliver,
         row2.length > 0
             ? SliverEntitiesNormal(
@@ -146,13 +127,8 @@ class ViewNormal extends StatelessWidget {
                 entities: row2Cam,
               )
             : gd.emptySliver,
-        webView3.length + row3.length + row3Cam.length > 0
+        row3.length + row3Cam.length > 0
             ? SliverHeaderNormal(icon: Icon(Icons.looks_3), title: '')
-            : gd.emptySliver,
-        webView3.length > 0
-            ? SliverWebView(
-                webViews: webView3,
-              )
             : gd.emptySliver,
         row3.length > 0
             ? SliverEntitiesNormal(
@@ -166,17 +142,12 @@ class ViewNormal extends StatelessWidget {
             ? SliverEntitiesNormal(
                 roomIndex: roomIndex,
                 aspectRatio: 8 / 5,
-                isCamera: false,
+                isCamera: true,
                 entities: row3Cam,
               )
             : gd.emptySliver,
-        webView4.length + row4.length + row4.length > 0
+        row4.length + row4.length > 0
             ? SliverHeaderNormal(icon: Icon(Icons.looks_4), title: '')
-            : gd.emptySliver,
-        webView4.length > 0
-            ? SliverWebView(
-                webViews: webView4,
-              )
             : gd.emptySliver,
         row4.length > 0
             ? SliverEntitiesNormal(
@@ -296,7 +267,7 @@ List<String> webViewByRow(int roomIndex, int rowNumber) {
   return webViews;
 }
 
-List<Entity> entityFilterByRow(int roomIndex, int rowNumber, bool isCamera) {
+List<String> entityFilterByRow(int roomIndex, int rowNumber, bool isCamera) {
   List<String> roomRowEntities = [];
 
   switch (rowNumber) {
@@ -327,13 +298,13 @@ List<Entity> entityFilterByRow(int roomIndex, int rowNumber, bool isCamera) {
       break;
   }
 
-  List<Entity> entitiesFilter = [];
+  List<String> entitiesFilter = [];
   for (String entityId in roomRowEntities) {
-    var entity = gd.entities[entityId];
-    if (entity != null &&
-        (isCamera && entity.entityType == EntityType.cameras ||
-            !isCamera && entity.entityType != EntityType.cameras)) {
-      entitiesFilter.add(entity);
+    bool containCamera =
+        entityId.contains("camera.") || entityId.contains("WebView");
+
+    if (isCamera && containCamera || !isCamera && !containCamera) {
+      entitiesFilter.add(entityId);
     }
   }
 

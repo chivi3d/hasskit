@@ -9,13 +9,11 @@ import 'package:provider/provider.dart';
 
 class EntityCamera extends StatelessWidget {
   final String entityId;
-  final Color borderColor;
   final Function onTapCallback;
   final Function onLongPressCallback;
 
   const EntityCamera({
     @required this.entityId,
-    @required this.borderColor,
     @required this.onTapCallback,
     @required this.onLongPressCallback,
   });
@@ -77,9 +75,7 @@ class EntityCamera extends StatelessWidget {
                       ),
                       Container(
                         decoration: BoxDecoration(
-                          color: borderColor != Colors.transparent
-                              ? borderColor
-                              : ThemeInfo.colorBottomSheet.withOpacity(0.9),
+                          color: ThemeInfo.colorBottomSheet.withOpacity(0.9),
                           borderRadius: BorderRadius.only(
                               bottomLeft: Radius.circular(8),
                               bottomRight: Radius.circular(8)),
