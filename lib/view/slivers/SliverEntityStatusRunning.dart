@@ -81,7 +81,7 @@ class Status2ndRowItem extends StatelessWidget {
             shape: SquircleBorder(),
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 4),
-              padding: EdgeInsets.all(6),
+              padding: EdgeInsets.all(8 * gd.textScaleFactor),
               width: buttonSize,
               child: Column(
                 children: <Widget>[
@@ -94,8 +94,8 @@ class Status2ndRowItem extends StatelessWidget {
                           style: gd.entities[entityId].isStateOn
                               ? ThemeInfo.textStatusButtonActive
                               : ThemeInfo.textStatusButtonInActive,
-                          maxLines: 3,
-                          textScaleFactor: gd.textScaleFactor,
+                          maxLines: 2,
+                          textScaleFactor: gd.textScaleFactor * 0.9,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -121,7 +121,7 @@ class Status2ndRowItem extends StatelessWidget {
                             ? ThemeInfo.textNameButtonActive
                             : ThemeInfo.textNameButtonInActive,
                         maxLines: 3,
-                        textScaleFactor: gd.textScaleFactor * 0.75,
+                        textScaleFactor: gd.textScaleFactor * 0.9,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
