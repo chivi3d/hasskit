@@ -281,14 +281,17 @@ class SliverEntitiesSort extends StatelessWidget {
     if (totalItemPerRow < 1) totalItemPerRow = 1;
     var totalSpaceBetween = 8 * totalItemPerRow - 1;
     var width = (totalWidth - totalSpaceBetween - 8 * 2) / totalItemPerRow;
-    log.d(
-        "gd.mediaQueryWidth ${gd.mediaQueryWidth} totalWidth $totalWidth  totalItemPerRow $totalItemPerRow");
+//    log.d(
+//        "gd.mediaQueryWidth ${gd.mediaQueryWidth} totalWidth $totalWidth  totalItemPerRow $totalItemPerRow");
     List<Widget> entityShape = [];
-
+    List<String> entityIdFiltered = [];
     for (String entityId in entities) {
-      log.d("SliverEntitiesSort entityId $entityId");
+//      log.d("SliverEntitiesSort entityId $entityId");
       if (!entityId.contains("WebView") && gd.entities[entityId] == null)
         continue;
+
+      entityIdFiltered.add(entityId);
+
       Widget widget = Container(
         width: width,
         height: width * 1 / aspectRatio,
@@ -312,10 +315,10 @@ class SliverEntitiesSort extends StatelessWidget {
     }
 
     void _onReorder(int oldIndex, int newIndex) {
-      String oldEntityId = entities[oldIndex];
-      String newEntityId = entities[newIndex];
-      log.d(
-          "_onReorder oldIndex $oldIndex newIndex $newIndex roomIndex $roomIndex rowNumber $rowNumber oldEntityId $oldEntityId newEntityId $newEntityId");
+      String oldEntityId = entityIdFiltered[oldIndex];
+      String newEntityId = entityIdFiltered[newIndex];
+      log.w(
+          "_onReorder oldIndex $oldIndex newIndex $newIndex roomIndex $roomIndex rowNumber $rowNumber oldEntityId $oldEntityId newEntityId $newEntityId \n$entities");
       gd.roomEntitySort(roomIndex, rowNumber, oldEntityId, newEntityId);
     }
 

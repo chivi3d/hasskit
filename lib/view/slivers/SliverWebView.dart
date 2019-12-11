@@ -1,16 +1,17 @@
 import 'dart:async';
 import 'dart:ui';
+
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hasskit/helper/GeneralData.dart';
+import 'package:hasskit/helper/LocaleHelper.dart';
 import 'package:hasskit/helper/Logger.dart';
 import 'package:hasskit/helper/MaterialDesignIcons.dart';
 import 'package:hasskit/helper/ThemeInfo.dart';
-import 'package:flutter/gestures.dart';
-import 'package:hasskit/helper/LocaleHelper.dart';
 
 class SliverWebView extends StatelessWidget {
   final List<String> webViews;
@@ -61,7 +62,7 @@ class _WebViewState extends State<WebView> {
   double opacity = 0.2;
   bool showSpin = true;
   bool showAddress = false;
-  bool pinWebView = true;
+  bool pinWebView;
   double width;
 
   @override
@@ -70,6 +71,7 @@ class _WebViewState extends State<WebView> {
     currentUrl = gd.baseSetting.getWebViewUrl(widget.webViewsId);
     if (currentUrl == null) currentUrl = "https://embed.windy.com";
     textController.text = currentUrl;
+    pinWebView = true;
   }
 
   @override
@@ -155,7 +157,7 @@ class _WebViewState extends State<WebView> {
     return Container(
       child: InAppWebView(
         initialUrl: currentUrl,
-        gestureRecognizers: pinWebView ? null : gestureRecognizers,
+        gestureRecognizers: !pinWebView ? gestureRecognizers : null,
         initialHeaders: {},
         initialOptions: InAppWebViewWidgetOptions(
             inAppWebViewOptions: InAppWebViewOptions(
