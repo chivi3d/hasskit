@@ -1813,11 +1813,14 @@ class GeneralData with ChangeNotifier {
             url = url.replaceAll("/", "-");
             url = url.replaceAll(":", "-");
 
-            gd.entitiesOverrideString = documents.data["entitiesOverride"];
+            if (documents.data["entitiesOverride"].toString().length > 0)
+              gd.entitiesOverrideString = documents.data["entitiesOverride"];
 
-            gd.baseSettingString = documents.data["baseSetting $url"];
+            if (documents.data["baseSetting $url"].toString().length > 0)
+              gd.baseSettingString = documents.data["baseSetting $url"];
 
-            gd.roomListString = documents.data["roomList $url"];
+            if (documents.data["roomList $url"].toString().length > 0)
+              gd.roomListString = documents.data["roomList $url"];
           }
         }
       }
@@ -1851,6 +1854,7 @@ class GeneralData with ChangeNotifier {
       var url = gd.loginDataCurrent.getUrl.replaceAll(".", "-");
       url = url.replaceAll("/", "-");
       url = url.replaceAll(":", "-");
+
       //force the trigger reset
       gd.entitiesOverrideString = "";
       gd.entitiesOverrideString = await gd.getString('entitiesOverride');
@@ -1897,16 +1901,25 @@ class GeneralData with ChangeNotifier {
         url = url.replaceAll("/", "-");
         url = url.replaceAll(":", "-");
 
-        //force the trigger reset
-        gd.entitiesOverrideString = "";
-        gd.entitiesOverrideString = ds["entitiesOverride"];
+        var entitiesOverride = ds["entitiesOverride"].toString();
+        if (entitiesOverride.length > 0) {
+          //force the trigger reset
+          gd.entitiesOverrideString = "";
+          gd.entitiesOverrideString = entitiesOverride;
+        }
 
-        //force the trigger reset
-        gd.baseSettingString = "";
-        gd.baseSettingString = ds['baseSetting $url'];
-        //force the trigger reset
-        gd.roomListString = "";
-        gd.roomListString = ds['roomList $url'];
+        var baseSetting = ds['baseSetting $url'].toString();
+        if (baseSetting.length > 0) {
+          gd.baseSettingString = "";
+          gd.baseSettingString = baseSetting;
+        }
+
+        var roomList = ds['roomList $url'].toString();
+        if (roomList.length > 0) {
+          //force the trigger reset
+          gd.roomListString = "";
+          gd.roomListString = roomList;
+        }
 
         if (gd.roomListString == null || gd.roomListString.length < 1) {
           if (gd.currentUrl == "http://hasskitdemo.duckdns.org:8123") {
@@ -1915,6 +1928,7 @@ class GeneralData with ChangeNotifier {
             gd.roomListString = json.encode(gd.roomListDefault);
           }
         }
+
         if (gd.baseSetting == null) {
           if (gd.currentUrl == "http://hasskitdemo.duckdns.org:8123") {
             gd.baseSetting = gd.baseSettingHassKitDemo;
