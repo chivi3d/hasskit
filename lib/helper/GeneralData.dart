@@ -2183,34 +2183,6 @@ class GeneralData with ChangeNotifier {
     }
   }
 
-//  int _phoneLayout = 3;
-//
-//  int get phoneLayout => _phoneLayout;
-//
-//  set phoneLayout(int val) {
-//    if (val == null) {
-//      throw new ArgumentError();
-//    }
-//    if (_phoneLayout != val) {
-//      _phoneLayout = val;
-//      notifyListeners();
-//    }
-//  }
-//
-//  int _tabletLayout = 69;
-//
-//  int get tabletLayout => _tabletLayout;
-//
-//  set tabletLayout(int val) {
-//    if (val == null) {
-//      throw new ArgumentError();
-//    }
-//    if (_tabletLayout != val) {
-//      _tabletLayout = val;
-//      notifyListeners();
-//    }
-//  }
-
   BuildContext mediaQueryContext;
   int get layoutCameraCount {
     if (!isTablet) return 1;

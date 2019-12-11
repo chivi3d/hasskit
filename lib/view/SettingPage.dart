@@ -646,12 +646,12 @@ class _LayoutSelectorState extends State<LayoutSelector> {
   @override
   void initState() {
     super.initState();
-    phoneValue = gd.baseSetting.phoneLayout;
-    tabletValue = gd.baseSetting.tabletLayout;
   }
 
   @override
   Widget build(BuildContext context) {
+    phoneValue = gd.baseSetting.phoneLayout;
+    tabletValue = gd.baseSetting.tabletLayout;
     return SliverList(
       delegate: SliverChildListDelegate(
         [
