@@ -314,6 +314,8 @@ PODS:
   - nanopb/encode (0.3.9011)
   - package_info (0.0.1):
     - Flutter
+  - rate_my_app (0.1):
+    - Flutter
   - shared_preferences (0.0.1):
     - Flutter
   - url_launcher (0.0.1):
@@ -333,6 +335,7 @@ DEPENDENCIES:
   - flutter_webview_plugin (from `.symlinks/plugins/flutter_webview_plugin/ios`)
   - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
   - package_info (from `.symlinks/plugins/package_info/ios`)
+  - rate_my_app (from `.symlinks/plugins/rate_my_app/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
   - video_player (from `.symlinks/plugins/video_player/ios`)
@@ -383,6 +386,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/google_sign_in/ios"
   package_info:
     :path: ".symlinks/plugins/package_info/ios"
+  rate_my_app:
+    :path: ".symlinks/plugins/rate_my_app/ios"
   shared_preferences:
     :path: ".symlinks/plugins/shared_preferences/ios"
   url_launcher:
@@ -425,6 +430,7 @@ SPEC CHECKSUMS:
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   package_info: 48b108e75b8802c2d5e126f208ef540561c98aef
+  rate_my_app: 45513a2f4d9a55b7b46d19b64fc13882fd101157
   shared_preferences: 430726339841afefe5142b9c1f50cb6bd7793e01
   url_launcher: a1c0cc845906122c4784c542523d8cacbded5626
   video_player: 69c5f029fac4ffe4fc8a85ea7f7b793709661549
