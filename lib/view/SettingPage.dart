@@ -114,6 +114,7 @@ class _SettingPageState extends State<SettingPage> {
           "${generalData.connectionStatus} | "
           "${generalData.baseSetting.phoneLayout} | "
           "${generalData.baseSetting.tabletLayout} | "
+          "${generalData.baseSetting.shapeLayout} | "
           "${generalData.loginDataList.length} | "),
       builder: (_, string, __) {
         return Container(
@@ -298,15 +299,8 @@ class _SettingPageState extends State<SettingPage> {
                 ),
                 title: Translate.getString("settings.layout", context),
               ),
+              ShapeSelector(),
               LayoutSelector(),
-//              ShapeSelector(),
-              SliverHeaderNormal(
-                icon: Icon(
-                  MaterialDesignIcons.getIconDataFromIconName("mdi:web"),
-                ),
-                title: Translate.getString("settings.language", context),
-              ),
-              LocalLanguagePicker(),
               rateMyApp.doNotOpenAgain &&
                       Theme.of(context).platform == TargetPlatform.iOS
                   ? gd.emptySliver
@@ -366,6 +360,13 @@ class _SettingPageState extends State<SettingPage> {
                         padding: EdgeInsets.all(12),
                       ),
                     ])),
+              SliverHeaderNormal(
+                icon: Icon(
+                  MaterialDesignIcons.getIconDataFromIconName("mdi:web"),
+                ),
+                title: Translate.getString("settings.language", context),
+              ),
+              LocalLanguagePicker(),
               SliverHeaderNormal(
                 icon: Icon(
                   MaterialDesignIcons.getIconDataFromIconName(
@@ -676,59 +677,83 @@ class _LayoutSelectorState extends State<LayoutSelector> {
   }
 }
 
-class ShapeSelector extends StatelessWidget {
+class ShapeSelector extends StatefulWidget {
+  @override
+  _ShapeSelectorState createState() => _ShapeSelectorState();
+}
+
+class _ShapeSelectorState extends State<ShapeSelector> {
   @override
   Widget build(BuildContext context) {
+    Widget widget0 = Column(
+      children: <Widget>[
+        Container(
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: gd.baseSetting.shapeLayout == 0
+                ? ThemeInfo.colorIconActive
+                : ThemeInfo.colorIconInActive,
+            borderRadius: BorderRadius.circular(4),
+          ),
+          width: 30,
+          height: 30,
+        )
+      ],
+    );
+    Widget widget1 = Column(
+      children: <Widget>[
+        Material(
+          color: gd.baseSetting.shapeLayout == 1
+              ? ThemeInfo.colorIconActive
+              : ThemeInfo.colorIconInActive,
+          shape: SquircleBorder(superRadius: 5),
+          child: Container(
+            alignment: Alignment.center,
+            width: 30,
+            height: 30,
+          ),
+        ),
+      ],
+    );
+    Widget widget2 = Column(
+      children: <Widget>[
+        Container(
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: gd.baseSetting.shapeLayout == 2
+                ? ThemeInfo.colorIconActive
+                : ThemeInfo.colorIconInActive,
+            borderRadius: BorderRadius.circular(4),
+          ),
+          width: 48,
+          height: 30,
+        ),
+      ],
+    );
+
+    final Map<int, Widget> phoneSegment = <int, Widget>{
+      0: widget0,
+      1: widget1,
+      2: widget2,
+    };
     return SliverList(
       delegate: SliverChildListDelegate(
         [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              Container(
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: ThemeInfo.colorBackgroundActive,
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                width: 96,
-                height: 60,
-                child: Text(
-                  "Rectangle",
-                  textAlign: TextAlign.center,
-                  textScaleFactor: gd.textScaleFactorFix,
-                ),
-              ),
-              Material(
-                color: ThemeInfo.colorBackgroundActive,
-                shape: SquircleBorder(),
-                child: Container(
-                  alignment: Alignment.center,
-                  width: 60,
-                  height: 60,
-                  child: Text(
-                    "Squircle",
-                    textAlign: TextAlign.center,
-                    textScaleFactor: gd.textScaleFactorFix,
-                  ),
-                ),
-              ),
-              Container(
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: ThemeInfo.colorBackgroundActive,
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                width: 60,
-                height: 60,
-                child: Text(
-                  "Square",
-                  textAlign: TextAlign.center,
-                  textScaleFactor: gd.textScaleFactorFix,
-                ),
-              ),
-            ],
-          )
+          CupertinoSegmentedControl<int>(
+            borderColor: Colors.transparent,
+            selectedColor: Colors.transparent,
+            unselectedColor: Colors.transparent,
+            pressedColor: Colors.transparent,
+            padding: EdgeInsets.all(12),
+            children: phoneSegment,
+            onValueChanged: (int val) {
+              setState(() {
+                gd.baseSetting.shapeLayout = val;
+                gd.baseSettingSave(true);
+              });
+            },
+            groupValue: gd.baseSetting.shapeLayout,
+          ),
         ],
       ),
     );

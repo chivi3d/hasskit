@@ -19,6 +19,7 @@ const List<String> baseSettingDefaultColor = [
 class BaseSetting {
   int phoneLayout;
   int tabletLayout;
+  int shapeLayout;
   int themeIndex;
   String lastArmType;
   List<String> notificationDevices;
@@ -33,6 +34,7 @@ class BaseSetting {
   BaseSetting({
     @required this.phoneLayout,
     @required this.tabletLayout,
+    @required this.shapeLayout,
     @required this.themeIndex,
     @required this.lastArmType,
     @required this.notificationDevices,
@@ -48,6 +50,7 @@ class BaseSetting {
   Map<String, dynamic> toJson() => {
         'phoneLayout': phoneLayout,
         'tabletLayout': tabletLayout,
+        'shapeLayout': shapeLayout,
         'themeIndex': themeIndex,
         'lastArmType': lastArmType,
         'notificationDevices': notificationDevices,
@@ -64,6 +67,7 @@ class BaseSetting {
     return BaseSetting(
       phoneLayout: json['phoneLayout'] != null ? json['phoneLayout'] : 3,
       tabletLayout: json['tabletLayout'] != null ? json['tabletLayout'] : 69,
+      shapeLayout: json['shapeLayout'] != null ? json['shapeLayout'] : 1,
       themeIndex: json['themeIndex'] != null ? json['themeIndex'] : 1,
       lastArmType:
           json['lastArmType'] != null ? json['lastArmType'] : "arm_away",

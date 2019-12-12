@@ -6,7 +6,6 @@ import 'package:hasskit/helper/GeneralData.dart';
 import 'package:hasskit/helper/LocaleHelper.dart';
 import 'package:hasskit/helper/Logger.dart';
 import 'package:hasskit/helper/MaterialDesignIcons.dart';
-import 'package:hasskit/helper/SquircleBorder.dart';
 import 'package:hasskit/helper/ThemeInfo.dart';
 import 'package:provider/provider.dart';
 
@@ -187,11 +186,16 @@ class _EntityControlAlarmPanelState extends State<EntityControlAlarmPanel> {
                 children: <Widget>[
                   Material(
                     color: Colors.transparent,
-                    shape: SquircleBorder(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(100),
                       side: BorderSide(
+                        width: 2,
                         color: alarmColor,
-                        width: 2.0,
                       ),
+//                      side: BorderSide(
+//                        color: alarmColor,
+//                        width: 2.0,
+//                      ),
                     ),
                     child: Container(
                       width: 100,

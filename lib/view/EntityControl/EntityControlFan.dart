@@ -60,7 +60,7 @@ class _EntityControlFanState extends State<EntityControlFan> {
             buttonValue = lowerPartHeight;
           } else {
             if (entity.speedList.contains(entity.speed)) {
-              currentStep = entity.speedList.indexOf(entity.speed);
+              currentStep = entity.speedList.indexOf(entity.speed.toString());
               buttonValue = lowerPartHeight + currentStep * stepLength;
             }
           }

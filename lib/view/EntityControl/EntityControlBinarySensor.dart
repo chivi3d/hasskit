@@ -1,16 +1,17 @@
+import 'dart:convert';
+
 import 'package:duration/duration.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hasskit/helper/GeneralData.dart';
+import 'package:hasskit/helper/LocaleHelper.dart';
 import 'package:hasskit/helper/Logger.dart';
 import 'package:hasskit/helper/SquircleBorder.dart';
 import 'package:hasskit/helper/ThemeInfo.dart';
 import 'package:hasskit/model/Sensor.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
-import 'package:hasskit/helper/LocaleHelper.dart';
 
 class EntityControlBinarySensor extends StatefulWidget {
   final String entityId;
@@ -103,12 +104,27 @@ class _EntityControlBinarySensorState extends State<EntityControlBinarySensor> {
                                           .withOpacity(0.25)
                                       : ThemeInfo.colorIconInActive
                                           .withOpacity(0),
-                                  shape: SquircleBorder(
-                                    side: BorderSide(
-                                      color: ThemeInfo.colorIconActive,
-                                      width: 1.0,
-                                    ),
-                                  ),
+                                  shape: gd.baseSetting.shapeLayout == 1
+                                      ? SquircleBorder(
+                                          side: BorderSide(
+                                            color: ThemeInfo.colorIconActive,
+                                            width: 1.0,
+                                          ),
+                                        )
+                                      : RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          side: BorderSide(
+                                            color: ThemeInfo.colorIconActive,
+                                            width: 1.0,
+                                          ),
+                                        ),
+//                                  shape: SquircleBorder(
+//                                    side: BorderSide(
+//                                      color: ThemeInfo.colorIconActive,
+//                                      width: 1.0,
+//                                    ),
+//                                  ),
                                   child: Container(
                                     padding: EdgeInsets.all(2),
                                     alignment: Alignment.center,

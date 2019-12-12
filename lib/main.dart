@@ -262,6 +262,7 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
           "${Localizations.localeOf(context).languageCode} | " +
           "${generalData.baseSetting.phoneLayout} | " +
           "${generalData.baseSetting.tabletLayout} | " +
+          "${generalData.baseSetting.shapeLayout} | " +
           "${generalData.mediaQueryHeight} | " +
           "${generalData.connectionStatus} | " +
           "${generalData.roomList.length} | ",
@@ -297,8 +298,10 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
                     ),
                   ),
                   BottomNavigationBarItem(
-                    icon: Icon(MaterialDesignIcons.getIconDataFromIconName(
-                        "mdi:view-carousel")),
+                    icon: Icon(
+                      MaterialDesignIcons.getIconDataFromIconName(
+                          "mdi:view-carousel"),
+                    ),
                     title: Text(
 //                  gd.getRoomName(gd.lastSelectedRoom + 1),
                       Translate.getString("global.rooms", context),

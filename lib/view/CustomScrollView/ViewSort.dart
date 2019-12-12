@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hasskit/helper/GeneralData.dart';
 import 'package:hasskit/model/Entity.dart';
+import 'package:hasskit/view/CustomScrollView/ViewNormal.dart';
 import 'package:hasskit/view/slivers/SliverEntities.dart';
 import 'package:hasskit/view/slivers/SliverNavigationBar.dart';
-import 'package:hasskit/view/CustomScrollView/ViewNormal.dart';
 
 import '../slivers/SliverHeader.dart';
 
@@ -37,7 +37,7 @@ class ViewSort extends StatelessWidget {
         row1.length > 0
             ? SliverEntitiesSort(
                 roomIndex: roomIndex,
-                aspectRatio: 8 / 8,
+                aspectRatio: gd.buttonRatio,
                 isCamera: false,
                 entities: row1,
                 rowNumber: 1,
@@ -58,7 +58,7 @@ class ViewSort extends StatelessWidget {
         row2.length > 0
             ? SliverEntitiesSort(
                 roomIndex: roomIndex,
-                aspectRatio: 8 / 8,
+                aspectRatio: gd.buttonRatio,
                 isCamera: false,
                 entities: row2,
                 rowNumber: 2,
@@ -79,7 +79,7 @@ class ViewSort extends StatelessWidget {
         row3.length > 0
             ? SliverEntitiesSort(
                 roomIndex: roomIndex,
-                aspectRatio: 8 / 8,
+                aspectRatio: gd.buttonRatio,
                 isCamera: false,
                 entities: row3,
                 rowNumber: 3,
@@ -100,7 +100,7 @@ class ViewSort extends StatelessWidget {
         row4.length > 0
             ? SliverEntitiesSort(
                 roomIndex: roomIndex,
-                aspectRatio: 8 / 8,
+                aspectRatio: gd.buttonRatio,
                 isCamera: false,
                 entities: row4,
                 rowNumber: 4,

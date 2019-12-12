@@ -1052,7 +1052,7 @@ class GeneralData with ChangeNotifier {
         recVal = recVal + '???' + " ";
       }
     }
-    return recVal;
+    return recVal.trim();
 //    if (text.length > 1) {
 //      return text[0].toUpperCase() + text.substring(1);
 //    } else if (text.length > 0) {
@@ -1342,6 +1342,7 @@ class GeneralData with ChangeNotifier {
   BaseSetting baseSetting = BaseSetting(
       phoneLayout: 3,
       tabletLayout: 69,
+      shapeLayout: 1,
       themeIndex: 1,
       lastArmType: "arm_home",
       notificationDevices: [],
@@ -1370,6 +1371,7 @@ class GeneralData with ChangeNotifier {
         log.w('CAN NOT FIND baseSetting adding default data');
         baseSetting.phoneLayout = 3;
         baseSetting.tabletLayout = 69;
+        baseSetting.shapeLayout = 1;
         baseSetting.themeIndex = 1;
         baseSetting.lastArmType = "arm_away";
         baseSetting.notificationDevices = [];
@@ -1404,6 +1406,7 @@ class GeneralData with ChangeNotifier {
       var jsonBaseSetting = {
         'phoneLayout': baseSetting.phoneLayout,
         'tabletLayout': baseSetting.tabletLayout,
+        'shapeLayout': baseSetting.shapeLayout,
         'themeIndex': baseSetting.themeIndex,
         'lastArmType': baseSetting.lastArmType,
         'notificationDevices': baseSetting.notificationDevices,
@@ -1434,6 +1437,7 @@ class GeneralData with ChangeNotifier {
     themeIndex: 1,
     phoneLayout: 3,
     tabletLayout: 69,
+    shapeLayout: 1,
     lastArmType: "arm_away",
     colorPicker: [
       "0xffEEEEEE",
@@ -2239,4 +2243,9 @@ class GeneralData with ChangeNotifier {
       date.month.toString().padLeft(2, '0') +
       '/' +
       date.year.toString();
+
+  double get buttonRatio {
+    if (baseSetting.shapeLayout == 2) return 8 / 5;
+    return 1;
+  }
 }

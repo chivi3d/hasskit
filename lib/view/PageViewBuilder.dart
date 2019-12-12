@@ -70,6 +70,7 @@ class SinglePage extends StatelessWidget {
           "${generalData.mediaQueryOrientation} |" +
           "${generalData.baseSetting.phoneLayout} |" +
           "${generalData.baseSetting.tabletLayout} |" +
+          "${generalData.baseSetting.shapeLayout} |" +
           "${generalData.mediaQueryHeight} |" +
           "${generalData.roomList.length} |" +
           "${generalData.entities.length} |" +

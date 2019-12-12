@@ -192,11 +192,11 @@ class Entity {
             ? json['attributes']['oscillating']
             : null,
         speed: json['attributes']['speed_level'] != null
-            ? json['attributes']['speed_level']
+            ? json['attributes']['speed_level'].toString()
             : json['attributes']['direct_speed'] != null
-                ? json['attributes']['direct_speed']
+                ? json['attributes']['direct_speed'].toString()
                 : json['attributes']['speed'] != null
-                    ? json['attributes']['speed']
+                    ? json['attributes']['speed'].toString()
                     : "0",
 
         angle: int.tryParse(json['attributes']['angle'].toString()) != null

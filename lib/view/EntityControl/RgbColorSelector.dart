@@ -52,12 +52,20 @@ class _RgbColorSelectorState extends State<RgbColorSelector> {
           padding: const EdgeInsets.all(2.0),
           child: Material(
             color: gd.stringToColor(gd.baseSetting.colorPicker[i]),
-            shape: SquircleBorder(
-              side: BorderSide(
-                color: ThemeInfo.colorBottomSheetReverse,
-                width: 1.0,
-              ),
-            ),
+            shape: gd.baseSetting.shapeLayout == 1
+                ? SquircleBorder(
+                    side: BorderSide(
+                      color: ThemeInfo.colorBottomSheetReverse,
+                      width: 1.0,
+                    ),
+                  )
+                : RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    side: BorderSide(
+                      color: ThemeInfo.colorBottomSheetReverse,
+                      width: 1.0,
+                    ),
+                  ),
             child: Container(
               width: 40,
               height: 40,
