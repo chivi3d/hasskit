@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hasskit/helper/GeneralData.dart';
 import 'package:hasskit/helper/MaterialDesignIcons.dart';
 import 'package:hasskit/helper/SquircleBorder.dart';
@@ -84,21 +85,10 @@ class Status2ndRowItem extends StatelessWidget {
               padding: EdgeInsets.all(8 * gd.textScaleFactor),
               width: buttonSize,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      Expanded(
-                        flex: 2,
-                        child: Text(
-                          "${gd.textToDisplay(gd.entities[entityId].getStateDisplayTranslated(context))}",
-                          style: gd.entities[entityId].isStateOn
-                              ? ThemeInfo.textStatusButtonActive
-                              : ThemeInfo.textStatusButtonInActive,
-                          maxLines: 2,
-                          textScaleFactor: gd.textScaleFactor * 0.9,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
                       Expanded(
                         flex: 2,
                         child: FittedBox(
@@ -108,6 +98,23 @@ class Status2ndRowItem extends StatelessWidget {
                             color: ThemeInfo.colorIconActive,
                             size: 100,
                           ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 3,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 4 * gd.textScaleFactor),
+                          child: gd.showSpin ||
+                                  gd.entities[entityId].state.contains("...")
+                              ? FittedBox(
+                                  child: SpinKitThreeBounce(
+                                    size: 100,
+                                    color: ThemeInfo.colorIconActive
+                                        .withOpacity(0.5),
+                                  ),
+                                )
+                              : Container(),
                         ),
                       ),
                     ],
@@ -120,11 +127,20 @@ class Status2ndRowItem extends StatelessWidget {
                         style: gd.entities[entityId].isStateOn
                             ? ThemeInfo.textNameButtonActive
                             : ThemeInfo.textNameButtonInActive,
-                        maxLines: 3,
+                        maxLines: 2,
                         textScaleFactor: gd.textScaleFactor * 0.9,
-                        overflow: TextOverflow.ellipsis,
+                        overflow: TextOverflow.clip,
                       ),
                     ),
+                  ),
+                  Text(
+                    "${gd.textToDisplay(gd.entities[entityId].getStateDisplayTranslated(context))}",
+                    style: gd.entities[entityId].isStateOn
+                        ? ThemeInfo.textStatusButtonActive
+                        : ThemeInfo.textStatusButtonInActive,
+                    maxLines: 1,
+                    textScaleFactor: gd.textScaleFactor * 0.9,
+                    overflow: TextOverflow.clip,
                   ),
                 ],
               ),

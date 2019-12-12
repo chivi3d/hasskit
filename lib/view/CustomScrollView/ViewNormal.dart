@@ -146,7 +146,7 @@ class ViewNormal extends StatelessWidget {
                 entities: row3Cam,
               )
             : gd.emptySliver,
-        row4.length + row4.length > 0
+        row4.length + row4Cam.length > 0
             ? SliverHeaderNormal(icon: Icon(Icons.looks_4), title: '')
             : gd.emptySliver,
         row4.length > 0
@@ -300,8 +300,15 @@ List<String> entityFilterByRow(int roomIndex, int rowNumber, bool isCamera) {
 
   List<String> entitiesFilter = [];
   for (String entityId in roomRowEntities) {
+    if (!entityId.contains("WebView") && gd.entities[entityId] == null)
+      continue;
+
     bool containCamera =
         entityId.contains("camera.") || entityId.contains("WebView");
+//
+//    if (containCamera) {
+//      log.w("containCamera $entityId");
+//    }
 
     if (isCamera && containCamera || !isCamera && !containCamera) {
       entitiesFilter.add(entityId);

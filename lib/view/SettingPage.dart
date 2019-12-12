@@ -6,6 +6,7 @@ import 'package:hasskit/helper/LocaleHelper.dart';
 import 'package:hasskit/helper/Logger.dart';
 import 'package:hasskit/helper/MaterialDesignIcons.dart';
 import 'package:hasskit/helper/RateMyApp.dart';
+import 'package:hasskit/helper/SquircleBorder.dart';
 import 'package:hasskit/helper/ThemeInfo.dart';
 import 'package:hasskit/model/LocalLanguage.dart';
 import 'package:hasskit/model/LoginData.dart';
@@ -298,6 +299,7 @@ class _SettingPageState extends State<SettingPage> {
                 title: Translate.getString("settings.layout", context),
               ),
               LayoutSelector(),
+//              ShapeSelector(),
               SliverHeaderNormal(
                 icon: Icon(
                   MaterialDesignIcons.getIconDataFromIconName("mdi:web"),
@@ -643,10 +645,6 @@ class _LayoutSelectorState extends State<LayoutSelector> {
   };
   int phoneValue;
   int tabletValue;
-//  @override
-//  void initState() {
-//    super.initState();
-//  }
 
   @override
   Widget build(BuildContext context) {
@@ -672,6 +670,65 @@ class _LayoutSelectorState extends State<LayoutSelector> {
             },
             groupValue: gd.isTablet ? tabletValue : phoneValue,
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class ShapeSelector extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SliverList(
+      delegate: SliverChildListDelegate(
+        [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              Container(
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: ThemeInfo.colorBackgroundActive,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                width: 96,
+                height: 60,
+                child: Text(
+                  "Rectangle",
+                  textAlign: TextAlign.center,
+                  textScaleFactor: gd.textScaleFactorFix,
+                ),
+              ),
+              Material(
+                color: ThemeInfo.colorBackgroundActive,
+                shape: SquircleBorder(),
+                child: Container(
+                  alignment: Alignment.center,
+                  width: 60,
+                  height: 60,
+                  child: Text(
+                    "Squircle",
+                    textAlign: TextAlign.center,
+                    textScaleFactor: gd.textScaleFactorFix,
+                  ),
+                ),
+              ),
+              Container(
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: ThemeInfo.colorBackgroundActive,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                width: 60,
+                height: 60,
+                child: Text(
+                  "Square",
+                  textAlign: TextAlign.center,
+                  textScaleFactor: gd.textScaleFactorFix,
+                ),
+              ),
+            ],
+          )
         ],
       ),
     );

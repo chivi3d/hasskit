@@ -114,93 +114,79 @@ class EntityButtonDisplay extends StatefulWidget {
 class _EntityButtonDisplayState extends State<EntityButtonDisplay> {
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: gd.entities[widget.entityId].isStateOn
-          ? ThemeInfo.colorBackgroundActive
-          : ThemeInfo.colorEntityBackground,
-      shape: SquircleBorder(
-//        superRadius: 10,
-//        side: BorderSide(
-//          color: gd.entities[widget.entityId].isStateOn
-//              ? ThemeInfo.colorIconActive
-//              : Colors.transparent,
-//          width: 1.0,
-//        ),
-          ),
-//    return ClipRRect(
-//      borderRadius:
-//          BorderRadius.all(Radius.circular(8 * 3 / gd.baseSetting.itemsPerRow)),
-      child: AnimatedContainer(
-        duration: Duration(milliseconds: 100),
-        onEnd: () {
-          setState(() {
-            gd.clickedStatus.remove(widget.entityId);
-          });
-        },
-        padding: gd.getClickedStatus(widget.entityId)
-            ? EdgeInsets.all(12 * gd.textScaleFactor)
-            : EdgeInsets.all(10 * gd.textScaleFactor),
-        decoration: BoxDecoration(
-//          color: gd.entities[widget.entityId].isStateOn
-//              ? ThemeInfo.colorBackgroundActive
-//              : ThemeInfo.colorEntityBackground,
-//          color: Colors.transparent,
-            ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: <Widget>[
-                Expanded(
-                  flex: 3,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 4 * gd.textScaleFactor),
-                    child: gd.showSpin ||
-                            gd.entities[widget.entityId].state.contains("...")
-                        ? FittedBox(
-                            child: SpinKitThreeBounce(
-                              size: 100,
-                              color: ThemeInfo.colorIconActive.withOpacity(0.5),
-                            ),
-                          )
-                        : Text(
-                            "${gd.textToDisplay(gd.entities[widget.entityId].getStateDisplayTranslated(context))}${gd.entities[widget.entityId].unitOfMeasurement}",
-                            style: gd.entities[widget.entityId].isStateOn
-                                ? ThemeInfo.textStatusButtonActive
-                                : ThemeInfo.textStatusButtonInActive,
-                            maxLines: 2,
-                            textScaleFactor: gd.textScaleFactor,
-                            textAlign: TextAlign.left,
-                            overflow: TextOverflow.ellipsis,
-                          ),
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 100),
+      onEnd: () {
+        setState(() {
+          gd.clickedStatus.remove(widget.entityId);
+        });
+      },
+      padding: gd.getClickedStatus(widget.entityId)
+          ? EdgeInsets.all(2 * gd.textScaleFactor)
+          : EdgeInsets.all(0 * gd.textScaleFactor),
+      child: Material(
+        color: gd.entities[widget.entityId].isStateOn
+            ? ThemeInfo.colorBackgroundActive
+            : ThemeInfo.colorEntityBackground,
+        shape: SquircleBorder(),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    flex: 2,
+                    child: EntityIcon(entityId: widget.entityId),
+                  ),
+                  Expanded(
+                    flex: 3,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 4 * gd.textScaleFactor),
+                      child: gd.showSpin ||
+                              gd.entities[widget.entityId].state.contains("...")
+                          ? FittedBox(
+                              child: SpinKitThreeBounce(
+                                size: 100,
+                                color:
+                                    ThemeInfo.colorIconActive.withOpacity(0.5),
+                              ),
+                            )
+                          : Container(),
+                    ),
+                  ),
+                ],
+              ),
+              Expanded(
+                child: Container(
+                  alignment: Alignment.bottomLeft,
+                  child: Text(
+                    "${gd.textToDisplay(gd.entities[widget.entityId].getOverrideName)}",
+                    style: gd.entities[widget.entityId].isStateOn
+                        ? ThemeInfo.textNameButtonActive
+                        : ThemeInfo.textNameButtonInActive,
+                    textAlign: TextAlign.left,
+                    maxLines: 2,
+                    textScaleFactor: gd.textScaleFactor * 1.1,
+                    overflow: TextOverflow.clip,
+                    softWrap: true,
                   ),
                 ),
-                Expanded(
-                  flex: 2,
-                  child: EntityIcon(entityId: widget.entityId),
-                ),
-              ],
-            ),
-            Expanded(
-              child: Container(
-                alignment: Alignment.bottomLeft,
-                padding: EdgeInsets.all(4 * gd.textScaleFactor),
-                child: Text(
-                  "${gd.textToDisplay(gd.entities[widget.entityId].getOverrideName)}",
-                  style: gd.entities[widget.entityId].isStateOn
-                      ? ThemeInfo.textNameButtonActive
-                      : ThemeInfo.textNameButtonInActive,
-                  textAlign: TextAlign.left,
-                  maxLines: 3,
-                  textScaleFactor: gd.textScaleFactor,
-                  overflow: TextOverflow.ellipsis,
-                ),
               ),
-            ),
-          ],
+              Text(
+                "${gd.textToDisplay(gd.entities[widget.entityId].getStateDisplayTranslated(context))}${gd.entities[widget.entityId].unitOfMeasurement}",
+                style: gd.entities[widget.entityId].isStateOn
+                    ? ThemeInfo.textStatusButtonActive
+                    : ThemeInfo.textStatusButtonInActive,
+                maxLines: 1,
+                textScaleFactor: gd.textScaleFactor * 1.1,
+                textAlign: TextAlign.left,
+                overflow: TextOverflow.clip,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -243,20 +229,20 @@ class EntityIcon extends StatelessWidget {
     var iconWidget;
     var entity = gd.entities[entityId];
     if (entity.entityId.contains("climate.")) {
-      iconWidget = Material(
-        color: gd.climateModeToColor(entity.state),
-        shape: SquircleBorder(),
-        child: Container(
-          alignment: Alignment.center,
-          padding: EdgeInsets.all(4 * gd.textScaleFactor),
-          child: AutoSizeText(
-            "${entity.getTemperature.toInt()}",
-            style: ThemeInfo.textNameButtonActive.copyWith(
-              color: ThemeInfo.colorBottomSheet,
-              fontSize: 100,
-            ),
-            textScaleFactor: gd.textScaleFactor,
+      iconWidget = Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: gd.climateModeToColor(entity.state),
+        ),
+        alignment: Alignment.center,
+        padding: EdgeInsets.all(4 * gd.textScaleFactor),
+        child: AutoSizeText(
+          "${entity.getTemperature.toInt()}",
+          style: ThemeInfo.textNameButtonActive.copyWith(
+            color: ThemeInfo.colorBottomSheet,
+            fontSize: 100,
           ),
+          textScaleFactor: gd.textScaleFactor,
         ),
       );
     } else if (entity.entityId.contains("alarm_control_panel")) {
