@@ -32,6 +32,7 @@ class _EntityControlFanState extends State<EntityControlFan> {
   int currentStep = 0;
   double stepLength;
   bool isSliding = false;
+  List<Widget> positionStacks = [];
 
   @override
   void initState() {
@@ -41,6 +42,18 @@ class _EntityControlFanState extends State<EntityControlFan> {
     Entity entity = gd.entities[widget.entityId];
     division = entity.speedList.length - 1;
     stepLength = (buttonHeight - upperPartHeight - lowerPartHeight) / division;
+
+    for (int i = 0; i < entity.speedList.length; i++) {
+      var positionStack = Positioned(
+        top: i * stepLength,
+        child: Container(
+          width: 5,
+          height: 5,
+          color: Colors.red,
+        ),
+      );
+      positionStacks.add(positionStack);
+    }
   }
 
   @override
@@ -104,6 +117,106 @@ class _EntityControlFanState extends State<EntityControlFan> {
                       ],
                     ),
                   ),
+                  division > 1
+                      ? Positioned(
+                          bottom: lowerPartHeight + 1 * stepLength - 1,
+                          child: Container(
+                            width: buttonWidth,
+                            height: 1,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                  colors: [
+                                    Colors.white.withOpacity(0.0),
+                                    Colors.white.withOpacity(0.75),
+                                    Colors.white.withOpacity(0.75),
+                                    Colors.white.withOpacity(0.0),
+                                  ]),
+                            ),
+                          ),
+                        )
+                      : Container(),
+                  division > 2
+                      ? Positioned(
+                          bottom: lowerPartHeight + 2 * stepLength - 1,
+                          child: Container(
+                            width: buttonWidth,
+                            height: 1,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                  colors: [
+                                    Colors.white.withOpacity(0.0),
+                                    Colors.white.withOpacity(0.75),
+                                    Colors.white.withOpacity(0.75),
+                                    Colors.white.withOpacity(0.0),
+                                  ]),
+                            ),
+                          ),
+                        )
+                      : Container(),
+                  division > 3
+                      ? Positioned(
+                          bottom: lowerPartHeight + 3 * stepLength - 1,
+                          child: Container(
+                            width: buttonWidth,
+                            height: 1,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                  colors: [
+                                    Colors.white.withOpacity(0.0),
+                                    Colors.white.withOpacity(0.75),
+                                    Colors.white.withOpacity(0.75),
+                                    Colors.white.withOpacity(0.0),
+                                  ]),
+                            ),
+                          ),
+                        )
+                      : Container(),
+                  division > 4
+                      ? Positioned(
+                          bottom: lowerPartHeight + 4 * stepLength - 1,
+                          child: Container(
+                            width: buttonWidth,
+                            height: 1,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                  colors: [
+                                    Colors.white.withOpacity(0.0),
+                                    Colors.white.withOpacity(0.75),
+                                    Colors.white.withOpacity(0.75),
+                                    Colors.white.withOpacity(0.0),
+                                  ]),
+                            ),
+                          ),
+                        )
+                      : Container(),
+                  division > 5
+                      ? Positioned(
+                          bottom: lowerPartHeight + 5 * stepLength - 1,
+                          child: Container(
+                            width: buttonWidth,
+                            height: 1,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                  colors: [
+                                    Colors.white.withOpacity(0.0),
+                                    Colors.white.withOpacity(0.75),
+                                    Colors.white.withOpacity(0.75),
+                                    Colors.white.withOpacity(0.0),
+                                  ]),
+                            ),
+                          ),
+                        )
+                      : Container(),
                   Positioned(
                     bottom: 0,
                     child: Container(
@@ -158,7 +271,7 @@ class _EntityControlFanState extends State<EntityControlFan> {
                       alignment: Alignment.center,
                       child: Oscillating(entityId: widget.entityId),
                     ),
-                  )
+                  ),
                 ],
               ),
             ],
