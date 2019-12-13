@@ -1,0 +1,125 @@
+{
+  "global": {
+    "duration": "Duração",
+    "open": "aberto",
+    "closed": "fechado",
+    "on": "ligado",
+    "off": "desligado",
+    "error": "Erro",
+    "no_data": "nenhuma informação disponivel",
+    "reset": "Repor",
+    "ok": "Ok",
+    "left": "Esquerda",
+    "right": "Direita",
+    "connect_hass": "Por favor ligue-se ao\nHome Assistant",
+    "last_update": "Ultima atualização",
+    "cancel": "Cancelar",
+    "settings": "Definições",
+    "rooms": "Divisões",
+    "disconnect": "Desconectar",
+    "refresh": "Actualizar",
+    "last_access": "Ultimo Acesso",
+    "connected": "Conectado",
+    "disconnected": "Desconectado"
+  },
+  "edit": {
+    "select_icon": "Select Custom Icon",
+    "reset_icon": "Repor Icone",
+    "rbg_color": "Pressão longa Press To Edit Color",
+    "edit": "Editar",
+    "arrange": "Organizar",
+    "move": "Mover",
+    "delete": "Apagar",
+    "devices": "Dispositivos",
+    "add_room": "Adicionar divisão"
+  },
+  "alarm_panel": {
+    "arm_home":"Armar Casa",
+    "arm_away": "Armar Ausente",
+    "disarmed": "Desarmado",
+    "pending": "Pendente",
+    "armed_away": "Armado Ausente",
+    "armed_home": "Armado Casa",
+    "armed_night": "Armado Noite",
+    "armed": "Armado"
+  },
+  "toggle": {
+    "require_slide_open_disabled": "Deslizar para abrir Activo",
+    "require_slide_open_enabled": "Deslizar para abrir Inactivo",
+    "prevent_accidentally_open": "Prevenir abertura acidental",
+    "1_touch": "agora pode ser aberto com 1 toque"
+  },
+  "rgb": {
+    "pick_color": "Escolha uma Côr!"
+  },
+  "webview": {
+    "edit": "Editar Website",
+    "saved": "Website gravado",
+    "reload": "Recarregar Website",
+    "pin": "Pin Website - Prevent Website scrolling",
+    "unpin": "Unpin Website - Allow Website scrolling",
+    "windy": "Ventoso",
+    "y_weather": "Y! Tempo",
+    "live_score": "LiveScore",
+    "aspect": "Aspecto"
+  },
+  "login": {
+    "connecting": "A Conectar-se a",
+    "correct_info": "Certifique-se que a seguinte info está correcta",
+    "cancel": "Cancel Web Login Connection"
+  },
+  "settings": {
+    "home_assistant": "Conecção ao Home Assistant",
+    "new_connection": "Criar Nova Conecção...",
+    "use_https": "Usar https",
+    "connect": "Conectar",
+    "sync": "Google Cloud Sync",
+    "theme_color": "Côr do Tema",
+    "language": "Lingua",
+    "layout": "Disposição",
+    "about": "Acerca do HassKit",
+    "about_info": "HassKit is a Touch-Friendly - Zero Config App to help users instantly start using Home Assistant.\n\nHome Assistant is one of the best platforms for Home Automation, with powerful features and the world's widest range of device support. Home Assistant only requires some simple/cheap hardware to get started.\n\nHowever, Home Assistant is not very easy to configure and it takes a while to adjust to your needs. HassKit aims to ease the learning steps and improve the quality of life for Home Assistant users by providing a stunning look and 10-second setup to start using this wonderful Home Automation platform.\n\nHassKit is free, open-source and under development. We need your help to improve the app's features for us to better serve you.\n\nPlease find us on Discord and Facebook. Your contributions are always welcome.",
+    "3_buttons": "3 Botões",
+    "4_buttons": "4 Botões"
+  },
+  "google_sync": {
+    "use": "Use Cloud Data Sync",
+    "info": "Keep your rooms layout and device customization synchronized accross devices. HassKit won't upload your login data online...",
+    "sign_out": "Finalizar",
+    "sign_in": "Iniciar",
+    "force_download": "Force download data from cloud",
+    "sync_problem": "Use ONLY when you have sync issue",
+    "force_upload": "Forçar o envio dos dados para a nuvem",
+    "force_reset": "Force reset data on cloud"
+  },
+  "theme_selector": {
+    "dark": "Tema Escuro",
+    "light": "Tema Claro"
+  },
+  "states": {
+    "on": "Ligar",
+    "turning_on": "A Ligar...",
+    "off": "Desligar",
+    "turning_off": "A Desligar...",
+    "closed": "Fechado",
+    "closing": "A Fechar...",
+    "open": "Abrir",
+    "opening": "A Abrir...",
+    "locked": "Travado",
+    "locking": "A travar...",
+    "unlocked": "Destravado",
+    "unlocking": "A Destravar...",
+    "disarmed": "Desarmado",
+    "arm_pending": "Pendente",
+    "armed_away": "Armado ausente",
+    "armed_home": "Armado casa",
+    "armed_night": "Armado noite",
+    "armed": "Armado",
+    "fan_high": "Alto",
+    "fan_high_medium": "Medio alto",
+    "fan_medium": "Medio",
+    "fan_medium_low": "Medio Baixo",
+    "fan_low": "Baixo",
+    "fan_lowest": "Minimo"
+  }
+}
