@@ -7,6 +7,7 @@ import 'package:hasskit/helper/LocaleHelper.dart';
 import 'package:hasskit/helper/Logger.dart';
 import 'package:hasskit/helper/MaterialDesignIcons.dart';
 import 'package:hasskit/helper/WebSocket.dart';
+import 'package:intl/intl.dart';
 
 enum EntityType {
   lightSwitches,
@@ -642,6 +643,15 @@ class Entity {
     if (isStateOn && entityId.contains("fan.")) {
       if (speed != null && speed.length > 0 && speed != "null") return speed;
     }
+
+    if (DateTime.tryParse(state) != null) {
+//      log.d("DateTime.tryParse $state");
+      return DateFormat('dd/MM kk:mm').format(DateTime.parse(state));
+    }
+    if (int.tryParse(state) == null && double.tryParse(state) != null) {
+//      log.d("double.tryParse $state");
+      return double.parse(state).toStringAsFixed(1);
+    }
     return state;
   }
 
@@ -702,7 +712,7 @@ class Entity {
     if (state.toLowerCase().contains("pending"))
       return Translate.getString("states.arm_pending", context);
 
-    return state;
+    return getStateDisplay;
   }
 
   double get getTemperature {

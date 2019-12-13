@@ -654,7 +654,9 @@ class _LayoutSelectorState extends State<LayoutSelector> {
     return SliverList(
       delegate: SliverChildListDelegate(
         [
-          CupertinoSegmentedControl<int>(
+          CupertinoSlidingSegmentedControl<int>(
+            thumbColor: ThemeInfo.colorBottomSheetReverse.withOpacity(0.5),
+//          CupertinoSegmentedControl<int>(
             padding: EdgeInsets.all(12),
             children: gd.isTablet ? tabletSegment : phoneSegment,
             onValueChanged: (int val) {

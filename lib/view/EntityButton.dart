@@ -131,7 +131,10 @@ class _EntityButtonDisplayState extends State<EntityButtonDisplay> {
             : ThemeInfo.colorEntityBackground,
         shape: gd.baseSetting.shapeLayout == 1
             ? SquircleBorder()
-            : RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            : RoundedRectangleBorder(
+                borderRadius: gd.baseSetting.shapeLayout == 2
+                    ? BorderRadius.circular(6)
+                    : BorderRadius.circular(12)),
         child: Padding(
           padding: gd.baseSetting.shapeLayout != 2
               ? const EdgeInsets.all(8.0)
