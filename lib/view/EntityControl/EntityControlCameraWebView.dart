@@ -28,23 +28,11 @@ class _EntityControlCameraWebViewState
   void initState() {
     super.initState();
     SystemChrome.setEnabledSystemUIOverlays([]);
-
-    if (!gd.isTablet) {
-      SystemChrome.setPreferredOrientations([
-        DeviceOrientation.landscapeRight,
-      ]);
-    }
   }
 
   @override
   void dispose() {
     SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
-
-    if (!gd.isTablet) {
-      SystemChrome.setPreferredOrientations([
-        DeviceOrientation.portraitUp,
-      ]);
-    }
 
     super.dispose();
   }
