@@ -119,7 +119,7 @@ class _EntityControlFanState extends State<EntityControlFan> {
                   ),
                   division > 1
                       ? Positioned(
-                          bottom: lowerPartHeight + 1 * stepLength - 1,
+                          bottom: lowerPartHeight + 1 * stepLength,
                           child: Container(
                             width: buttonWidth,
                             height: 1,
@@ -128,10 +128,9 @@ class _EntityControlFanState extends State<EntityControlFan> {
                                   begin: Alignment.centerLeft,
                                   end: Alignment.centerRight,
                                   colors: [
-                                    Colors.white.withOpacity(0.0),
-                                    Colors.white.withOpacity(0.75),
-                                    Colors.white.withOpacity(0.75),
-                                    Colors.white.withOpacity(0.0),
+                                    Colors.black.withOpacity(0.25),
+                                    Colors.black.withOpacity(0.5),
+                                    Colors.black.withOpacity(0.25),
                                   ]),
                             ),
                           ),
@@ -139,7 +138,7 @@ class _EntityControlFanState extends State<EntityControlFan> {
                       : Container(),
                   division > 2
                       ? Positioned(
-                          bottom: lowerPartHeight + 2 * stepLength - 1,
+                          bottom: lowerPartHeight + 2 * stepLength,
                           child: Container(
                             width: buttonWidth,
                             height: 1,
@@ -148,10 +147,9 @@ class _EntityControlFanState extends State<EntityControlFan> {
                                   begin: Alignment.centerLeft,
                                   end: Alignment.centerRight,
                                   colors: [
-                                    Colors.white.withOpacity(0.0),
-                                    Colors.white.withOpacity(0.75),
-                                    Colors.white.withOpacity(0.75),
-                                    Colors.white.withOpacity(0.0),
+                                    Colors.black.withOpacity(0.25),
+                                    Colors.black.withOpacity(0.5),
+                                    Colors.black.withOpacity(0.25),
                                   ]),
                             ),
                           ),
@@ -159,7 +157,7 @@ class _EntityControlFanState extends State<EntityControlFan> {
                       : Container(),
                   division > 3
                       ? Positioned(
-                          bottom: lowerPartHeight + 3 * stepLength - 1,
+                          bottom: lowerPartHeight + 3 * stepLength,
                           child: Container(
                             width: buttonWidth,
                             height: 1,
@@ -168,10 +166,9 @@ class _EntityControlFanState extends State<EntityControlFan> {
                                   begin: Alignment.centerLeft,
                                   end: Alignment.centerRight,
                                   colors: [
-                                    Colors.white.withOpacity(0.0),
-                                    Colors.white.withOpacity(0.75),
-                                    Colors.white.withOpacity(0.75),
-                                    Colors.white.withOpacity(0.0),
+                                    Colors.black.withOpacity(0.25),
+                                    Colors.black.withOpacity(0.5),
+                                    Colors.black.withOpacity(0.25),
                                   ]),
                             ),
                           ),
@@ -179,7 +176,7 @@ class _EntityControlFanState extends State<EntityControlFan> {
                       : Container(),
                   division > 4
                       ? Positioned(
-                          bottom: lowerPartHeight + 4 * stepLength - 1,
+                          bottom: lowerPartHeight + 4 * stepLength,
                           child: Container(
                             width: buttonWidth,
                             height: 1,
@@ -188,10 +185,9 @@ class _EntityControlFanState extends State<EntityControlFan> {
                                   begin: Alignment.centerLeft,
                                   end: Alignment.centerRight,
                                   colors: [
-                                    Colors.white.withOpacity(0.0),
-                                    Colors.white.withOpacity(0.75),
-                                    Colors.white.withOpacity(0.75),
-                                    Colors.white.withOpacity(0.0),
+                                    Colors.black.withOpacity(0.25),
+                                    Colors.black.withOpacity(0.5),
+                                    Colors.black.withOpacity(0.25),
                                   ]),
                             ),
                           ),
@@ -199,7 +195,7 @@ class _EntityControlFanState extends State<EntityControlFan> {
                       : Container(),
                   division > 5
                       ? Positioned(
-                          bottom: lowerPartHeight + 5 * stepLength - 1,
+                          bottom: lowerPartHeight + 5 * stepLength,
                           child: Container(
                             width: buttonWidth,
                             height: 1,
@@ -208,10 +204,9 @@ class _EntityControlFanState extends State<EntityControlFan> {
                                   begin: Alignment.centerLeft,
                                   end: Alignment.centerRight,
                                   colors: [
-                                    Colors.white.withOpacity(0.0),
-                                    Colors.white.withOpacity(0.75),
-                                    Colors.white.withOpacity(0.75),
-                                    Colors.white.withOpacity(0.0),
+                                    Colors.black.withOpacity(0.25),
+                                    Colors.black.withOpacity(0.5),
+                                    Colors.black.withOpacity(0.25),
                                   ]),
                             ),
                           ),
