@@ -16,6 +16,7 @@ import 'package:rate_my_app/rate_my_app.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:validators/validators.dart';
 
+import 'EntityControl/SettingLock.dart';
 import 'HomeAssistantLogin.dart';
 import 'ServerSelectPanel.dart';
 import 'slivers/SliverHeader.dart';
@@ -112,9 +113,10 @@ class _SettingPageState extends State<SettingPage> {
       selector: (_, generalData) => ("${generalData.useSSL} | "
           "${generalData.currentTheme} | "
           "${generalData.connectionStatus} | "
-          "${generalData.baseSetting.phoneLayout} | "
-          "${generalData.baseSetting.tabletLayout} | "
-          "${generalData.baseSetting.shapeLayout} | "
+          "${generalData.deviceSetting.settingLocked} | "
+          "${generalData.deviceSetting.phoneLayout} | "
+          "${generalData.deviceSetting.tabletLayout} | "
+          "${generalData.deviceSetting.shapeLayout} | "
           "${generalData.loginDataList.length} | "),
       builder: (_, string, __) {
         return Container(
@@ -147,144 +149,173 @@ class _SettingPageState extends State<SettingPage> {
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              SliverHeaderNormal(
-                icon: Icon(
-                  MaterialDesignIcons.getIconDataFromIconName(
-                      "mdi:home-assistant"),
-                ),
-                title: Translate.getString("settings.home_assistant", context),
-              ),
-              SliverList(
+              SliverFixedExtentList(
+                itemExtent: 10,
                 delegate: SliverChildListDelegate(
-                  [
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          TextFormField(
-                            focusNode: addressFocusNode,
-                            controller: _controller,
-                            decoration: InputDecoration(
-                              prefixText: gd.useSSL ? "https://" : "http://",
-                              hintText: 'sample.duckdns.org:8123',
-                              labelText: Translate.getString(
-                                  "settings.new_connection", context),
-                              suffixIcon: Opacity(
-                                opacity: showCancel ? 1 : 0,
-                                child: IconButton(
-                                  icon: Icon(Icons.cancel),
-                                  onPressed: () {
-                                    _controller.clear();
-                                    if (keyboardVisible) {
-                                      FocusScope.of(context)
-                                          .requestFocus(new FocusNode());
-                                    }
+                  [Container()],
+                ),
+              ),
+              gd.deviceSetting.settingLocked
+                  ? gd.emptySliver
+                  : SliverHeaderNormal(
+                      icon: Icon(
+                        MaterialDesignIcons.getIconDataFromIconName(
+                            "mdi:home-assistant"),
+                      ),
+                      title: Translate.getString(
+                          "settings.home_assistant", context),
+                    ),
+              gd.deviceSetting.settingLocked
+                  ? gd.emptySliver
+                  : SliverList(
+                      delegate: SliverChildListDelegate(
+                        [
+                          Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                TextFormField(
+                                  focusNode: addressFocusNode,
+                                  controller: _controller,
+                                  decoration: InputDecoration(
+                                    prefixText:
+                                        gd.useSSL ? "https://" : "http://",
+                                    hintText: 'sample.duckdns.org:8123',
+                                    labelText: Translate.getString(
+                                        "settings.new_connection", context),
+                                    suffixIcon: Opacity(
+                                      opacity: showCancel ? 1 : 0,
+                                      child: IconButton(
+                                        icon: Icon(Icons.cancel),
+                                        onPressed: () {
+                                          _controller.clear();
+                                          if (keyboardVisible) {
+                                            FocusScope.of(context)
+                                                .requestFocus(new FocusNode());
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                  keyboardType: TextInputType.url,
+                                  autocorrect: false,
+                                  onEditingComplete: () {
+                                    FocusScope.of(context)
+                                        .requestFocus(new FocusNode());
                                   },
                                 ),
-                              ),
+                                Row(
+                                  children: <Widget>[
+                                    Switch.adaptive(
+                                        activeColor: ThemeInfo.colorIconActive,
+                                        value: gd.useSSL,
+                                        onChanged: (val) {
+                                          gd.useSSL = val;
+                                        }),
+                                    Text(
+                                      Translate.getString(
+                                          "settings.use_https", context),
+                                      textScaleFactor: gd.textScaleFactorFix,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    Expanded(child: Container()),
+                                    RaisedButton(
+                                      onPressed: showConnect
+                                          ? () {
+                                              if (keyboardVisible) {
+                                                FocusScope.of(context)
+                                                    .requestFocus(
+                                                        new FocusNode());
+                                              }
+
+                                              _controller.text =
+                                                  _controller.text.trim();
+                                              _controller.text = _controller
+                                                  .text
+                                                  .toLowerCase();
+                                              _controller.text = _controller
+                                                  .text
+                                                  .replaceAll("https://", "");
+                                              _controller.text = _controller
+                                                  .text
+                                                  .replaceAll("http://", "");
+                                              if (_controller.text
+                                                  .contains("/"))
+                                                _controller.text = _controller
+                                                    .text
+                                                    .split("/")[0];
+
+                                              gd.loginDataCurrent = LoginData(
+                                                  url: gd.useSSL
+                                                      ? "https://" +
+                                                          _controller.text
+                                                      : "http://" +
+                                                          _controller.text);
+                                              log.w(
+                                                  "gd.loginDataCurrent.url ${gd.loginDataCurrent.url}");
+                                              //prevent autoConnect hijack gd.loginDataCurrent.url
+                                              gd.autoConnect = false;
+                                              gd.webViewLoading = true;
+                                              showModalBottomSheet(
+                                                context: context,
+                                                elevation: 1,
+                                                backgroundColor:
+                                                    ThemeInfo.colorBottomSheet,
+                                                isScrollControlled: true,
+                                                useRootNavigator: true,
+                                                builder: (context) =>
+                                                    HomeAssistantLogin(
+                                                  selectedUrl: gd
+                                                          .loginDataCurrent
+                                                          .getUrl +
+                                                      '/auth/authorize?client_id=' +
+                                                      gd.loginDataCurrent
+                                                          .getUrl +
+                                                      "/hasskit"
+                                                          '&redirect_uri=' +
+                                                      gd.loginDataCurrent
+                                                          .getUrl +
+                                                      "/hasskit",
+                                                ),
+                                              );
+                                            }
+                                          : null,
+                                      child: Text(
+                                        Translate.getString(
+                                            "settings.connect", context),
+                                        textScaleFactor: gd.textScaleFactorFix,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              ],
                             ),
-                            keyboardType: TextInputType.url,
-                            autocorrect: false,
-                            onEditingComplete: () {
-                              FocusScope.of(context)
-                                  .requestFocus(new FocusNode());
-                            },
                           ),
-                          Row(
-                            children: <Widget>[
-                              Switch.adaptive(
-                                  activeColor: ThemeInfo.colorIconActive,
-                                  value: gd.useSSL,
-                                  onChanged: (val) {
-                                    gd.useSSL = val;
-                                  }),
-                              Text(
-                                Translate.getString(
-                                    "settings.use_https", context),
-                                textScaleFactor: gd.textScaleFactorFix,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              Expanded(child: Container()),
-                              RaisedButton(
-                                onPressed: showConnect
-                                    ? () {
-                                        if (keyboardVisible) {
-                                          FocusScope.of(context)
-                                              .requestFocus(new FocusNode());
-                                        }
-
-                                        _controller.text =
-                                            _controller.text.trim();
-                                        _controller.text =
-                                            _controller.text.toLowerCase();
-                                        _controller.text = _controller.text
-                                            .replaceAll("https://", "");
-                                        _controller.text = _controller.text
-                                            .replaceAll("http://", "");
-                                        if (_controller.text.contains("/"))
-                                          _controller.text =
-                                              _controller.text.split("/")[0];
-
-                                        gd.loginDataCurrent = LoginData(
-                                            url: gd.useSSL
-                                                ? "https://" + _controller.text
-                                                : "http://" + _controller.text);
-                                        log.w(
-                                            "gd.loginDataCurrent.url ${gd.loginDataCurrent.url}");
-                                        //prevent autoConnect hijack gd.loginDataCurrent.url
-                                        gd.autoConnect = false;
-                                        gd.webViewLoading = true;
-                                        showModalBottomSheet(
-                                          context: context,
-                                          elevation: 1,
-                                          backgroundColor:
-                                              ThemeInfo.colorBottomSheet,
-                                          isScrollControlled: true,
-                                          useRootNavigator: true,
-                                          builder: (context) =>
-                                              HomeAssistantLogin(
-                                            selectedUrl: gd
-                                                    .loginDataCurrent.getUrl +
-                                                '/auth/authorize?client_id=' +
-                                                gd.loginDataCurrent.getUrl +
-                                                "/hasskit"
-                                                    '&redirect_uri=' +
-                                                gd.loginDataCurrent.getUrl +
-                                                "/hasskit",
-                                          ),
-                                        );
-                                      }
-                                    : null,
-                                child: Text(
-                                  Translate.getString(
-                                      "settings.connect", context),
-                                  textScaleFactor: gd.textScaleFactorFix,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ],
-                          )
                         ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) =>
-                      ServerSelectPanel(gd.loginDataList[index]),
-                  childCount: gd.loginDataList.length,
-                ),
-              ),
-              SliverHeaderNormal(
-                icon: Icon(
-                  MaterialDesignIcons.getIconDataFromIconName("mdi:cloud-sync"),
-                ),
-                title: Translate.getString("settings.sync", context),
-              ),
-              GoogleSign(),
+              gd.deviceSetting.settingLocked
+                  ? gd.emptySliver
+                  : SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) =>
+                            ServerSelectPanel(gd.loginDataList[index]),
+                        childCount: gd.loginDataList.length,
+                      ),
+                    ),
+              gd.deviceSetting.settingLocked
+                  ? gd.emptySliver
+                  : SliverHeaderNormal(
+                      icon: Icon(
+                        MaterialDesignIcons.getIconDataFromIconName(
+                            "mdi:cloud-sync"),
+                      ),
+                      title: Translate.getString("settings.sync", context),
+                    ),
+              gd.deviceSetting.settingLocked ? gd.emptySliver : GoogleSign(),
+              SettingLock(),
               SliverHeaderNormal(
                 icon: Icon(
                   MaterialDesignIcons.getIconDataFromIconName("mdi:palette"),
@@ -301,12 +332,20 @@ class _SettingPageState extends State<SettingPage> {
               ),
               ShapeSelector(),
               LayoutSelector(),
+              SliverHeaderNormal(
+                icon: Icon(
+                  MaterialDesignIcons.getIconDataFromIconName("mdi:web"),
+                ),
+                title: Translate.getString("settings.language", context),
+              ),
+              LocalLanguagePicker(),
               rateMyApp.doNotOpenAgain &&
                       Theme.of(context).platform == TargetPlatform.iOS
                   ? gd.emptySliver
                   : SliverList(
                       delegate: SliverChildListDelegate([
                       Container(
+                        padding: EdgeInsets.all(8),
                         child: RaisedButton(
                           onPressed: () => rateMyApp
                               .showRateDialog(
@@ -357,16 +396,8 @@ class _SettingPageState extends State<SettingPage> {
                             ],
                           ),
                         ),
-                        padding: EdgeInsets.all(12),
                       ),
                     ])),
-              SliverHeaderNormal(
-                icon: Icon(
-                  MaterialDesignIcons.getIconDataFromIconName("mdi:web"),
-                ),
-                title: Translate.getString("settings.language", context),
-              ),
-              LocalLanguagePicker(),
               SliverHeaderNormal(
                 icon: Icon(
                   MaterialDesignIcons.getIconDataFromIconName(
@@ -544,8 +575,8 @@ class _ThemeSelector extends StatelessWidget {
                 Expanded(
                   child: InkWell(
                     onTap: () {
-                      gd.baseSetting.themeIndex = 1;
-                      gd.baseSettingSave(true);
+                      gd.deviceSetting.themeIndex = 1;
+                      gd.deviceSettingSave();
                     },
                     child: Card(
                       elevation: 1,
@@ -581,8 +612,8 @@ class _ThemeSelector extends StatelessWidget {
                 Expanded(
                   child: InkWell(
                     onTap: () {
-                      gd.baseSetting.themeIndex = 0;
-                      gd.baseSettingSave(true);
+                      gd.deviceSetting.themeIndex = 0;
+                      gd.deviceSettingSave();
                     },
                     child: Card(
                       elevation: 1,
@@ -649,29 +680,39 @@ class _LayoutSelectorState extends State<LayoutSelector> {
 
   @override
   Widget build(BuildContext context) {
-    phoneValue = gd.baseSetting.phoneLayout;
-    tabletValue = gd.baseSetting.tabletLayout;
+    log.d("deviceSetting.phoneLayout 2 ${gd.deviceSetting.phoneLayout}");
+    log.d("deviceSetting.shapeLayout 2 ${gd.deviceSetting.shapeLayout}");
+
+    phoneValue = gd.deviceSetting.phoneLayout;
+    tabletValue = gd.deviceSetting.tabletLayout;
     return SliverList(
       delegate: SliverChildListDelegate(
         [
-          CupertinoSlidingSegmentedControl<int>(
-            thumbColor: ThemeInfo.colorBottomSheetReverse.withOpacity(0.5),
+          Container(
+            margin: EdgeInsets.all(8),
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+                color: ThemeInfo.colorBottomSheet.withOpacity(0.5),
+                borderRadius: BorderRadius.circular(8)),
+            child: CupertinoSlidingSegmentedControl<int>(
+              thumbColor: ThemeInfo.colorIconActive,
+              backgroundColor: Colors.transparent,
 //          CupertinoSegmentedControl<int>(
-            padding: EdgeInsets.all(12),
-            children: gd.isTablet ? tabletSegment : phoneSegment,
-            onValueChanged: (int val) {
-              setState(() {
-                if (gd.isTablet) {
-                  tabletValue = val;
-                  gd.baseSetting.tabletLayout = val;
-                } else {
-                  phoneValue = val;
-                  gd.baseSetting.phoneLayout = val;
-                }
-                gd.baseSettingSave(true);
-              });
-            },
-            groupValue: gd.isTablet ? tabletValue : phoneValue,
+              children: gd.isTablet ? tabletSegment : phoneSegment,
+              onValueChanged: (int val) {
+                setState(() {
+                  if (gd.isTablet) {
+                    tabletValue = val;
+                    gd.deviceSetting.tabletLayout = val;
+                  } else {
+                    phoneValue = val;
+                    gd.deviceSetting.phoneLayout = val;
+                  }
+                  gd.deviceSettingSave();
+                });
+              },
+              groupValue: gd.isTablet ? tabletValue : phoneValue,
+            ),
           ),
         ],
       ),
@@ -692,7 +733,7 @@ class _ShapeSelectorState extends State<ShapeSelector> {
         Container(
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: gd.baseSetting.shapeLayout == 0
+            color: gd.deviceSetting.shapeLayout == 0
                 ? ThemeInfo.colorIconActive
                 : ThemeInfo.colorIconInActive,
             borderRadius: BorderRadius.circular(4),
@@ -705,7 +746,7 @@ class _ShapeSelectorState extends State<ShapeSelector> {
     Widget widget1 = Column(
       children: <Widget>[
         Material(
-          color: gd.baseSetting.shapeLayout == 1
+          color: gd.deviceSetting.shapeLayout == 1
               ? ThemeInfo.colorIconActive
               : ThemeInfo.colorIconInActive,
           shape: SquircleBorder(superRadius: 5),
@@ -722,7 +763,7 @@ class _ShapeSelectorState extends State<ShapeSelector> {
         Container(
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: gd.baseSetting.shapeLayout == 2
+            color: gd.deviceSetting.shapeLayout == 2
                 ? ThemeInfo.colorIconActive
                 : ThemeInfo.colorIconInActive,
             borderRadius: BorderRadius.circular(4),
@@ -741,20 +782,28 @@ class _ShapeSelectorState extends State<ShapeSelector> {
     return SliverList(
       delegate: SliverChildListDelegate(
         [
-          CupertinoSegmentedControl<int>(
-            borderColor: Colors.transparent,
-            selectedColor: Colors.transparent,
-            unselectedColor: Colors.transparent,
-            pressedColor: Colors.transparent,
-            padding: EdgeInsets.all(12),
-            children: phoneSegment,
-            onValueChanged: (int val) {
-              setState(() {
-                gd.baseSetting.shapeLayout = val;
-                gd.baseSettingSave(true);
-              });
-            },
-            groupValue: gd.baseSetting.shapeLayout,
+          Container(
+            margin: EdgeInsets.all(8),
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+                color: ThemeInfo.colorBottomSheet.withOpacity(0.5),
+                borderRadius: BorderRadius.circular(8)),
+            child: CupertinoSlidingSegmentedControl<int>(
+              thumbColor: Colors.transparent,
+              backgroundColor: Colors.transparent,
+//              borderColor: Colors.transparent,
+//              selectedColor: Colors.transparent,
+//              unselectedColor: Colors.transparent,
+//              pressedColor: Colors.transparent,
+              children: phoneSegment,
+              onValueChanged: (int val) {
+                setState(() {
+                  gd.deviceSetting.shapeLayout = val;
+                  gd.deviceSettingSave();
+                });
+              },
+              groupValue: gd.deviceSetting.shapeLayout,
+            ),
           ),
         ],
       ),

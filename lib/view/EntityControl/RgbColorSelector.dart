@@ -52,7 +52,7 @@ class _RgbColorSelectorState extends State<RgbColorSelector> {
           padding: const EdgeInsets.all(2.0),
           child: Material(
             color: gd.stringToColor(gd.baseSetting.colorPicker[i]),
-            shape: gd.baseSetting.shapeLayout == 1
+            shape: gd.deviceSetting.shapeLayout == 1
                 ? SquircleBorder(
                     side: BorderSide(
                       color: ThemeInfo.colorBottomSheetReverse,

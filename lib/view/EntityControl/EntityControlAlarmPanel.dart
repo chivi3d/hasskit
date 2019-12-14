@@ -34,7 +34,7 @@ class _EntityControlAlarmPanelState extends State<EntityControlAlarmPanel> {
       "id": gd.socketId,
       "type": "call_service",
       "domain": entity.entityId.split('.').first,
-      "service": "alarm_" + gd.baseSetting.lastArmType,
+      "service": "alarm_" + gd.deviceSetting.lastArmType,
       "service_data": {"entity_id": entity.entityId, "code": output}
     };
 
@@ -92,9 +92,9 @@ class _EntityControlAlarmPanelState extends State<EntityControlAlarmPanel> {
 
   Widget alarmSelectionButton(String text, String armType) {
     log.d(
-        "text $text armType $armType gd.baseSetting.lastArmType ${gd.baseSetting.lastArmType}");
+        "text $text armType $armType gd.deviceSetting.lastArmType ${gd.deviceSetting.lastArmType}");
     Color getColor() {
-      return gd.baseSetting.lastArmType == armType
+      return gd.deviceSetting.lastArmType == armType
           ? Theme.of(context).textTheme.body1.color
           : Theme.of(context).textTheme.body1.color.withOpacity(0.25);
     }
@@ -103,7 +103,7 @@ class _EntityControlAlarmPanelState extends State<EntityControlAlarmPanel> {
         height: 50,
         width: 80,
         decoration: BoxDecoration(
-          color: gd.baseSetting.lastArmType == armType
+          color: gd.deviceSetting.lastArmType == armType
               ? Theme.of(context).textTheme.body1.color.withOpacity(0.25)
               : Colors.transparent,
           borderRadius: BorderRadius.circular(8.0),
@@ -128,9 +128,9 @@ class _EntityControlAlarmPanelState extends State<EntityControlAlarmPanel> {
           ),
           onPressed: () => {
             setState(() {
-              if (gd.baseSetting.lastArmType != armType) {
-                gd.baseSetting.lastArmType = armType;
-                gd.baseSettingSave(true);
+              if (gd.deviceSetting.lastArmType != armType) {
+                gd.deviceSetting.lastArmType = armType;
+                gd.deviceSettingSave();
               }
             })
           },
@@ -241,7 +241,7 @@ class _EntityControlAlarmPanelState extends State<EntityControlAlarmPanel> {
 //              ),
               SizedBox(height: 20),
 
-              new Column(
+              Column(
                 children: <Widget>[
                   new Row(
                     mainAxisAlignment: MainAxisAlignment.center,

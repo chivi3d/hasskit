@@ -198,6 +198,7 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
 
 //    await Future.delayed(const Duration(milliseconds: 500));
     gd.loginDataListString = await gd.getString('loginDataList');
+
     await gd.getSettings("mainInitState");
   }
 
@@ -261,9 +262,10 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
       selector: (_, generalData) =>
           "${generalData.viewMode} | " +
           "${Localizations.localeOf(context).languageCode} | " +
-          "${generalData.baseSetting.phoneLayout} | " +
-          "${generalData.baseSetting.tabletLayout} | " +
-          "${generalData.baseSetting.shapeLayout} | " +
+          "${generalData.deviceSetting.settingLocked} | " +
+          "${generalData.deviceSetting.phoneLayout} | " +
+          "${generalData.deviceSetting.tabletLayout} | " +
+          "${generalData.deviceSetting.shapeLayout} | " +
           "${generalData.mediaQueryHeight} | " +
           "${generalData.connectionStatus} | " +
           "${generalData.roomList.length} | ",

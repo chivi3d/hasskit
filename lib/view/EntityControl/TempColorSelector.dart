@@ -33,7 +33,7 @@ class _TempColorSelectorState extends State<TempColorSelector> {
           padding: const EdgeInsets.all(2.0),
           child: Material(
             color: colorTemps[i],
-            shape: gd.baseSetting.shapeLayout == 1
+            shape: gd.deviceSetting.shapeLayout == 1
                 ? SquircleBorder(
                     side: BorderSide(
                       color: ThemeInfo.colorBottomSheetReverse,

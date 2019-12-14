@@ -16,6 +16,7 @@ import 'package:hasskit/helper/ThemeInfo.dart';
 import 'package:hasskit/helper/WebSocket.dart';
 import 'package:hasskit/model/BaseSetting.dart';
 import 'package:hasskit/model/CameraInfo.dart';
+import 'package:hasskit/model/DeviceSetting.dart';
 import 'package:hasskit/model/Entity.dart';
 import 'package:hasskit/model/EntityOverride.dart';
 import 'package:hasskit/model/LoginData.dart';
@@ -386,7 +387,7 @@ class GeneralData with ChangeNotifier {
   }
 
   ThemeData get currentTheme {
-    return ThemeInfo.themesData[baseSetting.themeIndex];
+    return ThemeInfo.themesData[deviceSetting.themeIndex];
   }
 
   List<LoginData> loginDataList = [];
@@ -1339,21 +1340,90 @@ class GeneralData with ChangeNotifier {
     entitiesOverrideSave(true);
   }
 
-  BaseSetting baseSetting = BaseSetting(
-      phoneLayout: 3,
-      tabletLayout: 69,
-      shapeLayout: 1,
-      themeIndex: 1,
-      lastArmType: "arm_home",
-      notificationDevices: [],
-      colorPicker: [
-        "0xffEEEEEE",
-        "0xffEF5350",
-        "0xffFFCA28",
-        "0xff66BB6A",
-        "0xff42A5F5",
-        "0xffAB47BC",
-      ]);
+  Flushbar settingLockFlushbar;
+
+  DeviceSetting deviceSetting = DeviceSetting(
+    phoneLayout: 3,
+    tabletLayout: 69,
+    shapeLayout: 1,
+    themeIndex: 1,
+    lastArmType: "arm_away",
+    settingLocked: false,
+    settingPin: "0000",
+    lockOut: "",
+    failAttempt: 0,
+  );
+
+  String _deviceSettingString;
+
+  String get deviceSettingString => _deviceSettingString;
+
+  set deviceSettingString(val) {
+    if (_deviceSettingString != val) {
+      _deviceSettingString = val;
+
+      if (_deviceSettingString != null && _deviceSettingString.length > 0) {
+        log.w('FOUND deviceSetting _deviceSettingString $_deviceSettingString');
+
+        val = jsonDecode(val);
+        deviceSetting = DeviceSetting.fromJson(val);
+      } else {
+        log.w('CAN NOT FIND deviceSetting adding default data');
+        deviceSetting.phoneLayout = 3;
+        deviceSetting.tabletLayout = 69;
+        deviceSetting.shapeLayout = 1;
+        deviceSetting.themeIndex = 1;
+        deviceSetting.lastArmType = "arm_away";
+        deviceSetting.settingLocked = false;
+        deviceSetting.settingPin = "0000";
+        deviceSetting.lockOut = "";
+        deviceSetting.failAttempt = 0;
+      }
+
+      log.d("deviceSetting.phoneLayout 1 ${gd.deviceSetting.phoneLayout}");
+      log.d("deviceSetting.shapeLayout 1 ${gd.deviceSetting.shapeLayout}");
+
+      notifyListeners();
+    }
+  }
+
+  void deviceSettingSave() {
+    log.d("deviceSettingSave");
+
+    try {
+      var jsonDeviceSetting = {
+        'phoneLayout': deviceSetting.phoneLayout,
+        'tabletLayout': deviceSetting.tabletLayout,
+        'shapeLayout': deviceSetting.shapeLayout,
+        'themeIndex': deviceSetting.themeIndex,
+        'lastArmType': deviceSetting.lastArmType,
+        'settingLocked': deviceSetting.settingLocked,
+        'settingPin': deviceSetting.settingPin,
+        'lockOut': deviceSetting.lockOut,
+        'failAttempt': deviceSetting.failAttempt,
+      };
+
+      var url = gd.loginDataCurrent.getUrl.replaceAll(".", "-");
+      url = url.replaceAll("/", "-");
+      url = url.replaceAll(":", "-");
+
+      gd.saveString('deviceSetting $url', jsonEncode(jsonDeviceSetting));
+      log.w('save deviceSetting $url $jsonDeviceSetting');
+    } catch (e) {
+      log.w("deviceSettingSave $e");
+    }
+    notifyListeners();
+  }
+
+  BaseSetting baseSetting = BaseSetting(notificationDevices: [], colorPicker: [
+    "0xffEEEEEE",
+    "0xffEF5350",
+    "0xffFFCA28",
+    "0xff66BB6A",
+    "0xff42A5F5",
+    "0xffAB47BC",
+  ]);
+
   String _baseSettingString;
 
   String get baseSettingString => _baseSettingString;
@@ -1369,11 +1439,6 @@ class GeneralData with ChangeNotifier {
         baseSetting = BaseSetting.fromJson(val);
       } else {
         log.w('CAN NOT FIND baseSetting adding default data');
-        baseSetting.phoneLayout = 3;
-        baseSetting.tabletLayout = 69;
-        baseSetting.shapeLayout = 1;
-        baseSetting.themeIndex = 1;
-        baseSetting.lastArmType = "arm_away";
         baseSetting.notificationDevices = [];
         baseSetting.colorPicker = [
           "0xffEEEEEE",
@@ -1404,18 +1469,10 @@ class GeneralData with ChangeNotifier {
 
     try {
       var jsonBaseSetting = {
-        'phoneLayout': baseSetting.phoneLayout,
-        'tabletLayout': baseSetting.tabletLayout,
-        'shapeLayout': baseSetting.shapeLayout,
-        'themeIndex': baseSetting.themeIndex,
-        'lastArmType': baseSetting.lastArmType,
         'notificationDevices': baseSetting.notificationDevices,
         'colorPicker': baseSetting.colorPicker,
-        'webView1Ratio': baseSetting.webView1Ratio,
         'webView1Url': baseSetting.webView1Url,
-        'webView2Ratio': baseSetting.webView2Ratio,
         'webView2Url': baseSetting.webView2Url,
-        'webView3Ratio': baseSetting.webView3Ratio,
         'webView3Url': baseSetting.webView3Url,
       };
 
@@ -1434,11 +1491,6 @@ class GeneralData with ChangeNotifier {
   }
 
   BaseSetting baseSettingHassKitDemo = BaseSetting(
-    themeIndex: 1,
-    phoneLayout: 3,
-    tabletLayout: 69,
-    shapeLayout: 1,
-    lastArmType: "arm_away",
     colorPicker: [
       "0xffEEEEEE",
       "0xffEF5350",
@@ -1860,9 +1912,18 @@ class GeneralData with ChangeNotifier {
       url = url.replaceAll(":", "-");
 
       //force the trigger reset
+      log.w(
+          "force the trigger reset entitiesOverrideString load \n entitiesOverride");
       gd.entitiesOverrideString = "";
       gd.entitiesOverrideString = await gd.getString('entitiesOverride');
       //force the trigger reset
+      log.w(
+          "force the trigger reset deviceSettingString load \n deviceSetting $url");
+      gd.deviceSettingString = "";
+      gd.deviceSettingString = await gd.getString('deviceSetting $url');
+      //force the trigger reset
+      log.w(
+          "force the trigger reset baseSettingString load \n baseSetting $url");
       gd.baseSettingString = "";
       gd.baseSettingString = await gd.getString('baseSetting $url');
       if (gd.baseSettingString == null || gd.baseSettingString.length < 1) {
@@ -1875,6 +1936,7 @@ class GeneralData with ChangeNotifier {
         }
       }
       //force the trigger reset
+      log.w("force the trigger reset roomListString load \n roomList $url");
       gd.roomListString = "";
       gd.roomListString = await gd.getString('roomList $url');
       if (gd.roomListString == null || gd.roomListString.length < 1) {
@@ -2191,49 +2253,49 @@ class GeneralData with ChangeNotifier {
   int get layoutCameraCount {
     if (!isTablet) return 1;
 
-    if (baseSetting.tabletLayout == 36) {
+    if (deviceSetting.tabletLayout == 36) {
       if (gd.mediaQueryOrientation == Orientation.portrait) {
         return 1;
       }
       return 2;
     }
 
-    if (baseSetting.tabletLayout == 69) {
+    if (deviceSetting.tabletLayout == 69) {
       if (gd.mediaQueryOrientation == Orientation.portrait) {
         return 2;
       }
       return 3;
     }
-    if (baseSetting.tabletLayout == 912) {
+    if (deviceSetting.tabletLayout == 912) {
       if (gd.mediaQueryOrientation == Orientation.portrait) {
         return 3;
       }
       return 4;
     }
-    return baseSetting.tabletLayout ~/ 3;
+    return deviceSetting.tabletLayout ~/ 3;
   }
 
   int get layoutButtonCount {
-    if (!isTablet) return baseSetting.phoneLayout;
-    if (baseSetting.tabletLayout == 36) {
+    if (!isTablet) return deviceSetting.phoneLayout;
+    if (deviceSetting.tabletLayout == 36) {
       if (gd.mediaQueryOrientation == Orientation.portrait) {
         return 3;
       }
       return 6;
     }
-    if (baseSetting.tabletLayout == 69) {
+    if (deviceSetting.tabletLayout == 69) {
       if (gd.mediaQueryOrientation == Orientation.portrait) {
         return 6;
       }
       return 9;
     }
-    if (baseSetting.tabletLayout == 912) {
+    if (deviceSetting.tabletLayout == 912) {
       if (gd.mediaQueryOrientation == Orientation.portrait) {
         return 9;
       }
       return 12;
     }
-    return baseSetting.tabletLayout;
+    return deviceSetting.tabletLayout;
   }
 
   /// Returns a formatted date string.
@@ -2245,7 +2307,7 @@ class GeneralData with ChangeNotifier {
       date.year.toString();
 
   double get buttonRatio {
-    if (baseSetting.shapeLayout == 2) return 8 / 5;
+    if (deviceSetting.shapeLayout == 2) return 8 / 5;
     return 1;
   }
 }

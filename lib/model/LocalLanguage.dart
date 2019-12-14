@@ -122,9 +122,9 @@ class _LocalLanguagePickerState extends State<LocalLanguagePicker> {
           "${localizations.languageCode}_${localizations.countryCode}";
     }
 
-    log.d("data.savedLocale ${data.savedLocale}");
-    log.d("localizations $localizations");
-    log.d("selectedValue $selectedValue");
+//    log.d("data.savedLocale ${data.savedLocale}");
+//    log.d("localizations $localizations");
+//    log.d("selectedValue $selectedValue");
 
     return SliverList(
       delegate: SliverChildListDelegate(

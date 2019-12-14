@@ -79,7 +79,7 @@ class Status2ndRowItem extends StatelessWidget {
             color: entityId.contains("binary_sensor")
                 ? ThemeInfo.colorBackgroundActive.withOpacity(0.1)
                 : ThemeInfo.colorBackgroundActive,
-            shape: gd.baseSetting.shapeLayout == 1
+            shape: gd.deviceSetting.shapeLayout == 1
                 ? SquircleBorder()
                 : RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16)),

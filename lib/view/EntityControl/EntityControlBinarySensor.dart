@@ -104,7 +104,7 @@ class _EntityControlBinarySensorState extends State<EntityControlBinarySensor> {
                                           .withOpacity(0.25)
                                       : ThemeInfo.colorIconInActive
                                           .withOpacity(0),
-                                  shape: gd.baseSetting.shapeLayout == 1
+                                  shape: gd.deviceSetting.shapeLayout == 1
                                       ? SquircleBorder(
                                           side: BorderSide(
                                             color: ThemeInfo.colorIconActive,

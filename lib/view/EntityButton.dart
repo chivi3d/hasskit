@@ -129,17 +129,17 @@ class _EntityButtonDisplayState extends State<EntityButtonDisplay> {
         color: gd.entities[widget.entityId].isStateOn
             ? ThemeInfo.colorBackgroundActive
             : ThemeInfo.colorEntityBackground,
-        shape: gd.baseSetting.shapeLayout == 1
+        shape: gd.deviceSetting.shapeLayout == 1
             ? SquircleBorder()
             : RoundedRectangleBorder(
-                borderRadius: gd.baseSetting.shapeLayout == 2
+                borderRadius: gd.deviceSetting.shapeLayout == 2
                     ? BorderRadius.circular(6)
                     : BorderRadius.circular(12)),
         child: Padding(
-          padding: gd.baseSetting.shapeLayout != 2
+          padding: gd.deviceSetting.shapeLayout != 2
               ? const EdgeInsets.all(8.0)
               : const EdgeInsets.all(4.0),
-          child: gd.baseSetting.shapeLayout != 2
+          child: gd.deviceSetting.shapeLayout != 2
               ? Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[

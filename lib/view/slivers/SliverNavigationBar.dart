@@ -167,7 +167,7 @@ class SliverNavigationBar extends StatelessWidget {
                         ),
                       )
                     : Container(),
-                gd.roomList.length > 0
+                gd.roomList.length > 0 && !gd.deviceSetting.settingLocked
                     ? InkWell(
                         onTap: () {
                           if (gd.viewMode != ViewMode.sort &&
