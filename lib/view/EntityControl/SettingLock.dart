@@ -37,12 +37,12 @@ class SettingLock extends StatelessWidget {
                               "mdi:lock")
                           : MaterialDesignIcons.getIconDataFromIconName(
                               "mdi:lock-open"),
-                      size: 30,
+                      size: 40,
                     ),
                     Expanded(
                       child: Text(
                         "${Translate.getString('settings.settingLocked', context)}",
-                        maxLines: 2,
+                        maxLines: 4,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
