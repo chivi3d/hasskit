@@ -67,7 +67,8 @@ dependencies:
   auto_size_text: ^2.1.0
   vector_math: ^2.0.8
   flutter_inappwebview: ^2.1.0+1
-  rate_my_app: ^0.4.0
+#  rate_my_app: ^0.4.0
+  app_review: ^1.0.0
 
 flutter_icons:
   android: false

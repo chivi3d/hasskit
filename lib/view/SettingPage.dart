@@ -1,21 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hasskit/helper/HassKitReview.dart';
 import 'package:hasskit/helper/GeneralData.dart';
 import 'package:hasskit/helper/GoogleSign.dart';
 import 'package:hasskit/helper/LocaleHelper.dart';
 import 'package:hasskit/helper/Logger.dart';
 import 'package:hasskit/helper/MaterialDesignIcons.dart';
-import 'package:hasskit/helper/RateMyApp.dart';
 import 'package:hasskit/helper/SquircleBorder.dart';
 import 'package:hasskit/helper/ThemeInfo.dart';
 import 'package:hasskit/model/LocalLanguage.dart';
 import 'package:hasskit/model/LoginData.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
-import 'package:rate_my_app/rate_my_app.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:validators/validators.dart';
-
 import 'EntityControl/SettingLock.dart';
 import 'HomeAssistantLogin.dart';
 import 'ServerSelectPanel.dart';
@@ -122,16 +120,20 @@ class _SettingPageState extends State<SettingPage> {
         return Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage(gd.backgroundImage[10]),
+              image: AssetImage(gd.deviceSetting.themeIndex == 1
+                  ? gd.backgroundImage[10]
+                  : gd.backgroundImage[9]),
               fit: BoxFit.cover,
             ),
-//        gradient: LinearGradient(
-//            begin: Alignment.topCenter,
-//            end: Alignment.bottomCenter,
-//            colors: [
-//              Theme.of(context).primaryColorLight,
-//              Theme.of(context).cardColor.withOpacity(0.2)
-//            ]),
+//            gradient: LinearGradient(
+//                begin: Alignment.topCenter,
+//                end: Alignment.bottomCenter,
+//                colors: [
+//                  gd.deviceSetting.themeIndex != 1 ? Colors.white : Colors.grey,
+//                  gd.deviceSetting.themeIndex != 1
+//                      ? Colors.grey
+//                      : ThemeInfo.colorBackgroundDark,
+//                ]),
 //        color: Theme.of(context).primaryColorLight,
           ),
           child: CustomScrollView(
@@ -339,64 +341,6 @@ class _SettingPageState extends State<SettingPage> {
                 title: Translate.getString("settings.language", context),
               ),
               LocalLanguagePicker(),
-              rateMyApp.doNotOpenAgain &&
-                      Theme.of(context).platform == TargetPlatform.iOS
-                  ? gd.emptySliver
-                  : SliverList(
-                      delegate: SliverChildListDelegate([
-                      Container(
-                        padding: EdgeInsets.all(8),
-                        child: RaisedButton(
-                          onPressed: () => rateMyApp
-                              .showRateDialog(
-                                context,
-                                title: 'Rate This App',
-                                message:
-                                    'If you like this app, please take a little bit of your time to review it!\n\nIt really helps us and it shouldn\'t take you more than one minute.',
-                                rateButton: 'Rate',
-                                noButton: 'No Thanks',
-                                laterButton: 'Maybe Later',
-                                ignoreIOS: true,
-                                dialogStyle: DialogStyle(),
-                              )
-                              .then((v) => setState(() {})),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Icon(
-                                MaterialDesignIcons.getIconDataFromIconName(
-                                    "mdi:star-outline"),
-                              ),
-                              Icon(
-                                MaterialDesignIcons.getIconDataFromIconName(
-                                    "mdi:star-outline"),
-                              ),
-                              Icon(
-                                MaterialDesignIcons.getIconDataFromIconName(
-                                    "mdi:star-outline"),
-                              ),
-                              Text(
-                                " Rate HassKit ",
-                                textScaleFactor: gd.textScaleFactorFix,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              Icon(
-                                MaterialDesignIcons.getIconDataFromIconName(
-                                    "mdi:star-outline"),
-                              ),
-                              Icon(
-                                MaterialDesignIcons.getIconDataFromIconName(
-                                    "mdi:star-outline"),
-                              ),
-                              Icon(
-                                MaterialDesignIcons.getIconDataFromIconName(
-                                    "mdi:star-outline"),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ])),
               SliverHeaderNormal(
                 icon: Icon(
                   MaterialDesignIcons.getIconDataFromIconName(
@@ -404,6 +348,7 @@ class _SettingPageState extends State<SettingPage> {
                 ),
                 title: Translate.getString("settings.about", context),
               ),
+              HassKitReview(),
               Container(
                 child: SliverList(
                   delegate: SliverChildListDelegate(
@@ -787,6 +732,7 @@ class _ShapeSelectorState extends State<ShapeSelector> {
             child: CupertinoSlidingSegmentedControl<int>(
               thumbColor: Colors.transparent,
               backgroundColor: Colors.transparent,
+
 //              borderColor: Colors.transparent,
 //              selectedColor: Colors.transparent,
 //              unselectedColor: Colors.transparent,
