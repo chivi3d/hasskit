@@ -100,6 +100,12 @@ class _LocalLanguagePickerState extends State<LocalLanguagePicker> {
       displayName: "Portuguese",
       translator: "Rui Duarte",
     ),
+    LocalLanguage(
+      languageCode: "fr",
+      countryCode: "FR",
+      displayName: "French",
+      translator: "QuentinBens",
+    ),
   ];
 
   @override
