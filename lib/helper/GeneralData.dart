@@ -231,7 +231,7 @@ class GeneralData with ChangeNotifier {
         continue;
       }
 
-//      if (entity.entityId.contains("sensor.")) {
+//      if (entity.entityId.contains("group.")) {
 //        log.w(
 //            "\n socketGetStates ${entity.entityId} state ${entity.state} isStateOn ${entity.isStateOn} mess $mess");
 //      }
@@ -396,8 +396,8 @@ class GeneralData with ChangeNotifier {
     return loginDataList.length;
   }
 
-  LoginData loginDataHassKitDemo = LoginData(
-    url: "http://hasskitdemo.duckdns.org:8123",
+  LoginData loginDataHassKit = LoginData(
+    url: "http://hasskit.duckdns.org:8123",
     accessToken:
         "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI4NWRlNWM4MmE4OGQ0YmYxOTk4ZjgxZGE3YzY3ZWFkNSIsImlhdCI6MTU3MzY5Mzg2NiwiZXhwIjoxNTczNjk1NjY2fQ.GDWWYGshuxPOrv3GMOjqlxKUtPVh5sADzgTUutDp508",
     longToken:
@@ -678,9 +678,9 @@ class GeneralData with ChangeNotifier {
         row4: []),
   ];
 
-  List<Room> roomListHassKitDemo = [
+  List<Room> roomListHassKit = [
     Room(
-        name: 'HassKit Demo',
+        name: 'HassKit',
         imageIndex: 12,
         tempEntityId: "sensor.temperature_158d0002e98f27",
         favorites: [
@@ -1890,8 +1890,8 @@ class GeneralData with ChangeNotifier {
     //NO URL return empty data
 
     if (loginDataList.length < 1) {
-      loginDataList.add(loginDataHassKitDemo);
-      loginDataCurrent = loginDataHassKitDemo;
+      loginDataList.add(loginDataHassKit);
+      loginDataCurrent = loginDataHassKit;
     }
 
     if (!gd.autoConnect ||
@@ -1929,9 +1929,9 @@ class GeneralData with ChangeNotifier {
       if (gd.baseSettingString == null || gd.baseSettingString.length < 1) {
         log.w(
             "gd.baseSettingString == null || gd.baseSettingString.length < 1");
-        if (gd.currentUrl == "http://hasskitdemo.duckdns.org:8123") {
+        if (gd.currentUrl == "http://hasskit.duckdns.org:8123") {
           log.w(
-              "gd.baseSettingString currentUrl == http://hasskitdemo.duckdns.org:8123");
+              "gd.baseSettingString currentUrl == http://hasskit.duckdns.org:8123");
           gd.baseSettingString = jsonEncode(gd.baseSettingHassKitDemo);
         }
       }
@@ -1940,8 +1940,8 @@ class GeneralData with ChangeNotifier {
       gd.roomListString = "";
       gd.roomListString = await gd.getString('roomList $url');
       if (gd.roomListString == null || gd.roomListString.length < 1) {
-        if (gd.currentUrl == "http://hasskitdemo.duckdns.org:8123") {
-          gd.roomListString = jsonEncode(gd.roomListHassKitDemo);
+        if (gd.currentUrl == "http://hasskit.duckdns.org:8123") {
+          gd.roomListString = jsonEncode(gd.roomListHassKit);
         } else {
           gd.roomListString = jsonEncode(gd.roomListDefault);
         }
@@ -1988,15 +1988,15 @@ class GeneralData with ChangeNotifier {
         }
 
         if (gd.roomListString == null || gd.roomListString.length < 1) {
-          if (gd.currentUrl == "http://hasskitdemo.duckdns.org:8123") {
-            gd.roomListString = json.encode(gd.roomListHassKitDemo);
+          if (gd.currentUrl == "http://hasskit.duckdns.org:8123") {
+            gd.roomListString = json.encode(gd.roomListHassKit);
           } else {
             gd.roomListString = json.encode(gd.roomListDefault);
           }
         }
 
         if (gd.baseSetting == null) {
-          if (gd.currentUrl == "http://hasskitdemo.duckdns.org:8123") {
+          if (gd.currentUrl == "http://hasskit.duckdns.org:8123") {
             gd.baseSetting = gd.baseSettingHassKitDemo;
           }
         }

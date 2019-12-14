@@ -306,10 +306,21 @@ class Entity {
   }
 
   toggleState() {
+    log.d("toggleState entityId $entityId");
     var domain = entityId.split('.').first;
     if (domain == "group") domain = "homeassistant";
     var service = '';
-    if (state == 'on' ||
+
+    if (entityId == "group.all_covers") {
+      domain = 'cover';
+      if (isStateOn) {
+        this.state = 'closing...';
+        service = 'close_cover';
+      } else {
+        this.state = 'opening...';
+        service = 'open_cover';
+      }
+    } else if (state == 'on' ||
         this.state == 'turning on...' ||
         domain == 'climate' && state != 'off') {
       this.state = 'turning off...';
@@ -648,7 +659,7 @@ class Entity {
 //      log.d("DateTime.tryParse $state");
       return DateFormat('dd/MM kk:mm').format(DateTime.parse(state));
     }
-    if (int.tryParse(state) == null && double.tryParse(state) != null) {
+    if (state.contains(".") && double.tryParse(state) != null) {
 //      log.d("double.tryParse $state");
       return double.parse(state).toStringAsFixed(1);
     }

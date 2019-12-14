@@ -356,7 +356,7 @@ class _SettingPageState extends State<SettingPage> {
                                 rateButton: 'Rate',
                                 noButton: 'No Thanks',
                                 laterButton: 'Maybe Later',
-                                ignoreIOS: false,
+                                ignoreIOS: true,
                                 dialogStyle: DialogStyle(),
                               )
                               .then((v) => setState(() {})),
@@ -377,7 +377,6 @@ class _SettingPageState extends State<SettingPage> {
                               ),
                               Text(
                                 " Rate HassKit ",
-                                style: TextStyle(color: Colors.black),
                                 textScaleFactor: gd.textScaleFactorFix,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -448,7 +447,6 @@ class _SettingPageState extends State<SettingPage> {
                                     SizedBox(width: 10),
                                     Text(
                                       "Discord ",
-                                      style: TextStyle(color: Colors.black),
                                       textScaleFactor: gd.textScaleFactorFix,
                                       overflow: TextOverflow.ellipsis,
                                     ),
@@ -474,7 +472,6 @@ class _SettingPageState extends State<SettingPage> {
                                     SizedBox(width: 10),
                                     Text(
                                       "Facebook",
-                                      style: TextStyle(color: Colors.black),
                                       textScaleFactor: gd.textScaleFactorFix,
                                       overflow: TextOverflow.ellipsis,
                                     ),
@@ -627,7 +624,6 @@ class _ThemeSelector extends StatelessWidget {
                               child: Text(
                                 Translate.getString(
                                     "theme_selector.light", context),
-                                style: TextStyle(color: Colors.black),
                                 textScaleFactor: gd.textScaleFactorFix,
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 2,
