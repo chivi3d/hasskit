@@ -44,6 +44,7 @@ class SettingLock extends StatelessWidget {
                         "${Translate.getString('settings.settingLocked', context)}",
                         maxLines: 4,
                         overflow: TextOverflow.ellipsis,
+                        textScaleFactor: gd.textScaleFactorFix,
                       ),
                     ),
                   ],
@@ -89,6 +90,7 @@ class _SettingLockDetailState extends State<SettingLockDetail> {
                   fontSize: 56.0,
                   fontWeight: FontWeight.bold,
                 ),
+                textScaleFactor: gd.textScaleFactorFix,
               ),
             ),
             Row(
@@ -175,6 +177,7 @@ class _SettingLockDetailState extends State<SettingLockDetail> {
                     "\nToo many fail attempts,\nplease wait a few minutes...",
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
+                    textScaleFactor: gd.textScaleFactorFix,
                   )
                 : Container(),
 //                : Text(
@@ -205,6 +208,7 @@ class _SettingLockDetailState extends State<SettingLockDetail> {
               fontSize: buttonText.length > 2 ? 15.0 : 20.0,
               fontWeight: FontWeight.bold),
           textAlign: TextAlign.center,
+          textScaleFactor: gd.textScaleFactorFix,
         ),
         onPressed: !lockOut ? () => buttonPressed(buttonText) : null,
       ),
