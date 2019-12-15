@@ -544,7 +544,8 @@ class Entity {
         state.toLowerCase() != 'unavailable') {
       return true;
     }
-    if (entityId.split('.')[0] == 'device_tracker' &&
+    if ((entityId.split('.')[0] == 'device_tracker' ||
+            entityId.split('.')[0] == 'person') &&
         state.toLowerCase() == 'home') {
       return true;
     }
