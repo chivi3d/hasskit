@@ -5,12 +5,11 @@ import 'package:hasskit/helper/GeneralData.dart';
 import 'package:hasskit/helper/Logger.dart';
 import 'package:hasskit/helper/MaterialDesignIcons.dart';
 import 'package:hasskit/helper/ThemeInfo.dart';
+import 'package:hasskit/view/RoomView/BackgroundImageDropdownButton.dart';
 import 'package:hasskit/model/Entity.dart';
 import 'package:hasskit/view/slivers/SliverHeader.dart';
-import 'package:hasskit/view/CustomScrollView/TemperatureSelector.dart';
 import 'package:hasskit/view/slivers/SliverNavigationBar.dart';
-
-import 'BackgroundImageSelector.dart';
+import 'TemperatureDropdownButton.dart';
 
 class ViewEdit extends StatefulWidget {
   final int roomIndex;
@@ -92,8 +91,11 @@ class _ViewEditState extends State<ViewEdit> {
             ],
           ),
         ),
-        BackgroundImageSelector(roomIndex: widget.roomIndex),
-        TemperatureSelector(roomIndex: widget.roomIndex),
+//        ImagePickerWidget(),
+//        BackgroundImageSelector(roomIndex: widget.roomIndex),
+        BackgroundImageDropdownButton(roomIndex: widget.roomIndex),
+//        TemperatureSelector(roomIndex: widget.roomIndex),
+        TemperatureDropdownButton(roomIndex: widget.roomIndex),
 //        HumiditySelector(roomIndex: widget.roomIndex),
         SliverHeaderEdit(
           title: "Embeded Website",
@@ -309,6 +311,7 @@ class __EditItemsState extends State<_EditItems> {
           },
           child: Container(
             padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
+            color: ThemeInfo.colorBottomSheet.withOpacity(0.5),
             margin: EdgeInsets.zero,
             child: Row(
               children: <Widget>[
@@ -559,6 +562,7 @@ class _WebViewItemsState extends State<WebViewItems> {
           },
           child: Container(
             padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
+            color: ThemeInfo.colorBottomSheet.withOpacity(0.5),
             margin: EdgeInsets.zero,
             child: Row(
               children: <Widget>[

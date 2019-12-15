@@ -27,6 +27,7 @@ class MaterialDesignIcons {
     "camera": "mdi:webcam",
     "calendar": "mdi:calendar",
     "device_tracker": "mdi:account",
+    "person": "mdi:account",
     "timer": "mdi:timer",
     "lock.off": "mdi:lock",
     "lock.locked": "mdi:lock",
@@ -42,7 +43,7 @@ class MaterialDesignIcons {
     "alarm_control_panel.triggered": "mdi:bell-ring",
     "alarm_control_panel": "mdi:bell",
     "updater": "mdi:cloud-upload",
-    "vacuum": "mdi:robot-vacuum"
+    "vacuum": "mdi:robot-vacuum",
   };
 
   static final Map defaultIconsByDeviceClass = {

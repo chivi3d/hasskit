@@ -90,29 +90,18 @@ class SliverNavigationBar extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Container(
-                  padding: EdgeInsets.fromLTRB(3, 0, 12, 2),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(80),
-                    color: iconColor.withOpacity(0.25),
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Icon(
-                        MaterialDesignIcons.getIconDataFromIconName(
-                            "mdi:thermometer"),
-                        size: 24,
-                        color: iconColor,
-                      ),
-//                    SizedBox(width: 2),
-                      AutoSizeText(
-                        "${tempState.toStringAsFixed(1)}°",
-                        textScaleFactor: gd.textScaleFactorFix,
-                        style:
-                            TextStyle(color: ThemeInfo.colorBottomSheetReverse),
-                      ),
-                    ],
+                Icon(
+                  MaterialDesignIcons.getIconDataFromIconName(
+                      "mdi:thermometer"),
+                  size: 24,
+                  color: iconColor,
+                ),
+                Expanded(
+                  child: Text(
+                    "${tempState.toStringAsFixed(1)} ${gd.entities[gd.roomList[roomIndex].tempEntityId].unitOfMeasurement.trim()}",
+                    textScaleFactor: gd.textScaleFactorFix,
+                    style: TextStyle(color: ThemeInfo.colorBottomSheetReverse),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ],

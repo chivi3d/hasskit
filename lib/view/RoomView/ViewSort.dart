@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hasskit/helper/GeneralData.dart';
 import 'package:hasskit/model/Entity.dart';
-import 'package:hasskit/view/CustomScrollView/ViewNormal.dart';
+import 'package:hasskit/view/RoomView/ViewNormal.dart';
 import 'package:hasskit/view/slivers/SliverEntities.dart';
 import 'package:hasskit/view/slivers/SliverNavigationBar.dart';
 

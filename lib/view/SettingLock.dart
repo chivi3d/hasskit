@@ -155,7 +155,7 @@ class _SettingLockDetailState extends State<SettingLockDetail> {
                                       icon: Icon(Icons.info),
                                       messageText: Text(
                                           "${gd.deviceSetting.settingPin}"),
-                                      duration: Duration(seconds: 10),
+                                      duration: Duration(seconds: 6),
                                     )..show(context);
                                   });
                                 }

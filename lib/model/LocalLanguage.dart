@@ -136,19 +136,22 @@ class _LocalLanguagePickerState extends State<LocalLanguagePicker> {
       delegate: SliverChildListDelegate(
         [
           Container(
-            padding: EdgeInsets.all(4),
+            padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
             margin: EdgeInsets.all(8),
             decoration: BoxDecoration(
                 color: ThemeInfo.colorBottomSheet.withOpacity(0.5),
                 borderRadius: BorderRadius.circular(8)),
             child: DropdownButton<String>(
               value: selectedValue,
+              underline: Container(),
+              isExpanded: true,
+              isDense: true,
               items: localLanguages.map((LocalLanguage map) {
                 return DropdownMenuItem<String>(
                   value: "${map.languageCode}_${map.countryCode}",
                   child: Row(
                     children: <Widget>[
-                      SizedBox(width: 30),
+                      SizedBox(width: 26),
                       Text(
                         gd.textToDisplay(
                             "${map.displayName} - © ${map.translator}"),

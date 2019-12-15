@@ -10,6 +10,7 @@ class DeviceSetting {
   String settingPin = "0000";
   String lockOut = "";
   int failAttempt = 0;
+  List<String> backgroundPhoto = [];
 
   DeviceSetting({
     @required this.phoneLayout,
@@ -21,6 +22,7 @@ class DeviceSetting {
     @required this.settingLocked,
     @required this.lockOut,
     @required this.failAttempt,
+    @required this.backgroundPhoto,
   });
 
   Map<String, dynamic> toJson() => {
@@ -33,6 +35,7 @@ class DeviceSetting {
         'settingPin': settingPin,
         'lockOut': lockOut,
         'failAttempt': failAttempt,
+        'backgroundPhoto': backgroundPhoto,
       };
 
   factory DeviceSetting.fromJson(Map<String, dynamic> json) {
@@ -48,6 +51,8 @@ class DeviceSetting {
       settingPin: json['settingPin'] != null ? json['settingPin'] : "0000",
       lockOut: json['lockOut'] != null ? json['lockOut'] : "",
       failAttempt: json['failAttempt'] != null ? json['failAttempt'] : 0,
+      backgroundPhoto:
+          json['backgroundPhoto'] != null ? json['backgroundPhoto'] : [],
     );
   }
 }

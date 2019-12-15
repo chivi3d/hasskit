@@ -14,7 +14,7 @@ import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:validators/validators.dart';
-import 'EntityControl/SettingLock.dart';
+import 'SettingLock.dart';
 import 'HomeAssistantLogin.dart';
 import 'ServerSelectPanel.dart';
 import 'slivers/SliverHeader.dart';

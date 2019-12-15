@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
 import 'dart:core';
+import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flushbar/flushbar.dart';
@@ -1352,6 +1352,7 @@ class GeneralData with ChangeNotifier {
     settingPin: "0000",
     lockOut: "",
     failAttempt: 0,
+    backgroundPhoto: [],
   );
 
   String _deviceSettingString;
@@ -1378,6 +1379,7 @@ class GeneralData with ChangeNotifier {
         deviceSetting.settingPin = "0000";
         deviceSetting.lockOut = "";
         deviceSetting.failAttempt = 0;
+        deviceSetting.backgroundPhoto = [];
       }
 
       log.d("deviceSetting.phoneLayout 1 ${gd.deviceSetting.phoneLayout}");
@@ -1401,6 +1403,7 @@ class GeneralData with ChangeNotifier {
         'settingPin': deviceSetting.settingPin,
         'lockOut': deviceSetting.lockOut,
         'failAttempt': deviceSetting.failAttempt,
+        'backgroundPhoto': deviceSetting.backgroundPhoto,
       };
 
       var url = gd.loginDataCurrent.getUrl.replaceAll(".", "-");
@@ -2317,5 +2320,27 @@ class GeneralData with ChangeNotifier {
   double get buttonRatio {
     if (deviceSetting.shapeLayout == 2) return 8 / 5;
     return 1;
+  }
+
+  bool fileExists(String url) {
+    if (url == null || url.length < 1) {
+      return false;
+    }
+    return FileSystemEntity.typeSync(url) != FileSystemEntityType.notFound;
+  }
+
+  String getRoomBackgroundPhoto(int roomIndex) {
+    String imageUrl;
+    for (var backgroundPhotoString in gd.deviceSetting.backgroundPhoto) {
+      if (backgroundPhotoString.contains("[$roomIndex]")) {
+        imageUrl = backgroundPhotoString.split("[$roomIndex]").last;
+        break;
+      }
+    }
+
+    if (fileExists(imageUrl)) {
+      return imageUrl;
+    }
+    return null;
   }
 }

@@ -1,12 +1,12 @@
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hasskit/helper/GeneralData.dart';
-import 'package:hasskit/view/CustomScrollView/ViewNormal.dart';
-import 'package:hasskit/view/CustomScrollView/ViewSort.dart';
-import 'package:hasskit/view/DefaultPage.dart';
+import 'RoomView/ViewNormal.dart';
+import 'RoomView/ViewSort.dart';
+import 'DefaultPage.dart';
 import 'package:provider/provider.dart';
-
-import 'CustomScrollView/ViewEdit.dart';
+import 'RoomView/ViewEdit.dart';
 
 class PageViewBuilder extends StatelessWidget {
   final PageController controller =
@@ -93,10 +93,20 @@ class SinglePage extends StatelessWidget {
           widget = ViewNormal(roomIndex: roomIndex);
         }
 
+        ImageProvider backgroundImage;
+        String imageUrl = gd.getRoomBackgroundPhoto(roomIndex);
+
+        if (imageUrl != null) {
+          backgroundImage = FileImage(File(imageUrl));
+        } else {
+          backgroundImage =
+              AssetImage(gd.backgroundImage[gd.roomList[roomIndex].imageIndex]);
+        }
+
         return Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: gd.getRoomImage(roomIndex),
+              image: backgroundImage,
               fit: BoxFit.cover,
             ),
           ),

@@ -115,150 +115,158 @@ class EntityButtonDisplay extends StatefulWidget {
 class _EntityButtonDisplayState extends State<EntityButtonDisplay> {
   @override
   Widget build(BuildContext context) {
-    return AnimatedContainer(
-      duration: Duration(milliseconds: 100),
-      onEnd: () {
-        setState(() {
-          gd.clickedStatus.remove(widget.entityId);
-        });
-      },
-      padding: gd.getClickedStatus(widget.entityId)
-          ? EdgeInsets.all(2 * gd.textScaleFactor)
-          : EdgeInsets.all(0 * gd.textScaleFactor),
-      child: Material(
-        color: gd.entities[widget.entityId].isStateOn
-            ? ThemeInfo.colorBackgroundActive
-            : ThemeInfo.colorEntityBackground,
-        shape: gd.deviceSetting.shapeLayout == 1
-            ? SquircleBorder()
-            : RoundedRectangleBorder(
-                borderRadius: gd.deviceSetting.shapeLayout == 2
-                    ? BorderRadius.circular(6)
-                    : BorderRadius.circular(12)),
-        child: Padding(
-          padding: gd.deviceSetting.shapeLayout != 2
-              ? const EdgeInsets.all(8.0)
-              : const EdgeInsets.all(4.0),
-          child: gd.deviceSetting.shapeLayout != 2
-              ? Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Row(
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(12),
+      child: BackdropFilter(
+        filter: new ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 100),
+          onEnd: () {
+            setState(() {
+              gd.clickedStatus.remove(widget.entityId);
+            });
+          },
+          padding: gd.getClickedStatus(widget.entityId)
+              ? EdgeInsets.all(2 * gd.textScaleFactor)
+              : EdgeInsets.all(0 * gd.textScaleFactor),
+          child: Material(
+            color: gd.entities[widget.entityId].isStateOn
+                ? ThemeInfo.colorBackgroundActive
+                : ThemeInfo.colorEntityBackground,
+            shape: gd.deviceSetting.shapeLayout == 1
+                ? SquircleBorder()
+                : RoundedRectangleBorder(
+                    borderRadius: gd.deviceSetting.shapeLayout == 2
+                        ? BorderRadius.circular(6)
+                        : BorderRadius.circular(12)),
+            child: Padding(
+              padding: gd.deviceSetting.shapeLayout != 2
+                  ? const EdgeInsets.all(8.0)
+                  : const EdgeInsets.all(4.0),
+              child: gd.deviceSetting.shapeLayout != 2
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Expanded(
-                          flex: 2,
-                          child: EntityIcon(entityId: widget.entityId),
+                        Row(
+                          children: <Widget>[
+                            Expanded(
+                              flex: 2,
+                              child: EntityIcon(entityId: widget.entityId),
+                            ),
+                            Expanded(
+                              flex: 3,
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 4 * gd.textScaleFactor),
+                                child: gd.showSpin ||
+                                        gd.entities[widget.entityId].state
+                                            .contains("...")
+                                    ? FittedBox(
+                                        child: SpinKitThreeBounce(
+                                          size: 100,
+                                          color: ThemeInfo.colorIconActive
+                                              .withOpacity(0.5),
+                                        ),
+                                      )
+                                    : Container(),
+                              ),
+                            ),
+                          ],
                         ),
                         Expanded(
-                          flex: 3,
                           child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 4 * gd.textScaleFactor),
-                            child: gd.showSpin ||
-                                    gd.entities[widget.entityId].state
-                                        .contains("...")
-                                ? FittedBox(
-                                    child: SpinKitThreeBounce(
-                                      size: 100,
-                                      color: ThemeInfo.colorIconActive
-                                          .withOpacity(0.5),
-                                    ),
-                                  )
-                                : Container(),
+                            alignment: Alignment.bottomLeft,
+                            child: Text(
+                              "${gd.textToDisplay(gd.entities[widget.entityId].getOverrideName)}",
+                              style: gd.entities[widget.entityId].isStateOn
+                                  ? ThemeInfo.textNameButtonActive
+                                  : ThemeInfo.textNameButtonInActive,
+                              textAlign: TextAlign.left,
+                              maxLines: 2,
+                              textScaleFactor: gd.textScaleFactor * 1.1,
+                              overflow: TextOverflow.ellipsis,
+                              softWrap: true,
+                            ),
                           ),
+                        ),
+                        Text(
+                          "${gd.textToDisplay(gd.entities[widget.entityId].getStateDisplayTranslated(context))}${gd.entities[widget.entityId].unitOfMeasurement}",
+                          style: gd.entities[widget.entityId].isStateOn
+                              ? ThemeInfo.textStatusButtonActive
+                              : ThemeInfo.textStatusButtonInActive,
+                          maxLines: 1,
+                          textScaleFactor: gd.textScaleFactor * 1.1,
+                          textAlign: TextAlign.left,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    )
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Expanded(
+                          child: Row(
+                            children: <Widget>[
+                              Expanded(
+                                flex: 100,
+                                child: Column(
+                                  children: <Widget>[
+                                    Expanded(
+                                      child: Container(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          "${gd.textToDisplay(gd.entities[widget.entityId].getOverrideName)}",
+                                          style: gd.entities[widget.entityId]
+                                                  .isStateOn
+                                              ? ThemeInfo.textNameButtonActive
+                                              : ThemeInfo
+                                                  .textNameButtonInActive,
+                                          textAlign: TextAlign.left,
+                                          maxLines: 2,
+                                          textScaleFactor:
+                                              gd.textScaleFactor * 1.1,
+                                          overflow: TextOverflow.ellipsis,
+                                          softWrap: true,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                flex: 45,
+                                child: gd.showSpin ||
+                                        gd.entities[widget.entityId].state
+                                            .contains("...")
+                                    ? AspectRatio(
+                                        aspectRatio: 1,
+                                        child: FittedBox(
+                                          child: SpinKitThreeBounce(
+                                            size: 100,
+                                            color: ThemeInfo.colorIconActive
+                                                .withOpacity(0.5),
+                                          ),
+                                        ),
+                                      )
+                                    : EntityIcon(entityId: widget.entityId),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Text(
+                          "${gd.textToDisplay(gd.entities[widget.entityId].getStateDisplayTranslated(context))}${gd.entities[widget.entityId].unitOfMeasurement}",
+                          style: gd.entities[widget.entityId].isStateOn
+                              ? ThemeInfo.textStatusButtonActive
+                              : ThemeInfo.textStatusButtonInActive,
+                          maxLines: 1,
+                          textScaleFactor: gd.textScaleFactor * 1.1,
+                          textAlign: TextAlign.right,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ],
                     ),
-                    Expanded(
-                      child: Container(
-                        alignment: Alignment.bottomLeft,
-                        child: Text(
-                          "${gd.textToDisplay(gd.entities[widget.entityId].getOverrideName)}",
-                          style: gd.entities[widget.entityId].isStateOn
-                              ? ThemeInfo.textNameButtonActive
-                              : ThemeInfo.textNameButtonInActive,
-                          textAlign: TextAlign.left,
-                          maxLines: 2,
-                          textScaleFactor: gd.textScaleFactor * 1.1,
-                          overflow: TextOverflow.ellipsis,
-                          softWrap: true,
-                        ),
-                      ),
-                    ),
-                    Text(
-                      "${gd.textToDisplay(gd.entities[widget.entityId].getStateDisplayTranslated(context))}${gd.entities[widget.entityId].unitOfMeasurement}",
-                      style: gd.entities[widget.entityId].isStateOn
-                          ? ThemeInfo.textStatusButtonActive
-                          : ThemeInfo.textStatusButtonInActive,
-                      maxLines: 1,
-                      textScaleFactor: gd.textScaleFactor * 1.1,
-                      textAlign: TextAlign.left,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                )
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Expanded(
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            flex: 100,
-                            child: Column(
-                              children: <Widget>[
-                                Expanded(
-                                  child: Container(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      "${gd.textToDisplay(gd.entities[widget.entityId].getOverrideName)}",
-                                      style: gd.entities[widget.entityId]
-                                              .isStateOn
-                                          ? ThemeInfo.textNameButtonActive
-                                          : ThemeInfo.textNameButtonInActive,
-                                      textAlign: TextAlign.left,
-                                      maxLines: 2,
-                                      textScaleFactor: gd.textScaleFactor * 1.1,
-                                      overflow: TextOverflow.ellipsis,
-                                      softWrap: true,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            flex: 45,
-                            child: gd.showSpin ||
-                                    gd.entities[widget.entityId].state
-                                        .contains("...")
-                                ? AspectRatio(
-                                    aspectRatio: 1,
-                                    child: FittedBox(
-                                      child: SpinKitThreeBounce(
-                                        size: 100,
-                                        color: ThemeInfo.colorIconActive
-                                            .withOpacity(0.5),
-                                      ),
-                                    ),
-                                  )
-                                : EntityIcon(entityId: widget.entityId),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Text(
-                      "${gd.textToDisplay(gd.entities[widget.entityId].getStateDisplayTranslated(context))}${gd.entities[widget.entityId].unitOfMeasurement}",
-                      style: gd.entities[widget.entityId].isStateOn
-                          ? ThemeInfo.textStatusButtonActive
-                          : ThemeInfo.textStatusButtonInActive,
-                      maxLines: 1,
-                      textScaleFactor: gd.textScaleFactor * 1.1,
-                      textAlign: TextAlign.right,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ),
+            ),
+          ),
         ),
       ),
     );
