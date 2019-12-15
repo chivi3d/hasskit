@@ -1490,7 +1490,7 @@ class GeneralData with ChangeNotifier {
     notifyListeners();
   }
 
-  BaseSetting baseSettingHassKitDemo = BaseSetting(
+  BaseSetting baseSettingHassKit = BaseSetting(
     colorPicker: [
       "0xffEEEEEE",
       "0xffEF5350",
@@ -1869,14 +1869,26 @@ class GeneralData with ChangeNotifier {
             url = url.replaceAll("/", "-");
             url = url.replaceAll(":", "-");
 
-            if (documents.data["entitiesOverride"].toString().length > 0)
+            if (documents.data["entitiesOverride"] != null &&
+                documents.data["entitiesOverride"].toString().length > 0) {
+              log.w(
+                  "getStreamData entitiesOverride.length ${documents.data["entitiesOverride"].toString().length}");
               gd.entitiesOverrideString = documents.data["entitiesOverride"];
+            }
 
-            if (documents.data["baseSetting $url"].toString().length > 0)
+            if (documents.data["baseSetting $url"] != null &&
+                documents.data["baseSetting $url"].toString().length > 0) {
+              log.w(
+                  "getStreamData baseSetting.length ${documents.data["baseSetting $url"].toString().length}");
               gd.baseSettingString = documents.data["baseSetting $url"];
+            }
 
-            if (documents.data["roomList $url"].toString().length > 0)
+            if (documents.data["roomList $url"] != null &&
+                documents.data["roomList $url"].toString().length > 0) {
+              log.w(
+                  "getStreamData roomList.length ${documents.data["roomList $url"].toString().length}");
               gd.roomListString = documents.data["roomList $url"];
+            }
           }
         }
       }
@@ -1932,7 +1944,7 @@ class GeneralData with ChangeNotifier {
         if (gd.currentUrl == "http://hasskit.duckdns.org:8123") {
           log.w(
               "gd.baseSettingString currentUrl == http://hasskit.duckdns.org:8123");
-          gd.baseSettingString = jsonEncode(gd.baseSettingHassKitDemo);
+          gd.baseSettingString = jsonEncode(gd.baseSettingHassKit);
         }
       }
       //force the trigger reset
@@ -1962,43 +1974,39 @@ class GeneralData with ChangeNotifier {
         .get()
         .then(
       (DocumentSnapshot ds) {
-        log.e("gd.firebaseCurrentUser != null ds.exists");
+        log.w("downloadCloudData gd.firebaseCurrentUser != null ds.exists");
         var url = gd.loginDataCurrent.getUrl.replaceAll(".", "-");
         url = url.replaceAll("/", "-");
         url = url.replaceAll(":", "-");
 
-        var entitiesOverride = ds["entitiesOverride"].toString();
-        if (entitiesOverride.length > 0) {
+        if (ds["entitiesOverride"] != null &&
+            ds["entitiesOverride"].toString().length > 10) {
           //force the trigger reset
-          gd.entitiesOverrideString = "";
-          gd.entitiesOverrideString = entitiesOverride;
+          log.w(
+              "downloadCloudData entitiesOverride ${ds["entitiesOverride"].toString().length}");
+          gd.entitiesOverrideString = ds["entitiesOverride"].toString();
         }
 
-        var baseSetting = ds['baseSetting $url'].toString();
-        if (baseSetting.length > 0) {
-          gd.baseSettingString = "";
-          gd.baseSettingString = baseSetting;
+        if (ds['baseSetting $url'] != null &&
+            ds['baseSetting $url'].toString().length > 10) {
+          log.w(
+              "downloadCloudData baseSetting ${ds["baseSetting $url"].toString().length}");
+          gd.baseSettingString = ds["baseSetting $url"].toString();
+        } else if (gd.currentUrl == "http://hasskit.duckdns.org:8123") {
+          log.w(
+              "downloadCloudData baseSettingString currentUrl == http://hasskit.duckdns.org:8123");
+          gd.baseSettingString = jsonEncode(gd.baseSettingHassKit);
         }
 
-        var roomList = ds['roomList $url'].toString();
-        if (roomList.length > 0) {
-          //force the trigger reset
-          gd.roomListString = "";
-          gd.roomListString = roomList;
-        }
-
-        if (gd.roomListString == null || gd.roomListString.length < 1) {
-          if (gd.currentUrl == "http://hasskit.duckdns.org:8123") {
-            gd.roomListString = json.encode(gd.roomListHassKit);
-          } else {
-            gd.roomListString = json.encode(gd.roomListDefault);
-          }
-        }
-
-        if (gd.baseSetting == null) {
-          if (gd.currentUrl == "http://hasskit.duckdns.org:8123") {
-            gd.baseSetting = gd.baseSettingHassKitDemo;
-          }
+        if (ds['roomList $url'] != null &&
+            ds['roomList $url'].toString().length > 10) {
+          log.w(
+              "downloadCloudData roomList ${ds["roomList $url"].toString().length}");
+          gd.roomListString = ds["roomList $url"].toString();
+        } else if (gd.currentUrl == "http://hasskit.duckdns.org:8123") {
+          log.w(
+              "downloadCloudData roomListString currentUrl == http://hasskit.duckdns.org:8123");
+          gd.roomListString = jsonEncode(gd.roomListHassKit);
         }
       },
     );
