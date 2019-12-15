@@ -51,8 +51,9 @@ class DeviceSetting {
       settingPin: json['settingPin'] != null ? json['settingPin'] : "0000",
       lockOut: json['lockOut'] != null ? json['lockOut'] : "",
       failAttempt: json['failAttempt'] != null ? json['failAttempt'] : 0,
-      backgroundPhoto:
-          json['backgroundPhoto'] != null ? json['backgroundPhoto'] : [],
+      backgroundPhoto: json['backgroundPhoto'] != null
+          ? List<String>.from(json['backgroundPhoto'])
+          : [],
     );
   }
 }
