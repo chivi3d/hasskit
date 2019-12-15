@@ -650,28 +650,28 @@ class GeneralData with ChangeNotifier {
   List<Room> roomListDefault = [
     Room(
         name: 'Home',
-        imageIndex: 12,
+        imageIndex: 17,
         favorites: [],
         entities: [],
         row3: [],
         row4: []),
     Room(
         name: 'Living Room',
-        imageIndex: 13,
+        imageIndex: 18,
         favorites: [],
         entities: [],
         row3: [],
         row4: []),
     Room(
         name: 'Kitchen',
-        imageIndex: 14,
+        imageIndex: 19,
         favorites: [],
         entities: [],
         row3: [],
         row4: []),
     Room(
         name: 'Bedroom',
-        imageIndex: 15,
+        imageIndex: 20,
         favorites: [],
         entities: [],
         row3: [],
@@ -681,7 +681,7 @@ class GeneralData with ChangeNotifier {
   List<Room> roomListHassKit = [
     Room(
         name: 'HassKit',
-        imageIndex: 12,
+        imageIndex: 17,
         tempEntityId: "sensor.temperature_158d0002e98f27",
         favorites: [
           "fan.acorn_fan",
@@ -718,7 +718,7 @@ class GeneralData with ChangeNotifier {
         ]),
     Room(
         name: 'Living Room',
-        imageIndex: 13,
+        imageIndex: 18,
         tempEntityId: "sensor.aeotec_temperature_27",
         favorites: [
           "climate.air_conditioner_2",
@@ -737,7 +737,7 @@ class GeneralData with ChangeNotifier {
         row4: []),
     Room(
         name: 'Kitchen',
-        imageIndex: 14,
+        imageIndex: 19,
         tempEntityId: "sensor.fibaro_temperature_31",
         favorites: [
           "camera.camera_2",
@@ -756,7 +756,7 @@ class GeneralData with ChangeNotifier {
         row4: []),
     Room(
         name: 'Bedroom',
-        imageIndex: 15,
+        imageIndex: 20,
         tempEntityId: "sensor.temperature_158d0002e98f27",
         favorites: [
           "climate.air_conditioner_2",
@@ -844,6 +844,11 @@ class GeneralData with ChangeNotifier {
     'assets/background_images/Abstract_3.jpg',
     'assets/background_images/Abstract_4.jpg',
     'assets/background_images/Abstract_5.jpg',
+    'assets/background_images/Van_Gogh_10.jpg',
+    'assets/background_images/Van_Gogh_11.jpg',
+    'assets/background_images/Van_Gogh_12.jpg',
+    'assets/background_images/Van_Gogh_13.jpg',
+    'assets/background_images/Van_Gogh_14.jpg',
   ];
 
   setRoomBackgroundImage(Room room, int backgroundImageIndex) {
