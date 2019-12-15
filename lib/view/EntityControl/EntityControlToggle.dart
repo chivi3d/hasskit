@@ -1,10 +1,10 @@
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:hasskit/helper/GeneralData.dart';
+import 'package:hasskit/helper/LocaleHelper.dart';
 import 'package:hasskit/helper/Logger.dart';
 import 'package:hasskit/helper/MaterialDesignIcons.dart';
 import 'package:hasskit/helper/ThemeInfo.dart';
-import 'package:hasskit/helper/LocaleHelper.dart';
 
 class EntityControlToggle extends StatefulWidget {
   final String entityId;
@@ -17,7 +17,7 @@ class EntityControlToggle extends StatefulWidget {
 class _EntityControlToggleState extends State<EntityControlToggle> {
   double buttonTotalHeight = 300.0;
   double upperPartHeight = 30.0;
-  double buttonWidth = 90.0;
+  double buttonWidth = 126.0;
   double buttonHalfHeight;
   double buttonFullHeight;
   double buttonValue;
@@ -109,8 +109,7 @@ class _EntityControlToggleState extends State<EntityControlToggle> {
                             .getStateDisplayTranslated(context)),
                         style: ThemeInfo.textStatusButtonActive,
                         maxLines: 1,
-                        textScaleFactor:
-                            gd.textScaleFactor * 3 / gd.baseSetting.itemsPerRow,
+                        textScaleFactor: gd.textScaleFactorFix,
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.center,
                       ),

@@ -84,7 +84,9 @@ class _EntityControlParentState extends State<EntityControlParent> {
             entity.entityId.contains("group.") ||
             entity.entityId.contains("scene.")) {
           entityControl = EntityControlToggle(entityId: widget.entityId);
-        } else if (entity.entityId.contains("binary_sensor.")) {
+        } else if (entity.entityId.contains("binary_sensor.")
+//            ||            entity.entityId.contains("device_tracker.") //Need more data check
+            ) {
           entityControl = EntityControlBinarySensor(
             entityId: widget.entityId,
           );
@@ -111,7 +113,7 @@ class _EntityControlParentState extends State<EntityControlParent> {
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    SizedBox(height: 48),
+                    SizedBox(height: gd.mediaQueryLongestSide > 600 ? 48 : 24),
                     Container(
                       height: 50,
                       child: Stack(
@@ -149,7 +151,7 @@ class _EntityControlParentState extends State<EntityControlParent> {
                                                   .textTheme
                                                   .title,
                                               textScaleFactor:
-                                                  gd.textScaleFactor,
+                                                  gd.textScaleFactorFix,
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
                                               textAlign: TextAlign.center,
@@ -444,7 +446,7 @@ class __IconSelectionState extends State<_IconSelection> {
               Translate.getString("edit.select_icon", context),
               style: Theme.of(context).textTheme.title,
               overflow: TextOverflow.ellipsis,
-              textScaleFactor: gd.textScaleFactor,
+              textScaleFactor: gd.textScaleFactorFix,
             ),
           ),
         ),
@@ -499,13 +501,14 @@ class __IconSelectionState extends State<_IconSelection> {
                             children: <Widget>[
                               index == 0
                                   ? Text(
-                                      Translate.getString("edit.reset_icon", context),
+                                      Translate.getString(
+                                          "edit.reset_icon", context),
                                       style: ThemeInfo.textStatusButtonInActive
                                           .copyWith(
                                               color: ThemeInfo
                                                   .colorBottomSheetReverse
                                                   .withOpacity(0.75)),
-                                      textScaleFactor: gd.textScaleFactor,
+                                      textScaleFactor: gd.textScaleFactorFix,
                                       overflow: TextOverflow.ellipsis,
                                       textAlign: TextAlign.center,
                                       maxLines: 3,

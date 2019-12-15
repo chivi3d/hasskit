@@ -1,10 +1,13 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hasskit/helper/GeneralData.dart';
 import 'package:hasskit/helper/Logger.dart';
+import 'package:hasskit/helper/SquircleBorder.dart';
 import 'package:hasskit/helper/ThemeInfo.dart';
 import 'package:hasskit/helper/WebSocket.dart';
+
 import 'EntityControlLightDimmer.dart';
 
 class TempColorSelector extends StatefulWidget {
@@ -26,16 +29,28 @@ class _TempColorSelectorState extends State<TempColorSelector> {
           selectedIndex = i;
           sendColor();
         },
-        child: Container(
-          margin: EdgeInsets.all(5),
-          padding: EdgeInsets.all(2.0),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: ThemeInfo.colorBottomSheetReverse,
-//                            border: Border.all(width: 0, color: Colors.white),
-          ),
-          child: CircleAvatar(
-            backgroundColor: colorTemps[i],
+        child: Padding(
+          padding: const EdgeInsets.all(2.0),
+          child: Material(
+            color: colorTemps[i],
+            shape: gd.deviceSetting.shapeLayout == 1
+                ? SquircleBorder(
+                    side: BorderSide(
+                      color: ThemeInfo.colorBottomSheetReverse,
+                      width: 1.0,
+                    ),
+                  )
+                : RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    side: BorderSide(
+                      color: ThemeInfo.colorBottomSheetReverse,
+                      width: 1.0,
+                    ),
+                  ),
+            child: Container(
+              width: 40,
+              height: 40,
+            ),
           ),
         ),
       );

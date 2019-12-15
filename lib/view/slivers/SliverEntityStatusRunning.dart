@@ -1,15 +1,20 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hasskit/helper/GeneralData.dart';
 import 'package:hasskit/helper/MaterialDesignIcons.dart';
+import 'package:hasskit/helper/SquircleBorder.dart';
 import 'package:hasskit/helper/ThemeInfo.dart';
 import 'package:provider/provider.dart';
 
 class SliverEntityStatusRunning extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-//    final buttonSize = (gd.mediaQueryWidth - (12 * 2) - (10 * 5)) / 6;
-    final buttonSize = (gd.mediaQueryWidth * 0.1);
+    var buttonSize = (gd.mediaQueryWidth / gd.layoutButtonCount);
+
+    if (gd.isTablet && gd.mediaQueryOrientation == Orientation.landscape) {
+      buttonSize = gd.mediaQueryLongestSide / gd.layoutButtonCount;
+    }
+
     return Selector<GeneralData, String>(
       selector: (_, generalData) =>
           "${generalData.activeDevicesShow} " +
@@ -18,15 +23,17 @@ class SliverEntityStatusRunning extends StatelessWidget {
         List<Widget> status2ndRowButtons = [];
 
         for (var entity in gd.activeDevicesOn) {
-          status2ndRowButtons.add(Status2ndRowItem(entityId: entity.entityId));
+          status2ndRowButtons.add(Status2ndRowItem(
+            entityId: entity.entityId,
+            buttonSize: buttonSize,
+          ));
         }
         return gd.activeDevicesShow && gd.activeDevicesOn.length > 0
             ? SliverList(
                 delegate: SliverChildListDelegate(
                   [
                     Container(
-                      margin: EdgeInsets.fromLTRB(8, 2, 8, 2),
-                      height: buttonSize,
+                      height: buttonSize * 0.75,
                       child: ListView(
                           scrollDirection: Axis.horizontal,
                           children: status2ndRowButtons),
@@ -47,13 +54,14 @@ class SliverEntityStatusRunning extends StatelessWidget {
 class Status2ndRowItem extends StatelessWidget {
   const Status2ndRowItem({
     @required this.entityId,
+    @required this.buttonSize,
   });
 
   final String entityId;
+  final double buttonSize;
 
   @override
   Widget build(BuildContext context) {
-    final buttonSize = (gd.mediaQueryWidth * 0.1);
     return InkWell(
       onTap: () {
         gd.toggleStatus(gd.entities[entityId]);
@@ -63,42 +71,84 @@ class Status2ndRowItem extends StatelessWidget {
           gd.activeDevicesOffTimer(60);
         }
       },
-      child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 4),
-        padding: EdgeInsets.all(2),
-        width: buttonSize / 9 * 21,
-        height: buttonSize,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(buttonSize / 8),
-          color: entityId.contains("binary_sensor")
-              ? ThemeInfo.colorBackgroundActive.withOpacity(0.1)
-              : ThemeInfo.colorBackgroundActive,
-        ),
-        child: Row(
-          children: <Widget>[
-            FittedBox(
-              child: Icon(
-                MaterialDesignIcons.getIconDataFromIconName(
-                    gd.entities[entityId].getDefaultIcon),
-                color: ThemeInfo.colorIconActive,
-                size: 100,
+      child: AspectRatio(
+        aspectRatio: 1,
+        child: Padding(
+          padding: EdgeInsets.all(4),
+          child: Material(
+            color: entityId.contains("binary_sensor")
+                ? ThemeInfo.colorBackgroundActive.withOpacity(0.1)
+                : ThemeInfo.colorBackgroundActive,
+            shape: gd.deviceSetting.shapeLayout == 1
+                ? SquircleBorder()
+                : RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16)),
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 4),
+              padding: EdgeInsets.all(8 * gd.textScaleFactor),
+              width: buttonSize,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        flex: 2,
+                        child: FittedBox(
+                          child: Icon(
+                            MaterialDesignIcons.getIconDataFromIconName(
+                                gd.entities[entityId].getDefaultIcon),
+                            color: ThemeInfo.colorIconActive,
+                            size: 100,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 3,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 4 * gd.textScaleFactor),
+                          child: gd.showSpin ||
+                                  gd.entities[entityId].state.contains("...")
+                              ? FittedBox(
+                                  child: SpinKitThreeBounce(
+                                    size: 100,
+                                    color: ThemeInfo.colorIconActive
+                                        .withOpacity(0.5),
+                                  ),
+                                )
+                              : Container(),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Expanded(
+                    child: Container(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        "${gd.textToDisplay(gd.entities[entityId].getOverrideName)}",
+                        style: gd.entities[entityId].isStateOn
+                            ? ThemeInfo.textNameButtonActive
+                            : ThemeInfo.textNameButtonInActive,
+                        maxLines: 2,
+                        textScaleFactor: gd.textScaleFactor * 0.9,
+                        overflow: TextOverflow.clip,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    "${gd.textToDisplay(gd.entities[entityId].getStateDisplayTranslated(context))}",
+                    style: gd.entities[entityId].isStateOn
+                        ? ThemeInfo.textStatusButtonActive
+                        : ThemeInfo.textStatusButtonInActive,
+                    maxLines: 1,
+                    textScaleFactor: gd.textScaleFactor * 0.9,
+                    overflow: TextOverflow.clip,
+                  ),
+                ],
               ),
             ),
-//            SizedBox(width: 4),
-            Expanded(
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: AutoSizeText(
-                  "${gd.textToDisplay(gd.entities[entityId].getOverrideName)}",
-                  style: ThemeInfo.textNameButtonActive,
-                  textScaleFactor: gd.textScaleFactor * 0.75,
-                  overflow: TextOverflow.ellipsis,
-//                  textAlign: TextAlign.center,
-                  maxLines: 2,
-                ),
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );

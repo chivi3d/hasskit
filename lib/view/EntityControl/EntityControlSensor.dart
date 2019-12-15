@@ -158,7 +158,7 @@ class _EntityControlSensorState extends State<EntityControlSensor> {
         setState(() {
           inAsyncCall = false;
         });
-        print("Request failed with status: ${response.statusCode}.");
+        log.e("Request failed with status: ${response.statusCode}.");
       }
     } finally {
       setState(() {

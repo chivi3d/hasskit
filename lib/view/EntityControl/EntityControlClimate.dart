@@ -10,11 +10,11 @@ import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
 class EntityControlClimate extends StatelessWidget {
   final String entityId;
-
   const EntityControlClimate({@required this.entityId});
 
   @override
   Widget build(BuildContext context) {
+//    var hvacVal = "Off";
     return Selector<GeneralData, String>(
       selector: (_, generalData) =>
           "${generalData.entities[entityId].state}" +
@@ -107,7 +107,7 @@ class EntityControlClimate extends StatelessWidget {
                     gd.textToDisplay(hvacMode),
                     style: Theme.of(context).textTheme.subhead,
                     overflow: TextOverflow.ellipsis,
-                    textScaleFactor: gd.textScaleFactor,
+                    textScaleFactor: gd.textScaleFactorFix,
                     textAlign: TextAlign.right,
                   ),
                 ),
@@ -153,6 +153,23 @@ class EntityControlClimate extends StatelessWidget {
         var fanModesScrollController =
             FixedExtentScrollController(initialItem: fanModeIndex);
 
+//        Map<String, Widget> hvacSegments = <String, Widget>{
+//          "Off": Text('Off'),
+//          "Heat": Text('Heat'),
+//          "Cool": Text('Cool'),
+//        };
+
+//        var hvacSegment = CupertinoSlidingSegmentedControl<String>(
+//          thumbColor: ThemeInfo.colorBottomSheetReverse.withOpacity(0.5),
+//          padding: EdgeInsets.all(12),
+//          children: hvacSegments,
+//          onValueChanged: (String val) {
+//            hvacVal = val;
+//            log.d("onValueChanged hvacVal $hvacVal");
+//          },
+//          groupValue: hvacVal,
+//        );
+
         return Column(
           children: <Widget>[
             SizedBox(
@@ -160,6 +177,7 @@ class EntityControlClimate extends StatelessWidget {
               height: 240,
               child: slider,
             ),
+//            hvacSegment,
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[

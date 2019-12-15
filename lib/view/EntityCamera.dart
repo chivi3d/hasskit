@@ -9,13 +9,11 @@ import 'package:provider/provider.dart';
 
 class EntityCamera extends StatelessWidget {
   final String entityId;
-  final Color borderColor;
   final Function onTapCallback;
   final Function onLongPressCallback;
 
   const EntityCamera({
     @required this.entityId,
-    @required this.borderColor,
     @required this.onTapCallback,
     @required this.onLongPressCallback,
   });
@@ -62,6 +60,7 @@ class EntityCamera extends StatelessWidget {
                             fit: StackFit.expand,
                             alignment: Alignment.center,
                             children: <Widget>[
+                              Container(color: ThemeInfo.colorBackgroundDark),
                               Image(
                                 image: cameraInfo.previousImage,
                                 fit: BoxFit.cover,
@@ -76,9 +75,7 @@ class EntityCamera extends StatelessWidget {
                       ),
                       Container(
                         decoration: BoxDecoration(
-                          color: borderColor != Colors.transparent
-                              ? borderColor
-                              : ThemeInfo.colorBottomSheet.withOpacity(0.9),
+                          color: ThemeInfo.colorBottomSheet.withOpacity(0.9),
                           borderRadius: BorderRadius.only(
                               bottomLeft: Radius.circular(8),
                               bottomRight: Radius.circular(8)),
@@ -107,12 +104,14 @@ class EntityCamera extends StatelessWidget {
                                         style:
                                             Theme.of(context).textTheme.body1,
                                         textScaleFactor: gd.textScaleFactor,
+                                        overflow: TextOverflow.ellipsis,
                                       )
                                     : Text(
                                         "${printDuration(timeDiff, abbreviated: false, tersity: DurationTersity.second, spacer: ' ', delimiter: ' ', conjugation: ' and ')} ago",
                                         style:
                                             Theme.of(context).textTheme.body1,
                                         textScaleFactor: gd.textScaleFactor,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
                           ],
                         ),

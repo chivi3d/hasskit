@@ -1,11 +1,13 @@
 import 'dart:convert';
+
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:hasskit/helper/GeneralData.dart';
+import 'package:hasskit/helper/LocaleHelper.dart';
 import 'package:hasskit/helper/Logger.dart';
 import 'package:hasskit/helper/MaterialDesignIcons.dart';
 import 'package:hasskit/helper/ThemeInfo.dart';
 import 'package:provider/provider.dart';
-import 'package:hasskit/helper/LocaleHelper.dart';
 
 class EntityControlAlarmPanel extends StatefulWidget {
   final String entityId;
@@ -32,7 +34,7 @@ class _EntityControlAlarmPanelState extends State<EntityControlAlarmPanel> {
       "id": gd.socketId,
       "type": "call_service",
       "domain": entity.entityId.split('.').first,
-      "service": "alarm_" + gd.baseSetting.lastArmType,
+      "service": "alarm_" + gd.deviceSetting.lastArmType,
       "service_data": {"entity_id": entity.entityId, "code": output}
     };
 
@@ -90,9 +92,9 @@ class _EntityControlAlarmPanelState extends State<EntityControlAlarmPanel> {
 
   Widget alarmSelectionButton(String text, String armType) {
     log.d(
-        "text $text armType $armType gd.baseSetting.lastArmType ${gd.baseSetting.lastArmType}");
+        "text $text armType $armType gd.deviceSetting.lastArmType ${gd.deviceSetting.lastArmType}");
     Color getColor() {
-      return gd.baseSetting.lastArmType == armType
+      return gd.deviceSetting.lastArmType == armType
           ? Theme.of(context).textTheme.body1.color
           : Theme.of(context).textTheme.body1.color.withOpacity(0.25);
     }
@@ -101,28 +103,34 @@ class _EntityControlAlarmPanelState extends State<EntityControlAlarmPanel> {
         height: 50,
         width: 80,
         decoration: BoxDecoration(
-          color: gd.baseSetting.lastArmType == armType
+          color: gd.deviceSetting.lastArmType == armType
               ? Theme.of(context).textTheme.body1.color.withOpacity(0.25)
               : Colors.transparent,
           borderRadius: BorderRadius.circular(8.0),
         ),
         margin: EdgeInsets.all(8),
-        child: new OutlineButton(
+        child: OutlineButton(
           shape: RoundedRectangleBorder(
             borderRadius: new BorderRadius.circular(8.0),
           ),
-          child: new Text(text,
-              style: TextStyle(
-                fontSize: 15.0,
-                fontWeight: FontWeight.bold,
-                color: getColor(),
-              ),
-              textAlign: TextAlign.center),
+          child: AutoSizeText(
+            text,
+            style: TextStyle(
+              fontSize: 10.0,
+              fontWeight: FontWeight.bold,
+              color: getColor(),
+              height: 1.0,
+            ),
+            maxLines: 3,
+            textAlign: TextAlign.center,
+            textScaleFactor: gd.textScaleFactorFix,
+            overflow: TextOverflow.ellipsis,
+          ),
           onPressed: () => {
             setState(() {
-              if (gd.baseSetting.lastArmType != armType) {
-                gd.baseSetting.lastArmType = armType;
-                gd.baseSettingSave(true);
+              if (gd.deviceSetting.lastArmType != armType) {
+                gd.deviceSetting.lastArmType = armType;
+                gd.deviceSettingSave();
               }
             })
           },
@@ -176,21 +184,28 @@ class _EntityControlAlarmPanelState extends State<EntityControlAlarmPanel> {
               Stack(
                 alignment: Alignment.bottomCenter,
                 children: <Widget>[
-                  Container(
-                    width: 100,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
+                  Material(
+                    color: Colors.transparent,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(100),
+                      side: BorderSide(
+                        width: 2,
                         color: alarmColor,
-                        width: 4.0,
                       ),
+//                      side: BorderSide(
+//                        color: alarmColor,
+//                        width: 2.0,
+//                      ),
                     ),
-                    alignment: Alignment.center,
-                    child: Icon(
-                      MaterialDesignIcons.getIconDataFromIconName(alarmIcon),
-                      size: 50,
-                      color: alarmColor,
+                    child: Container(
+                      width: 100,
+                      height: 100,
+                      alignment: Alignment.center,
+                      child: Icon(
+                        MaterialDesignIcons.getIconDataFromIconName(alarmIcon),
+                        size: 50,
+                        color: alarmColor,
+                      ),
                     ),
                   ),
                   Container(
@@ -202,10 +217,15 @@ class _EntityControlAlarmPanelState extends State<EntityControlAlarmPanel> {
                         horizontal: 20.0,
                         vertical: 5,
                       ),
-                      child: new Text(
+                      child: AutoSizeText(
                         _readableState.toUpperCase(),
-                        style: new TextStyle(
-                            fontSize: 10, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                          height: 1.0,
+                        ),
+                        textScaleFactor: gd.textScaleFactorFix,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ),
@@ -221,7 +241,7 @@ class _EntityControlAlarmPanelState extends State<EntityControlAlarmPanel> {
 //              ),
               SizedBox(height: 20),
 
-              new Column(
+              Column(
                 children: <Widget>[
                   new Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -254,9 +274,13 @@ class _EntityControlAlarmPanelState extends State<EntityControlAlarmPanel> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      alarmSelectionButton(Translate.getString("alarm_panel.arm_home", context), "arm_home"),
+                      alarmSelectionButton(
+                          Translate.getString("alarm_panel.arm_home", context),
+                          "arm_home"),
                       alarmButton("0"),
-                      alarmSelectionButton(Translate.getString("alarm_panel.arm_away", context), "arm_away")
+                      alarmSelectionButton(
+                          Translate.getString("alarm_panel.arm_away", context),
+                          "arm_away")
                     ],
                   )
                 ],

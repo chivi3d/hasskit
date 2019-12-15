@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hasskit/helper/GeneralData.dart';
@@ -42,7 +43,7 @@ class CoverSlider extends StatefulWidget {
 
 class CoverSliderState extends State<CoverSlider> {
   double buttonHeight = 300.0;
-  double buttonWidth = 90.0;
+  double buttonWidth = 126.0;
   double currentPosX;
   double currentPosY;
   double startPosX;
@@ -70,7 +71,7 @@ class CoverSliderState extends State<CoverSlider> {
                 0,
                 100,
                 lowerPartHeight,
-                buttonHeight - upperPartHeight - 8);
+                buttonHeight - upperPartHeight);
             buttonValue = mapValue;
           }
           log.d(
@@ -206,7 +207,7 @@ class CoverSliderState extends State<CoverSlider> {
       () {
         draggingTime = DateTime.now().add(Duration(seconds: 1));
         var sendValue = gd.mapNumber(buttonValue, lowerPartHeight,
-            buttonHeight - upperPartHeight - 8, 0, 100);
+            buttonHeight - upperPartHeight, 0, 100);
 
         log.d("_onVerticalDragEnd $sendValue");
         var outMsg;

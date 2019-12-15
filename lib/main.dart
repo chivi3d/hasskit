@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hasskit/helper/LocaleHelper.dart';
@@ -16,11 +18,8 @@ import 'helper/GeneralData.dart';
 import 'helper/GoogleSign.dart';
 import 'helper/Logger.dart';
 import 'helper/MaterialDesignIcons.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:easy_localization/easy_localization.dart';
 
 void main() {
-//  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(
     EasyLocalization(
       child: MultiProvider(
@@ -40,14 +39,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     gd = Provider.of<GeneralData>(context, listen: false);
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
-
-    gd.localeData = EasyLocalizationProvider.of(context).data;
+    var data = EasyLocalizationProvider.of(context).data;
 
     return EasyLocalizationProvider(
-      data: gd.localeData,
+      data: data,
       child: Selector<GeneralData, ThemeData>(
         selector: (_, generalData) => generalData.currentTheme,
         builder: (_, currentTheme, __) {
@@ -56,13 +51,22 @@ class MyApp extends StatelessWidget {
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
               EasylocaLizationDelegate(
-                  locale: gd.localeData.locale, path: 'assets/langs')
+                  locale: data.locale, path: 'assets/langs')
             ],
-            locale: gd.localeData.savedLocale,
+            locale: data.savedLocale,
             supportedLocales: [
-              Locale('en', 'US'),
+              Locale('en', 'US'), //MUST BE FIRST FOR DEFAULT LANGUAGE
+              Locale('bg', 'BG'),
+              Locale('el', 'GR'),
+              Locale('fr', 'FR'),
+              Locale('he', 'IL'),
+              Locale('nl', 'NL'),
+              Locale('pt', 'PT'),
+              Locale('ru', 'RU'),
               Locale('sv', 'SE'),
               Locale('vi', 'VN'),
+              Locale('zh', 'CN'),
+              Locale('zh', 'TW'),
             ],
             debugShowCheckedModeBanner: false,
             theme: currentTheme,
@@ -98,12 +102,6 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
         if (gd.lastLifecycleState == AppLifecycleState.resumed) {
           log.w("didChangeAppLifecycleState ${gd.lastLifecycleState}");
 
-          gd.mediaQueryWidth = MediaQuery.of(context).size.width;
-          log.w(
-              "didChangeAppLifecycleState gd.mediaQueryWidth ${gd.mediaQueryWidth}");
-          gd.mediaQueryHeight = MediaQuery.of(context).size.height;
-          log.w(
-              "didChangeAppLifecycleState gd.mediaQueryWidth ${gd.mediaQueryHeight}");
           if (gd.autoConnect) {
             {
               if (gd.connectionStatus != "Connected") {
@@ -166,21 +164,16 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
     log.w("mainInitState START await loginDataInstance.loadLoginData");
     log.w("mainInitState...");
     log.w("mainInitState gd.loginDataListString");
-    await Future.delayed(const Duration(milliseconds: 500));
+
+//    await Future.delayed(const Duration(milliseconds: 500));
     gd.loginDataListString = await gd.getString('loginDataList');
+
     await gd.getSettings("mainInitState");
   }
 
   timer200Callback() {}
 
   timer1Callback() {
-    if (gd.mediaQueryHeight == 0) {
-      gd.mediaQueryWidth = MediaQuery.of(context).size.width;
-      log.w("build gd.mediaQueryWidth ${gd.mediaQueryWidth}");
-      gd.mediaQueryHeight = MediaQuery.of(context).size.height;
-      log.w("build gd.mediaQueryHeight ${gd.mediaQueryHeight}");
-    }
-
     for (String entityId in gd.cameraInfosActive) {
       gd.cameraInfosUpdate(entityId);
     }
@@ -210,7 +203,8 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
   timer60Callback() {}
 
   _afterLayout(_) async {
-    await Future.delayed(const Duration(milliseconds: 1000));
+//    await Future.delayed(const Duration(milliseconds: 1000));
+
     showLoading = false;
     log.w("showLoading $showLoading");
     setState(() {});
@@ -218,18 +212,36 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    gd.mediaQueryContext = context;
+    if (gd.isTablet) {
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+        DeviceOrientation.landscapeRight,
+        DeviceOrientation.landscapeLeft,
+      ]);
+    } else {
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+      ]);
+    }
+    log.w(
+        "gd.isTablet ${gd.isTablet} gd.mediaQueryShortestSide ${gd.mediaQueryShortestSide} gd.mediaQueryLongestSide ${gd.mediaQueryLongestSide} orientation ${gd.mediaQueryOrientation}");
     return Selector<GeneralData, String>(
       selector: (_, generalData) =>
           "${generalData.viewMode} | " +
           "${Localizations.localeOf(context).languageCode} | " +
-          "${generalData.baseSetting.itemsPerRow} | " +
+          "${generalData.deviceSetting.settingLocked} | " +
+          "${generalData.deviceSetting.phoneLayout} | " +
+          "${generalData.deviceSetting.tabletLayout} | " +
+          "${generalData.deviceSetting.shapeLayout} | " +
           "${generalData.mediaQueryHeight} | " +
           "${generalData.connectionStatus} | " +
           "${generalData.roomList.length} | ",
       builder: (context, data, child) {
         return Scaffold(
           body: ModalProgressHUD(
-            inAsyncCall: showLoading || gd.mediaQueryHeight == 0,
+            inAsyncCall: showLoading,
             opacity: 1,
             progressIndicator: SpinKitThreeBounce(
               size: 40,
@@ -251,20 +263,22 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
                     title: Text(
                       gd.getRoomName(0),
                       maxLines: 1,
-                      textScaleFactor: gd.textScaleFactor,
+                      textScaleFactor: gd.textScaleFactorFix,
                       overflow: TextOverflow.ellipsis,
                       style:
                           TextStyle(color: ThemeInfo.colorBottomSheetReverse),
                     ),
                   ),
                   BottomNavigationBarItem(
-                    icon: Icon(MaterialDesignIcons.getIconDataFromIconName(
-                        "mdi:view-carousel")),
+                    icon: Icon(
+                      MaterialDesignIcons.getIconDataFromIconName(
+                          "mdi:view-carousel"),
+                    ),
                     title: Text(
 //                  gd.getRoomName(gd.lastSelectedRoom + 1),
                       Translate.getString("global.rooms", context),
                       maxLines: 1,
-                      textScaleFactor: gd.textScaleFactor,
+                      textScaleFactor: gd.textScaleFactorFix,
                       overflow: TextOverflow.ellipsis,
                       style:
                           TextStyle(color: ThemeInfo.colorBottomSheetReverse),
@@ -277,7 +291,7 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
                     title: Text(
                       Translate.getString("global.settings", context),
                       maxLines: 1,
-                      textScaleFactor: gd.textScaleFactor,
+                      textScaleFactor: gd.textScaleFactorFix,
                       overflow: TextOverflow.ellipsis,
                       style:
                           TextStyle(color: ThemeInfo.colorBottomSheetReverse),
@@ -292,7 +306,7 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
                       builder: (context) {
                         return CupertinoPageScaffold(
                           child: SinglePage(roomIndex: 0),
-//                          child: AnimationTemp(),
+//                          child: HassKitReview(),
                         );
                       },
                     );

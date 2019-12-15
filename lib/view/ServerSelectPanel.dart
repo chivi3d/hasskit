@@ -2,11 +2,11 @@ import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hasskit/helper/GeneralData.dart';
+import 'package:hasskit/helper/LocaleHelper.dart';
 import 'package:hasskit/helper/Logger.dart';
 import 'package:hasskit/helper/MaterialDesignIcons.dart';
 import 'package:hasskit/helper/WebSocket.dart';
 import 'package:hasskit/model/LoginData.dart';
-import 'package:hasskit/helper/LocaleHelper.dart';
 
 class ServerSelectPanel extends StatelessWidget {
   final LoginData loginData;
@@ -74,7 +74,7 @@ class ServerSelectPanel extends StatelessWidget {
           FocusScope.of(context).requestFocus(new FocusNode());
         },
         child: Card(
-          margin: EdgeInsets.all(4),
+          margin: EdgeInsets.all(8),
           color: Theme.of(context).canvasColor.withOpacity(0.5),
           child: Padding(
             padding: const EdgeInsets.all(12.0),
@@ -102,15 +102,22 @@ class ServerSelectPanel extends StatelessWidget {
                       Text(loginData.getUrl,
                           style: Theme.of(context).textTheme.subhead,
                           maxLines: 2,
-                          textScaleFactor: gd.textScaleFactor,
+                          textScaleFactor: gd.textScaleFactorFix,
                           overflow: TextOverflow.ellipsis),
                       Text(
                           gd.loginDataCurrent.getUrl == loginData.getUrl
-                              ? "Status: " + (gd.connectionStatus == "Connected" ? Translate.getString("global.connected", context) : Translate.getString("global.disconnected", context))
-                              : Translate.getString("global.last_access", context) + ": ${loginData.timeSinceLastAccess}",
+                              ? "Status: " +
+                                  (gd.connectionStatus == "Connected"
+                                      ? Translate.getString(
+                                          "global.connected", context)
+                                      : Translate.getString(
+                                          "global.disconnected", context))
+                              : Translate.getString(
+                                      "global.last_access", context) +
+                                  ": ${loginData.timeSinceLastAccess}",
                           style: Theme.of(context).textTheme.body1,
                           maxLines: 5,
-                          textScaleFactor: gd.textScaleFactor,
+                          textScaleFactor: gd.textScaleFactorFix,
                           overflow: TextOverflow.ellipsis),
                     ],
                   ),

@@ -1,30 +1,40 @@
 import 'dart:async';
+import 'dart:ui';
+
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hasskit/helper/GeneralData.dart';
+import 'package:hasskit/helper/LocaleHelper.dart';
 import 'package:hasskit/helper/Logger.dart';
 import 'package:hasskit/helper/MaterialDesignIcons.dart';
 import 'package:hasskit/helper/ThemeInfo.dart';
-import 'package:flutter/gestures.dart';
-import 'package:hasskit/helper/LocaleHelper.dart';
 
 class SliverWebView extends StatelessWidget {
-  final String webViewsId;
-  const SliverWebView({@required this.webViewsId});
+  final List<String> webViews;
+  const SliverWebView({@required this.webViews});
   @override
   Widget build(BuildContext context) {
-    return SliverList(
-      delegate: SliverChildBuilderDelegate(
-        (BuildContext context, int index) {
-          return WebView(
-            webViewsId: webViewsId,
-          );
-        },
-        addAutomaticKeepAlives: false,
-        childCount: 1,
+    return SliverPadding(
+      padding: EdgeInsets.all(8),
+      sliver: SliverGrid(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: gd.layoutCameraCount,
+          mainAxisSpacing: 8,
+          crossAxisSpacing: 8,
+          childAspectRatio: 8 / 5,
+        ),
+        delegate: SliverChildBuilderDelegate(
+          (context, index) {
+            return WebView(
+              webViewsId: webViews[index],
+            );
+          },
+          childCount: webViews.length,
+        ),
       ),
     );
   }
@@ -33,7 +43,9 @@ class SliverWebView extends StatelessWidget {
 class WebView extends StatefulWidget {
   final String webViewsId;
 
-  const WebView({@required this.webViewsId});
+  const WebView({
+    @required this.webViewsId,
+  });
 
   @override
   _WebViewState createState() => _WebViewState();
@@ -47,29 +59,26 @@ class _WebViewState extends State<WebView> {
 
   InAppWebViewController webController;
   String currentUrl = "https://google.com";
-  double ratio = 0.7;
-  double ratioDisplay = 0.7;
   double opacity = 0.2;
   bool showSpin = true;
   bool showAddress = false;
-  bool pinWebView = true;
+  bool pinWebView;
+  double width;
 
   @override
   void initState() {
     super.initState();
     currentUrl = gd.baseSetting.getWebViewUrl(widget.webViewsId);
     if (currentUrl == null) currentUrl = "https://embed.windy.com";
-    ratio = gd.baseSetting.getWebViewRatio(widget.webViewsId);
-    if (ratio == null) ratio = 0.7;
-    ratioDisplay = ratio;
     textController.text = currentUrl;
+    pinWebView = true;
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(12),
-      height: ratio * gd.mediaQueryWidth,
+//      width: width,
+//      height: ratio * width,
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -148,7 +157,7 @@ class _WebViewState extends State<WebView> {
     return Container(
       child: InAppWebView(
         initialUrl: currentUrl,
-        gestureRecognizers: pinWebView ? null : gestureRecognizers,
+        gestureRecognizers: !pinWebView ? gestureRecognizers : null,
         initialHeaders: {},
         initialOptions: InAppWebViewWidgetOptions(
             inAppWebViewOptions: InAppWebViewOptions(
@@ -195,7 +204,7 @@ class _WebViewState extends State<WebView> {
                 child: Container(
                   child: Text(
                     Translate.getString("webview.windy", context),
-                    textScaleFactor: gd.textScaleFactor,
+                    textScaleFactor: gd.textScaleFactorFix,
                   ),
                 ),
               ),
@@ -211,7 +220,7 @@ class _WebViewState extends State<WebView> {
                 child: Container(
                   child: Text(
                     Translate.getString("webview.y_weather", context),
-                    textScaleFactor: gd.textScaleFactor,
+                    textScaleFactor: gd.textScaleFactorFix,
                   ),
                 ),
               ),
@@ -226,7 +235,7 @@ class _WebViewState extends State<WebView> {
                 },
                 child: Text(
                   Translate.getString("webview.live_score", context),
-                  textScaleFactor: gd.textScaleFactor,
+                  textScaleFactor: gd.textScaleFactorFix,
                 ),
               ),
             ],
@@ -287,67 +296,11 @@ class _WebViewState extends State<WebView> {
                       changeUrl(textController.text);
                     },
                   ),
-                  Row(
-                    children: <Widget>[
-                      Text(Translate.getString("webview.aspect", context)),
-                      SizedBox(width: 8),
-                      Icon(MaterialDesignIcons.getIconDataFromIconName(
-                          "mdi:crop-landscape")),
-                      Expanded(
-                        child: Slider(
-                          label: "${ratioDisplay.toStringAsFixed(1)}",
-                          divisions: 10,
-                          min: 0.5,
-                          value: ratioDisplay,
-                          max: 1.5,
-                          onChanged: (val) {
-                            setState(() {
-                              ratioDisplay = val;
-                            });
-                          },
-                          onChangeEnd: (val) {
-                            setState(() {
-                              ratio = val;
-                              ratioDisplay = val;
-                              changeAspect(val);
-                            });
-                          },
-                        ),
-                      ),
-                      Icon(MaterialDesignIcons.getIconDataFromIconName(
-                          "mdi:crop-portrait")),
-                    ],
-                  ),
                 ],
               ),
             ),
           )
         : Container();
-  }
-
-  Timer _changeAspectTimer;
-
-  void changeAspect(double val) {
-    _changeAspectTimer?.cancel();
-    _changeAspectTimer = null;
-    _changeAspectTimer = Timer(Duration(seconds: 1), () {
-      setState(() {
-        ratio = val;
-
-        if (widget.webViewsId == "WebView1") {
-          gd.baseSetting.webView1Ratio = val;
-          gd.baseSettingSave(true);
-        }
-        if (widget.webViewsId == "WebView2") {
-          gd.baseSetting.webView2Ratio = val;
-          gd.baseSettingSave(true);
-        }
-        if (widget.webViewsId == "WebView3") {
-          gd.baseSetting.webView3Ratio = val;
-          gd.baseSettingSave(true);
-        }
-      });
-    });
   }
 
   Widget webButton(BuildContext context) {

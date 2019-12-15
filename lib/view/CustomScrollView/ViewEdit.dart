@@ -95,6 +95,13 @@ class _ViewEditState extends State<ViewEdit> {
         BackgroundImageSelector(roomIndex: widget.roomIndex),
         TemperatureSelector(roomIndex: widget.roomIndex),
 //        HumiditySelector(roomIndex: widget.roomIndex),
+        SliverHeaderEdit(
+          title: "Embeded Website",
+          icon: Icon(MaterialDesignIcons.getIconDataFromIconName("mdi:web")),
+        ),
+        WebViewItems(
+          roomIndex: widget.roomIndex,
+        ),
         SliverList(
           delegate: SliverChildListDelegate(
             [
@@ -140,13 +147,6 @@ class _ViewEditState extends State<ViewEdit> {
               ),
             ],
           ),
-        ),
-        SliverHeaderEdit(
-          title: "Embeded Website...",
-          icon: Icon(MaterialDesignIcons.getIconDataFromIconName("mdi:web")),
-        ),
-        WebViewItems(
-          roomIndex: widget.roomIndex,
         ),
         SliverHeaderEdit(
           title: "Selected devices...",
@@ -346,7 +346,7 @@ class __EditItemsState extends State<_EditItems> {
                       "${gd.textToDisplay(entities[index].getOverrideName)}",
                       style: Theme.of(context).textTheme.subhead,
                       overflow: TextOverflow.ellipsis,
-                      textScaleFactor: gd.textScaleFactor,
+                      textScaleFactor: gd.textScaleFactorFix,
                       maxLines: 1,
                     ),
                   ),
@@ -596,7 +596,7 @@ class _WebViewItemsState extends State<WebViewItems> {
                       "${gd.textToDisplay("Website #${index + 1}")}",
                       style: Theme.of(context).textTheme.subhead,
                       overflow: TextOverflow.ellipsis,
-                      textScaleFactor: gd.textScaleFactor,
+                      textScaleFactor: gd.textScaleFactorFix,
                       maxLines: 1,
                     ),
                   ),

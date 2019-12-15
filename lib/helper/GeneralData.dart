@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:core';
 import 'dart:math';
 import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flushbar/flushbar.dart';
@@ -15,6 +16,7 @@ import 'package:hasskit/helper/ThemeInfo.dart';
 import 'package:hasskit/helper/WebSocket.dart';
 import 'package:hasskit/model/BaseSetting.dart';
 import 'package:hasskit/model/CameraInfo.dart';
+import 'package:hasskit/model/DeviceSetting.dart';
 import 'package:hasskit/model/Entity.dart';
 import 'package:hasskit/model/EntityOverride.dart';
 import 'package:hasskit/model/LoginData.dart';
@@ -61,38 +63,42 @@ class GeneralData with ChangeNotifier {
     return value;
   }
 
-  double _mediaQueryWidth = 411.42857142857144;
+//  double _mediaQueryWidth = 411.42857142857144;
 
-  double get mediaQueryWidth => _mediaQueryWidth;
-
-  set mediaQueryWidth(double val) {
-//    log.d('mediaQueryWidth $val');
-    if (val == null) {
-      throw new ArgumentError();
-    }
-    if (_mediaQueryWidth != val) {
-      _mediaQueryWidth = val;
-      notifyListeners();
-    }
+  double get mediaQueryWidth {
+    return MediaQuery.of(mediaQueryContext).size.width;
   }
 
-  double _mediaQueryHeight = 0;
+  double get mediaQueryHeight {
+    return MediaQuery.of(mediaQueryContext).size.height;
+  }
 
-  double get mediaQueryHeight => _mediaQueryHeight;
+  double get mediaQueryShortestSide {
+    return MediaQuery.of(mediaQueryContext).size.shortestSide;
+  }
 
-  set mediaQueryHeight(double val) {
-//    log.d('mediaQueryHeight $val');
-    if (val == null) {
-      throw new ArgumentError();
-    }
-    if (_mediaQueryHeight != val) {
-      _mediaQueryHeight = val;
-      notifyListeners();
-    }
+  double get mediaQueryLongestSide {
+    return MediaQuery.of(mediaQueryContext).size.longestSide;
+  }
+
+  Orientation get mediaQueryOrientation {
+    return MediaQuery.of(mediaQueryContext).orientation;
+  }
+
+  bool get isTablet {
+    return mediaQueryShortestSide >= 500;
+  }
+
+  double get textScaleFactorFix {
+    return 1.0;
   }
 
   double get textScaleFactor {
-    return mediaQueryWidth / 411.42857142857144;
+    int totalRowButton = layoutButtonCount;
+    if (!isTablet || mediaQueryOrientation == Orientation.portrait) {
+      return (mediaQueryWidth / 411.42857142857144) * (3 / totalRowButton);
+    }
+    return (mediaQueryLongestSide / 411.42857142857144) * (3 / totalRowButton);
   }
 
   int _lastSelectedRoom = 0;
@@ -225,8 +231,9 @@ class GeneralData with ChangeNotifier {
         continue;
       }
 
-//      if (entity.entityId.contains("fan.")) {
-//        log.w("\n socketGetStates ${entity.entityId} mess $mess");
+//      if (entity.entityId.contains("group.")) {
+//        log.w(
+//            "\n socketGetStates ${entity.entityId} state ${entity.state} isStateOn ${entity.isStateOn} mess $mess");
 //      }
 
       if (previousEntitiesList.contains(entity.entityId))
@@ -264,10 +271,14 @@ class GeneralData with ChangeNotifier {
     _entities[entityId] =
         Entity.fromJson(message['event']['data']['new_state']);
 
-//    if (_entities[entityId].entityId.contains("fan.")) {
-//      log.w(
-//          "\n socketSubscribeEvents $entityId message $message['event']['data']['new_state']");
-//    }
+    if (_entities[entityId] != null &&
+        _entities[entityId].entityId.contains("fan.")) {
+      log.w(
+          "\n socketSubscribeEvents $entityId message $message['event']['data']['new_state']");
+      if (!_entities.containsKey(entityId)) {
+        log.e("_entities.containsKey($entityId");
+      }
+    }
 
     notifyListeners();
   }
@@ -376,7 +387,7 @@ class GeneralData with ChangeNotifier {
   }
 
   ThemeData get currentTheme {
-    return ThemeInfo.themesData[baseSetting.themeIndex];
+    return ThemeInfo.themesData[deviceSetting.themeIndex];
   }
 
   List<LoginData> loginDataList = [];
@@ -385,8 +396,8 @@ class GeneralData with ChangeNotifier {
     return loginDataList.length;
   }
 
-  LoginData loginDataHassKitDemo = LoginData(
-    url: "http://hasskitdemo.duckdns.org:8123",
+  LoginData loginDataHassKit = LoginData(
+    url: "http://hasskit.duckdns.org:8123",
     accessToken:
         "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI4NWRlNWM4MmE4OGQ0YmYxOTk4ZjgxZGE3YzY3ZWFkNSIsImlhdCI6MTU3MzY5Mzg2NiwiZXhwIjoxNTczNjk1NjY2fQ.GDWWYGshuxPOrv3GMOjqlxKUtPVh5sADzgTUutDp508",
     longToken:
@@ -667,13 +678,12 @@ class GeneralData with ChangeNotifier {
         row4: []),
   ];
 
-  List<Room> roomListHassKitDemo = [
+  List<Room> roomListHassKit = [
     Room(
-        name: 'HassKit Demo',
+        name: 'HassKit',
         imageIndex: 12,
         tempEntityId: "sensor.temperature_158d0002e98f27",
         favorites: [
-          "WebView1",
           "fan.acorn_fan",
           "climate.air_conditioner_1",
           "cover.cover_06",
@@ -691,6 +701,7 @@ class GeneralData with ChangeNotifier {
         entities: [
           "camera.camera_1",
           "camera.camera_2",
+          "WebView1",
         ],
         row3: [
           "switch.socket_sonoff_s20",
@@ -753,6 +764,7 @@ class GeneralData with ChangeNotifier {
           "cover.cover_08",
           "switch.socket_sonoff_s20",
           "switch.tuya_neo_coolcam_10a",
+          "WebView1",
         ],
         entities: [],
         row3: [],
@@ -1041,7 +1053,7 @@ class GeneralData with ChangeNotifier {
         recVal = recVal + '???' + " ";
       }
     }
-    return recVal;
+    return recVal.trim();
 //    if (text.length > 1) {
 //      return text[0].toUpperCase() + text.substring(1);
 //    } else if (text.length > 0) {
@@ -1064,7 +1076,6 @@ class GeneralData with ChangeNotifier {
       return;
     }
 
-    log.w("toggleStatus ${entity.entityId}");
     eventEntity(entity.entityId);
     delayGetStatesTimer(5);
     entity.toggleState();
@@ -1329,19 +1340,90 @@ class GeneralData with ChangeNotifier {
     entitiesOverrideSave(true);
   }
 
-  BaseSetting baseSetting = BaseSetting(
-      itemsPerRow: 3,
-      themeIndex: 1,
-      lastArmType: "arm_home",
-      notificationDevices: [],
-      colorPicker: [
-        "0xffEEEEEE",
-        "0xffEF5350",
-        "0xffFFCA28",
-        "0xff66BB6A",
-        "0xff42A5F5",
-        "0xffAB47BC",
-      ]);
+  Flushbar settingLockFlushbar;
+
+  DeviceSetting deviceSetting = DeviceSetting(
+    phoneLayout: 3,
+    tabletLayout: 69,
+    shapeLayout: 1,
+    themeIndex: 1,
+    lastArmType: "arm_away",
+    settingLocked: false,
+    settingPin: "0000",
+    lockOut: "",
+    failAttempt: 0,
+  );
+
+  String _deviceSettingString;
+
+  String get deviceSettingString => _deviceSettingString;
+
+  set deviceSettingString(val) {
+    if (_deviceSettingString != val) {
+      _deviceSettingString = val;
+
+      if (_deviceSettingString != null && _deviceSettingString.length > 0) {
+        log.w('FOUND deviceSetting _deviceSettingString $_deviceSettingString');
+
+        val = jsonDecode(val);
+        deviceSetting = DeviceSetting.fromJson(val);
+      } else {
+        log.w('CAN NOT FIND deviceSetting adding default data');
+        deviceSetting.phoneLayout = 3;
+        deviceSetting.tabletLayout = 69;
+        deviceSetting.shapeLayout = 1;
+        deviceSetting.themeIndex = 1;
+        deviceSetting.lastArmType = "arm_away";
+        deviceSetting.settingLocked = false;
+        deviceSetting.settingPin = "0000";
+        deviceSetting.lockOut = "";
+        deviceSetting.failAttempt = 0;
+      }
+
+      log.d("deviceSetting.phoneLayout 1 ${gd.deviceSetting.phoneLayout}");
+      log.d("deviceSetting.shapeLayout 1 ${gd.deviceSetting.shapeLayout}");
+
+      notifyListeners();
+    }
+  }
+
+  void deviceSettingSave() {
+    log.d("deviceSettingSave");
+
+    try {
+      var jsonDeviceSetting = {
+        'phoneLayout': deviceSetting.phoneLayout,
+        'tabletLayout': deviceSetting.tabletLayout,
+        'shapeLayout': deviceSetting.shapeLayout,
+        'themeIndex': deviceSetting.themeIndex,
+        'lastArmType': deviceSetting.lastArmType,
+        'settingLocked': deviceSetting.settingLocked,
+        'settingPin': deviceSetting.settingPin,
+        'lockOut': deviceSetting.lockOut,
+        'failAttempt': deviceSetting.failAttempt,
+      };
+
+      var url = gd.loginDataCurrent.getUrl.replaceAll(".", "-");
+      url = url.replaceAll("/", "-");
+      url = url.replaceAll(":", "-");
+
+      gd.saveString('deviceSetting $url', jsonEncode(jsonDeviceSetting));
+      log.w('save deviceSetting $url $jsonDeviceSetting');
+    } catch (e) {
+      log.w("deviceSettingSave $e");
+    }
+    notifyListeners();
+  }
+
+  BaseSetting baseSetting = BaseSetting(notificationDevices: [], colorPicker: [
+    "0xffEEEEEE",
+    "0xffEF5350",
+    "0xffFFCA28",
+    "0xff66BB6A",
+    "0xff42A5F5",
+    "0xffAB47BC",
+  ]);
+
   String _baseSettingString;
 
   String get baseSettingString => _baseSettingString;
@@ -1357,9 +1439,6 @@ class GeneralData with ChangeNotifier {
         baseSetting = BaseSetting.fromJson(val);
       } else {
         log.w('CAN NOT FIND baseSetting adding default data');
-        baseSetting.itemsPerRow = 3;
-        baseSetting.themeIndex = 1;
-        baseSetting.lastArmType = "arm_away";
         baseSetting.notificationDevices = [];
         baseSetting.colorPicker = [
           "0xffEEEEEE",
@@ -1390,16 +1469,10 @@ class GeneralData with ChangeNotifier {
 
     try {
       var jsonBaseSetting = {
-        'itemsPerRow': baseSetting.itemsPerRow,
-        'themeIndex': baseSetting.themeIndex,
-        'lastArmType': baseSetting.lastArmType,
         'notificationDevices': baseSetting.notificationDevices,
         'colorPicker': baseSetting.colorPicker,
-        'webView1Ratio': baseSetting.webView1Ratio,
         'webView1Url': baseSetting.webView1Url,
-        'webView2Ratio': baseSetting.webView2Ratio,
         'webView2Url': baseSetting.webView2Url,
-        'webView3Ratio': baseSetting.webView3Ratio,
         'webView3Url': baseSetting.webView3Url,
       };
 
@@ -1417,10 +1490,7 @@ class GeneralData with ChangeNotifier {
     notifyListeners();
   }
 
-  BaseSetting baseSettingHassKitDemo = BaseSetting(
-    themeIndex: 1,
-    itemsPerRow: 3,
-    lastArmType: "arm_away",
+  BaseSetting baseSettingHassKit = BaseSetting(
     colorPicker: [
       "0xffEEEEEE",
       "0xffEF5350",
@@ -1799,11 +1869,26 @@ class GeneralData with ChangeNotifier {
             url = url.replaceAll("/", "-");
             url = url.replaceAll(":", "-");
 
-            gd.entitiesOverrideString = documents.data["entitiesOverride"];
+            if (documents.data["entitiesOverride"] != null &&
+                documents.data["entitiesOverride"].toString().length > 0) {
+              log.w(
+                  "getStreamData entitiesOverride.length ${documents.data["entitiesOverride"].toString().length}");
+              gd.entitiesOverrideString = documents.data["entitiesOverride"];
+            }
 
-            gd.baseSettingString = documents.data["baseSetting $url"];
+            if (documents.data["baseSetting $url"] != null &&
+                documents.data["baseSetting $url"].toString().length > 0) {
+              log.w(
+                  "getStreamData baseSetting.length ${documents.data["baseSetting $url"].toString().length}");
+              gd.baseSettingString = documents.data["baseSetting $url"];
+            }
 
-            gd.roomListString = documents.data["roomList $url"];
+            if (documents.data["roomList $url"] != null &&
+                documents.data["roomList $url"].toString().length > 0) {
+              log.w(
+                  "getStreamData roomList.length ${documents.data["roomList $url"].toString().length}");
+              gd.roomListString = documents.data["roomList $url"];
+            }
           }
         }
       }
@@ -1817,8 +1902,8 @@ class GeneralData with ChangeNotifier {
     //NO URL return empty data
 
     if (loginDataList.length < 1) {
-      loginDataList.add(loginDataHassKitDemo);
-      loginDataCurrent = loginDataHassKitDemo;
+      loginDataList.add(loginDataHassKit);
+      loginDataCurrent = loginDataHassKit;
     }
 
     if (!gd.autoConnect ||
@@ -1837,27 +1922,38 @@ class GeneralData with ChangeNotifier {
       var url = gd.loginDataCurrent.getUrl.replaceAll(".", "-");
       url = url.replaceAll("/", "-");
       url = url.replaceAll(":", "-");
+
       //force the trigger reset
+      log.w(
+          "force the trigger reset entitiesOverrideString load \n entitiesOverride");
       gd.entitiesOverrideString = "";
       gd.entitiesOverrideString = await gd.getString('entitiesOverride');
       //force the trigger reset
+      log.w(
+          "force the trigger reset deviceSettingString load \n deviceSetting $url");
+      gd.deviceSettingString = "";
+      gd.deviceSettingString = await gd.getString('deviceSetting $url');
+      //force the trigger reset
+      log.w(
+          "force the trigger reset baseSettingString load \n baseSetting $url");
       gd.baseSettingString = "";
       gd.baseSettingString = await gd.getString('baseSetting $url');
       if (gd.baseSettingString == null || gd.baseSettingString.length < 1) {
         log.w(
             "gd.baseSettingString == null || gd.baseSettingString.length < 1");
-        if (gd.currentUrl == "http://hasskitdemo.duckdns.org:8123") {
+        if (gd.currentUrl == "http://hasskit.duckdns.org:8123") {
           log.w(
-              "gd.baseSettingString currentUrl == http://hasskitdemo.duckdns.org:8123");
-          gd.baseSettingString = jsonEncode(gd.baseSettingHassKitDemo);
+              "gd.baseSettingString currentUrl == http://hasskit.duckdns.org:8123");
+          gd.baseSettingString = jsonEncode(gd.baseSettingHassKit);
         }
       }
       //force the trigger reset
+      log.w("force the trigger reset roomListString load \n roomList $url");
       gd.roomListString = "";
       gd.roomListString = await gd.getString('roomList $url');
       if (gd.roomListString == null || gd.roomListString.length < 1) {
-        if (gd.currentUrl == "http://hasskitdemo.duckdns.org:8123") {
-          gd.roomListString = jsonEncode(gd.roomListHassKitDemo);
+        if (gd.currentUrl == "http://hasskit.duckdns.org:8123") {
+          gd.roomListString = jsonEncode(gd.roomListHassKit);
         } else {
           gd.roomListString = jsonEncode(gd.roomListDefault);
         }
@@ -1878,33 +1974,39 @@ class GeneralData with ChangeNotifier {
         .get()
         .then(
       (DocumentSnapshot ds) {
-        log.e("gd.firebaseCurrentUser != null ds.exists");
+        log.w("downloadCloudData gd.firebaseCurrentUser != null ds.exists");
         var url = gd.loginDataCurrent.getUrl.replaceAll(".", "-");
         url = url.replaceAll("/", "-");
         url = url.replaceAll(":", "-");
 
-        //force the trigger reset
-        gd.entitiesOverrideString = "";
-        gd.entitiesOverrideString = ds["entitiesOverride"];
-
-        //force the trigger reset
-        gd.baseSettingString = "";
-        gd.baseSettingString = ds['baseSetting $url'];
-        //force the trigger reset
-        gd.roomListString = "";
-        gd.roomListString = ds['roomList $url'];
-
-        if (gd.roomListString == null || gd.roomListString.length < 1) {
-          if (gd.currentUrl == "http://hasskitdemo.duckdns.org:8123") {
-            gd.roomListString = json.encode(gd.roomListHassKitDemo);
-          } else {
-            gd.roomListString = json.encode(gd.roomListDefault);
-          }
+        if (ds["entitiesOverride"] != null &&
+            ds["entitiesOverride"].toString().length > 10) {
+          //force the trigger reset
+          log.w(
+              "downloadCloudData entitiesOverride ${ds["entitiesOverride"].toString().length}");
+          gd.entitiesOverrideString = ds["entitiesOverride"].toString();
         }
-        if (gd.baseSetting == null) {
-          if (gd.currentUrl == "http://hasskitdemo.duckdns.org:8123") {
-            gd.baseSetting = gd.baseSettingHassKitDemo;
-          }
+
+        if (ds['baseSetting $url'] != null &&
+            ds['baseSetting $url'].toString().length > 10) {
+          log.w(
+              "downloadCloudData baseSetting ${ds["baseSetting $url"].toString().length}");
+          gd.baseSettingString = ds["baseSetting $url"].toString();
+        } else if (gd.currentUrl == "http://hasskit.duckdns.org:8123") {
+          log.w(
+              "downloadCloudData baseSettingString currentUrl == http://hasskit.duckdns.org:8123");
+          gd.baseSettingString = jsonEncode(gd.baseSettingHassKit);
+        }
+
+        if (ds['roomList $url'] != null &&
+            ds['roomList $url'].toString().length > 10) {
+          log.w(
+              "downloadCloudData roomList ${ds["roomList $url"].toString().length}");
+          gd.roomListString = ds["roomList $url"].toString();
+        } else if (gd.currentUrl == "http://hasskit.duckdns.org:8123") {
+          log.w(
+              "downloadCloudData roomListString currentUrl == http://hasskit.duckdns.org:8123");
+          gd.roomListString = jsonEncode(gd.roomListHassKit);
         }
       },
     );
@@ -2127,51 +2229,7 @@ class GeneralData with ChangeNotifier {
 
   int webViewSupportMax = 3;
 
-  String _currentLocale;
-
-  String get currentLocale => _currentLocale;
-
-  set currentLocale(String val) {
-    if (val != null && val != "" && _currentLocale != val) {
-      _currentLocale = val;
-      setLocale();
-    }
-  }
-
-  var localeData;
-
-  List<bool> selectedLanguageIndex = [true, false, false];
-  List<String> languageCode = ["en", "sv", "vi"];
-  List<String> countryCode = ["US", "SE", "VN"];
-
-  void setLocale() {
-    log.w("setLocale ${gd.localeData.toString()} ");
-    log.w(
-        "setLocale countryCode ${gd.localeData.data.locale.countryCode} languageCode ${gd.localeData.data.locale.languageCode} scriptCode ${gd.localeData.data.locale.scriptCode}");
-
-    if (gd.currentLocale == "sv_SE") {
-      gd.localeData.changeLocale(Locale("sv", "SE"));
-      selectedLanguageIndex = [
-        false,
-        true,
-        false,
-      ];
-    } else if (gd.currentLocale == "vi_VN") {
-      gd.localeData.changeLocale(Locale("vi", "VN"));
-      selectedLanguageIndex = [
-        false,
-        false,
-        true,
-      ];
-    } else {
-      gd.localeData.changeLocale(Locale("en", "US"));
-      selectedLanguageIndex = [
-        true,
-        false,
-        false,
-      ];
-    }
-  }
+//  var localeData;
 
   void httpApiStates() async {
     var client = new http.Client();
@@ -2186,16 +2244,78 @@ class GeneralData with ChangeNotifier {
     try {
       var response = await http.get(url, headers: headers);
       if (response.statusCode == 200) {
-        log.w("httpApiStates response.statusCode ${response.statusCode}");
+//        log.w("httpApiStates response.statusCode ${response.statusCode}");
         var jsonResponse = jsonDecode(response.body);
 //        log.d("httpApiStates jsonResponse $jsonResponse");
         socketGetStates(jsonResponse);
       } else {
-        print(
+        log.e(
             "httpApiStates Request failed with status: ${response.statusCode}.");
       }
     } finally {
       client.close();
     }
+  }
+
+  BuildContext mediaQueryContext;
+  int get layoutCameraCount {
+    if (!isTablet) return 1;
+
+    if (deviceSetting.tabletLayout == 36) {
+      if (gd.mediaQueryOrientation == Orientation.portrait) {
+        return 1;
+      }
+      return 2;
+    }
+
+    if (deviceSetting.tabletLayout == 69) {
+      if (gd.mediaQueryOrientation == Orientation.portrait) {
+        return 2;
+      }
+      return 3;
+    }
+    if (deviceSetting.tabletLayout == 912) {
+      if (gd.mediaQueryOrientation == Orientation.portrait) {
+        return 3;
+      }
+      return 4;
+    }
+    return deviceSetting.tabletLayout ~/ 3;
+  }
+
+  int get layoutButtonCount {
+    if (!isTablet) return deviceSetting.phoneLayout;
+    if (deviceSetting.tabletLayout == 36) {
+      if (gd.mediaQueryOrientation == Orientation.portrait) {
+        return 3;
+      }
+      return 6;
+    }
+    if (deviceSetting.tabletLayout == 69) {
+      if (gd.mediaQueryOrientation == Orientation.portrait) {
+        return 6;
+      }
+      return 9;
+    }
+    if (deviceSetting.tabletLayout == 912) {
+      if (gd.mediaQueryOrientation == Orientation.portrait) {
+        return 9;
+      }
+      return 12;
+    }
+    return deviceSetting.tabletLayout;
+  }
+
+  /// Returns a formatted date string.
+  String dateToString(DateTime date) =>
+      date.day.toString().padLeft(2, '0') +
+      '/' +
+      date.month.toString().padLeft(2, '0') +
+      '/' +
+      date.year.toString();
+
+  double get buttonRatio {
+    if (deviceSetting.shapeLayout == 2) return 8 / 5;
+    return 1;
   }
 }

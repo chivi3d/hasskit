@@ -1,15 +1,17 @@
+import 'dart:convert';
+
 import 'package:duration/duration.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hasskit/helper/GeneralData.dart';
+import 'package:hasskit/helper/LocaleHelper.dart';
 import 'package:hasskit/helper/Logger.dart';
+import 'package:hasskit/helper/SquircleBorder.dart';
 import 'package:hasskit/helper/ThemeInfo.dart';
 import 'package:hasskit/model/Sensor.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
-import 'package:hasskit/helper/LocaleHelper.dart';
 
 class EntityControlBinarySensor extends StatefulWidget {
   final String entityId;
@@ -96,33 +98,49 @@ class _EntityControlBinarySensorState extends State<EntityControlBinarySensor> {
                             child: Row(
                               children: <Widget>[
                                 SizedBox(width: 14),
-                                Container(
-                                  padding: EdgeInsets.all(2),
-                                  alignment: Alignment.center,
-                                  width: 40,
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: rec.isStateOn
-                                        ? ThemeInfo.colorIconActive
-                                            .withOpacity(0.25)
-                                        : ThemeInfo.colorIconInActive
-                                            .withOpacity(0),
-                                    border: Border.all(
-                                      color: ThemeInfo.colorIconActive,
-                                      width: 2.0,
+                                Material(
+                                  color: rec.isStateOn
+                                      ? ThemeInfo.colorIconActive
+                                          .withOpacity(0.25)
+                                      : ThemeInfo.colorIconInActive
+                                          .withOpacity(0),
+                                  shape: gd.deviceSetting.shapeLayout == 1
+                                      ? SquircleBorder(
+                                          side: BorderSide(
+                                            color: ThemeInfo.colorIconActive,
+                                            width: 1.0,
+                                          ),
+                                        )
+                                      : RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          side: BorderSide(
+                                            color: ThemeInfo.colorIconActive,
+                                            width: 1.0,
+                                          ),
+                                        ),
+//                                  shape: SquircleBorder(
+//                                    side: BorderSide(
+//                                      color: ThemeInfo.colorIconActive,
+//                                      width: 1.0,
+//                                    ),
+//                                  ),
+                                  child: Container(
+                                    padding: EdgeInsets.all(2),
+                                    alignment: Alignment.center,
+                                    width: 40,
+                                    height: 40,
+                                    child: FittedBox(
+                                      child: Text(
+                                          "${stateString(deviceClass, binarySensorsReversed[index].isStateOn, context)}"),
                                     ),
-                                  ),
-                                  child: FittedBox(
-                                    child: Text(
-                                        "${stateString(deviceClass, binarySensorsReversed[index].isStateOn, context)}"),
                                   ),
                                 ),
                                 SizedBox(width: 8),
                                 Text(
                                   '$formattedChangedTime',
                                   style: Theme.of(context).textTheme.subtitle,
-                                  textScaleFactor: gd.textScaleFactor,
+                                  textScaleFactor: gd.textScaleFactorFix,
                                   overflow: TextOverflow.ellipsis,
                                   textAlign: TextAlign.right,
                                 ),
@@ -135,7 +153,8 @@ class _EntityControlBinarySensorState extends State<EntityControlBinarySensor> {
                                           style: Theme.of(context)
                                               .textTheme
                                               .subtitle,
-                                          textScaleFactor: gd.textScaleFactor,
+                                          textScaleFactor:
+                                              gd.textScaleFactorFix,
                                           overflow: TextOverflow.ellipsis,
                                         )
                                       : duration != null
@@ -145,7 +164,7 @@ class _EntityControlBinarySensorState extends State<EntityControlBinarySensor> {
                                                   .textTheme
                                                   .subtitle,
                                               textScaleFactor:
-                                                  gd.textScaleFactor,
+                                                  gd.textScaleFactorFix,
                                               overflow: TextOverflow.ellipsis,
                                             )
                                           : Text(""),
@@ -215,7 +234,7 @@ class _EntityControlBinarySensorState extends State<EntityControlBinarySensor> {
                             child: Text(
                               "$formattedChangedTime",
                               maxLines: 1,
-                              textScaleFactor: gd.textScaleFactor,
+                              textScaleFactor: gd.textScaleFactorFix,
                             ),
                           ),
                         ],
@@ -238,7 +257,7 @@ class _EntityControlBinarySensorState extends State<EntityControlBinarySensor> {
     try {
       var response = await http.get(url, headers: headers);
       if (response.statusCode == 200) {
-        log.w("response.statusCode ${response.statusCode}");
+//        log.w("response.statusCode ${response.statusCode}");
         var jsonResponse = jsonDecode(response.body);
         gd.sensors = [];
 
@@ -266,7 +285,7 @@ class _EntityControlBinarySensorState extends State<EntityControlBinarySensor> {
         setState(() {
           inAsyncCall = false;
         });
-        print("Request failed with status: ${response.statusCode}.");
+        log.e("Request failed with status: ${response.statusCode}.");
       }
     } catch (e) {
       inAsyncCall = false;

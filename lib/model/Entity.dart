@@ -1,11 +1,13 @@
 import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hasskit/helper/GeneralData.dart';
+import 'package:hasskit/helper/LocaleHelper.dart';
 import 'package:hasskit/helper/Logger.dart';
 import 'package:hasskit/helper/MaterialDesignIcons.dart';
 import 'package:hasskit/helper/WebSocket.dart';
-import 'package:hasskit/helper/LocaleHelper.dart';
+import 'package:intl/intl.dart';
 
 enum EntityType {
   lightSwitches,
@@ -68,6 +70,7 @@ class Entity {
   List<String> soundModeList;
   String soundModeRaw;
   String entityPicture;
+  String unitOfMeasurement;
 
   Entity({
     this.entityId,
@@ -119,6 +122,8 @@ class Entity {
     this.soundModeList,
     this.soundModeRaw = "",
     this.entityPicture = "",
+    //
+    this.unitOfMeasurement = "",
   });
 
   factory Entity.fromJson(Map<String, dynamic> json) {
@@ -186,14 +191,15 @@ class Entity {
             : [],
         oscillating: json['attributes']['oscillating'] != null
             ? json['attributes']['oscillating']
-            : false,
-        speed: json['attributes']['direct_speed'].toString() != null
-            ? json['attributes']['direct_speed'].toString()
-            : json['attributes']['speed_level'].toString() != null
-                ? json['attributes']['speed_level'].toString()
-                : json['attributes']['speed'].toString() != null
+            : null,
+        speed: json['attributes']['speed_level'] != null
+            ? json['attributes']['speed_level'].toString()
+            : json['attributes']['direct_speed'] != null
+                ? json['attributes']['direct_speed'].toString()
+                : json['attributes']['speed'] != null
                     ? json['attributes']['speed'].toString()
                     : "0",
+
         angle: int.tryParse(json['attributes']['angle'].toString()) != null
             ? int.tryParse(json['attributes']['angle'].toString())
             : 0,
@@ -288,6 +294,9 @@ class Entity {
         entityPicture: json['attributes']['entity_picture'].toString() != null
             ? json['attributes']['entity_picture'].toString()
             : "",
+        unitOfMeasurement: json['attributes']['unit_of_measurement'] != null
+            ? json['attributes']['unit_of_measurement'].toString()
+            : "",
       );
     } catch (e) {
       log.e("Entity.fromJson newEntity $e");
@@ -297,10 +306,21 @@ class Entity {
   }
 
   toggleState() {
+    log.d("toggleState entityId $entityId");
     var domain = entityId.split('.').first;
     if (domain == "group") domain = "homeassistant";
     var service = '';
-    if (state == 'on' ||
+
+    if (entityId == "group.all_covers") {
+      domain = 'cover';
+      if (isStateOn) {
+        this.state = 'closing...';
+        service = 'close_cover';
+      } else {
+        this.state = 'opening...';
+        service = 'open_cover';
+      }
+    } else if (state == 'on' ||
         this.state == 'turning on...' ||
         domain == 'climate' && state != 'off') {
       this.state = 'turning off...';
@@ -334,6 +354,7 @@ class Entity {
       "service_data": {"entity_id": entityId}
     };
 
+    log.d("toggleState $entityId - $state");
     var message = json.encode(outMsg);
     webSocket.send(message);
   }
@@ -523,6 +544,11 @@ class Entity {
         state.toLowerCase() != 'unavailable') {
       return true;
     }
+    if ((entityId.split('.')[0] == 'device_tracker' ||
+            entityId.split('.')[0] == 'person') &&
+        state.toLowerCase() == 'home') {
+      return true;
+    }
     return false;
   }
 
@@ -629,6 +655,15 @@ class Entity {
     if (isStateOn && entityId.contains("fan.")) {
       if (speed != null && speed.length > 0 && speed != "null") return speed;
     }
+
+    if (DateTime.tryParse(state) != null) {
+//      log.d("DateTime.tryParse $state");
+      return DateFormat('dd/MM kk:mm').format(DateTime.parse(state));
+    }
+    if (state.contains(".") && double.tryParse(state) != null) {
+//      log.d("double.tryParse $state");
+      return double.parse(state).toStringAsFixed(1);
+    }
     return state;
   }
 
@@ -689,7 +724,7 @@ class Entity {
     if (state.toLowerCase().contains("pending"))
       return Translate.getString("states.arm_pending", context);
 
-    return state;
+    return getStateDisplay;
   }
 
   double get getTemperature {

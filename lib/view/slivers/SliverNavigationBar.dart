@@ -108,7 +108,7 @@ class SliverNavigationBar extends StatelessWidget {
 //                    SizedBox(width: 2),
                       AutoSizeText(
                         "${tempState.toStringAsFixed(1)}°",
-                        textScaleFactor: gd.textScaleFactor,
+                        textScaleFactor: gd.textScaleFactorFix,
                         style:
                             TextStyle(color: ThemeInfo.colorBottomSheetReverse),
                       ),
@@ -123,10 +123,9 @@ class SliverNavigationBar extends StatelessWidget {
         return CupertinoSliverNavigationBar(
           leading: temperatureWidget,
           backgroundColor: ThemeInfo.colorBottomSheet.withOpacity(0.5),
-          largeTitle: Text(
+          largeTitle: AutoSizeText(
             gd.getRoomName(roomIndex),
             style: TextStyle(color: ThemeInfo.colorBottomSheetReverse),
-            textScaleFactor: gd.textScaleFactor,
             overflow: TextOverflow.ellipsis,
           ),
           trailing: Container(
@@ -168,7 +167,7 @@ class SliverNavigationBar extends StatelessWidget {
                         ),
                       )
                     : Container(),
-                gd.roomList.length > 0
+                gd.roomList.length > 0 && !gd.deviceSetting.settingLocked
                     ? InkWell(
                         onTap: () {
                           if (gd.viewMode != ViewMode.sort &&
