@@ -75,37 +75,39 @@ class _TemperatureDropdownButtonState extends State<TemperatureDropdownButton> {
       dropdownMenuItems.add(dropdownMenuItem);
     }
     return SliverList(
-      delegate: SliverChildListDelegate([
-        Container(
-          padding: EdgeInsets.fromLTRB(8, 8, 8, 4),
-          margin: EdgeInsets.all(8),
-          decoration: BoxDecoration(
-              color: ThemeInfo.colorBottomSheet.withOpacity(0.5),
-              borderRadius: BorderRadius.circular(8)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                "${gd.roomList[widget.roomIndex].name} Temperature",
-                overflow: TextOverflow.ellipsis,
-                textScaleFactor: gd.textScaleFactorFix,
-              ),
-              DropdownButton<String>(
-                underline: Container(),
-                isExpanded: true,
-                value: selectedValue,
-                items: dropdownMenuItems,
-                onChanged: (String newValue) {
-                  setState(() {
-                    gd.roomList[widget.roomIndex].tempEntityId = newValue;
-                  });
-                  gd.roomListSave(true);
-                },
-              ),
-            ],
+      delegate: SliverChildListDelegate(
+        [
+          Container(
+            padding: EdgeInsets.fromLTRB(8, 8, 8, 4),
+            margin: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+                color: ThemeInfo.colorBottomSheet.withOpacity(0.5),
+                borderRadius: BorderRadius.circular(8)),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  "${gd.roomList[widget.roomIndex].name} Temperature",
+                  overflow: TextOverflow.ellipsis,
+                  textScaleFactor: gd.textScaleFactorFix,
+                ),
+                DropdownButton<String>(
+                  underline: Container(),
+                  isExpanded: true,
+                  value: selectedValue,
+                  items: dropdownMenuItems,
+                  onChanged: (String newValue) {
+                    setState(() {
+                      gd.roomList[widget.roomIndex].tempEntityId = newValue;
+                    });
+                    gd.roomListSave(true);
+                  },
+                ),
+              ],
+            ),
           ),
-        ),
-      ]),
+        ],
+      ),
     );
   }
 }

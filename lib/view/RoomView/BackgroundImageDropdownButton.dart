@@ -66,59 +66,61 @@ class _BackgroundImageDropdownButtonState
     }
 
     return SliverList(
-      delegate: SliverChildListDelegate([
-        Container(
-          padding: EdgeInsets.fromLTRB(8, 8, 8, 4),
-          margin: EdgeInsets.all(8),
-          decoration: BoxDecoration(
-              color: ThemeInfo.colorBottomSheet.withOpacity(0.5),
-              borderRadius: BorderRadius.circular(8)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                "${gd.roomList[widget.roomIndex].name} Background Image",
-                overflow: TextOverflow.ellipsis,
-                textScaleFactor: gd.textScaleFactorFix,
-              ),
-              DropdownButton<String>(
-                underline: Container(),
-                isExpanded: true,
-                value: selectedValue,
-                items: dropdownMenuItems,
-                onChanged: (String newValue) {
-                  setState(() {
-                    removeDeviceSettingBackgroundPhoto();
-                    gd.roomList[widget.roomIndex].imageIndex =
-                        gd.backgroundImage.indexOf(newValue);
-                    log.d("newValue $newValue");
-                    gd.roomListSave(true);
-                  });
-                },
-              ),
-              SizedBox(height: 8),
-              Container(
-                margin: EdgeInsets.all(4),
-                child: RaisedButton(
-                  onPressed: getImage,
-                  child: Row(
-                    children: <Widget>[
-//                    Icon(Icons.photo_album),
-                      Expanded(
-                        child: Text(
-                          "${gd.roomList[widget.roomIndex].name} Background Photo",
-                          overflow: TextOverflow.ellipsis,
-                          textScaleFactor: gd.textScaleFactorFix,
-                        ),
-                      ),
-                    ],
-                  ),
+      delegate: SliverChildListDelegate(
+        [
+          Container(
+            padding: EdgeInsets.fromLTRB(8, 8, 8, 4),
+            margin: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+                color: ThemeInfo.colorBottomSheet.withOpacity(0.5),
+                borderRadius: BorderRadius.circular(8)),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  "${gd.roomList[widget.roomIndex].name} Background Image",
+                  overflow: TextOverflow.ellipsis,
+                  textScaleFactor: gd.textScaleFactorFix,
                 ),
-              )
-            ],
+                DropdownButton<String>(
+                  underline: Container(),
+                  isExpanded: true,
+                  value: selectedValue,
+                  items: dropdownMenuItems,
+                  onChanged: (String newValue) {
+                    setState(() {
+                      removeDeviceSettingBackgroundPhoto();
+                      gd.roomList[widget.roomIndex].imageIndex =
+                          gd.backgroundImage.indexOf(newValue);
+                      log.d("newValue $newValue");
+                      gd.roomListSave(true);
+                    });
+                  },
+                ),
+                SizedBox(height: 8),
+                Container(
+                  margin: EdgeInsets.all(4),
+                  child: RaisedButton(
+                    onPressed: getImage,
+                    child: Row(
+                      children: <Widget>[
+//                    Icon(Icons.photo_album),
+                        Expanded(
+                          child: Text(
+                            "${gd.roomList[widget.roomIndex].name} Background Photo",
+                            overflow: TextOverflow.ellipsis,
+                            textScaleFactor: gd.textScaleFactorFix,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
-        ),
-      ]),
+        ],
+      ),
     );
   }
 

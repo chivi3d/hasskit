@@ -2159,8 +2159,10 @@ class GeneralData with ChangeNotifier {
         entityId.contains("lock.") ||
         entityId.contains("fan.") ||
         entityId.contains("climate.") ||
-//        entityId.contains("group.") ||
+        entityId.contains("group.") ||
         entityId.contains("media_player.") ||
+        entityId.contains("device_tracker.") ||
+        entityId.contains("person.") ||
         entityId.contains("input_boolean.") ||
         entityId.contains("binary_sensor.")) {
       return true;
