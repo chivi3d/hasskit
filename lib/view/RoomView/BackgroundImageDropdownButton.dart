@@ -92,6 +92,7 @@ class _BackgroundImageDropdownButtonState
                     gd.roomList[widget.roomIndex].imageIndex =
                         gd.backgroundImage.indexOf(newValue);
                     log.d("newValue $newValue");
+                    gd.roomListSave(true);
                   });
                 },
               ),

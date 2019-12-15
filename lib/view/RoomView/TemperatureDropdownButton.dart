@@ -99,6 +99,7 @@ class _TemperatureDropdownButtonState extends State<TemperatureDropdownButton> {
                   setState(() {
                     gd.roomList[widget.roomIndex].tempEntityId = newValue;
                   });
+                  gd.roomListSave(true);
                 },
               ),
             ],
