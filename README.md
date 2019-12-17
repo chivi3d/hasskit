@@ -2,6 +2,8 @@
 
 An Elegant Home Assistant Control App
 <br><br>
+[![Watch the video](https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Promo/STORY%20(0-00-35-12).png?raw=true)](https://www.youtube.com/watch?v=Cwpf4ENdC5k)
+<br><br>
 <table width="100%">
 <tbody>
 <tr align="center">
