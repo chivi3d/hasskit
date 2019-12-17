@@ -1,10 +1,10 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hasskit/helper/GeneralData.dart';
-import 'package:hasskit/helper/MaterialDesignIcons.dart';
+import 'package:hasskit/helper/Logger.dart';
 import 'package:hasskit/helper/ThemeInfo.dart';
+import 'package:hasskit/model/Entity.dart';
 import 'package:provider/provider.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
@@ -24,8 +24,6 @@ class EntityControlClimate extends StatelessWidget {
           "${generalData.entities[entityId].getOverrideIcon}",
       builder: (context, data, child) {
         var entity = gd.entities[entityId];
-        int hvacModeIndex = entity.hvacModeIndex;
-        int fanModeIndex = entity.fanModeIndex;
         var info04 = InfoProperties(
 //            bottomLabelStyle: Theme.of(context).textTheme.title,
 //        bottomLabelStyle: TextStyle(
@@ -57,8 +55,6 @@ class EntityControlClimate extends StatelessWidget {
         var customWidths = CustomSliderWidths(
           handlerSize: 8,
           progressBarWidth: 20,
-//      shadowWidth: 10,
-//      trackWidth: 10,
         );
 
         var slider = SleekCircularSlider(
@@ -70,14 +66,6 @@ class EntityControlClimate extends StatelessWidget {
           min: entity.minTemp,
           max: entity.maxTemp,
           initialValue: entity.getTemperature,
-//        innerWidget: (double value) {
-//          print('innerWidget $value');
-//          return Center(child: Text('$value'));
-//        },
-//      onChange: (double value) {
-//        print('onChange $value');
-//      },
-
           onChangeEnd: (double value) {
             print('onChangeEnd $value');
 
@@ -96,80 +84,6 @@ class EntityControlClimate extends StatelessWidget {
           },
         );
 
-        List<Widget> hvacModes = [];
-
-        for (String hvacMode in entity.hvacModes) {
-          var widget = Container(
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  child: Text(
-                    gd.textToDisplay(hvacMode),
-                    style: Theme.of(context).textTheme.subhead,
-                    overflow: TextOverflow.ellipsis,
-                    textScaleFactor: gd.textScaleFactorFix,
-                    textAlign: TextAlign.right,
-                  ),
-                ),
-                SizedBox(width: 6),
-                Icon(
-                  gd.climateModeToIcon(hvacMode),
-                  color: gd.climateModeToColor(hvacMode),
-                ),
-                SizedBox(width: 6),
-              ],
-            ),
-          );
-          hvacModes.add(widget);
-        }
-        List<Widget> fanModes = [];
-
-        var hvacModesScrollController =
-            FixedExtentScrollController(initialItem: hvacModeIndex);
-
-        for (String fanMode in entity.fanModes) {
-          var widget = Container(
-            child: Row(
-              children: <Widget>[
-                SizedBox(width: 6),
-                Icon(
-                  MaterialDesignIcons.getIconDataFromIconName('mdi:fan'),
-                  color: ThemeInfo.colorBottomSheetReverse,
-                ),
-                SizedBox(width: 6),
-                Expanded(
-                  child: Text(
-                    gd.textToDisplay(fanMode),
-                    style: Theme.of(context).textTheme.subhead,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
-            ),
-          );
-          fanModes.add(widget);
-        }
-
-        var fanModesScrollController =
-            FixedExtentScrollController(initialItem: fanModeIndex);
-
-//        Map<String, Widget> hvacSegments = <String, Widget>{
-//          "Off": Text('Off'),
-//          "Heat": Text('Heat'),
-//          "Cool": Text('Cool'),
-//        };
-
-//        var hvacSegment = CupertinoSlidingSegmentedControl<String>(
-//          thumbColor: ThemeInfo.colorBottomSheetReverse.withOpacity(0.5),
-//          padding: EdgeInsets.all(12),
-//          children: hvacSegments,
-//          onValueChanged: (String val) {
-//            hvacVal = val;
-//            log.d("onValueChanged hvacVal $hvacVal");
-//          },
-//          groupValue: hvacVal,
-//        );
-
         return Column(
           children: <Widget>[
             SizedBox(
@@ -177,122 +91,124 @@ class EntityControlClimate extends StatelessWidget {
               height: 240,
               child: slider,
             ),
-//            hvacSegment,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            Colors.black.withOpacity(0.5),
-                            Colors.black.withOpacity(0.0),
-                            Colors.black.withOpacity(0.5),
-                          ]),
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(8),
-                        bottomLeft: Radius.circular(8),
-                      ),
-                      border: Border.all(
-//          color: ThemeInfo.pickerActivateStyle.color,
-                        width: 1.0,
-                      ),
-                    ),
-                    height: 120,
-                    child: CupertinoPicker(
-                      squeeze: 1.45,
-                      diameterRatio: 1.1,
-                      offAxisFraction: -0.5,
-                      scrollController: hvacModesScrollController,
-                      magnification: 1,
-                      backgroundColor: Colors.transparent,
-                      children: hvacModes,
-                      itemExtent: 32, //height of each item
-                      looping: true,
-                      onSelectedItemChanged: (int index) {
-                        hvacModeIndex = index;
-//                  print(
-//                      'hvacModeIndex $hvacModeIndex ${entity.climate.hvacModes}');
-                        var outMsg = {
-                          "id": gd.socketId,
-                          "type": "call_service",
-                          "domain": "climate",
-                          "service": "set_hvac_mode",
-                          "service_data": {
-                            "entity_id": entity.entityId,
-                            "hvac_mode": "${entity.hvacModes[hvacModeIndex]}"
-                          }
-                        };
-                        var delayOutMsg = json.encode(outMsg);
-                        gd.sendSocketMessageDelay(delayOutMsg, 1);
-                      },
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 1,
-                  height: 60,
-                  child: Container(
-                    color: Colors.black26,
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            Colors.black.withOpacity(0.5),
-                            Colors.black.withOpacity(0.0),
-                            Colors.black.withOpacity(0.5),
-                          ]),
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(8),
-                          bottomRight: Radius.circular(8)),
-                      border: Border.all(
-//          color: ThemeInfo.pickerActivateStyle.color,
-                        width: 1.0,
-                      ),
-                    ),
-                    height: 120,
-                    child: CupertinoPicker(
-                      squeeze: 1.45,
-                      diameterRatio: 1.1,
-                      offAxisFraction: 0.5,
-                      scrollController: fanModesScrollController,
-                      magnification: 1,
-                      backgroundColor: Colors.transparent,
-                      children: fanModes,
-                      itemExtent: 32, //height of each item
-                      looping: true,
-                      onSelectedItemChanged: (int index) {
-                        fanModeIndex = index;
-                        print('fanModeIndex $fanModeIndex ${entity.fanModes}');
-                        var outMsg = {
-                          "id": gd.socketId,
-                          "type": "call_service",
-                          "domain": "climate",
-                          "service": "set_fan_mode",
-                          "service_data": {
-                            "entity_id": entity.entityId,
-                            "fan_mode": "${entity.fanModes[fanModeIndex]}"
-                          }
-                        };
-                        var delayOutMsg = json.encode(outMsg);
-                        gd.sendSocketMessageDelay(delayOutMsg, 1);
-                      },
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            FanSpeed(entityId: entityId),
+            SizedBox(height: 8),
+            HvacModes(entityId: entityId),
           ],
         );
       },
+    );
+  }
+}
+
+class FanSpeed extends StatefulWidget {
+  final String entityId;
+  const FanSpeed({@required this.entityId});
+  @override
+  _FanSpeedState createState() => _FanSpeedState();
+}
+
+class _FanSpeedState extends State<FanSpeed> {
+  final children = <String, Widget>{};
+  Entity entity;
+  String groupValue;
+  @override
+  void initState() {
+    super.initState();
+    entity = gd.entities[widget.entityId];
+    groupValue = entity.fanMode;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    log.d("entity.fanMode ${entity.fanModes}");
+    for (String fanMode in entity.fanModes) {
+      children[fanMode] = Text(
+        gd.textToDisplay(fanMode),
+        textScaleFactor: gd.textScaleFactorFix,
+        overflow: TextOverflow.ellipsis,
+      );
+    }
+
+    return Container(
+      child: CupertinoSlidingSegmentedControl<String>(
+        thumbColor: ThemeInfo.colorBottomSheetReverse.withOpacity(0.5),
+        children: children,
+        onValueChanged: (String val) {
+          setState(() {
+            groupValue = val;
+            var outMsg = {
+              "id": gd.socketId,
+              "type": "call_service",
+              "domain": "climate",
+              "service": "set_fan_mode",
+              "service_data": {
+                "entity_id": widget.entityId,
+                "fan_mode": "$groupValue"
+              }
+            };
+            var message = json.encode(outMsg);
+            gd.sendSocketMessage(message);
+          });
+        },
+        groupValue: groupValue,
+      ),
+    );
+  }
+}
+
+class HvacModes extends StatefulWidget {
+  final String entityId;
+  const HvacModes({@required this.entityId});
+  @override
+  _HvacModesState createState() => _HvacModesState();
+}
+
+class _HvacModesState extends State<HvacModes> {
+  final children = <String, Widget>{};
+  Entity entity;
+  String groupValue;
+  @override
+  void initState() {
+    super.initState();
+    entity = gd.entities[widget.entityId];
+    groupValue = entity.state;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    log.d("entity.hvacModes ${entity.hvacModes}");
+    for (String hvacMode in entity.hvacModes) {
+      children[hvacMode] = Text(
+        gd.textToDisplay(hvacMode),
+        textScaleFactor: gd.textScaleFactorFix,
+        overflow: TextOverflow.ellipsis,
+      );
+    }
+
+    return Container(
+      child: CupertinoSlidingSegmentedControl<String>(
+        thumbColor: gd.climateModeToColor(groupValue),
+        children: children,
+        onValueChanged: (String val) {
+          setState(() {
+            groupValue = val;
+            var outMsg = {
+              "id": gd.socketId,
+              "type": "call_service",
+              "domain": "climate",
+              "service": "set_hvac_mode",
+              "service_data": {
+                "entity_id": widget.entityId,
+                "hvac_mode": "$groupValue"
+              }
+            };
+            var message = json.encode(outMsg);
+            gd.sendSocketMessage(message);
+          });
+        },
+        groupValue: groupValue,
+      ),
     );
   }
 }
