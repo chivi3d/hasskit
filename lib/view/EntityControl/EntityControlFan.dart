@@ -20,7 +20,7 @@ class EntityControlFan extends StatefulWidget {
 class _EntityControlFanState extends State<EntityControlFan> {
   double buttonValue;
   double buttonHeight = 300.0;
-  double buttonWidth = 126.0;
+  double buttonWidth = 93.75;
   double currentPosX;
   double currentPosY;
   double startPosX;

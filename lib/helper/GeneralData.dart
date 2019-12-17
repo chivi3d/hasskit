@@ -233,7 +233,9 @@ class GeneralData with ChangeNotifier {
 
 //      if (entity.entityId.contains("group.")) {
 //        log.w(
-//            "\n socketGetStates ${entity.entityId} state ${entity.state} isStateOn ${entity.isStateOn} mess $mess");
+//            "group. ${entity.entityId} ${entity.getDefaultIcon} ${entity.icon}");
+//      log.w(
+//          "\n socketGetStates ${entity.entityId} state ${entity.state} isStateOn ${entity.isStateOn} mess $mess");
 //      }
 
       if (previousEntitiesList.contains(entity.entityId))

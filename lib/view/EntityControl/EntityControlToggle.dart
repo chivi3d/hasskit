@@ -17,7 +17,7 @@ class EntityControlToggle extends StatefulWidget {
 class _EntityControlToggleState extends State<EntityControlToggle> {
   double buttonTotalHeight = 300.0;
   double upperPartHeight = 30.0;
-  double buttonWidth = 126.0;
+  double buttonWidth = 93.75;
   double buttonHalfHeight;
   double buttonFullHeight;
   double buttonValue;

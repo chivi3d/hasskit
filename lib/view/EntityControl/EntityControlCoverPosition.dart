@@ -43,7 +43,7 @@ class CoverSlider extends StatefulWidget {
 
 class CoverSliderState extends State<CoverSlider> {
   double buttonHeight = 300.0;
-  double buttonWidth = 126.0;
+  double buttonWidth = 93.75;
   double currentPosX;
   double currentPosY;
   double startPosX;

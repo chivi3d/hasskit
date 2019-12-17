@@ -406,13 +406,13 @@ class Entity {
   }
 
   String get getDefaultIcon {
-    if (getOverrideIcon != null) {
+    if (getOverrideIcon != null && getOverrideIcon != "null") {
       if (twoStateIcons(getOverrideIcon) != null)
         return twoStateIcons(getOverrideIcon);
       return getOverrideIcon;
     }
 
-    if (icon != null && icon != "null" && twoStateIcons(icon) != null) {
+    if (icon != null && icon != "null") {
       if (twoStateIcons(icon) != null) return twoStateIcons(icon);
       return icon;
     }
