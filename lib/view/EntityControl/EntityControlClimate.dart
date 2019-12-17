@@ -121,7 +121,7 @@ class _FanSpeedState extends State<FanSpeed> {
 
   @override
   Widget build(BuildContext context) {
-    log.d("entity.fanMode ${entity.fanModes}");
+//    log.d("entity.fanMode ${entity.fanModes}");
     for (String fanMode in entity.fanModes) {
       children[fanMode] = Text(
         gd.textToDisplay(fanMode),

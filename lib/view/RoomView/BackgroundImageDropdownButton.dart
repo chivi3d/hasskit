@@ -20,6 +20,7 @@ class _BackgroundImageDropdownButtonState
   Widget build(BuildContext context) {
     var selectedValue =
         gd.backgroundImage[gd.roomList[widget.roomIndex].imageIndex];
+
     List<DropdownMenuItem<String>> dropdownMenuItems = [];
 
     for (String imageString in gd.backgroundImage) {

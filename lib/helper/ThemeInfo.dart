@@ -59,13 +59,13 @@ class ThemeInfo {
     return textStatusButtonActive.copyWith(color: Colors.amberAccent);
   }
 
-  static const Color colorBackgroundActive = Color.fromRGBO(255, 255, 255, 0.8);
+  static const Color colorBackgroundActive = Color.fromRGBO(255, 255, 255, 0.9);
 
   static Color get colorEntityBackground {
     if (gd.currentTheme.brightness == Brightness.light) {
-      return Color.fromRGBO(128, 128, 128, 0.8);
+      return Color.fromRGBO(128, 128, 128, 0.9);
     } else {
-      return Color.fromRGBO(28, 28, 28, 0.8);
+      return Color.fromRGBO(28, 28, 28, 0.9);
     }
   }
 

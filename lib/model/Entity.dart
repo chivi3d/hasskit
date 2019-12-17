@@ -407,14 +407,11 @@ class Entity {
 
   String get getDefaultIcon {
     if (getOverrideIcon != null && getOverrideIcon != "null") {
-      if (twoStateIcons(getOverrideIcon) != null)
-        return twoStateIcons(getOverrideIcon);
-      return getOverrideIcon;
+      return twoStateIcons(getOverrideIcon);
     }
 
     if (icon != null && icon != "null") {
-      if (twoStateIcons(icon) != null) return twoStateIcons(icon);
-      return icon;
+      return twoStateIcons(icon);
     }
 
     String domain = entityId.split(".")[0];
@@ -428,56 +425,63 @@ class Entity {
           MaterialDesignIcons.defaultIconsByDeviceClass[
                   "$domain.$deviceClass.$stateTranslate"] !=
               null) {
-        return MaterialDesignIcons
-            .defaultIconsByDeviceClass["$domain.$deviceClass.$stateTranslate"];
+        return twoStateIcons(MaterialDesignIcons
+            .defaultIconsByDeviceClass["$domain.$deviceClass.$stateTranslate"]);
       }
       if (MaterialDesignIcons
               .defaultIconsByDeviceClass["$domain.$deviceClass"] !=
           null) {
-        return MaterialDesignIcons
-            .defaultIconsByDeviceClass["$domain.$deviceClass"];
+        return twoStateIcons(MaterialDesignIcons
+            .defaultIconsByDeviceClass["$domain.$deviceClass"]);
       }
       if (MaterialDesignIcons
               .defaultIconsByDeviceClass["$domain.$stateTranslate"] !=
           null) {
-        return MaterialDesignIcons
-            .defaultIconsByDeviceClass["$domain.$stateTranslate"];
+        return twoStateIcons(MaterialDesignIcons
+            .defaultIconsByDeviceClass["$domain.$stateTranslate"]);
       }
     }
 
     //https://www.home-assistant.io/integrations/sensor/
     if (entityId.contains("sensor.")) {
-      if (entityId.contains("battery")) return 'mdi:battery';
-      if (entityId.contains("humidity")) return 'mdi:water-percent';
-      if (entityId.contains("illuminance")) return 'mdi:brightness-6';
-      if (entityId.contains("signal_strength")) return 'mdi:signal';
-      if (entityId.contains("temperature")) return 'mdi:thermometer';
-      if (entityId.contains("power")) return 'mdi:power';
-      if (entityId.contains("pressure")) return 'mdi:gauge';
-      if (entityId.contains("timestamp")) return 'mdi:clock';
+      if (entityId.contains("battery")) return twoStateIcons('mdi:battery');
+      if (entityId.contains("humidity"))
+        return twoStateIcons('mdi:water-percent');
+      if (entityId.contains("illuminance"))
+        return twoStateIcons('mdi:brightness-6');
+      if (entityId.contains("signal_strength"))
+        return twoStateIcons('mdi:signal');
+      if (entityId.contains("temperature"))
+        return twoStateIcons('mdi:thermometer');
+      if (entityId.contains("power")) return twoStateIcons('mdi:power');
+      if (entityId.contains("pressure")) return twoStateIcons('mdi:gauge');
+      if (entityId.contains("timestamp")) return twoStateIcons('mdi:clock');
     }
 
     //https://www.home-assistant.io/integrations/cover/
     if (entityId.contains("cover.")) {
-      if (entityId.contains("awning")) return 'mdi:window-shutter';
-      if (entityId.contains("blind")) return 'mdi:blinds';
-      if (entityId.contains("curtain")) return 'mdi:blinds';
-      if (entityId.contains("damper")) return 'mdi:window-close';
-      if (entityId.contains("door")) return 'mdi:door-closed';
-      if (entityId.contains("garage")) return 'mdi:garage';
-      if (entityId.contains("shade")) return 'mdi:blinds';
-      if (entityId.contains("shutter")) return 'mdi:window-shutter';
-      if (entityId.contains("window")) return 'mdi:window-close';
+      if (entityId.contains("awning"))
+        return twoStateIcons('mdi:window-shutter');
+      if (entityId.contains("blind")) return twoStateIcons('mdi:blinds');
+      if (entityId.contains("curtain")) return twoStateIcons('mdi:blinds');
+      if (entityId.contains("damper")) return twoStateIcons('mdi:window-close');
+      if (entityId.contains("door")) return twoStateIcons('mdi:door-closed');
+      if (entityId.contains("garage")) return twoStateIcons('mdi:garage');
+      if (entityId.contains("shade")) return twoStateIcons('mdi:blinds');
+      if (entityId.contains("shutter"))
+        return twoStateIcons('mdi:window-shutter');
+      if (entityId.contains("window")) return twoStateIcons('mdi:window-close');
     }
 
     if (MaterialDesignIcons.defaultIconsByDomains["$domain.$stateTranslate"] !=
         null) {
-      return MaterialDesignIcons
-          .defaultIconsByDomains["$domain.$stateTranslate"];
+      return twoStateIcons(
+          MaterialDesignIcons.defaultIconsByDomains["$domain.$stateTranslate"]);
     }
 
     if (MaterialDesignIcons.defaultIconsByDomains["$domain"] != null) {
-      return MaterialDesignIcons.defaultIconsByDomains["$domain"];
+      return twoStateIcons(
+          MaterialDesignIcons.defaultIconsByDomains["$domain"]);
     }
 
     return 'mdi:help-circle';
@@ -521,7 +525,7 @@ class Entity {
     if (!isStateOn && currentIcon == "mdi:window-shutter-open")
       return "mdi:window-shutter";
 
-    return null;
+    return currentIcon;
   }
 
   bool get isStateOn {

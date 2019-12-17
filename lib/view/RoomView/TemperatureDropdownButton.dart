@@ -15,15 +15,17 @@ class TemperatureDropdownButton extends StatefulWidget {
 class _TemperatureDropdownButtonState extends State<TemperatureDropdownButton> {
   @override
   Widget build(BuildContext context) {
-    String selectedValue;
+    String selectedValue = "";
     if (gd.roomList[widget.roomIndex].tempEntityId != null &&
         gd.roomList[widget.roomIndex].tempEntityId != "" &&
-        gd.roomList[widget.roomIndex].tempEntityId != "null") {
+        gd.roomList[widget.roomIndex].tempEntityId != "null" &&
+        gd.entities[gd.roomList[widget.roomIndex].tempEntityId] != null) {
       selectedValue = gd.roomList[widget.roomIndex].tempEntityId;
     }
+
     List<DropdownMenuItem<String>> dropdownMenuItems = [];
 
-    var temptySensor = DropdownMenuItem<String>(
+    var emptySensor = DropdownMenuItem<String>(
       value: "",
       child: ListTile(
         contentPadding: EdgeInsets.fromLTRB(4, 2, 2, 2),
@@ -41,7 +43,7 @@ class _TemperatureDropdownButtonState extends State<TemperatureDropdownButton> {
         ),
       ),
     );
-    dropdownMenuItems.add(temptySensor);
+    dropdownMenuItems.add(emptySensor);
     List<Entity> entities = gd.entities.values
         .where((e) =>
             !e.entityId.contains("binary_sensor.") &&
