@@ -142,9 +142,11 @@ class _EntityButtonDisplayState extends State<EntityButtonDisplay> {
                         ? BorderRadius.circular(6)
                         : BorderRadius.circular(12)),
             child: Padding(
-              padding: gd.deviceSetting.shapeLayout != 2
-                  ? const EdgeInsets.all(8.0)
-                  : const EdgeInsets.all(4.0),
+              padding: gd.deviceSetting.shapeLayout == 0
+                  ? EdgeInsets.all(8.0 * gd.textScaleFactor)
+                  : gd.deviceSetting.shapeLayout == 1
+                      ? EdgeInsets.all(10.0 * gd.textScaleFactor)
+                      : EdgeInsets.all(6.0 * gd.textScaleFactor),
               child: gd.deviceSetting.shapeLayout != 2
                   ? Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
