@@ -118,7 +118,7 @@ class _EntityButtonDisplayState extends State<EntityButtonDisplay> {
     return ClipRRect(
       borderRadius: BorderRadius.circular(12),
       child: BackdropFilter(
-        filter: new ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+        filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
         child: AnimatedContainer(
           duration: Duration(milliseconds: 100),
           onEnd: () {
@@ -134,7 +134,9 @@ class _EntityButtonDisplayState extends State<EntityButtonDisplay> {
                 ? ThemeInfo.colorBackgroundActive
                 : ThemeInfo.colorEntityBackground,
             shape: gd.deviceSetting.shapeLayout == 1
-                ? SquircleBorder()
+                ? SquircleBorder(
+//                    side: BorderSide(color: Colors.white, width: 1.0),
+                    )
                 : RoundedRectangleBorder(
                     borderRadius: gd.deviceSetting.shapeLayout == 2
                         ? BorderRadius.circular(6)
@@ -189,7 +191,7 @@ class _EntityButtonDisplayState extends State<EntityButtonDisplay> {
                             ),
                           ),
                         ),
-                        Text(
+                        AutoSizeText(
                           "${gd.textToDisplay(gd.entities[widget.entityId].getStateDisplayTranslated(context))}${gd.entities[widget.entityId].unitOfMeasurement}",
                           style: gd.entities[widget.entityId].isStateOn
                               ? ThemeInfo.textStatusButtonActive
@@ -205,62 +207,58 @@ class _EntityButtonDisplayState extends State<EntityButtonDisplay> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Expanded(
-                          child: Row(
-                            children: <Widget>[
-                              Expanded(
-                                flex: 100,
-                                child: Column(
-                                  children: <Widget>[
-                                    Expanded(
-                                      child: Container(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          "${gd.textToDisplay(gd.entities[widget.entityId].getOverrideName)}",
-                                          style: gd.entities[widget.entityId]
-                                                  .isStateOn
-                                              ? ThemeInfo.textNameButtonActive
-                                              : ThemeInfo
-                                                  .textNameButtonInActive,
-                                          textAlign: TextAlign.left,
-                                          maxLines: 2,
-                                          textScaleFactor:
-                                              gd.textScaleFactor * 1.1,
-                                          overflow: TextOverflow.ellipsis,
-                                          softWrap: true,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                          child: Container(),
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: <Widget>[
+                            Expanded(
+                              flex: 100,
+                              child: Container(
+                                alignment: Alignment.topLeft,
+                                child: Text(
+                                  "${gd.textToDisplay(gd.entities[widget.entityId].getOverrideName)}",
+                                  style: gd.entities[widget.entityId].isStateOn
+                                      ? ThemeInfo.textNameButtonActive
+                                      : ThemeInfo.textNameButtonInActive,
+                                  textAlign: TextAlign.left,
+                                  maxLines: 2,
+                                  textScaleFactor: gd.textScaleFactor * 1.1,
+                                  overflow: TextOverflow.ellipsis,
+                                  softWrap: true,
                                 ),
                               ),
-                              Expanded(
-                                flex: 45,
-                                child: gd.showSpin ||
-                                        gd.entities[widget.entityId].state
-                                            .contains("...")
-                                    ? AspectRatio(
-                                        aspectRatio: 1,
-                                        child: FittedBox(
-                                          child: SpinKitThreeBounce(
-                                            size: 100,
-                                            color: ThemeInfo.colorIconActive
-                                                .withOpacity(0.5),
-                                          ),
+                            ),
+                            Expanded(
+                              flex: 45,
+                              child: gd.showSpin ||
+                                      gd.entities[widget.entityId].state
+                                          .contains("...")
+                                  ? AspectRatio(
+                                      aspectRatio: 1,
+                                      child: FittedBox(
+                                        child: SpinKitThreeBounce(
+                                          size: 100,
+                                          color: ThemeInfo.colorIconActive
+                                              .withOpacity(0.5),
                                         ),
-                                      )
-                                    : EntityIcon(entityId: widget.entityId),
-                              ),
-                            ],
-                          ),
+                                      ),
+                                    )
+                                  : EntityIcon(entityId: widget.entityId),
+                            ),
+                          ],
                         ),
-                        Text(
+                        Expanded(
+                          child: Container(),
+                        ),
+                        AutoSizeText(
                           "${gd.textToDisplay(gd.entities[widget.entityId].getStateDisplayTranslated(context))}${gd.entities[widget.entityId].unitOfMeasurement}",
                           style: gd.entities[widget.entityId].isStateOn
                               ? ThemeInfo.textStatusButtonActive
                               : ThemeInfo.textStatusButtonInActive,
                           maxLines: 1,
                           textScaleFactor: gd.textScaleFactor * 1.1,
-                          textAlign: TextAlign.right,
+                          textAlign: TextAlign.left,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ],

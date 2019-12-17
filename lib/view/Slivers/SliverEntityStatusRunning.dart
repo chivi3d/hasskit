@@ -74,7 +74,7 @@ class Status2ndRowItem extends StatelessWidget {
       child: AspectRatio(
         aspectRatio: 1,
         child: Padding(
-          padding: EdgeInsets.all(4),
+          padding: EdgeInsets.all(4 * gd.textScaleFactor),
           child: Material(
             color: entityId.contains("binary_sensor")
                 ? ThemeInfo.colorBackgroundActive.withOpacity(0.1)
@@ -84,7 +84,7 @@ class Status2ndRowItem extends StatelessWidget {
                 : RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16)),
             child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 4),
+              margin: EdgeInsets.symmetric(horizontal: 4 * gd.textScaleFactor),
               padding: EdgeInsets.all(8 * gd.textScaleFactor),
               width: buttonSize,
               child: Column(
@@ -132,7 +132,7 @@ class Status2ndRowItem extends StatelessWidget {
                             : ThemeInfo.textNameButtonInActive,
                         maxLines: 2,
                         textScaleFactor: gd.textScaleFactor * 0.9,
-                        overflow: TextOverflow.clip,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ),
@@ -143,7 +143,7 @@ class Status2ndRowItem extends StatelessWidget {
                         : ThemeInfo.textStatusButtonInActive,
                     maxLines: 1,
                     textScaleFactor: gd.textScaleFactor * 0.9,
-                    overflow: TextOverflow.clip,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),

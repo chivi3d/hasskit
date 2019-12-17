@@ -7,7 +7,7 @@ class SquircleBorder extends ShapeBorder {
 
   const SquircleBorder({
     this.side: BorderSide.none,
-    this.superRadius: 30.0,
+    this.superRadius: 10.0,
   })  : assert(side != null),
         assert(superRadius != null);
 

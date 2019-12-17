@@ -22,7 +22,7 @@ class ThemeInfo {
     color: Color.fromRGBO(0, 0, 0, 1),
     fontSize: 16,
     fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.w600,
+    fontWeight: FontWeight.w500,
     fontFamily: "Roboto",
     height: 1.0,
   );
@@ -40,7 +40,7 @@ class ThemeInfo {
     color: Color.fromRGBO(0, 0, 0, 0.5),
     fontSize: 16,
     fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.w600,
+    fontWeight: FontWeight.w500,
     fontFamily: "Roboto",
     height: 1.0,
   );
@@ -59,14 +59,13 @@ class ThemeInfo {
     return textStatusButtonActive.copyWith(color: Colors.amberAccent);
   }
 
-  static const Color colorBackgroundActive =
-      Color.fromRGBO(255, 255, 255, 0.50);
+  static const Color colorBackgroundActive = Color.fromRGBO(255, 255, 255, 0.8);
 
   static Color get colorEntityBackground {
     if (gd.currentTheme.brightness == Brightness.light) {
-      return Color.fromRGBO(255, 255, 255, 0.5);
+      return Color.fromRGBO(128, 128, 128, 0.8);
     } else {
-      return Color.fromRGBO(0, 0, 0, 0.5);
+      return Color.fromRGBO(28, 28, 28, 0.8);
     }
   }
 
