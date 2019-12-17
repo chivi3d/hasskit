@@ -48,8 +48,8 @@ class _EntityControlBinarySensorState extends State<EntityControlBinarySensor> {
       }
     }
 
-    log.d(
-        "gd.mediaQueryHeight ${gd.mediaQueryHeight} kBottomNavigationBarHeight $kBottomNavigationBarHeight kToolbarHeight $kToolbarHeight");
+//    log.d(
+//        "gd.mediaQueryHeight ${gd.mediaQueryHeight} ${MediaQuery.of(context).padding.vertical} ${MediaQuery.of(context).padding.horizontal} kBottomNavigationBarHeight $kBottomNavigationBarHeight kToolbarHeight $kToolbarHeight");
 
     return Container(
       height: gd.mediaQueryHeight -
