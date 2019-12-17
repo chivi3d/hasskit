@@ -9,8 +9,8 @@
     "no_data": "nenhuma informação disponivel",
     "reset": "Repor",
     "ok": "Ok",
-    "left": "Esquerda",
-    "right": "Direita",
+    "left": "para a esquerda",
+    "right": "para a direita",
     "connect_hass": "Por favor ligue-se ao\nHome Assistant",
     "last_update": "Ultima atualização",
     "cancel": "Cancelar",
@@ -23,14 +23,14 @@
     "disconnected": "Desconectado"
   },
   "edit": {
-    "select_icon": "Select Custom Icon",
+    "select_icon": "Selecione Icone Costumizado",
     "reset_icon": "Repor Icone",
-    "rbg_color": "Pressão longa Press To Edit Color",
+    "rbg_color": "Pressão longa para editar a côr",
     "edit": "Editar",
     "arrange": "Organizar",
     "move": "Mover",
     "delete": "Apagar",
-    "devices": "Dispositivos",
+    "devices": "dispositivos",
     "add_room": "Adicionar divisão"
   },
   "alarm_panel": {
@@ -56,17 +56,17 @@
     "edit": "Editar Website",
     "saved": "Website gravado",
     "reload": "Recarregar Website",
-    "pin": "Pin Website - Prevent Website scrolling",
-    "unpin": "Unpin Website - Allow Website scrolling",
+    "pin": "Marcar pagina Web - Previne que o ecrã role",
+    "unpin": "Desmarcar Pagina Web - permite que o ecrã role",
     "windy": "Ventoso",
     "y_weather": "Y! Tempo",
-    "live_score": "LiveScore",
+    "live_score": "tempo real",
     "aspect": "Aspecto"
   },
   "login": {
     "connecting": "A Conectar-se a",
-    "correct_info": "Certifique-se que a seguinte info está correcta",
-    "cancel": "Cancel Web Login Connection"
+    "correct_info": "Certifique-se que a seguinte informação está correcta",
+    "cancel": "Cancelar conecção de autenticação à Web"
   },
   "settings": {
     "home_assistant": "Conecção ao Home Assistant",
@@ -78,20 +78,20 @@
     "language": "Lingua",
     "layout": "Disposição",
     "about": "Acerca do HassKit",
-    "about_info": "HassKit is a Touch-Friendly - Zero Config App to help users instantly start using Home Assistant.\n\nHome Assistant is one of the best platforms for Home Automation, with powerful features and the world's widest range of device support. Home Assistant only requires some simple/cheap hardware to get started.\n\nHowever, Home Assistant is not very easy to configure and it takes a while to adjust to your needs. HassKit aims to ease the learning steps and improve the quality of life for Home Assistant users by providing a stunning look and 10-second setup to start using this wonderful Home Automation platform.\n\nHassKit is free, open-source and under development. We need your help to improve the app's features for us to better serve you.\n\nPlease find us on Discord and Facebook. Your contributions are always welcome.",
+    "about_info": "HassKit é uma aplicação simples, de facil configuração, que vai ajudar instantaneamente os utilizadores a usar o Home Assistant.\n\nHome Assistant é uma das melhores plataformas para domótica residencial, com poderosas funcionalidades e com um suporte para equipamentos a nivel global. O Home Assistant apenas requer um equipamento simples/barato para poder começar a usar.\n\nContudo, o Home Assistant não é de facil configuração e leva algum tempo a configurar e a ajustar-se a todas as suas necessidades. HassKit tem como finalidade facilitar todos os processos e melhorar a qualidade de vida aos utilizadores do Home Assistant, fornecendo uma fantástica visualização e uma configuração de apenas 10 segundos para que possa  começar a utilizar esta fantástica plataforma de domótica.\n\nHassKit é gratuito, de código aberto (open-source) e está ainda em desenvolvimento. Necessitamos toda a sua ajuda para aperfeiçoar as opções dadas por esta aplicação de forma a servi-lo melhor.\n\nEncontre-nos no Discord e no Facebook. O seu donativo será bem-vindo.",
     "3_buttons": "3 Botões",
     "4_buttons": "4 Botões",
     "settingLocked": "Bloquear conexão do servidor, sincronização na nuvem e configuração de salas"
   },
   "google_sync": {
-    "use": "Use Cloud Data Sync",
-    "info": "Keep your rooms layout and device customization synchronized accross devices. HassKit won't upload your login data online...",
+    "use": "Use a Cloud Data Sync",
+    "info": "Mantenha a disposição da suas divisões e a costumização do dispositivo sincronizado entre os dispositivos. HassKit não irá carregar as suas informações enquanto estiver conectado...",
     "sign_out": "Finalizar",
     "sign_in": "Iniciar",
-    "force_download": "Force download data from cloud",
-    "sync_problem": "Use ONLY when you have sync issue",
+    "force_download": "Forçar o download dos dados da nuvem",
+    "sync_problem": "Utilizar APENAS quando houver problemas de sincronização",
     "force_upload": "Forçar o envio dos dados para a nuvem",
-    "force_reset": "Force reset data on cloud"
+    "force_reset": "Forçar a reposição da informação na nuvem"
   },
   "theme_selector": {
     "dark": "Tema Escuro",

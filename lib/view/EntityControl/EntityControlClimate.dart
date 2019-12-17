@@ -92,7 +92,7 @@ class EntityControlClimate extends StatelessWidget {
               child: slider,
             ),
             FanSpeed(entityId: entityId),
-            SizedBox(height: 8),
+            SizedBox(height: 16),
             HvacModes(entityId: entityId),
           ],
         );
@@ -132,7 +132,7 @@ class _FanSpeedState extends State<FanSpeed> {
 
     return Container(
       child: CupertinoSlidingSegmentedControl<String>(
-        thumbColor: ThemeInfo.colorBottomSheetReverse.withOpacity(0.5),
+        thumbColor: ThemeInfo.colorBottomSheetReverse.withOpacity(0.75),
         children: children,
         onValueChanged: (String val) {
           setState(() {
