@@ -58,8 +58,11 @@ class _EntityControlSensorState extends State<EntityControlSensor> {
     }
     return Container(
       alignment: Alignment.center,
-      padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-      height: gd.mediaQueryHeight - kBottomNavigationBarHeight - kToolbarHeight,
+      padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
+      height: gd.mediaQueryHeight -
+          kBottomNavigationBarHeight -
+          kToolbarHeight -
+          20,
       width: gd.mediaQueryWidth,
       child: ModalProgressHUD(
         inAsyncCall: inAsyncCall,

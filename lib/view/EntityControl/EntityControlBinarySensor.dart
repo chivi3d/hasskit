@@ -48,8 +48,14 @@ class _EntityControlBinarySensorState extends State<EntityControlBinarySensor> {
       }
     }
 
+    log.d(
+        "gd.mediaQueryHeight ${gd.mediaQueryHeight} kBottomNavigationBarHeight $kBottomNavigationBarHeight kToolbarHeight $kToolbarHeight");
+
     return Container(
-      height: gd.mediaQueryHeight - kBottomNavigationBarHeight - kToolbarHeight,
+      height: gd.mediaQueryHeight -
+          kBottomNavigationBarHeight -
+          kToolbarHeight -
+          20,
       child: ModalProgressHUD(
         inAsyncCall: inAsyncCall,
         opacity: 0,
