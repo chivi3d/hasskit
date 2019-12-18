@@ -375,12 +375,12 @@ class _EditEntityNormalState extends State<EditEntityNormal> {
   @override
   void initState() {
     super.initState();
-    _controller.text = '${gd.entities[widget.entityId].getOverrideName}';
   }
 
   @override
   Widget build(BuildContext context) {
     Entity entity = gd.entities[widget.entityId];
+    _controller.text = '${gd.entities[widget.entityId].getOverrideName}';
     return Container(
       child: Row(
         children: <Widget>[
@@ -409,10 +409,14 @@ class _EditEntityNormalState extends State<EditEntityNormal> {
                   )
                 : TextField(
                     decoration: InputDecoration(
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.zero,
-                        hintText:
-                            '${gd.entities[widget.entityId].getFriendlyName}'),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: ThemeInfo.colorIconActive, width: 1.0),
+                      ),
+                      contentPadding: EdgeInsets.zero,
+                      hintText:
+                          '${gd.entities[widget.entityId].getFriendlyName}',
+                    ),
                     focusNode: _focusNode,
                     controller: _controller,
                     style: Theme.of(context).textTheme.title,
@@ -442,6 +446,14 @@ class _EditEntityNormalState extends State<EditEntityNormal> {
             onTap: () {
               setState(
                 () {
+                  if (gd.entitiesOverride[widget.entityId] != null) {
+                    gd.entitiesOverride[widget.entityId].friendlyName =
+                        _controller.text.trim();
+                  } else {
+                    gd.entitiesOverride[widget.entityId] =
+                        EntityOverride(friendlyName: _controller.text.trim());
+                  }
+                  gd.entitiesOverrideSave(true);
                   widget.showEditNameToggle();
                 },
               );
