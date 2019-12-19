@@ -285,9 +285,6 @@ class _EntityControlBinarySensorState extends State<EntityControlBinarySensor> {
               jsonResponse[0][i - 1]["state"] == "unlocked")) {
             deviceClass = "lock";
           }
-          log.d(
-              "gd.sensors.length ${gd.sensors.length} deviceClass $deviceClass");
-          print("jsonResponse[0][i - 1] ${jsonResponse[0][i - 1]}");
         }
         setState(() {
           inAsyncCall = false;

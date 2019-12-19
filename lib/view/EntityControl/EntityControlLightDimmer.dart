@@ -1,29 +1,35 @@
 import 'dart:convert';
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hasskit/helper/GeneralData.dart';
 import 'package:hasskit/helper/Logger.dart';
 import 'package:hasskit/helper/MaterialDesignIcons.dart';
+import 'package:hasskit/helper/ThemeInfo.dart';
 import 'package:hasskit/helper/WebSocket.dart';
 import 'package:hasskit/model/Entity.dart';
 import 'package:hasskit/view/EntityControl/RgbColorSelector.dart';
 import 'package:provider/provider.dart';
-
+import 'EffectSelector.dart';
 import 'TempColorSelector.dart';
 
 List<Color> colorTemps = [
-  Color(0xff64B5F6), //Blue
-  Color(0xff90CAF9), //Blue
-  Color(0xffBBDEFB), //Blue
+//  Color(0xff64B5F6), //Blue
+//  Color(0xff90CAF9), //Blue
+//  Color(0xffBBDEFB), //Blue
   Color(0xffF5F5F5), //Gray
   Color(0xffFFF9C4), //Yellow
   Color(0xffFFF59D), //Yellow
+  Color(0xffFFF176), //Yellow
+  Color(0xffFFEE58), //Yellow
+  Color(0xffFFEB3B), //Yellow
 ];
 
 class EntityControlLightDimmer extends StatefulWidget {
   final String entityId;
-  const EntityControlLightDimmer({@required this.entityId});
+  final String viewMode;
+  const EntityControlLightDimmer(
+      {@required this.entityId, @required this.viewMode});
 
   @override
   _EntityControlLightDimmerState createState() =>
@@ -31,29 +37,75 @@ class EntityControlLightDimmer extends StatefulWidget {
 }
 
 class _EntityControlLightDimmerState extends State<EntityControlLightDimmer> {
+  String mode;
+
+  @override
+  void initState() {
+    mode = widget.viewMode;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-//    log.d(
-//        "${widget.entityId} entities[widget.entityId].supportedFeaturesLights ${gd.entities[widget.entityId].getSupportedFeaturesLights} ${gd.entities[widget.entityId].supportedFeatures}");
+    Map<String, Widget> childrenSegment = {};
+    var getSupportedFeaturesLights =
+        gd.entities[widget.entityId].getSupportedFeaturesLights;
+    if (getSupportedFeaturesLights.contains("SUPPORT_RGB_COLOR")) {
+      var entry = {
+        'SUPPORT_RGB_COLOR': Text("RGB"),
+      };
+      childrenSegment.addAll(entry);
+    }
+    if (getSupportedFeaturesLights.contains("SUPPORT_COLOR_TEMP")) {
+      var entry = {
+        'SUPPORT_COLOR_TEMP': Text("Temp"),
+      };
+      childrenSegment.addAll(entry);
+    }
+    if (getSupportedFeaturesLights.contains("SUPPORT_EFFECT")) {
+      var entry = {
+        'SUPPORT_EFFECT': Text("Effect"),
+      };
+      childrenSegment.addAll(entry);
+    }
+
     return Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           LightSlider(
             entityId: widget.entityId,
+            viewMode: mode,
           ),
+          childrenSegment.length >= 2 ? SizedBox(height: 10) : Container(),
+          childrenSegment.length >= 2
+              ? CupertinoSlidingSegmentedControl<String>(
+                  thumbColor: ThemeInfo.colorIconActive,
+                  backgroundColor: Colors.transparent,
+                  children: childrenSegment,
+                  onValueChanged: (String val) {
+                    setState(() {
+                      mode = val;
+                      print("setState mode $mode");
+                    });
+                  },
+                  groupValue: mode,
+                )
+              : Container(),
           SizedBox(height: 10),
-          gd.entities[widget.entityId].getSupportedFeaturesLights
-                  .contains("SUPPORT_RGB_COLOR")
+          mode == "SUPPORT_RGB_COLOR"
               ? RgbColorSelector(
                   entityId: widget.entityId,
                 )
-              : gd.entities[widget.entityId].getSupportedFeaturesLights
-                      .contains("SUPPORT_COLOR_TEMP")
+              : mode == "SUPPORT_COLOR_TEMP"
                   ? TempColorSelector(
                       entityId: widget.entityId,
                     )
-                  : Container(),
+                  : mode == "SUPPORT_EFFECT"
+                      ? EffectSelector(
+                          entityId: widget.entityId,
+                        )
+                      : Container(),
         ],
       ),
     );
@@ -62,8 +114,9 @@ class _EntityControlLightDimmerState extends State<EntityControlLightDimmer> {
 
 class LightSlider extends StatefulWidget {
   final String entityId;
+  final String viewMode;
 
-  const LightSlider({@required this.entityId});
+  const LightSlider({@required this.entityId, @required this.viewMode});
 
   @override
   State<StatefulWidget> createState() {
@@ -97,6 +150,10 @@ class LightSliderState extends State<LightSlider> {
           "${generalData.entities[widget.entityId].colorTemp} " +
           "${generalData.entities[widget.entityId].rgbColor} ",
       builder: (context, data, child) {
+        print("LightSlider viewMode ${widget.viewMode} "
+            "colorTemp ${gd.entities[widget.entityId].colorTemp} "
+            "rgbColor ${gd.entities[widget.entityId].rgbColor}");
+
         if (draggingTime.millisecondsSinceEpoch <
             DateTime.now().millisecondsSinceEpoch) {
           if (!gd.entities[widget.entityId].isStateOn) {
@@ -114,8 +171,8 @@ class LightSliderState extends State<LightSlider> {
         Color sliderColor;
         if (!gd.entities[widget.entityId].isStateOn) {
           sliderColor = Color.fromRGBO(128, 128, 128, 1.0);
-        } else if (gd.entities[widget.entityId].getSupportedFeaturesLights
-            .contains("SUPPORT_RGB_COLOR")) {
+        } else if (widget.viewMode == "SUPPORT_RGB_COLOR" ||
+            widget.viewMode == "SUPPORT_EFFECT") {
           var entityRGB = gd.entities[widget.entityId].rgbColor;
           if (entityRGB == null ||
               entityRGB.length < 3 ||
@@ -123,8 +180,7 @@ class LightSliderState extends State<LightSlider> {
             entityRGB = [224, 224, 224];
           sliderColor =
               Color.fromRGBO(entityRGB[0], entityRGB[1], entityRGB[2], 1.0);
-        } else if (gd.entities[widget.entityId].getSupportedFeaturesLights
-                .contains("SUPPORT_COLOR_TEMP") &&
+        } else if (widget.viewMode == "SUPPORT_COLOR_TEMP" &&
             gd.entities[widget.entityId].colorTemp != null &&
             gd.entities[widget.entityId].maxMireds != null &&
             gd.entities[widget.entityId].minMireds != null) {

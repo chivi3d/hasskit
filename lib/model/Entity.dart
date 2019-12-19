@@ -49,6 +49,8 @@ class Entity {
   int minMireds;
   int maxMireds;
   int colorTemp;
+  String effect;
+  List<String> effectList;
   //cover
   double currentPosition;
   //input_number
@@ -101,6 +103,8 @@ class Entity {
     this.minMireds,
     this.maxMireds,
     this.colorTemp,
+    this.effect,
+    this.effectList,
     //cover
     this.currentPosition,
     //intput_number
@@ -228,6 +232,12 @@ class Entity {
             int.tryParse(json['attributes']['color_temp'].toString()) != null
                 ? int.tryParse(json['attributes']['color_temp'].toString())
                 : 0,
+        effect: json['attributes']['effect'].toString() != null
+            ? json['attributes']['effect'].toString()
+            : null,
+        effectList: json['attributes']['effect_list'] != null
+            ? List<String>.from(json['attributes']['effect_list'])
+            : [],
         currentPosition: double.tryParse(
                     json['attributes']['current_position'].toString()) !=
                 null

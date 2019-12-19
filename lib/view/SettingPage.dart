@@ -544,7 +544,7 @@ class _ThemeSelectorState extends State<ThemeSelector> {
         )
       ],
     );
-    final Map<int, Widget> themeSegment = <int, Widget>{
+    final Map<int, Widget> childrenSegment = <int, Widget>{
       1: dark,
       0: light,
     };
@@ -560,7 +560,7 @@ class _ThemeSelectorState extends State<ThemeSelector> {
             child: CupertinoSlidingSegmentedControl<int>(
               thumbColor: ThemeInfo.colorIconActive,
               backgroundColor: Colors.transparent,
-              children: themeSegment,
+              children: childrenSegment,
               onValueChanged: (int val) {
                 setState(() {
                   gd.deviceSetting.themeIndex = val;

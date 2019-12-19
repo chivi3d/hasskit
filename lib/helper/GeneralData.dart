@@ -230,12 +230,9 @@ class GeneralData with ChangeNotifier {
         log.e('socketGetStates entity.entityId');
         continue;
       }
-
-//      if (entity.entityId.contains("group.")) {
-//        log.w(
-//            "group. ${entity.entityId} ${entity.getDefaultIcon} ${entity.icon}");
-//      log.w(
-//          "\n socketGetStates ${entity.entityId} state ${entity.state} isStateOn ${entity.isStateOn} mess $mess");
+//
+//      if (entity.entityId.contains("light.kitchen_lightstrip")) {
+//        log.w("\n socketGetStates ${entity.entityId} mess $mess");
 //      }
 
       if (previousEntitiesList.contains(entity.entityId))

@@ -48,6 +48,11 @@ class _EntityControlParentState extends State<EntityControlParent> {
           "${generalData.entities[widget.entityId].speed} " +
           "${generalData.entities[widget.entityId].angle} " +
           "${generalData.entities[widget.entityId].oscillating} " +
+          "${generalData.entities[widget.entityId].brightness} " +
+          "${generalData.entities[widget.entityId].rgbColor} " +
+          "${generalData.entities[widget.entityId].colorTemp} " +
+          "${generalData.entities[widget.entityId].effect} " +
+          "${generalData.entities[widget.entityId].effectList} " +
           "${generalData.entities[widget.entityId].getTemperature} " +
           "${generalData.entities[widget.entityId].currentPosition} " +
           "",
@@ -69,12 +74,23 @@ class _EntityControlParentState extends State<EntityControlParent> {
             entity.speedList.length > 0) {
           entityControl = EntityControlFan(entityId: widget.entityId);
         } else if (entity.entityId.contains("light.") &&
-            (entity.getSupportedFeaturesLights.contains("SUPPORT_RGB_COLOR") ||
-                entity.getSupportedFeaturesLights
-                    .contains("SUPPORT_COLOR_TEMP") ||
-                entity.getSupportedFeaturesLights
-                    .contains("SUPPORT_BRIGHTNESS"))) {
-          entityControl = EntityControlLightDimmer(entityId: widget.entityId);
+            entity.getSupportedFeaturesLights.contains("SUPPORT_RGB_COLOR")) {
+          entityControl = EntityControlLightDimmer(
+            entityId: widget.entityId,
+            viewMode: "SUPPORT_RGB_COLOR",
+          );
+        } else if (entity.entityId.contains("light.") &&
+            entity.getSupportedFeaturesLights.contains("SUPPORT_COLOR_TEMP")) {
+          entityControl = EntityControlLightDimmer(
+            entityId: widget.entityId,
+            viewMode: "SUPPORT_COLOR_TEMP",
+          );
+        } else if (entity.entityId.contains("light.") &&
+            entity.getSupportedFeaturesLights.contains("SUPPORT_EFFECT")) {
+          entityControl = EntityControlLightDimmer(
+            entityId: widget.entityId,
+            viewMode: "SUPPORT_EFFECT",
+          );
         } else if (entity.entityId.contains("cover.") &&
             entity.currentPosition != null) {
           entityControl = EntityControlCoverPosition(entityId: widget.entityId);

@@ -63,8 +63,6 @@ class _TempColorSelectorState extends State<TempColorSelector> {
           widgets[0],
           widgets[1],
           widgets[2],
-        ]),
-        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           widgets[3],
           widgets[4],
           widgets[5],
@@ -75,23 +73,45 @@ class _TempColorSelectorState extends State<TempColorSelector> {
 
   void sendColor() {
     setState(() {
-      var outMsg = {
-        "id": gd.socketId,
-        "type": "call_service",
-        "domain": gd.entities[widget.entityId].entityId.split('.').first,
-        "service": "turn_on",
-        "service_data": {
-          "entity_id": widget.entityId,
-          "color_temp": gd
-              .mapNumber(
-                  selectedIndex.toDouble(),
-                  0,
-                  colorTemps.length.toDouble() - 1,
-                  gd.entities[widget.entityId].minMireds.toDouble(),
-                  gd.entities[widget.entityId].maxMireds.toDouble() - 1)
-              .toInt()
-        },
-      };
+      var outMsg;
+      if (gd.entities[widget.entityId].effect != null) {
+        outMsg = {
+          "id": gd.socketId,
+          "type": "call_service",
+          "domain": gd.entities[widget.entityId].entityId.split('.').first,
+          "service": "turn_on",
+          "service_data": {
+            "entity_id": widget.entityId,
+            "effect": "none",
+            "color_temp": gd
+                .mapNumber(
+                    selectedIndex.toDouble(),
+                    0,
+                    colorTemps.length.toDouble() - 1,
+                    gd.entities[widget.entityId].minMireds.toDouble(),
+                    gd.entities[widget.entityId].maxMireds.toDouble() - 1)
+                .toInt()
+          }
+        };
+      } else {
+        outMsg = {
+          "id": gd.socketId,
+          "type": "call_service",
+          "domain": gd.entities[widget.entityId].entityId.split('.').first,
+          "service": "turn_on",
+          "service_data": {
+            "entity_id": widget.entityId,
+            "color_temp": gd
+                .mapNumber(
+                    selectedIndex.toDouble(),
+                    0,
+                    colorTemps.length.toDouble() - 1,
+                    gd.entities[widget.entityId].minMireds.toDouble(),
+                    gd.entities[widget.entityId].maxMireds.toDouble() - 1)
+                .toInt()
+          }
+        };
+      }
 
       var outMsgEncoded = json.encode(outMsg);
       webSocket.send(outMsgEncoded);
