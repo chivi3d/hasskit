@@ -17,12 +17,13 @@ List<Color> colorTemps = [
 //  Color(0xff64B5F6), //Blue
 //  Color(0xff90CAF9), //Blue
 //  Color(0xffBBDEFB), //Blue
-  Color(0xffF5F5F5), //Gray
-  Color(0xffFFF9C4), //Yellow
+//  Color(0xffFFF9C4), //Yellow
+  Color(0xffBDBDBD), //Gray
   Color(0xffFFF59D), //Yellow
   Color(0xffFFF176), //Yellow
   Color(0xffFFEE58), //Yellow
   Color(0xffFFEB3B), //Yellow
+  Color(0xffFDD835), //Yellow
 ];
 
 class EntityControlLightDimmer extends StatefulWidget {
@@ -177,7 +178,7 @@ class LightSliderState extends State<LightSlider> {
           if (entityRGB == null ||
               entityRGB.length < 3 ||
               entityRGB[0] > 250 && entityRGB[1] > 250 && entityRGB[2] > 250)
-            entityRGB = [224, 224, 224];
+            entityRGB = [192, 192, 192];
           sliderColor =
               Color.fromRGBO(entityRGB[0], entityRGB[1], entityRGB[2], 1.0);
         } else if (widget.viewMode == "SUPPORT_COLOR_TEMP" &&

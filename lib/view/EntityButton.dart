@@ -118,7 +118,7 @@ class _EntityButtonDisplayState extends State<EntityButtonDisplay> {
     return ClipRRect(
       borderRadius: BorderRadius.circular(0),
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
+        filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
         child: AnimatedContainer(
           duration: Duration(milliseconds: 100),
           onEnd: () {

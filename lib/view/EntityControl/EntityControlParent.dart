@@ -80,8 +80,7 @@ class _EntityControlParentState extends State<EntityControlParent> {
               entityId: widget.entityId,
               viewMode: "SUPPORT_RGB_COLOR",
             );
-          }
-          if (entity.getSupportedFeaturesLights
+          } else if (entity.getSupportedFeaturesLights
                   .contains("SUPPORT_COLOR_TEMP") ||
               entity.getSupportedFeaturesLights
                   .contains("SUPPORT_WHITE_VALUE")) {
@@ -89,14 +88,13 @@ class _EntityControlParentState extends State<EntityControlParent> {
               entityId: widget.entityId,
               viewMode: "SUPPORT_COLOR_TEMP",
             );
-          }
-          if (entity.getSupportedFeaturesLights.contains("SUPPORT_EFFECT")) {
+          } else if (entity.getSupportedFeaturesLights
+              .contains("SUPPORT_EFFECT")) {
             entityControl = EntityControlLightDimmer(
               entityId: widget.entityId,
               viewMode: "SUPPORT_EFFECT",
             );
-          }
-          if (entity.getSupportedFeaturesLights
+          } else if (entity.getSupportedFeaturesLights
                   .contains("SUPPORT_BRIGHTNESS") ||
               entity.getSupportedFeaturesLights
                   .contains("SUPPORT_TRANSITION")) {
@@ -104,6 +102,8 @@ class _EntityControlParentState extends State<EntityControlParent> {
               entityId: widget.entityId,
               viewMode: "SUPPORT_BRIGHTNESS",
             );
+          } else {
+            entityControl = EntityControlToggle(entityId: widget.entityId);
           }
         } else if (entity.entityId.contains("cover.") &&
             entity.currentPosition != null) {
