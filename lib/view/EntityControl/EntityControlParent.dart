@@ -73,24 +73,38 @@ class _EntityControlParentState extends State<EntityControlParent> {
             entity.speedList != null &&
             entity.speedList.length > 0) {
           entityControl = EntityControlFan(entityId: widget.entityId);
-        } else if (entity.entityId.contains("light.") &&
-            entity.getSupportedFeaturesLights.contains("SUPPORT_RGB_COLOR")) {
-          entityControl = EntityControlLightDimmer(
-            entityId: widget.entityId,
-            viewMode: "SUPPORT_RGB_COLOR",
-          );
-        } else if (entity.entityId.contains("light.") &&
-            entity.getSupportedFeaturesLights.contains("SUPPORT_COLOR_TEMP")) {
-          entityControl = EntityControlLightDimmer(
-            entityId: widget.entityId,
-            viewMode: "SUPPORT_COLOR_TEMP",
-          );
-        } else if (entity.entityId.contains("light.") &&
-            entity.getSupportedFeaturesLights.contains("SUPPORT_EFFECT")) {
-          entityControl = EntityControlLightDimmer(
-            entityId: widget.entityId,
-            viewMode: "SUPPORT_EFFECT",
-          );
+        } else if (entity.entityId.contains("light.")) {
+          if (entity.getSupportedFeaturesLights.contains("SUPPORT_RGB_COLOR") ||
+              entity.getSupportedFeaturesLights.contains("SUPPORT_XY_COLOR")) {
+            entityControl = EntityControlLightDimmer(
+              entityId: widget.entityId,
+              viewMode: "SUPPORT_RGB_COLOR",
+            );
+          }
+          if (entity.getSupportedFeaturesLights
+                  .contains("SUPPORT_COLOR_TEMP") ||
+              entity.getSupportedFeaturesLights
+                  .contains("SUPPORT_WHITE_VALUE")) {
+            entityControl = EntityControlLightDimmer(
+              entityId: widget.entityId,
+              viewMode: "SUPPORT_COLOR_TEMP",
+            );
+          }
+          if (entity.getSupportedFeaturesLights.contains("SUPPORT_EFFECT")) {
+            entityControl = EntityControlLightDimmer(
+              entityId: widget.entityId,
+              viewMode: "SUPPORT_EFFECT",
+            );
+          }
+          if (entity.getSupportedFeaturesLights
+                  .contains("SUPPORT_BRIGHTNESS") ||
+              entity.getSupportedFeaturesLights
+                  .contains("SUPPORT_TRANSITION")) {
+            entityControl = EntityControlLightDimmer(
+              entityId: widget.entityId,
+              viewMode: "SUPPORT_BRIGHTNESS",
+            );
+          }
         } else if (entity.entityId.contains("cover.") &&
             entity.currentPosition != null) {
           entityControl = EntityControlCoverPosition(entityId: widget.entityId);
