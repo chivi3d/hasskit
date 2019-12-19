@@ -8,10 +8,10 @@ import 'package:hasskit/helper/MaterialDesignIcons.dart';
 import 'package:hasskit/helper/ThemeInfo.dart';
 import 'package:hasskit/helper/WebSocket.dart';
 import 'package:hasskit/model/Entity.dart';
-import 'package:hasskit/view/EntityControl/RgbColorSelector.dart';
+import 'package:hasskit/view/EntityControl/LightRgbColorSelector.dart';
 import 'package:provider/provider.dart';
-import 'EffectSelector.dart';
-import 'TempColorSelector.dart';
+import 'LightEffectSelector.dart';
+import 'LightTempColorSelector.dart';
 
 List<Color> colorTemps = [
 //  Color(0xff64B5F6), //Blue
@@ -94,15 +94,15 @@ class _EntityControlLightDimmerState extends State<EntityControlLightDimmer> {
               : Container(),
           SizedBox(height: 10),
           mode == "SUPPORT_RGB_COLOR"
-              ? RgbColorSelector(
+              ? LightRgbColorSelector(
                   entityId: widget.entityId,
                 )
               : mode == "SUPPORT_COLOR_TEMP"
-                  ? TempColorSelector(
+                  ? LightTempColorSelector(
                       entityId: widget.entityId,
                     )
                   : mode == "SUPPORT_EFFECT"
-                      ? EffectSelector(
+                      ? LightEffectSelector(
                           entityId: widget.entityId,
                         )
                       : Container(),

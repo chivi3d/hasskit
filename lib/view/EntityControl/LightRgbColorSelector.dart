@@ -10,17 +10,17 @@ import 'package:hasskit/helper/SquircleBorder.dart';
 import 'package:hasskit/helper/ThemeInfo.dart';
 import 'package:hasskit/model/BaseSetting.dart';
 
-class RgbColorSelector extends StatefulWidget {
+class LightRgbColorSelector extends StatefulWidget {
   final String entityId;
 
-  const RgbColorSelector({@required this.entityId});
+  const LightRgbColorSelector({@required this.entityId});
   @override
-  _RgbColorSelectorState createState() => _RgbColorSelectorState();
+  _LightRgbColorSelectorState createState() => _LightRgbColorSelectorState();
 }
 
-class _RgbColorSelectorState extends State<RgbColorSelector> {
+class _LightRgbColorSelectorState extends State<LightRgbColorSelector> {
   Color pickerColor = Color(0xff443a49);
-
+  bool showFlush = true;
   int selectedIndex;
 
   @override
@@ -33,13 +33,15 @@ class _RgbColorSelectorState extends State<RgbColorSelector> {
           selectedIndex = i;
           pickerColor =
               gd.stringToColor(gd.baseSetting.colorPicker[selectedIndex]);
-          Flushbar(
-            backgroundColor: ThemeInfo.colorBottomSheet,
-            icon: Icon(Icons.info),
-            overlayColor: Colors.red,
-            messageText: Text(Translate.getString("edit.rbg_color", context)),
-            duration: Duration(seconds: 3),
-          )..show(context);
+          if (showFlush) {
+            Flushbar(
+              backgroundColor: ThemeInfo.colorBottomSheet,
+              icon: Icon(Icons.info),
+              messageText: Text(Translate.getString("edit.rbg_color", context)),
+              duration: Duration(seconds: 3),
+            )..show(context);
+            showFlush = false;
+          }
           sendColor();
         },
         onLongPress: () {
@@ -156,7 +158,8 @@ class _RgbColorSelectorState extends State<RgbColorSelector> {
 
   void sendColor() {
     var outMsg;
-    if (gd.entities[widget.entityId].effect != null) {
+    if (gd.entities[widget.entityId].effect != null &&
+        gd.entities[widget.entityId].effect != "none") {
       outMsg = {
         "id": gd.socketId,
         "type": "call_service",

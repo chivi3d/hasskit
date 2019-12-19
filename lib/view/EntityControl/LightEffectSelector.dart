@@ -6,15 +6,15 @@ import 'package:hasskit/helper/GeneralData.dart';
 import 'package:hasskit/helper/ThemeInfo.dart';
 import 'package:hasskit/model/Entity.dart';
 
-class EffectSelector extends StatefulWidget {
+class LightEffectSelector extends StatefulWidget {
   final String entityId;
-  const EffectSelector({@required this.entityId});
+  const LightEffectSelector({@required this.entityId});
 
   @override
-  _EffectSelectorState createState() => _EffectSelectorState();
+  _LightEffectSelectorState createState() => _LightEffectSelectorState();
 }
 
-class _EffectSelectorState extends State<EffectSelector> {
+class _LightEffectSelectorState extends State<LightEffectSelector> {
   @override
   Widget build(BuildContext context) {
     Entity entity = gd.entities[widget.entityId];

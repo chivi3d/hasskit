@@ -10,15 +10,15 @@ import 'package:hasskit/helper/WebSocket.dart';
 
 import 'EntityControlLightDimmer.dart';
 
-class TempColorSelector extends StatefulWidget {
+class LightTempColorSelector extends StatefulWidget {
   final String entityId;
 
-  const TempColorSelector({@required this.entityId});
+  const LightTempColorSelector({@required this.entityId});
   @override
-  _TempColorSelectorState createState() => _TempColorSelectorState();
+  _LightTempColorSelectorState createState() => _LightTempColorSelectorState();
 }
 
-class _TempColorSelectorState extends State<TempColorSelector> {
+class _LightTempColorSelectorState extends State<LightTempColorSelector> {
   int selectedIndex = 0;
   List<Widget> widgets = [];
   @override
@@ -74,7 +74,8 @@ class _TempColorSelectorState extends State<TempColorSelector> {
   void sendColor() {
     setState(() {
       var outMsg;
-      if (gd.entities[widget.entityId].effect != null) {
+      if (gd.entities[widget.entityId].effect != null &&
+          gd.entities[widget.entityId].effect != "none") {
         outMsg = {
           "id": gd.socketId,
           "type": "call_service",
