@@ -116,7 +116,7 @@ class _EntityButtonDisplayState extends State<EntityButtonDisplay> {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(0),
+      borderRadius: BorderRadius.circular(12),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
         child: AnimatedContainer(

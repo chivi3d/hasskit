@@ -220,8 +220,6 @@ class GeneralData with ChangeNotifier {
   }
 
   void socketGetStates(List<dynamic> message) {
-//    log.d('socketGetStates $message');
-
     List<String> previousEntitiesList = entities.keys.toList();
 
     for (dynamic mess in message) {
@@ -230,10 +228,15 @@ class GeneralData with ChangeNotifier {
         log.e('socketGetStates entity.entityId');
         continue;
       }
-//
-//      if (entity.entityId.contains("light.kitchen_lightstrip")) {
-//        log.w("\n socketGetStates ${entity.entityId} mess $mess");
-//      }
+      if (entity.entityId.contains("vacuum.")) {
+        log.w(
+            "\n socketGetStates ${entity.entityId} supportedFeatures ${entity.supportedFeatures}  getSupportedFeaturesVacuum ${entity.getSupportedFeaturesVacuum}");
+        print("\n mess ${mess}");
+//        print(
+//            "entity.getSupportedFeaturesVacuum ${entity.getSupportedFeaturesVacuum}");
+//        print(
+//            "mess attributes supported_features ${mess["attributes"]["supported_features"]}");
+      }
 
       if (previousEntitiesList.contains(entity.entityId))
         previousEntitiesList.remove(entity.entityId);
@@ -1646,7 +1649,10 @@ class GeneralData with ChangeNotifier {
     "mdi:alert",
     "mdi:alert-outline",
     "mdi:battery-80",
-    "mdi:bell",
+    "mdi:balloon",
+    "mdi:bed-empty",
+    "mdi:bed-king",
+    "mdi:bed-queen",
     "mdi:blinds",
     "mdi:blur",
     "mdi:blur-linear",
@@ -1671,12 +1677,14 @@ class GeneralData with ChangeNotifier {
     "mdi:flash",
     "mdi:floor-lamp",
     "mdi:flower",
+    "mdi:food-fork-drink",
     "mdi:garage",
     "mdi:gauge",
     "mdi:group",
     "mdi:home",
     "mdi:home-automation",
     "mdi:home-outline",
+    "mdi:hotel",
     "mdi:lamp",
     "mdi:lava-lamp",
     "mdi:leaf",
@@ -1712,10 +1720,12 @@ class GeneralData with ChangeNotifier {
     "mdi:server-network",
     "mdi:server-network-off",
     "mdi:shield-check",
+    "mdi:silverware-fork-knife",
     "mdi:snowflake",
     "mdi:speaker",
     "mdi:square",
     "mdi:square-outline",
+    "mdi:stairs",
     "mdi:theater",
     "mdi:thermometer",
     "mdi:thermostat",
@@ -1724,6 +1734,7 @@ class GeneralData with ChangeNotifier {
     "mdi:toggle-switch-off",
     "mdi:toggle-switch-off-outline",
     "mdi:toggle-switch-outline",
+    "mdi:toilet",
     "mdi:track-light",
     "mdi:vibrate",
     "mdi:video-switch",
@@ -1734,7 +1745,7 @@ class GeneralData with ChangeNotifier {
     "mdi:water",
     "mdi:water-off",
     "mdi:water-percent",
-    "mdi:weather-partlycloudy",
+    "mdi:weather-partly-cloudy",
     "mdi:webcam",
     "mdi:white-balance-incandescent",
     "mdi:white-balance-iridescent",

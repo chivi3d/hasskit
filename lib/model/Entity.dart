@@ -73,6 +73,9 @@ class Entity {
   String soundModeRaw;
   String entityPicture;
   String unitOfMeasurement;
+//vacuum
+  String fanSpeed;
+  List<String> fanSpeedList;
 
   Entity({
     this.entityId,
@@ -128,6 +131,9 @@ class Entity {
     this.entityPicture = "",
     //
     this.unitOfMeasurement = "",
+    //vacuum
+    this.fanSpeed,
+    this.fanSpeedList,
   });
 
   factory Entity.fromJson(Map<String, dynamic> json) {
@@ -307,6 +313,12 @@ class Entity {
         unitOfMeasurement: json['attributes']['unit_of_measurement'] != null
             ? json['attributes']['unit_of_measurement'].toString()
             : "",
+        fanSpeed: json['attributes']['fan_speed'] != null
+            ? json['attributes']['fan_speed'].toString()
+            : "",
+        fanSpeedList: json['attributes']['fan_speed_list'] != null
+            ? List<String>.from(json['attributes']['fan_speed_list'])
+            : [],
       );
     } catch (e) {
       log.e("Entity.fromJson newEntity $e");
@@ -523,6 +535,8 @@ class Entity {
 
     if (isStateOn && currentIcon == "mdi:lock") return "mdi:lock-open";
     if (!isStateOn && currentIcon == "mdi:lock-open") return "mdi:lock";
+    if (isStateOn && currentIcon == "mdi:radiator-off") return "mdi:radiator";
+    if (!isStateOn && currentIcon == "mdi:radiator") return "mdi:radiator-off";
     if (isStateOn && currentIcon == "mdi:window-closed")
       return "mdi:window-open";
     if (!isStateOn && currentIcon == "mdi:window-open")
@@ -546,7 +560,8 @@ class Entity {
       'open',
       'opening...',
       'unlocked',
-      'unlocking...'
+      'unlocking...',
+      'cleaning...'
     ].contains(stateLower)) {
       return true;
     }
@@ -658,6 +673,41 @@ class Entity {
       var x = binaryText.substring(i - 1, i);
       if (x == "1") {
         recVal = recVal + supportedFeaturesMediaPlayerList[index] + " | ";
+      }
+      index++;
+    }
+//    print("recVal $recVal");
+    return recVal;
+  }
+
+  List<String> supportedFeaturesVacuumList = [
+    "SUPPORT_TURN_ON",
+    "SUPPORT_TURN_OFF",
+    "SUPPORT_PAUSE",
+    "SUPPORT_STOP",
+    "SUPPORT_RETURN_HOME",
+    "SUPPORT_FAN_SPEED",
+    "SUPPORT_BATTERY",
+    "SUPPORT_STATUS",
+    "SUPPORT_SEND_COMMAND",
+    "SUPPORT_LOCATE",
+    "SUPPORT_CLEAN_SPOT",
+    "SUPPORT_MAP",
+    "SUPPORT_STATE",
+    "SUPPORT_START",
+  ];
+  String get getSupportedFeaturesVacuum {
+//    print("getSupportedFeaturesVacuum $supportedFeatures");
+    if (supportedFeatures == null) {
+      return "";
+    }
+    var recVal = "";
+    var binaryText = supportedFeatures.toRadixString(2);
+    int index = 0;
+    for (int i = binaryText.length; i > 0; i--) {
+      var x = binaryText.substring(i - 1, i);
+      if (x == "1") {
+        recVal = recVal + supportedFeaturesVacuumList[index] + " | ";
       }
       index++;
     }

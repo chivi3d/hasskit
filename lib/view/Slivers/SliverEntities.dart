@@ -87,6 +87,7 @@ class SliverEntitiesNormal extends StatelessWidget {
                 gd.entities[entityId].entityType == EntityType.climateFans ||
                 gd.entities[entityId].entityType == EntityType.accessories ||
                 gd.entities[entityId].entityType == EntityType.cameras ||
+                entityId.contains("vacuum") ||
                 !gd.entities[entityId].isStateOn &&
                     gd.entitiesOverride[entityId] != null &&
                     gd.entitiesOverride[entityId].openRequireAttention !=

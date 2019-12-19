@@ -10,6 +10,7 @@ import 'package:hasskit/view/EntityControl/EntityControlClimate.dart';
 import 'package:hasskit/view/EntityControl/EntityControlCoverPosition.dart';
 import 'package:hasskit/view/EntityControl/EntityControlGeneral.dart';
 import 'package:hasskit/view/EntityControl/EntityControlMediaPlayer.dart';
+import 'package:hasskit/view/EntityControl/EntityControlVacuum.dart';
 import 'package:provider/provider.dart';
 import 'EntityControlBinarySensor.dart';
 import 'EntityControlFan.dart';
@@ -115,6 +116,8 @@ class _EntityControlParentState extends State<EntityControlParent> {
           entityControl = EntityControlInputNumber(entityId: widget.entityId);
         } else if (entity.entityType == EntityType.mediaPlayers) {
           entityControl = EntityControlMediaPlayer(entityId: widget.entityId);
+        } else if (entity.entityId.contains("vacuum.")) {
+          entityControl = EntityControlVacuum(entityId: widget.entityId);
         } else if (entity.entityType == EntityType.lightSwitches ||
             entity.entityType == EntityType.mediaPlayers ||
             entity.entityId.contains("group.") ||

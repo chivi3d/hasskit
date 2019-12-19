@@ -28,11 +28,13 @@ class Sensor {
   }
 
   bool get isStateOn {
-    if (state.toLowerCase() == 'unlocked')
-      return true; //fuck that lock and unlocked have the same contain lol
+    //fuck that lock and unlocked have the same contain lol
+    if (state.toLowerCase() == 'unlocked') return true;
     return !state.toLowerCase().contains('off') &&
         !state.toLowerCase().contains('locked') &&
+        !state.toLowerCase().contains('idle') &&
         !state.toLowerCase().contains('unavailable') &&
+        !state.toLowerCase().contains('docked') &&
         !state.toLowerCase().contains('closed');
   }
 //  Map<String, dynamic> toJson() => {
