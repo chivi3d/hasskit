@@ -157,10 +157,9 @@ class _LightRgbColorSelectorState extends State<LightRgbColorSelector> {
   }
 
   void sendColor() {
-    var outMsg;
     if (gd.entities[widget.entityId].effect != null &&
         gd.entities[widget.entityId].effect != "none") {
-      outMsg = {
+      var outMsg = {
         "id": gd.socketId,
         "type": "call_service",
         "domain": widget.entityId.split('.').first,
@@ -168,21 +167,22 @@ class _LightRgbColorSelectorState extends State<LightRgbColorSelector> {
         "service_data": {
           "entity_id": widget.entityId,
           "effect": "none",
-          "rgb_color": [pickerColor.red, pickerColor.green, pickerColor.blue]
         },
       };
-    } else {
-      outMsg = {
-        "id": gd.socketId,
-        "type": "call_service",
-        "domain": widget.entityId.split('.').first,
-        "service": "turn_on",
-        "service_data": {
-          "entity_id": widget.entityId,
-          "rgb_color": [pickerColor.red, pickerColor.green, pickerColor.blue]
-        },
-      };
+      var message = jsonEncode(outMsg);
+      gd.sendSocketMessage(message);
     }
+
+    var outMsg = {
+      "id": gd.socketId,
+      "type": "call_service",
+      "domain": widget.entityId.split('.').first,
+      "service": "turn_on",
+      "service_data": {
+        "entity_id": widget.entityId,
+        "rgb_color": [pickerColor.red, pickerColor.green, pickerColor.blue]
+      },
+    };
 
     var message = jsonEncode(outMsg);
     gd.sendSocketMessage(message);

@@ -73,10 +73,9 @@ class _LightTempColorSelectorState extends State<LightTempColorSelector> {
 
   void sendColor() {
     setState(() {
-      var outMsg;
       if (gd.entities[widget.entityId].effect != null &&
           gd.entities[widget.entityId].effect != "none") {
-        outMsg = {
+        var outMsg = {
           "id": gd.socketId,
           "type": "call_service",
           "domain": gd.entities[widget.entityId].entityId.split('.').first,
@@ -84,38 +83,32 @@ class _LightTempColorSelectorState extends State<LightTempColorSelector> {
           "service_data": {
             "entity_id": widget.entityId,
             "effect": "none",
-            "color_temp": gd
-                .mapNumber(
-                    selectedIndex.toDouble(),
-                    0,
-                    colorTemps.length.toDouble() - 1,
-                    gd.entities[widget.entityId].minMireds.toDouble(),
-                    gd.entities[widget.entityId].maxMireds.toDouble() - 1)
-                .toInt()
           }
         };
-      } else {
-        outMsg = {
-          "id": gd.socketId,
-          "type": "call_service",
-          "domain": gd.entities[widget.entityId].entityId.split('.').first,
-          "service": "turn_on",
-          "service_data": {
-            "entity_id": widget.entityId,
-            "color_temp": gd
-                .mapNumber(
-                    selectedIndex.toDouble(),
-                    0,
-                    colorTemps.length.toDouble() - 1,
-                    gd.entities[widget.entityId].minMireds.toDouble(),
-                    gd.entities[widget.entityId].maxMireds.toDouble() - 1)
-                .toInt()
-          }
-        };
+        var message = json.encode(outMsg);
+        webSocket.send(message);
       }
 
-      var outMsgEncoded = json.encode(outMsg);
-      webSocket.send(outMsgEncoded);
+      var outMsg = {
+        "id": gd.socketId,
+        "type": "call_service",
+        "domain": gd.entities[widget.entityId].entityId.split('.').first,
+        "service": "turn_on",
+        "service_data": {
+          "entity_id": widget.entityId,
+          "color_temp": gd
+              .mapNumber(
+                  selectedIndex.toDouble(),
+                  0,
+                  colorTemps.length.toDouble() - 1,
+                  gd.entities[widget.entityId].minMireds.toDouble(),
+                  gd.entities[widget.entityId].maxMireds.toDouble() - 1)
+              .toInt()
+        }
+      };
+
+      var message = json.encode(outMsg);
+      webSocket.send(message);
       HapticFeedback.mediumImpact();
 
       log.d("minMireds ${gd.entities[widget.entityId].minMireds} "
