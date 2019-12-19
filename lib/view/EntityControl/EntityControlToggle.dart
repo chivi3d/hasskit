@@ -27,21 +27,24 @@ class _EntityControlToggleState extends State<EntityControlToggle> {
   double startPosY;
   double diffY = 0;
   double snap = 10;
-
+  bool isDragging = false;
   @override
   void initState() {
     buttonFullHeight = (buttonTotalHeight - upperPartHeight);
     buttonHalfHeight = buttonTotalHeight / 2;
-    if (gd.entities[widget.entityId].isStateOn) {
-      buttonValue = buttonFullHeight;
-    } else {
-      buttonValue = buttonHalfHeight;
-    }
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    if (!isDragging) {
+      if (gd.entities[widget.entityId].isStateOn) {
+        buttonValue = buttonFullHeight;
+      } else {
+        buttonValue = buttonHalfHeight;
+      }
+    }
     return new GestureDetector(
       onVerticalDragStart: (DragStartDetails details) =>
           _onVerticalDragStart(context, details),
@@ -62,7 +65,7 @@ class _EntityControlToggleState extends State<EntityControlToggle> {
                 decoration: BoxDecoration(
                   color: gd.entities[widget.entityId].isStateOn
                       ? ThemeInfo.colorIconActive
-                      : ThemeInfo.colorIconInActive,
+                      : ThemeInfo.colorGray,
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
@@ -103,7 +106,7 @@ class _EntityControlToggleState extends State<EntityControlToggle> {
                           size: 70,
                           color: gd.entities[widget.entityId].isStateOn
                               ? ThemeInfo.colorIconActive
-                              : ThemeInfo.colorIconInActive),
+                              : ThemeInfo.colorGray),
                       Text(
                         gd.textToDisplay(gd.entities[widget.entityId]
                             .getStateDisplayTranslated(context)),
@@ -144,6 +147,7 @@ class _EntityControlToggleState extends State<EntityControlToggle> {
     final RenderBox box = context.findRenderObject();
     final Offset localOffset = box.globalToLocal(details.globalPosition);
     setState(() {
+      isDragging = true;
       startPosX = localOffset.dx;
       startPosY = localOffset.dy;
 //      log.d(
@@ -156,6 +160,7 @@ class _EntityControlToggleState extends State<EntityControlToggle> {
       () {
         log.d("_onVerticalDragEnd");
         diffY = 0;
+        isDragging = false;
         if (gd.entities[widget.entityId].isStateOn) {
           buttonValue = buttonFullHeight;
         } else {
@@ -169,6 +174,7 @@ class _EntityControlToggleState extends State<EntityControlToggle> {
     final RenderBox box = context.findRenderObject();
     final Offset localOffset = box.globalToLocal(details.globalPosition);
     setState(() {
+      isDragging = true;
       currentPosX = localOffset.dx;
       currentPosY = localOffset.dy;
       diffY = startPosY - currentPosY;
@@ -190,7 +196,7 @@ class _EntityControlToggleState extends State<EntityControlToggle> {
 
       buttonValue = stateValue + diffY;
 
-      print("yDiff $diffY");
+//      print("yDiff $diffY");
     });
   }
 }
@@ -236,9 +242,7 @@ class RequireSlideToOpen extends StatelessWidget {
             required
                 ? MaterialDesignIcons.getIconDataFromIconName("mdi:lock")
                 : MaterialDesignIcons.getIconDataFromIconName("mdi:lock-open"),
-            color: required
-                ? ThemeInfo.colorIconActive
-                : ThemeInfo.colorIconInActive,
+            color: required ? ThemeInfo.colorIconActive : ThemeInfo.colorGray,
             size: 100,
           ),
         ),

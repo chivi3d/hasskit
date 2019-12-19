@@ -60,6 +60,7 @@ class _BackgroundImageDropdownButtonState
         log.d("roomIndex $roomIndex _image path $imagePath uri ${_image.uri}");
         removeDeviceSettingBackgroundPhoto();
         gd.deviceSetting.backgroundPhoto.add("[$roomIndex]$imagePath");
+        gd.delayCancelEditModeTimer(300);
         gd.deviceSettingSave();
 //      if (!gd.backgroundImage.contains(image.path))
 //        gd.backgroundImage.add(image.path);
@@ -94,6 +95,7 @@ class _BackgroundImageDropdownButtonState
                       gd.roomList[widget.roomIndex].imageIndex =
                           gd.backgroundImage.indexOf(newValue);
                       log.d("newValue $newValue");
+                      gd.delayCancelEditModeTimer(300);
                       gd.roomListSave(true);
                     });
                   },

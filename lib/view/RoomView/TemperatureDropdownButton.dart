@@ -100,6 +100,7 @@ class _TemperatureDropdownButtonState extends State<TemperatureDropdownButton> {
                   items: dropdownMenuItems,
                   onChanged: (String newValue) {
                     setState(() {
+                      gd.delayCancelEditModeTimer(300);
                       gd.roomList[widget.roomIndex].tempEntityId = newValue;
                     });
                     gd.roomListSave(true);

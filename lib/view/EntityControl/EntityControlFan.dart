@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:hasskit/helper/GeneralData.dart';
@@ -7,7 +6,6 @@ import 'package:hasskit/helper/Logger.dart';
 import 'package:hasskit/helper/MaterialDesignIcons.dart';
 import 'package:hasskit/helper/ThemeInfo.dart';
 import 'package:hasskit/model/Entity.dart';
-import 'package:provider/provider.dart';
 
 class EntityControlFan extends StatefulWidget {
   final String entityId;
@@ -49,7 +47,6 @@ class _EntityControlFanState extends State<EntityControlFan> {
         child: Container(
           width: 5,
           height: 5,
-          color: Colors.red,
         ),
       );
       positionStacks.add(positionStack);
@@ -58,221 +55,208 @@ class _EntityControlFanState extends State<EntityControlFan> {
 
   @override
   Widget build(BuildContext context) {
-    return Selector<GeneralData, String>(
-      selector: (_, generalData) =>
-          "${generalData.entities[widget.entityId].state} | " +
-          "${generalData.entities[widget.entityId].isStateOn} | " +
-          "${generalData.entities[widget.entityId].speedList} | " +
-          "${generalData.entities[widget.entityId].speed} | " +
-          "${generalData.entities[widget.entityId].angle} | " +
-          "${generalData.entities[widget.entityId].oscillating} | ",
-      builder: (context, data, child) {
-        if (!isSliding) {
-          var entity = gd.entities[widget.entityId];
-          if (!entity.isStateOn) {
-            buttonValue = lowerPartHeight;
-          } else {
-            if (entity.speedList.contains(entity.speed)) {
-              currentStep = entity.speedList.indexOf(entity.speed.toString());
-              buttonValue = lowerPartHeight + currentStep * stepLength;
-            }
-          }
+    if (!isSliding) {
+      var entity = gd.entities[widget.entityId];
+      if (!entity.isStateOn) {
+        buttonValue = lowerPartHeight;
+      } else {
+        if (entity.speedList.contains(entity.speed)) {
+          currentStep = entity.speedList.indexOf(entity.speed.toString());
+          buttonValue = lowerPartHeight + currentStep * stepLength;
         }
+      }
+    }
 
-        return new GestureDetector(
-          onVerticalDragStart: (DragStartDetails details) =>
-              _onVerticalDragStart(context, details),
-          onVerticalDragUpdate: (DragUpdateDetails details) =>
-              _onVerticalDragUpdate(context, details),
-          onVerticalDragEnd: (DragEndDetails details) =>
-              _onVerticalDragEnd(context, details),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
+    return new GestureDetector(
+      onVerticalDragStart: (DragStartDetails details) =>
+          _onVerticalDragStart(context, details),
+      onVerticalDragUpdate: (DragUpdateDetails details) =>
+          _onVerticalDragUpdate(context, details),
+      onVerticalDragEnd: (DragEndDetails details) =>
+          _onVerticalDragEnd(context, details),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Stack(
+            alignment: Alignment.bottomCenter,
             children: <Widget>[
-              Stack(
-                alignment: Alignment.bottomCenter,
-                children: <Widget>[
-                  Container(
-                    width: buttonWidth,
-                    height: buttonHeight,
-                    decoration: BoxDecoration(
-                      color: currentStep > 0 ||
-                              gd.entities[widget.entityId].isStateOn
-                          ? ThemeInfo.colorIconActive
-                          : ThemeInfo.colorIconInActive,
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black54,
-                          blurRadius:
-                              0.0, // has the effect of softening the shadow
-                          spreadRadius:
-                              1.0, // has the effect of extending the shadow
-                          offset: Offset(
-                            0.0, // horizontal, move right 10
-                            0.0, // vertical, move down 10
-                          ),
+              Container(
+                width: buttonWidth,
+                height: buttonHeight,
+                decoration: BoxDecoration(
+                  color: gd.entities[widget.entityId].isStateOn
+                      ? ThemeInfo.colorIconActive
+                      : ThemeInfo.colorGray,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black54,
+                      blurRadius: 0.0, // has the effect of softening the shadow
+                      spreadRadius:
+                          1.0, // has the effect of extending the shadow
+                      offset: Offset(
+                        0.0, // horizontal, move right 10
+                        0.0, // vertical, move down 10
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              division > 1
+                  ? Positioned(
+                      bottom: lowerPartHeight + 1 * stepLength,
+                      child: Container(
+                        width: buttonWidth,
+                        height: 1,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              colors: [
+                                Colors.black.withOpacity(0.25),
+                                Colors.black.withOpacity(0.5),
+                                Colors.black.withOpacity(0.25),
+                              ]),
                         ),
-                      ],
-                    ),
-                  ),
-                  division > 1
-                      ? Positioned(
-                          bottom: lowerPartHeight + 1 * stepLength,
-                          child: Container(
-                            width: buttonWidth,
-                            height: 1,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                  colors: [
-                                    Colors.black.withOpacity(0.25),
-                                    Colors.black.withOpacity(0.5),
-                                    Colors.black.withOpacity(0.25),
-                                  ]),
-                            ),
-                          ),
-                        )
-                      : Container(),
-                  division > 2
-                      ? Positioned(
-                          bottom: lowerPartHeight + 2 * stepLength,
-                          child: Container(
-                            width: buttonWidth,
-                            height: 1,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                  colors: [
-                                    Colors.black.withOpacity(0.25),
-                                    Colors.black.withOpacity(0.5),
-                                    Colors.black.withOpacity(0.25),
-                                  ]),
-                            ),
-                          ),
-                        )
-                      : Container(),
-                  division > 3
-                      ? Positioned(
-                          bottom: lowerPartHeight + 3 * stepLength,
-                          child: Container(
-                            width: buttonWidth,
-                            height: 1,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                  colors: [
-                                    Colors.black.withOpacity(0.25),
-                                    Colors.black.withOpacity(0.5),
-                                    Colors.black.withOpacity(0.25),
-                                  ]),
-                            ),
-                          ),
-                        )
-                      : Container(),
-                  division > 4
-                      ? Positioned(
-                          bottom: lowerPartHeight + 4 * stepLength,
-                          child: Container(
-                            width: buttonWidth,
-                            height: 1,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                  colors: [
-                                    Colors.black.withOpacity(0.25),
-                                    Colors.black.withOpacity(0.5),
-                                    Colors.black.withOpacity(0.25),
-                                  ]),
-                            ),
-                          ),
-                        )
-                      : Container(),
-                  division > 5
-                      ? Positioned(
-                          bottom: lowerPartHeight + 5 * stepLength,
-                          child: Container(
-                            width: buttonWidth,
-                            height: 1,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                  colors: [
-                                    Colors.black.withOpacity(0.25),
-                                    Colors.black.withOpacity(0.5),
-                                    Colors.black.withOpacity(0.25),
-                                  ]),
-                            ),
-                          ),
-                        )
-                      : Container(),
-                  Positioned(
-                    bottom: 0,
-                    child: Container(
-                      alignment: Alignment.topCenter,
-                      width: buttonWidth,
-                      height: buttonValue,
-                      padding: const EdgeInsets.all(2.0),
-                      decoration: new BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(16),
-                            bottomRight: Radius.circular(16)),
-                        color: gd.entities[widget.entityId].isStateOn
-                            ? Colors.white.withOpacity(1)
-                            : Colors.white.withOpacity(1),
                       ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Icon(
-                              MaterialDesignIcons.getIconDataFromIconName(
-                                  gd.entities[widget.entityId].getDefaultIcon),
-                              size: 50,
-                              color: gd.entities[widget.entityId].isStateOn
-                                  ? ThemeInfo.colorIconActive
-                                  : ThemeInfo.colorIconInActive),
-                          SizedBox(height: 4),
-                          Text(
-                            gd.textToDisplay(
-                                "${gd.entities[widget.entityId].getStateDisplayTranslated(context)}"),
-                            style: ThemeInfo.textStatusButtonActive,
-                            maxLines: 1,
-                            textScaleFactor: gd.textScaleFactorFix,
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.center,
-                          ),
-                          SizedBox(height: 4),
-                        ],
+                    )
+                  : Container(),
+              division > 2
+                  ? Positioned(
+                      bottom: lowerPartHeight + 2 * stepLength,
+                      child: Container(
+                        width: buttonWidth,
+                        height: 1,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              colors: [
+                                Colors.black.withOpacity(0.25),
+                                Colors.black.withOpacity(0.5),
+                                Colors.black.withOpacity(0.25),
+                              ]),
+                        ),
                       ),
-                    ),
-                  ),
-                  Positioned(
-                    top: 0,
-                    child: Container(
-                      width: buttonWidth,
-                      height: upperPartHeight,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(16),
-                            topRight: Radius.circular(16)),
+                    )
+                  : Container(),
+              division > 3
+                  ? Positioned(
+                      bottom: lowerPartHeight + 3 * stepLength,
+                      child: Container(
+                        width: buttonWidth,
+                        height: 1,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              colors: [
+                                Colors.black.withOpacity(0.25),
+                                Colors.black.withOpacity(0.5),
+                                Colors.black.withOpacity(0.25),
+                              ]),
+                        ),
                       ),
-                      alignment: Alignment.center,
-                      child: Oscillating(entityId: widget.entityId),
-                    ),
+                    )
+                  : Container(),
+              division > 4
+                  ? Positioned(
+                      bottom: lowerPartHeight + 4 * stepLength,
+                      child: Container(
+                        width: buttonWidth,
+                        height: 1,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              colors: [
+                                Colors.black.withOpacity(0.25),
+                                Colors.black.withOpacity(0.5),
+                                Colors.black.withOpacity(0.25),
+                              ]),
+                        ),
+                      ),
+                    )
+                  : Container(),
+              division > 5
+                  ? Positioned(
+                      bottom: lowerPartHeight + 5 * stepLength,
+                      child: Container(
+                        width: buttonWidth,
+                        height: 1,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              colors: [
+                                Colors.black.withOpacity(0.25),
+                                Colors.black.withOpacity(0.5),
+                                Colors.black.withOpacity(0.25),
+                              ]),
+                        ),
+                      ),
+                    )
+                  : Container(),
+              Positioned(
+                bottom: 0,
+                child: Container(
+                  alignment: Alignment.topCenter,
+                  width: buttonWidth,
+                  height: buttonValue,
+                  padding: const EdgeInsets.all(2.0),
+                  decoration: new BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(16),
+                        bottomRight: Radius.circular(16)),
+                    color: gd.entities[widget.entityId].isStateOn
+                        ? Colors.white.withOpacity(1)
+                        : Colors.white.withOpacity(1),
                   ),
-                ],
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Icon(
+                          MaterialDesignIcons.getIconDataFromIconName(
+                              gd.entities[widget.entityId].getDefaultIcon),
+                          size: 50,
+                          color: gd.entities[widget.entityId].isStateOn
+                              ? ThemeInfo.colorIconActive
+                              : ThemeInfo.colorGray),
+                      SizedBox(height: 4),
+                      Text(
+                        gd.textToDisplay(
+                            "${gd.entities[widget.entityId].getStateDisplayTranslated(context)}"),
+                        style: ThemeInfo.textStatusButtonActive,
+                        maxLines: 1,
+                        textScaleFactor: gd.textScaleFactorFix,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 4),
+                    ],
+                  ),
+                ),
+              ),
+              Positioned(
+                top: 0,
+                child: Container(
+                  width: buttonWidth,
+                  height: upperPartHeight,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(16),
+                        topRight: Radius.circular(16)),
+                  ),
+                  alignment: Alignment.center,
+                  child: Oscillating(entityId: widget.entityId),
+                ),
               ),
             ],
           ),
-        );
-      },
+        ],
+      ),
     );
   }
 
@@ -408,7 +392,7 @@ class Oscillating extends StatelessWidget {
               : Icon(
                   MaterialDesignIcons.getIconDataFromIconName(
                       "mdi:arrow-left-right"),
-                  color: ThemeInfo.colorIconInActive,
+                  color: ThemeInfo.colorGray,
                   size: 100,
                 ),
         ),

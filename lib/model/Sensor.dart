@@ -28,7 +28,10 @@ class Sensor {
   }
 
   bool get isStateOn {
+    if (state.toLowerCase() == 'unlocked')
+      return true; //fuck that lock and unlocked have the same contain lol
     return !state.toLowerCase().contains('off') &&
+        !state.toLowerCase().contains('locked') &&
         !state.toLowerCase().contains('unavailable') &&
         !state.toLowerCase().contains('closed');
   }

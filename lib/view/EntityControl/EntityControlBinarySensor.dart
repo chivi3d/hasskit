@@ -27,18 +27,21 @@ class EntityControlBinarySensor extends StatefulWidget {
 }
 
 class _EntityControlBinarySensorState extends State<EntityControlBinarySensor> {
-  String batteryLevel;
   String deviceClass;
   bool inAsyncCall = true;
+  String lastState;
   @override
   void initState() {
+    print("_EntityControlBinarySensorState initState");
     super.initState();
-    getHistory();
   }
 
   @override
   Widget build(BuildContext context) {
-//    List<Sensor> binarySensorsReversed = gd.sensors.reversed.toList();
+    if (lastState != gd.entities[widget.entityId].state) {
+      getHistory();
+    }
+//    print("_EntityControlBinarySensorState build");
     List<Sensor> binarySensorsReversed = [];
     for (int i = gd.sensors.length - 1; i > 0; i--) {
       if (gd.sensors[i - 1] == null ||
@@ -108,8 +111,7 @@ class _EntityControlBinarySensorState extends State<EntityControlBinarySensor> {
                                   color: rec.isStateOn
                                       ? ThemeInfo.colorIconActive
                                           .withOpacity(0.25)
-                                      : ThemeInfo.colorIconInActive
-                                          .withOpacity(0),
+                                      : ThemeInfo.colorGray.withOpacity(0),
                                   shape: gd.deviceSetting.shapeLayout == 1
                                       ? SquircleBorder(
                                           side: BorderSide(
@@ -231,7 +233,7 @@ class _EntityControlBinarySensorState extends State<EntityControlBinarySensor> {
                                     ),
                               color: rec.isStateOn
                                   ? ThemeInfo.colorIconActive.withOpacity(0.25)
-                                  : ThemeInfo.colorIconInActive.withOpacity(0),
+                                  : ThemeInfo.colorGray.withOpacity(0),
                               border: Border.all(
                                 color: ThemeInfo.colorIconActive.withOpacity(1),
                                 width: 1.0,
@@ -252,6 +254,8 @@ class _EntityControlBinarySensorState extends State<EntityControlBinarySensor> {
   }
 
   void getHistory() async {
+//    log.d("getHistory Start");
+    await Future.delayed(const Duration(milliseconds: 1000));
     var client = new http.Client();
     var url = gd.currentUrl +
         "/api/history/period?filter_entity_id=${widget.entityId}";
@@ -275,14 +279,15 @@ class _EntityControlBinarySensorState extends State<EntityControlBinarySensor> {
         }
 
         if (i > 0 && jsonResponse[0][i - 1] != null) {
-//          log.d(
-//              "Total record: ${i} lenght: ${jsonResponse[0].toString().length}");
-          batteryLevel = (jsonResponse[0][i - 1]["attributes"]["battery_level"])
-              .toString();
           deviceClass =
               (jsonResponse[0][i - 1]["attributes"]["device_class"]).toString();
+          if ((jsonResponse[0][i - 1]["state"] == "locked" ||
+              jsonResponse[0][i - 1]["state"] == "unlocked")) {
+            deviceClass = "lock";
+          }
           log.d(
-              "gd.sensors.length ${gd.sensors.length} batteryLevel $batteryLevel deviceClass $deviceClass");
+              "gd.sensors.length ${gd.sensors.length} deviceClass $deviceClass");
+          print("jsonResponse[0][i - 1] ${jsonResponse[0][i - 1]}");
         }
         setState(() {
           inAsyncCall = false;
@@ -297,16 +302,18 @@ class _EntityControlBinarySensorState extends State<EntityControlBinarySensor> {
       inAsyncCall = false;
       log.e("getHistory $e");
     } finally {
-//      setState(() {
-      inAsyncCall = false;
-//      });
-      client.close();
+      setState(() {
+//        log.d("getHistory finally");
+        inAsyncCall = false;
+        lastState = gd.entities[widget.entityId].state;
+        client.close();
+      });
     }
   }
 }
 
 String stateString(String deviceClass, bool isStateOn, BuildContext context) {
-//  log.d("stateString deviceClass $deviceClass");
+  log.d("stateString deviceClass $deviceClass isStateOn $isStateOn");
   if (deviceClass.contains("garage_door") ||
       deviceClass.contains("door") ||
       deviceClass.contains("lock") ||

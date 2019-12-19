@@ -91,7 +91,7 @@ class CoverSliderState extends State<CoverSlider> {
                     height: buttonHeight,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
-                      color: ThemeInfo.colorBottomSheetReverse,
+                      color: ThemeInfo.colorGray,
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black54,
@@ -115,7 +115,7 @@ class CoverSliderState extends State<CoverSlider> {
                       decoration: BoxDecoration(
                         color: gd.entities[widget.entityId].isStateOn
                             ? ThemeInfo.colorIconActive
-                            : ThemeInfo.colorIconInActive,
+                            : ThemeInfo.colorGray,
                         borderRadius: BorderRadius.circular(16),
                       ),
                       alignment: Alignment.bottomCenter,
@@ -138,7 +138,7 @@ class CoverSliderState extends State<CoverSlider> {
                             size: 45,
                             color: gd.entities[widget.entityId].isStateOn
                                 ? ThemeInfo.colorIconActive
-                                : ThemeInfo.colorIconInActive,
+                                : ThemeInfo.colorGray,
                           ),
                         ),
                       ),
@@ -170,7 +170,7 @@ class CoverSliderState extends State<CoverSlider> {
                           fontSize: 20,
                           color: gd.entities[widget.entityId].isStateOn
                               ? ThemeInfo.colorIconActive
-                              : ThemeInfo.colorIconInActive,
+                              : ThemeInfo.colorGray,
                         ),
                       ),
                     ),

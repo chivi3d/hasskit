@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hasskit/helper/GeneralData.dart';
@@ -8,7 +7,6 @@ import 'package:hasskit/helper/MaterialDesignIcons.dart';
 import 'package:hasskit/helper/ThemeInfo.dart';
 import 'package:hasskit/helper/WebSocket.dart';
 import 'package:hasskit/model/Entity.dart';
-import 'package:provider/provider.dart';
 
 class EntityControlCoverPosition extends StatelessWidget {
   final String entityId;
@@ -23,7 +21,6 @@ class EntityControlCoverPosition extends StatelessWidget {
           CoverSlider(
             entityId: entityId,
           ),
-          SizedBox(height: 10),
         ],
       ),
     );
@@ -56,135 +53,127 @@ class CoverSliderState extends State<CoverSlider> {
 
   @override
   Widget build(BuildContext context) {
-    return Selector<GeneralData, String>(
-      selector: (_, generalData) =>
-          "${generalData.entities[widget.entityId].state} " +
-          "${generalData.entities[widget.entityId].currentPosition} ",
-      builder: (context, data, child) {
-        if (draggingTime.millisecondsSinceEpoch <
-            DateTime.now().millisecondsSinceEpoch) {
-          if (!gd.entities[widget.entityId].isStateOn) {
-            buttonValue = lowerPartHeight;
-          } else {
-            var mapValue = gd.mapNumber(
-                gd.entities[widget.entityId].currentPosition,
-                0,
-                100,
-                lowerPartHeight,
-                buttonHeight - upperPartHeight);
-            buttonValue = mapValue;
-          }
-          log.d(
-              "currentPosition ${gd.entities[widget.entityId].currentPosition} buttonValue $buttonValue ");
-        }
+    if (draggingTime.millisecondsSinceEpoch <
+        DateTime.now().millisecondsSinceEpoch) {
+      if (!gd.entities[widget.entityId].isStateOn) {
+        buttonValue = lowerPartHeight;
+      } else {
+        var mapValue = gd.mapNumber(
+            gd.entities[widget.entityId].currentPosition,
+            0,
+            100,
+            lowerPartHeight,
+            buttonHeight - upperPartHeight);
+        buttonValue = mapValue;
+      }
+    }
+    log.d(
+        "CoverSliderState currentPosition ${gd.entities[widget.entityId].currentPosition} buttonValue $buttonValue ");
 
-        return new GestureDetector(
-          onVerticalDragStart: (DragStartDetails details) =>
-              _onVerticalDragStart(context, details),
-          onVerticalDragUpdate: (DragUpdateDetails details) =>
-              _onVerticalDragUpdate(context, details),
-          onVerticalDragEnd: (DragEndDetails details) => _onVerticalDragEnd(
-              context, details, gd.entities[widget.entityId]),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.center,
+    return new GestureDetector(
+      onVerticalDragStart: (DragStartDetails details) =>
+          _onVerticalDragStart(context, details),
+      onVerticalDragUpdate: (DragUpdateDetails details) =>
+          _onVerticalDragUpdate(context, details),
+      onVerticalDragEnd: (DragEndDetails details) =>
+          _onVerticalDragEnd(context, details, gd.entities[widget.entityId]),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Stack(
+            alignment: Alignment.bottomCenter,
             children: <Widget>[
-              Stack(
-                alignment: Alignment.bottomCenter,
-                children: <Widget>[
-                  Container(
-                    width: buttonWidth,
-                    height: buttonHeight,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      color: ThemeInfo.colorBottomSheetReverse,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black54,
-                          blurRadius:
-                              0.0, // has the effect of softening the shadow
-                          spreadRadius:
-                              1.0, // has the effect of extending the shadow
-                          offset: Offset(
-                            0.0, // horizontal, move right 10
-                            0.0, // vertical, move down 10
-                          ),
-                        ),
-                      ],
+              Container(
+                width: buttonWidth,
+                height: buttonHeight,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  color: ThemeInfo.colorGray,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black54,
+                      blurRadius: 0.0, // has the effect of softening the shadow
+                      spreadRadius:
+                          1.0, // has the effect of extending the shadow
+                      offset: Offset(
+                        0.0, // horizontal, move right 10
+                        0.0, // vertical, move down 10
+                      ),
                     ),
+                  ],
+                ),
+              ),
+              Positioned(
+                top: 0,
+                child: Container(
+                  width: buttonWidth,
+                  height: buttonHeight,
+                  decoration: BoxDecoration(
+                    color: gd.entities[widget.entityId].isStateOn
+                        ? ThemeInfo.colorIconActive
+                        : ThemeInfo.colorGray,
+                    borderRadius: BorderRadius.circular(16),
                   ),
-                  Positioned(
-                    top: 0,
-                    child: Container(
-                      width: buttonWidth,
-                      height: buttonHeight,
-                      decoration: BoxDecoration(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    width: buttonWidth,
+                    height: buttonValue,
+                    alignment: Alignment.topCenter,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(16),
+                          bottomRight: Radius.circular(16)),
+                    ),
+                    child: SizedBox(
+                      width: 50,
+                      height: 50,
+                      child: Icon(
+                        MaterialDesignIcons.getIconDataFromIconName(
+                            gd.entities[widget.entityId].getDefaultIcon),
+                        size: 45,
                         color: gd.entities[widget.entityId].isStateOn
                             ? ThemeInfo.colorIconActive
-                            : ThemeInfo.colorIconInActive,
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      alignment: Alignment.bottomCenter,
-                      child: Container(
-                        width: buttonWidth,
-                        height: buttonValue,
-                        alignment: Alignment.topCenter,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(16),
-                              bottomRight: Radius.circular(16)),
-                        ),
-                        child: SizedBox(
-                          width: 50,
-                          height: 50,
-                          child: Icon(
-                            MaterialDesignIcons.getIconDataFromIconName(
-                                gd.entities[widget.entityId].getDefaultIcon),
-                            size: 45,
-                            color: gd.entities[widget.entityId].isStateOn
-                                ? ThemeInfo.colorIconActive
-                                : ThemeInfo.colorIconInActive,
-                          ),
-                        ),
+                            : ThemeInfo.colorGray,
                       ),
                     ),
                   ),
-                  Positioned(
-                    top: 0,
-                    child: Container(
-                      width: buttonWidth,
-                      height: upperPartHeight,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(16),
-                          topRight: Radius.circular(16),
-                        ),
-                      ),
-                      alignment: Alignment.center,
-                      child: Text(
-                        gd
-                            .mapNumber(buttonValue, lowerPartHeight,
-                                buttonHeight - upperPartHeight, 0, 100)
-                            .toInt()
-                            .toString(),
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: gd.entities[widget.entityId].isStateOn
-                              ? ThemeInfo.colorIconActive
-                              : ThemeInfo.colorIconInActive,
-                        ),
-                      ),
-                    ),
-                  )
-                ],
+                ),
               ),
-//              Text("${gd.entities[widget.entityId].rgbColor}"),
+              Positioned(
+                top: 0,
+                child: Container(
+                  width: buttonWidth,
+                  height: upperPartHeight,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(16),
+                      topRight: Radius.circular(16),
+                    ),
+                  ),
+                  alignment: Alignment.center,
+                  child: Text(
+                    gd
+                        .mapNumber(buttonValue, lowerPartHeight,
+                            buttonHeight - upperPartHeight, 0, 100)
+                        .toInt()
+                        .toString(),
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: gd.entities[widget.entityId].isStateOn
+                          ? ThemeInfo.colorIconActive
+                          : ThemeInfo.colorGray,
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
-        );
-      },
+//              Text("${gd.entities[widget.entityId].rgbColor}"),
+        ],
+      ),
     );
   }
 

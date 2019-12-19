@@ -128,7 +128,7 @@ class _EntityControlSensorState extends State<EntityControlSensor> {
           if (state < stateMin) stateMin = state;
         }
 
-        log.d("gd.sensors.length ${gd.sensors.length}");
+//        log.d("gd.sensors.length ${gd.sensors.length}");
 
         if (jsonResponse[0] != null && jsonResponse[0][0] != null) {
           batteryLevel =

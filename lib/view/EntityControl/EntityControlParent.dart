@@ -43,6 +43,13 @@ class _EntityControlParentState extends State<EntityControlParent> {
           "${generalData.entities[widget.entityId].state} " +
           "${generalData.entities[widget.entityId].getFriendlyName} " +
           "${generalData.entities[widget.entityId].getOverrideIcon} " +
+          "${generalData.entities[widget.entityId].fanMode} " +
+          "${generalData.entities[widget.entityId].speedList} " +
+          "${generalData.entities[widget.entityId].speed} " +
+          "${generalData.entities[widget.entityId].angle} " +
+          "${generalData.entities[widget.entityId].oscillating} " +
+          "${generalData.entities[widget.entityId].getTemperature} " +
+          "${generalData.entities[widget.entityId].currentPosition} " +
           "",
       builder: (context, data, child) {
         final Entity entity = gd.entities[widget.entityId];
@@ -147,7 +154,7 @@ class _EntityControlParentState extends State<EntityControlParent> {
                           children: <Widget>[
                             Container(
                               height: 25,
-                              padding: EdgeInsets.symmetric(horizontal: 16),
+                              padding: EdgeInsets.symmetric(horizontal: 32),
                               child: EntityControlBinarySensor(
                                 entityId: entity.entityId,
                                 horizontalMode: true,

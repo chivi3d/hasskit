@@ -324,7 +324,7 @@ class _SettingPageState extends State<SettingPage> {
                 ),
                 title: Translate.getString("settings.theme_color", context),
               ),
-              _ThemeSelector(),
+              ThemeSelector(),
               SliverHeaderNormal(
                 icon: Icon(
                   MaterialDesignIcons.getIconDataFromIconName(
@@ -502,92 +502,72 @@ class _SettingPageState extends State<SettingPage> {
   }
 }
 
-class _ThemeSelector extends StatelessWidget {
+class ThemeSelector extends StatefulWidget {
+  @override
+  _ThemeSelectorState createState() => _ThemeSelectorState();
+}
+
+class _ThemeSelectorState extends State<ThemeSelector> {
   @override
   Widget build(BuildContext context) {
-    return SliverFixedExtentList(
-      itemExtent: 58,
+    Widget dark = Row(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Icon(MaterialDesignIcons.getIconDataFromIconName("mdi:brightness-4")),
+        SizedBox(
+          width: 4,
+          height: 32,
+        ),
+        Text(
+          Translate.getString("theme_selector.dark", context),
+          textScaleFactor: gd.textScaleFactorFix,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 2,
+        )
+      ],
+    );
+    Widget light = Row(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Icon(MaterialDesignIcons.getIconDataFromIconName("mdi:brightness-5")),
+        SizedBox(
+          width: 4,
+          height: 32,
+        ),
+        Text(
+          Translate.getString("theme_selector.light", context),
+          textScaleFactor: gd.textScaleFactorFix,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 2,
+        )
+      ],
+    );
+    final Map<int, Widget> themeSegment = <int, Widget>{
+      1: dark,
+      0: light,
+    };
+    return SliverList(
       delegate: SliverChildListDelegate(
         [
           Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Expanded(
-                  child: InkWell(
-                    onTap: () {
-                      gd.deviceSetting.themeIndex = 1;
-                      gd.deviceSettingSave();
-                    },
-                    child: Card(
-                      elevation: 1,
-                      color: Color.fromRGBO(28, 28, 28, 1).withOpacity(0.5),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          children: <Widget>[
-                            Image.asset("assets/images/icon_transparent.png"),
-                            Expanded(
-                              child: Text(
-                                Translate.getString(
-                                    "theme_selector.dark", context),
-                                style: TextStyle(color: Colors.white),
-                                textScaleFactor: gd.textScaleFactorFix,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
-                              ),
-                            ),
-                            Icon(
-                              Icons.check_circle,
-                              color: Theme.of(context).brightness ==
-                                      Brightness.dark
-                                  ? Colors.amber
-                                  : Colors.transparent,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: InkWell(
-                    onTap: () {
-                      gd.deviceSetting.themeIndex = 0;
-                      gd.deviceSettingSave();
-                    },
-                    child: Card(
-                      elevation: 1,
-                      color: Color.fromRGBO(255, 255, 255, 1).withOpacity(0.5),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          children: <Widget>[
-                            Image.asset("assets/images/icon_transparent.png"),
-                            Expanded(
-                              child: Text(
-                                Translate.getString(
-                                    "theme_selector.light", context),
-                                textScaleFactor: gd.textScaleFactorFix,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
-                              ),
-                            ),
-                            Icon(
-                              Icons.check_circle,
-                              color: Theme.of(context).brightness ==
-                                      Brightness.light
-                                  ? Colors.amber
-                                  : Colors.transparent,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+            margin: EdgeInsets.all(8),
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+                color: ThemeInfo.colorBottomSheet.withOpacity(0.5),
+                borderRadius: BorderRadius.circular(8)),
+            child: CupertinoSlidingSegmentedControl<int>(
+              thumbColor: ThemeInfo.colorIconActive,
+              backgroundColor: Colors.transparent,
+              children: themeSegment,
+              onValueChanged: (int val) {
+                setState(() {
+                  gd.deviceSetting.themeIndex = val;
+                  gd.deviceSettingSave();
+                });
+              },
+              groupValue: gd.deviceSetting.themeIndex,
             ),
           ),
         ],
@@ -732,11 +712,6 @@ class _ShapeSelectorState extends State<ShapeSelector> {
             child: CupertinoSlidingSegmentedControl<int>(
               thumbColor: Colors.transparent,
               backgroundColor: Colors.transparent,
-
-//              borderColor: Colors.transparent,
-//              selectedColor: Colors.transparent,
-//              unselectedColor: Colors.transparent,
-//              pressedColor: Colors.transparent,
               children: phoneSegment,
               onValueChanged: (int val) {
                 setState(() {

@@ -19,7 +19,7 @@ class ThemeInfo {
   ];
 
   static TextStyle textNameButtonActive = TextStyle(
-    color: Color.fromRGBO(0, 0, 0, 1),
+    color: Color.fromRGBO(28, 28, 28, 1),
     fontSize: 16,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w500,
@@ -29,7 +29,8 @@ class ThemeInfo {
 
   static TextStyle get textNameButtonInActive {
     if (gd.currentTheme.brightness == Brightness.light) {
-      return textNameButtonActive.copyWith(color: Color.fromRGBO(0, 0, 0, 0.5));
+      return textNameButtonActive.copyWith(
+          color: Color.fromRGBO(28, 28, 28, 0.5));
     } else {
       return textNameButtonActive.copyWith(
           color: Color.fromRGBO(255, 255, 255, 0.5));
@@ -37,7 +38,7 @@ class ThemeInfo {
   }
 
   static const TextStyle textStatusButtonActive = TextStyle(
-    color: Color.fromRGBO(0, 0, 0, 0.5),
+    color: Color.fromRGBO(28, 28, 28, 0.5),
     fontSize: 16,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w500,
@@ -48,7 +49,7 @@ class ThemeInfo {
   static TextStyle get textStatusButtonInActive {
     if (gd.currentTheme.brightness == Brightness.light) {
       return textStatusButtonActive.copyWith(
-          color: Color.fromRGBO(0, 0, 0, 0.5));
+          color: Color.fromRGBO(28, 28, 28, 0.5));
     } else {
       return textStatusButtonActive.copyWith(
           color: Color.fromRGBO(255, 255, 255, 0.5));
@@ -59,13 +60,14 @@ class ThemeInfo {
     return textStatusButtonActive.copyWith(color: Colors.amberAccent);
   }
 
-  static const Color colorBackgroundActive = Color.fromRGBO(255, 255, 255, 0.9);
+  static const Color colorBackgroundActive =
+      Color.fromRGBO(255, 255, 255, 0.50);
 
   static Color get colorEntityBackground {
     if (gd.currentTheme.brightness == Brightness.light) {
-      return Color.fromRGBO(128, 128, 128, 0.9);
+      return Color.fromRGBO(255, 255, 255, 0.5);
     } else {
-      return Color.fromRGBO(28, 28, 28, 0.9);
+      return Color.fromRGBO(28, 28, 28, 0.5);
     }
   }
 
@@ -87,8 +89,19 @@ class ThemeInfo {
 
 //  static const Color colorIconActive = Color.fromRGBO(255, 204, 51, 1);
   static const Color colorIconActive = Color(0xffFFB300);
-  static const Color colorIconInActive = Color.fromRGBO(153, 153, 153, 1);
+
+  static Color get colorIconInActive {
+    if (gd.currentTheme.brightness == Brightness.dark) {
+      return Color.fromRGBO(255, 255, 255, 0.5);
+    } else {
+      return Color.fromRGBO(28, 28, 28, 0.5);
+    }
+  }
+
+//  static const Color colorIconInActive = Color.fromRGBO(153, 153, 153, 1);
+
   static const Color colorBackgroundDark = Color.fromRGBO(28, 28, 28, 1);
+  static const Color colorGray = Color.fromRGBO(128, 128, 128, 1);
 //  static const Color colorIconInActive = Color(0xffFFF8E1);
 
 //  static const Color colorTemp01 = Color.fromRGBO(100, 181, 246, 1);
