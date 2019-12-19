@@ -150,9 +150,9 @@ class LightSliderState extends State<LightSlider> {
           "${generalData.entities[widget.entityId].colorTemp} " +
           "${generalData.entities[widget.entityId].rgbColor} ",
       builder: (context, data, child) {
-        print("LightSlider viewMode ${widget.viewMode} "
-            "colorTemp ${gd.entities[widget.entityId].colorTemp} "
-            "rgbColor ${gd.entities[widget.entityId].rgbColor}");
+//        print("LightSlider viewMode ${widget.viewMode} "
+//            "colorTemp ${gd.entities[widget.entityId].colorTemp} "
+//            "rgbColor ${gd.entities[widget.entityId].rgbColor}");
 
         if (draggingTime.millisecondsSinceEpoch <
             DateTime.now().millisecondsSinceEpoch) {

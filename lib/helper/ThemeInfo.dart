@@ -65,7 +65,7 @@ class ThemeInfo {
 
   static Color get colorEntityBackground {
     if (gd.currentTheme.brightness == Brightness.light) {
-      return Color.fromRGBO(255, 255, 255, 0.5);
+      return Color.fromRGBO(168, 168, 168, 0.5);
     } else {
       return Color.fromRGBO(28, 28, 28, 0.5);
     }
