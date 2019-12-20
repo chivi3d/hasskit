@@ -1,12 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:hasskit/helper/GeneralData.dart';
 import 'package:hasskit/helper/Logger.dart';
 import 'package:hasskit/helper/MaterialDesignIcons.dart';
 import 'package:hasskit/helper/ThemeInfo.dart';
-import 'package:hasskit/helper/WebSocket.dart';
 import 'package:hasskit/model/Entity.dart';
 import 'package:hasskit/view/EntityControl/LightRgbColorSelector.dart';
 import 'package:provider/provider.dart';
@@ -51,15 +49,15 @@ class _EntityControlLightDimmerState extends State<EntityControlLightDimmer> {
     Map<String, Widget> childrenSegment = {};
     var getSupportedFeaturesLights =
         gd.entities[widget.entityId].getSupportedFeaturesLights;
-    if (getSupportedFeaturesLights.contains("SUPPORT_RGB_COLOR")) {
-      var entry = {
-        'SUPPORT_RGB_COLOR': Text("RGB"),
-      };
-      childrenSegment.addAll(entry);
-    }
     if (getSupportedFeaturesLights.contains("SUPPORT_COLOR_TEMP")) {
       var entry = {
         'SUPPORT_COLOR_TEMP': Text("Temp"),
+      };
+      childrenSegment.addAll(entry);
+    }
+    if (getSupportedFeaturesLights.contains("SUPPORT_RGB_COLOR")) {
+      var entry = {
+        'SUPPORT_RGB_COLOR': Text("RGB"),
       };
       childrenSegment.addAll(entry);
     }
@@ -134,8 +132,8 @@ class LightSliderState extends State<LightSlider> {
   double startPosY;
   Offset buttonPos;
   double buttonValue = 0;
-  double upperPartHeight = 30.0;
-  double lowerPartHeight = 50.0;
+  double lowerPartHeight = 68;
+//  double lowerPartHeight = 50;
   double buttonValueOnTapDown = 0;
   String raisedButtonLabel = "";
   //creating Key for red panel
@@ -165,7 +163,7 @@ class LightSliderState extends State<LightSlider> {
                 0,
                 254,
                 lowerPartHeight,
-                buttonHeight - upperPartHeight);
+                buttonHeight);
             buttonValue = mapValue;
           }
         }
@@ -219,95 +217,71 @@ class LightSliderState extends State<LightSlider> {
               _onVerticalDragUpdate(context, details),
           onVerticalDragEnd: (DragEndDetails details) => _onVerticalDragEnd(
               context, details, gd.entities[widget.entityId]),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: Stack(
+            alignment: Alignment.bottomCenter,
             children: <Widget>[
-              Stack(
-                alignment: Alignment.bottomCenter,
-                children: <Widget>[
-                  Container(
-                    key: buttonKey,
+              Positioned(
+                bottom: 0,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Container(
                     width: buttonWidth,
                     height: buttonHeight,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black54,
-                          blurRadius:
-                              0.0, // has the effect of softening the shadow
-                          spreadRadius:
-                              1.0, // has the effect of extending the shadow
-                          offset: Offset(
-                            0.0, // horizontal, move right 10
-                            0.0, // vertical, move down 10
-                          ),
-                        ),
-                      ],
+                      color: sliderColor,
                     ),
-                  ),
-                  Positioned(
-                    top: 0,
+                    alignment: Alignment.bottomCenter,
                     child: Container(
                       width: buttonWidth,
-                      height: buttonHeight > 0 ? buttonHeight : 0,
+                      height: buttonValue > 0 ? buttonValue : lowerPartHeight,
+                      alignment: Alignment.topCenter,
                       decoration: BoxDecoration(
-                        color: sliderColor,
-                        borderRadius: BorderRadius.circular(16),
+                        color: Colors.white.withOpacity(0.9),
                       ),
-                      alignment: Alignment.bottomCenter,
-                      child: Container(
-                        width: buttonWidth,
-                        height: buttonValue > 0 ? buttonValue : 0,
-                        alignment: Alignment.topCenter,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(16),
-                              bottomRight: Radius.circular(16)),
-                        ),
-                        child: SizedBox(
-                          width: 50,
-                          height: 50,
-                          child: Icon(
-                            MaterialDesignIcons.getIconDataFromIconName(
-                                gd.entities[widget.entityId].getDefaultIcon),
-                            size: 45,
-                            color: sliderColor,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    top: 0,
-                    child: Container(
-                      width: buttonWidth,
-                      height: upperPartHeight,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(16),
-                            topRight: Radius.circular(16)),
-                      ),
-                      alignment: Alignment.center,
                       child: Text(
                         gd
                             .mapNumber(buttonValue, lowerPartHeight,
-                                buttonHeight - upperPartHeight, 0, 100)
+                                buttonHeight, 0, 100)
                             .toInt()
                             .toString(),
                         style: TextStyle(
                           fontSize: 20,
                           color: sliderColor,
                         ),
+                        textAlign: TextAlign.center,
+                        textScaleFactor: gd.textScaleFactorFix,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                  )
-                ],
+                  ),
+                ),
               ),
-//              Text("${gd.entities[widget.entityId].rgbColor}"),
+              Container(
+                width: buttonWidth,
+                height: buttonHeight,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  color: Colors.transparent,
+                  border: Border.all(
+                    color: ThemeInfo.colorBottomSheetReverse,
+                    width: 1.0,
+                  ),
+                ),
+              ),
+              Positioned(
+                bottom: 0,
+                child: SizedBox(
+                  width: 50,
+                  height: 50,
+                  child: Icon(
+                    MaterialDesignIcons.getIconDataFromIconName(
+                        gd.entities[widget.entityId].getDefaultIcon),
+                    size: 45,
+                    color: sliderColor,
+                  ),
+                ),
+              )
             ],
           ),
         );
@@ -333,8 +307,8 @@ class LightSliderState extends State<LightSlider> {
     setState(
       () {
         draggingTime = DateTime.now().add(Duration(seconds: 1));
-        var sendValue = gd.mapNumber(buttonValue, lowerPartHeight,
-            buttonHeight - upperPartHeight, 0, 255);
+        var sendValue =
+            gd.mapNumber(buttonValue, lowerPartHeight, buttonHeight, 0, 255);
         log.d("_onVerticalDragEnd $sendValue");
         var outMsg;
         if (sendValue <= 0) {
@@ -360,8 +334,7 @@ class LightSliderState extends State<LightSlider> {
           };
         }
         var outMsgEncoded = json.encode(outMsg);
-        webSocket.send(outMsgEncoded);
-        HapticFeedback.mediumImpact();
+        gd.sendSocketMessage(outMsgEncoded);
       },
     );
   }
@@ -376,8 +349,7 @@ class LightSliderState extends State<LightSlider> {
 //      log.d(
 //          "_onVerticalDragUpdate currentPosX ${currentPosX.toStringAsFixed(0)} currentPosY ${currentPosY.toStringAsFixed(0)}");
       buttonValue = buttonValueOnTapDown + (startPosY - currentPosY);
-      buttonValue =
-          buttonValue.clamp(lowerPartHeight, buttonHeight - upperPartHeight);
+      buttonValue = buttonValue.clamp(lowerPartHeight, buttonHeight);
     });
   }
 }

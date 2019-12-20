@@ -15,11 +15,9 @@ class EntityControlToggle extends StatefulWidget {
 }
 
 class _EntityControlToggleState extends State<EntityControlToggle> {
-  double buttonTotalHeight = 300.0;
-  double upperPartHeight = 30.0;
+  double buttonHeight = 300.0;
   double buttonWidth = 93.75;
-  double buttonHalfHeight;
-  double buttonFullHeight;
+  double lowerPartHeight = 150.0;
   double buttonValue;
   double currentPosX;
   double currentPosY;
@@ -30,19 +28,20 @@ class _EntityControlToggleState extends State<EntityControlToggle> {
   bool isDragging = false;
   @override
   void initState() {
-    buttonFullHeight = (buttonTotalHeight - upperPartHeight);
-    buttonHalfHeight = buttonTotalHeight / 2;
-
     super.initState();
+  }
+
+  void refresh() {
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     if (!isDragging) {
       if (gd.entities[widget.entityId].isStateOn) {
-        buttonValue = buttonFullHeight;
+        buttonValue = buttonHeight;
       } else {
-        buttonValue = buttonHalfHeight;
+        buttonValue = lowerPartHeight;
       }
     }
     return new GestureDetector(
@@ -59,83 +58,79 @@ class _EntityControlToggleState extends State<EntityControlToggle> {
           Stack(
             alignment: Alignment.bottomCenter,
             children: <Widget>[
+              Positioned(
+                bottom: 0,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Container(
+                    width: buttonWidth,
+                    height: buttonHeight,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      color: gd.entities[widget.entityId].isStateOn
+                          ? ThemeInfo.colorIconActive
+                          : ThemeInfo.colorGray,
+                    ),
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                      width: buttonWidth,
+                      height: buttonValue > 0 ? buttonValue : lowerPartHeight,
+                      alignment: Alignment.topCenter,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.9),
+                      ),
+                      child: Text(
+                        gd.textToDisplay(gd.entities[widget.entityId]
+                            .getStateDisplayTranslated(context)),
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: gd.entities[widget.entityId].isStateOn
+                              ? ThemeInfo.colorIconActive
+                              : ThemeInfo.colorGray,
+                        ),
+                        textAlign: TextAlign.center,
+                        textScaleFactor: gd.textScaleFactorFix,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
               Container(
                 width: buttonWidth,
-                height: buttonTotalHeight,
+                height: buttonHeight,
                 decoration: BoxDecoration(
-                  color: gd.entities[widget.entityId].isStateOn
-                      ? ThemeInfo.colorIconActive
-                      : ThemeInfo.colorGray,
                   borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black54,
-                      blurRadius: 0.0, // has the effect of softening the shadow
-                      spreadRadius:
-                          1.0, // has the effect of extending the shadow
-                      offset: Offset(
-                        0.0, // horizontal, move right 10
-                        0.0, // vertical, move down 10
+                  color: Colors.transparent,
+                  border: Border.all(
+                    color: ThemeInfo.colorBottomSheetReverse,
+                    width: 1.0,
+                  ),
+                ),
+              ),
+              Positioned(
+                bottom: 0,
+                child: Column(
+                  children: <Widget>[
+                    RequireSlideToOpen(
+                      entityId: widget.entityId,
+                      refresh: refresh,
+                    ),
+                    SizedBox(
+                      width: 50,
+                      height: 50,
+                      child: Icon(
+                        MaterialDesignIcons.getIconDataFromIconName(
+                            gd.entities[widget.entityId].getDefaultIcon),
+                        size: 45,
+                        color: gd.entities[widget.entityId].isStateOn
+                            ? ThemeInfo.colorIconActive
+                            : ThemeInfo.colorGray,
                       ),
                     ),
                   ],
                 ),
               ),
-              Positioned(
-                bottom: 0,
-                child: Container(
-                  alignment: Alignment.topCenter,
-                  width: buttonWidth,
-                  height: buttonValue,
-                  padding: const EdgeInsets.all(2.0),
-                  decoration: new BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(16),
-                      bottomLeft: Radius.circular(16),
-                    ),
-                    color: gd.entities[widget.entityId].isStateOn
-                        ? Colors.white.withOpacity(1)
-                        : Colors.white.withOpacity(1),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Icon(
-                          MaterialDesignIcons.getIconDataFromIconName(
-                              gd.entities[widget.entityId].getDefaultIcon),
-                          size: 70,
-                          color: gd.entities[widget.entityId].isStateOn
-                              ? ThemeInfo.colorIconActive
-                              : ThemeInfo.colorGray),
-                      Text(
-                        gd.textToDisplay(gd.entities[widget.entityId]
-                            .getStateDisplayTranslated(context)),
-                        style: ThemeInfo.textStatusButtonActive,
-                        maxLines: 1,
-                        textScaleFactor: gd.textScaleFactorFix,
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                top: 0,
-                child: Container(
-                  width: buttonWidth,
-                  height: upperPartHeight,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(16),
-                      topRight: Radius.circular(16),
-                    ),
-                  ),
-                  alignment: Alignment.center,
-                  child: RequireSlideToOpen(entityId: widget.entityId),
-                ),
-              )
             ],
           ),
         ],
@@ -162,9 +157,9 @@ class _EntityControlToggleState extends State<EntityControlToggle> {
         diffY = 0;
         isDragging = false;
         if (gd.entities[widget.entityId].isStateOn) {
-          buttonValue = buttonFullHeight;
+          buttonValue = buttonHeight;
         } else {
-          buttonValue = buttonHalfHeight;
+          buttonValue = lowerPartHeight;
         }
       },
     );
@@ -181,16 +176,16 @@ class _EntityControlToggleState extends State<EntityControlToggle> {
       var stateValue;
 
       if (gd.entities[widget.entityId].isStateOn) {
-        stateValue = buttonFullHeight;
+        stateValue = buttonHeight;
         if (diffY > 0) diffY = 0;
-        if (stateValue + diffY < buttonHalfHeight + snap)
+        if (stateValue + diffY < lowerPartHeight + snap)
           gd.toggleStatus(gd.entities[widget.entityId]);
       }
 
       if (!gd.entities[widget.entityId].isStateOn) {
-        stateValue = buttonHalfHeight;
+        stateValue = lowerPartHeight;
         if (diffY < 0) diffY = 0;
-        if (stateValue + diffY > buttonFullHeight - snap)
+        if (stateValue + diffY > buttonHeight - snap)
           gd.toggleStatus(gd.entities[widget.entityId]);
       }
 
@@ -203,8 +198,8 @@ class _EntityControlToggleState extends State<EntityControlToggle> {
 
 class RequireSlideToOpen extends StatelessWidget {
   final String entityId;
-
-  const RequireSlideToOpen({@required this.entityId});
+  final Function refresh;
+  const RequireSlideToOpen({@required this.entityId, @required this.refresh});
   @override
   Widget build(BuildContext context) {
     if (!entityId.contains("cover.")) {
@@ -219,32 +214,31 @@ class RequireSlideToOpen extends StatelessWidget {
       required = true;
     }
 
-    return InkWell(
-      onTap: () {
-        gd.requireSlideToOpenAddRemove(entityId);
-        Flushbar(
-          title: required
-              ? Translate.getString(
-                  "toggle.require_slide_open_disabled", context)
-              : Translate.getString(
-                  "toggle.require_slide_open_enabled", context),
-          message: required
-              ? "${gd.textToDisplay(gd.entities[entityId].getOverrideName)} ${Translate.getString('toggle.1_touch', context)}"
-              : "${Translate.getString('toggle.prevent_accidentally_open', context)} ${gd.textToDisplay(gd.entities[entityId].getOverrideName)}",
-          duration: Duration(seconds: 3),
-        )..show(context);
-      },
-      child: Container(
-        width: double.infinity,
-        child: FittedBox(
-          fit: BoxFit.contain,
-          child: Icon(
-            required
-                ? MaterialDesignIcons.getIconDataFromIconName("mdi:lock")
-                : MaterialDesignIcons.getIconDataFromIconName("mdi:lock-open"),
-            color: required ? ThemeInfo.colorIconActive : ThemeInfo.colorGray,
-            size: 100,
-          ),
+    return SizedBox(
+      width: 50,
+      height: 50,
+      child: InkWell(
+        onTap: () {
+          gd.requireSlideToOpenAddRemove(entityId);
+          Flushbar(
+            title: required
+                ? Translate.getString(
+                    "toggle.require_slide_open_disabled", context)
+                : Translate.getString(
+                    "toggle.require_slide_open_enabled", context),
+            message: required
+                ? "${gd.textToDisplay(gd.entities[entityId].getOverrideName)} ${Translate.getString('toggle.1_touch', context)}"
+                : "${Translate.getString('toggle.prevent_accidentally_open', context)} ${gd.textToDisplay(gd.entities[entityId].getOverrideName)}",
+            duration: Duration(seconds: 3),
+          )..show(context);
+          refresh();
+        },
+        child: Icon(
+          required
+              ? MaterialDesignIcons.getIconDataFromIconName("mdi:lock")
+              : MaterialDesignIcons.getIconDataFromIconName("mdi:lock-open"),
+          color: required ? ThemeInfo.colorIconActive : ThemeInfo.colorGray,
+          size: 45,
         ),
       ),
     );

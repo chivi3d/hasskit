@@ -1,12 +1,9 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:hasskit/helper/GeneralData.dart';
 import 'package:hasskit/helper/Logger.dart';
 import 'package:hasskit/helper/SquircleBorder.dart';
 import 'package:hasskit/helper/ThemeInfo.dart';
-import 'package:hasskit/helper/WebSocket.dart';
 
 import 'EntityControlLightDimmer.dart';
 
@@ -86,7 +83,7 @@ class _LightTempColorSelectorState extends State<LightTempColorSelector> {
           }
         };
         var message = json.encode(outMsg);
-        webSocket.send(message);
+        gd.sendSocketMessage(message);
       }
 
       var outMsg = {
@@ -108,8 +105,7 @@ class _LightTempColorSelectorState extends State<LightTempColorSelector> {
       };
 
       var message = json.encode(outMsg);
-      webSocket.send(message);
-      HapticFeedback.mediumImpact();
+      gd.sendSocketMessage(message);
 
       log.d("minMireds ${gd.entities[widget.entityId].minMireds} "
           "maxMireds ${gd.entities[widget.entityId].maxMireds} "

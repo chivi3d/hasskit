@@ -30,6 +30,7 @@ class _EntityControlBinarySensorState extends State<EntityControlBinarySensor> {
   String deviceClass;
   bool inAsyncCall = true;
   String lastState;
+
   @override
   void initState() {
     print("_EntityControlBinarySensorState initState");

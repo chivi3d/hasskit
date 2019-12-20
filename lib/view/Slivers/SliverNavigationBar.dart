@@ -4,10 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:hasskit/helper/GeneralData.dart';
 import 'package:hasskit/helper/MaterialDesignIcons.dart';
 import 'package:hasskit/helper/ThemeInfo.dart';
+import 'package:hasskit/view/CustomPopupMenu.dart';
 import 'package:hasskit/view/EntityControl/EntityControlParent.dart';
 import 'package:provider/provider.dart';
-
-import '../CustomPopupMenu.dart';
 
 class SliverNavigationBar extends StatelessWidget {
   final int roomIndex;

@@ -25,7 +25,7 @@ class _TemperatureDropdownButtonState extends State<TemperatureDropdownButton> {
 
     List<DropdownMenuItem<String>> dropdownMenuItems = [];
 
-    var emptySensor = DropdownMenuItem<String>(
+    var emptyDropdownMenuItem = DropdownMenuItem<String>(
       value: "",
       child: ListTile(
         contentPadding: EdgeInsets.fromLTRB(4, 2, 2, 2),
@@ -43,7 +43,7 @@ class _TemperatureDropdownButtonState extends State<TemperatureDropdownButton> {
         ),
       ),
     );
-    dropdownMenuItems.add(emptySensor);
+    dropdownMenuItems.add(emptyDropdownMenuItem);
     List<Entity> entities = gd.entities.values
         .where((e) =>
             !e.entityId.contains("binary_sensor.") &&

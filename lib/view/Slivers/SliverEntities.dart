@@ -3,14 +3,13 @@ import 'package:hasskit/helper/GeneralData.dart';
 import 'package:hasskit/helper/Logger.dart';
 import 'package:hasskit/helper/ThemeInfo.dart';
 import 'package:hasskit/model/Entity.dart';
+import 'package:hasskit/view/EntityButton.dart';
+import 'package:hasskit/view/EntityCamera.dart';
 import 'package:hasskit/view/EntityControl/EntityControlCameraVideoPlayer.dart';
 import 'package:hasskit/view/EntityControl/EntityControlCameraWebView.dart';
 import 'package:hasskit/view/EntityControl/EntityControlParent.dart';
 import 'package:hasskit/view/slivers/SliverWebView.dart';
 import 'package:reorderables/reorderables.dart';
-
-import '../EntityButton.dart';
-import '../EntityCamera.dart';
 
 class SliverEntitiesNormal extends StatelessWidget {
   final int roomIndex;

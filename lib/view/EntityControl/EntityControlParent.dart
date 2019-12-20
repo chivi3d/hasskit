@@ -75,19 +75,20 @@ class _EntityControlParentState extends State<EntityControlParent> {
             entity.speedList.length > 0) {
           entityControl = EntityControlFan(entityId: widget.entityId);
         } else if (entity.entityId.contains("light.")) {
-          if (entity.getSupportedFeaturesLights.contains("SUPPORT_RGB_COLOR") ||
-              entity.getSupportedFeaturesLights.contains("SUPPORT_XY_COLOR")) {
-            entityControl = EntityControlLightDimmer(
-              entityId: widget.entityId,
-              viewMode: "SUPPORT_RGB_COLOR",
-            );
-          } else if (entity.getSupportedFeaturesLights
+          if (entity.getSupportedFeaturesLights
                   .contains("SUPPORT_COLOR_TEMP") ||
               entity.getSupportedFeaturesLights
                   .contains("SUPPORT_WHITE_VALUE")) {
             entityControl = EntityControlLightDimmer(
               entityId: widget.entityId,
               viewMode: "SUPPORT_COLOR_TEMP",
+            );
+          } else if (entity.getSupportedFeaturesLights
+                  .contains("SUPPORT_RGB_COLOR") ||
+              entity.getSupportedFeaturesLights.contains("SUPPORT_XY_COLOR")) {
+            entityControl = EntityControlLightDimmer(
+              entityId: widget.entityId,
+              viewMode: "SUPPORT_RGB_COLOR",
             );
           } else if (entity.getSupportedFeaturesLights
               .contains("SUPPORT_EFFECT")) {
