@@ -163,7 +163,7 @@ class LightSliderState extends State<LightSlider> {
             var mapValue = gd.mapNumber(
                 gd.entities[widget.entityId].brightness.toDouble(),
                 0,
-                255,
+                254,
                 lowerPartHeight,
                 buttonHeight - upperPartHeight);
             buttonValue = mapValue;

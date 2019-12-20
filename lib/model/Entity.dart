@@ -76,6 +76,9 @@ class Entity {
 //vacuum
   String fanSpeed;
   List<String> fanSpeedList;
+  //state string
+  String oldState;
+  String newState;
 
   Entity({
     this.entityId,
@@ -561,7 +564,7 @@ class Entity {
       'opening...',
       'unlocked',
       'unlocking...',
-      'cleaning...'
+      'cleaning'
     ].contains(stateLower)) {
       return true;
     }

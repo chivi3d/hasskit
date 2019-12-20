@@ -228,15 +228,12 @@ class GeneralData with ChangeNotifier {
         log.e('socketGetStates entity.entityId');
         continue;
       }
-      if (entity.entityId.contains("vacuum.")) {
-        log.w(
-            "\n socketGetStates ${entity.entityId} supportedFeatures ${entity.supportedFeatures}  getSupportedFeaturesVacuum ${entity.getSupportedFeaturesVacuum}");
-        print("\n mess ${mess}");
-//        print(
-//            "entity.getSupportedFeaturesVacuum ${entity.getSupportedFeaturesVacuum}");
-//        print(
-//            "mess attributes supported_features ${mess["attributes"]["supported_features"]}");
-      }
+
+//      if (entity.entityId.contains("vacuum.")) {
+//        log.w(
+//            "\n socketGetStates ${entity.entityId} supportedFeatures ${entity.supportedFeatures}  getSupportedFeaturesVacuum ${entity.getSupportedFeaturesVacuum}");
+//        print("\n mess ${mess}");
+//      }
 
       if (previousEntitiesList.contains(entity.entityId))
         previousEntitiesList.remove(entity.entityId);
@@ -270,13 +267,17 @@ class GeneralData with ChangeNotifier {
     }
 
     eventEntityUpdate(entityId);
+
     _entities[entityId] =
         Entity.fromJson(message['event']['data']['new_state']);
+    _entities[entityId].oldState =
+        jsonEncode(message['event']['data']['old_state']);
+    _entities[entityId].newState =
+        jsonEncode(message['event']['data']['new_state']);
 
-    if (_entities[entityId] != null &&
-        _entities[entityId].entityId.contains("fan.")) {
+    if (_entities[entityId].entityId.contains("vacuum.")) {
       log.w(
-          "\n socketSubscribeEvents $entityId message $message['event']['data']['new_state']");
+          "\n socketSubscribeEvents $entityId message ${message['event']['data']['new_state']}");
       if (!_entities.containsKey(entityId)) {
         log.e("_entities.containsKey($entityId");
       }
