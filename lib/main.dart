@@ -7,17 +7,17 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:hasskit/helper/LocaleHelper.dart';
-import 'package:hasskit/helper/ThemeInfo.dart';
-import 'package:hasskit/helper/WebSocket.dart';
-import 'package:hasskit/view/PageViewBuilder.dart';
-import 'package:hasskit/view/SettingPage.dart';
+import 'package:hasskit/helper/locale_helper.dart';
+import 'package:hasskit/helper/theme_info.dart';
+import 'package:hasskit/helper/web_socket.dart';
+import 'package:hasskit/view/page_view_builder.dart';
+import 'package:hasskit/view/setting_page.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:provider/provider.dart';
-import 'helper/GeneralData.dart';
-import 'helper/GoogleSign.dart';
-import 'helper/Logger.dart';
-import 'helper/MaterialDesignIcons.dart';
+import 'helper/general_data.dart';
+import 'helper/google_sign.dart';
+import 'helper/logger.dart';
+import 'helper/material_design_icons.dart';
 
 void main() {
   runApp(
