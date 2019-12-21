@@ -742,9 +742,10 @@ class Entity {
 //      log.d("DateTime.tryParse $state");
       return DateFormat('dd/MM kk:mm').format(DateTime.parse(state));
     }
-    if (state.contains(".") && double.tryParse(state) != null) {
-//      log.d("double.tryParse $state");
-      return double.parse(state).toStringAsFixed(1);
+    if (double.tryParse(state) != null) {
+      var recVal = double.parse(state);
+      if (recVal >= 100) return recVal.toStringAsFixed(0);
+      return recVal.toStringAsFixed(1);
     }
     return state;
   }

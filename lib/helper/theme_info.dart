@@ -19,7 +19,7 @@ class ThemeInfo {
   ];
 
   static TextStyle textNameButtonActive = TextStyle(
-    color: Color.fromRGBO(28, 28, 28, 1),
+    color: Color.fromRGBO(28, 28, 28, 0.9),
     fontSize: 16,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w500,
@@ -38,7 +38,7 @@ class ThemeInfo {
   }
 
   static const TextStyle textStatusButtonActive = TextStyle(
-    color: Color.fromRGBO(28, 28, 28, 0.5),
+    color: Color.fromRGBO(28, 28, 28, 0.9),
     fontSize: 16,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w500,
