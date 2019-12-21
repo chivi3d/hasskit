@@ -1,0 +1,128 @@
+
+{
+    "global": {
+        "duration": "Dauer",
+        "open": "offen",
+        "closed": "geschlossen",
+        "on": "An",
+        "off": "Aus",
+        "error": "Fehler",
+        "no_data": "keine Daten verfügbar",
+        "reset": "Reset",
+        "ok": "Ok",
+        "left": "Links",
+        "right": "Rechts",
+        "connect_hass": "Verbinde dich mit Home Assistant",
+        "last_update": "Neustes Update",
+        "cancel": "Annulieren",
+        "settings": "Einstellungen",
+        "rooms": "Raum",
+        "disconnect": "Trennen",
+        "refresh": "Aktualisieren",
+        "last_access": "Letzter Zugang",
+        "connected": "Verbunden",
+        "disconnected": "Getrennt"
+    },
+    "edit": {
+        "select_icon": "Wähle angepasstes Icon",
+        "reset_icon": "Resete Icon",
+        "rbg_color": "Lange drücken um Farbe zu ändern",
+        "edit": "Editieren",
+        "arrange": "Ordnen",
+        "move": "Bewegen",
+        "delete": "Löschen",
+        "devices": "Gerät",
+        "add_room": "Raum hinzufügen"
+    },
+    "alarm_panel": {
+        "arm_home":"Schutz Anwesend",
+        "arm_away": "Schutz Abwesend",
+        "disarmed": "Unscharf",
+        "pending": "Steht aus",
+        "armed_away": "Schutz Abwesend",
+        "armed_home": "Schutz Anwesend",
+        "armed_night": "Schutz Nacht",
+        "armed": "Gesichert"
+    },
+    "toggle": {
+        "require_slide_open_disabled": "Schiebeleiste betätigen um deaktivieren zu öffnen",
+        "require_slide_open_enabled": "Schiebeleiste betätigen um aktivieren zu öffnen",
+        "prevent_accidentally_open": "Verhindere ungewolltes öffnen",
+        "1_touch": "Kann jetzt mit 1x Touch geöffnet werden"
+    },
+    "rgb": {
+        "pick_color": "Wähle eine Farbe!"
+    },
+    "webview": {
+        "edit": "Website editieren",
+        "saved": "Website sichern",
+        "reload": "Website erneut laden",
+        "pin": "Website anheften - verhindert Website scrollen",
+        "unpin": "Website anheften aufheben - erlaubt Website scrollen",
+        "windy": "Windig!",
+        "y_weather": "Y! Wetter",
+        "live_score": "LiveScore",
+        "aspect": "Aspekt",
+        "settingLocked": "Schließe Server Verbindung, Cloud Sync und Raum Einstellungen"
+        
+    },
+    "login": {
+        "connecting": "Verbinde mit",
+        "correct_info": "Versichere dich das folgende Informationen korrekt sind",
+        "cancel": "Annuliere Web Login Verbindung"
+    },
+    "settings": {
+        "home_assistant": "Home Assistant Verbindung",
+        "new_connection": "Erstelle neue Verbindung...",
+        "use_https": "Nutze https",
+        "connect": "Verbinden",
+        "sync": "Synchronisiere mit Google Cloud",
+        "theme_color": "Themen Farbe",
+        "language": "Sprache",
+        "layout": "Layout",
+        "about": "Over HassKit",
+        "about_info": "HassKit ist eine Touch-Friendly - Zero Config App, mit der Benutzer sofort mit der Benutzung von Home Assistant beginnen können.\n\nHome Assistant ist eine der besten Plattformen für die Hausautomatisierung mit leistungsstarken Funktionen und der weltweit umfangreichsten Geräteunterstützung. Home Assistant benötigt nur eine einfache Hardware um starten zu können. Allerdings ist Home Assistant nicht immer einfach zu konfigurieren und es dauert eine Weile an deine jeweiligen Bedürfnisse anzupassen. HassKit zielt darauf ab, die Lernschritte zu erleichtern und die Lebensqualität der Home Assistant-Anwender zu verbessern, indem es ein hervorragendes Layout und eine 10-Sekunden-Einrichtung bietet, um mit der Nutzung der Home Automation-Plattform zu beginnen.\n\n\nHassKit ist kostenlos, Open-Soure und immer noch in Entwicklung. Wir brauchen deine Hilfe, um die Funktionen der App zu verbessern, damit wir deine Bedürfnisse noch besser bedienen können.\n\nBitte finde uns auf Discord und/oder Facebook. Deine Beiträge sind immer willkommen.",
+        "3_buttons": "3 Knöpfe",
+        "4_buttons": "4 Knöpfe"
+    },
+    "google_sync": {
+        "use": "Benutze Cloud Data Synchronisation",
+        "info": "Halte dein Raum Layout und Geräteeinstellungen geräteübergreifend synchronisiert. HassKit wird deine Zugangsdaten nicht online hochladen...",
+        "sign_out": "Abmelden",
+        "sign_in": "Anmelden",
+        "force_download": "Erzwinge Daten Download aus der Cloud",
+        "sync_problem": "Verwenden Sie NUR, wenn Du Synchronisierungsprobleme hast",
+        "force_upload": "Erzwinge Daten Upload aus der Cloud",
+        "force_reset": "Erzwinge einen Reset der Daten auf der Cloud"
+    },
+    "theme_selector": {
+        "dark": "Dunkel",
+        "light": "Hell"
+    },
+    "states": {
+        "on": "An",
+        "turning_on": "Einschalten...",
+        "off": "Aus",
+        "turning_off": "Ausschalten...",
+        "closed": "Geschlossen",
+        "closing": "Schließen...",
+        "open": "Offen",
+        "opening": "Öffnen...",
+        "locked": "Gesperrt",
+        "locking": "Sperren...",
+        "unlocked": "Entsperrt",
+        "unlocking": "Entsperren...",
+        "disarmed": "Unscharf",
+        "arm_pending": "Überwachung noch offen",
+        "armed_away": "Schutz Abwesend",
+        "armed_home": "Schutz Anwesend",
+        "armed_night": "Schutz Nacht",
+        "armed": "Gesichert",
+        "fan_high": "Hoch",
+        "fan_high_medium": "Medium Hoch",
+        "fan_medium": "Medium",
+        "fan_medium_low": "Medium Niedrig",
+        "fan_low": "Niedrig",
+        "fan_lowest": "Niedrigste"
+    }
+}
