@@ -557,6 +557,14 @@ class Entity {
 
   bool get isStateOn {
     var stateLower = state.toLowerCase();
+    if (stateLower == 'closed' ||
+//        stateLower == 'false' ||
+        stateLower == 'locked' ||
+        stateLower == 'none' ||
+        stateLower == 'off' ||
+        stateLower == 'unavailable' ||
+        stateLower == 'unknown') return false;
+
     if ([
       'on',
       'turning on...',
@@ -571,16 +579,23 @@ class Entity {
 
     if ((entityId.split('.')[0] == 'climate' ||
             entityId.split('.')[0] == 'media_player') &&
-        state.toLowerCase() != 'idle' &&
-        state.toLowerCase() != 'off' &&
-        state.toLowerCase() != 'unavailable') {
+        stateLower != 'idle') {
       return true;
     }
     if ((entityId.split('.')[0] == 'device_tracker' ||
             entityId.split('.')[0] == 'person') &&
-        state.toLowerCase() == 'home') {
+        stateLower == 'home') {
       return true;
     }
+
+    if (entityType == EntityType.scriptAutomation ||
+        entityType == EntityType.accessories &&
+            !entityId.contains("binary_sensor") &&
+            !entityId.contains("device_tracker") &&
+            !entityId.contains("person")) {
+      return true;
+    }
+
     return false;
   }
 

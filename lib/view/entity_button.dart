@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -116,9 +115,11 @@ class _EntityButtonDisplayState extends State<EntityButtonDisplay> {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: gd.deviceSetting.shapeLayout == 1
+          ? BorderRadius.circular(40 * gd.textScaleFactor)
+          : BorderRadius.circular(12 * gd.textScaleFactor),
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+        filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
         child: AnimatedContainer(
           duration: Duration(milliseconds: 100),
           onEnd: () {
@@ -199,6 +200,11 @@ class _EntityButtonDisplayState extends State<EntityButtonDisplay> {
                             ),
                           ),
                         ),
+                        Container(
+                          height: gd.deviceSetting.shapeLayout != 2
+                              ? 6 * gd.textScaleFactor
+                              : 0,
+                        ),
                         AutoSizeText(
                           "${gd.textToDisplay(gd.entities[widget.entityId].getStateDisplayTranslated(context))}${gd.entities[widget.entityId].unitOfMeasurement}",
                           style: gd.entities[widget.entityId].isStateOn
@@ -214,16 +220,12 @@ class _EntityButtonDisplayState extends State<EntityButtonDisplay> {
                   : Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Expanded(
-                          child: Container(),
-                        ),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: <Widget>[
                             Expanded(
                               flex: 100,
                               child: Container(
-                                alignment: Alignment.topLeft,
                                 child: Text(
                                   "${gd.textToDisplay(gd.entities[widget.entityId].getOverrideName)}",
                                   style: gd.entities[widget.entityId].isStateOn

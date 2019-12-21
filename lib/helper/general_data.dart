@@ -229,11 +229,10 @@ class GeneralData with ChangeNotifier {
         continue;
       }
 
-//      if (entity.entityId.contains("vacuum.")) {
-//        log.w(
-//            "\n socketGetStates ${entity.entityId} supportedFeatures ${entity.supportedFeatures}  getSupportedFeaturesVacuum ${entity.getSupportedFeaturesVacuum}");
-//        print("\n mess ${mess}");
-//      }
+      if (entity.friendlyName.contains("Stairway")) {
+        log.w("\n socketGetStates ${entity.entityId}");
+        print("\n mess ${mess}");
+      }
 
       if (previousEntitiesList.contains(entity.entityId))
         previousEntitiesList.remove(entity.entityId);
@@ -852,6 +851,9 @@ class GeneralData with ChangeNotifier {
     'assets/background_images/Van_Gogh_12.jpg',
     'assets/background_images/Van_Gogh_13.jpg',
     'assets/background_images/Van_Gogh_14.jpg',
+    'assets/background_images/Green_Leaf.jpg',
+    'assets/background_images/World_1.png',
+    'assets/background_images/World_2.png',
   ];
 
   setRoomBackgroundImage(Room room, int backgroundImageIndex) {
