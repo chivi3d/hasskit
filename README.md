@@ -7,19 +7,19 @@ An Elegant Home Assistant Control App
 <table width="100%">
 <tbody>
 <tr align="center">
-<td><img width="400" src="https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Promo/general.gif"></td>
-<td><img width="400" src="https://https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Promo/edit.gif"></td>
-<td><img width="400" src="https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Promo/settings.gif"></td>
+<td><img src="https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Promo/general.gif"></td>
+<td><img src="https://https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Promo/edit.gif"></td>
+<td><img src="https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Promo/settings.gif"></td>
 </tr>
 <tr align="center">
-<td><img width="400" src="https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Promo/climate.gif"></td>
-<td><img width="400" src="https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Promo/fan.gif"></td>
-<td><img width="400" src="https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Promo/media_player.gif"></td>
+<td><img src="https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Promo/climate.gif"></td>
+<td><img src="https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Promo/fan.gif"></td>
+<td><img src="https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Promo/media_player.gif"></td>
 </tr>
 <tr align="center">
-<td><img width="400" src="https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Promo/home_alarm.gif"></td>
-<td><img width="400" src="https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Promo/light.gif"></td>
-<td><img width="400" src="https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Promo/curtain.gif"></td>
+<td><img src="https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Promo/home_alarm.gif"></td>
+<td><img src="https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Promo/light.gif"></td>
+<td><img src="https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Promo/curtain.gif"></td>
 </tr>
 </tbody>
 </table>
