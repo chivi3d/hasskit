@@ -8,7 +8,7 @@ An Elegant Home Assistant Control App
 <tbody>
 <tr align="center">
 <td><img src="https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Promo/general.gif"></td>
-<td><img src="https://https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Promo/edit.gif"></td>
+<td><img src="https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Promo/edit.gif"></td>
 <td><img src="https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Promo/settings.gif"></td>
 </tr>
 <tr align="center">
