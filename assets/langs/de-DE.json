@@ -27,11 +27,11 @@
         "select_icon": "Benutzerdefiniertes Icon wählen",
         "reset_icon": "Icon zurücksetzen",
         "rbg_color": "Lange drücken um Farbe zu ändern",
-        "edit": "Editieren",
-        "arrange": "Anordnen",
-        "move": "Verschieben",
-        "delete": "Löschen",
-        "devices": "Gerät",
+        "edit": "Editiere",
+        "arrange": "Anordnung der",
+        "move": "Verschiebe",
+        "delete": "Lösche",
+        "devices": "Geräte",
         "add_room": "Raum hinzufügen"
     },
     "alarm_panel": {
