@@ -224,7 +224,7 @@ class _EntityControlFanState extends State<EntityControlFan> {
                     gd.textToDisplay(
                         "${gd.entities[widget.entityId].getStateDisplayTranslated(context)}"),
                     style: ThemeInfo.textStatusButtonActive,
-                    maxLines: 1,
+                    maxLines: 2,
                     textScaleFactor: gd.textScaleFactorFix,
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,

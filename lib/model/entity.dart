@@ -73,13 +73,15 @@ class Entity {
   String soundModeRaw;
   String entityPicture;
   String unitOfMeasurement;
-//vacuum
+  //vacuum
   String fanSpeed;
   List<String> fanSpeedList;
   //state string
   String oldState;
   String newState;
-
+  //netatmo climate
+  String presetMode;
+  List<String> presetModes;
   Entity({
     this.entityId,
     this.deviceClass,
@@ -137,6 +139,9 @@ class Entity {
     //vacuum
     this.fanSpeed,
     this.fanSpeedList,
+    //netatmo climate
+    this.presetMode,
+    this.presetModes,
   });
 
   factory Entity.fromJson(Map<String, dynamic> json) {
@@ -172,7 +177,7 @@ class Entity {
                     json['attributes']['target_temp_step'].toString()) !=
                 null
             ? double.tryParse(json['attributes']['target_temp_step'].toString())
-            : 1,
+            : null,
         temperature:
             double.tryParse(json['attributes']['temperature'].toString()) !=
                     null
@@ -321,6 +326,12 @@ class Entity {
             : "",
         fanSpeedList: json['attributes']['fan_speed_list'] != null
             ? List<String>.from(json['attributes']['fan_speed_list'])
+            : [],
+        presetMode: json['attributes']['preset_mode'] != null
+            ? json['attributes']['preset_mode'].toString()
+            : null,
+        presetModes: json['attributes']['preset_modes'] != null
+            ? List<String>.from(json['attributes']['preset_modes'])
             : [],
       );
     } catch (e) {

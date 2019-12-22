@@ -152,7 +152,7 @@ class _EntityButtonDisplayState extends State<EntityButtonDisplay> {
               padding: gd.deviceSetting.shapeLayout == 0
                   ? EdgeInsets.all(8.0 * gd.textScaleFactor)
                   : gd.deviceSetting.shapeLayout == 1
-                      ? EdgeInsets.all(10.0 * gd.textScaleFactor)
+                      ? EdgeInsets.all(12.0 * gd.textScaleFactor)
                       : EdgeInsets.all(6.0 * gd.textScaleFactor),
               child: gd.deviceSetting.shapeLayout != 2
                   ? Column(
@@ -186,7 +186,7 @@ class _EntityButtonDisplayState extends State<EntityButtonDisplay> {
                         ),
                         Expanded(
                           child: Container(
-                            alignment: Alignment.bottomLeft,
+                            alignment: Alignment.topLeft,
                             child: Text(
                               "${gd.textToDisplay(gd.entities[widget.entityId].getOverrideName)}",
                               style: gd.entities[widget.entityId].isStateOn
@@ -199,11 +199,6 @@ class _EntityButtonDisplayState extends State<EntityButtonDisplay> {
                               softWrap: true,
                             ),
                           ),
-                        ),
-                        Container(
-                          height: gd.deviceSetting.shapeLayout != 2
-                              ? 6 * gd.textScaleFactor
-                              : 0,
                         ),
                         AutoSizeText(
                           "${gd.textToDisplay(gd.entities[widget.entityId].getStateDisplayTranslated(context))}${gd.entities[widget.entityId].unitOfMeasurement}",
@@ -221,7 +216,7 @@ class _EntityButtonDisplayState extends State<EntityButtonDisplay> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Expanded(
                               flex: 100,
@@ -324,14 +319,23 @@ class EntityIcon extends StatelessWidget {
         ),
         alignment: Alignment.center,
         padding: EdgeInsets.all(4 * gd.textScaleFactor),
-        child: AutoSizeText(
-          "${entity.getTemperature.toInt()}",
-          style: ThemeInfo.textNameButtonActive.copyWith(
-            color: ThemeInfo.colorBottomSheet,
-            fontSize: 100,
-          ),
-          textScaleFactor: gd.textScaleFactor,
-        ),
+        child: entity.getTemperature != entity.getTemperature.toInt()
+            ? AutoSizeText(
+                "${entity.getTemperature}",
+                style: ThemeInfo.textNameButtonActive.copyWith(
+                  color: ThemeInfo.colorBottomSheet,
+                  fontSize: 100,
+                ),
+                textScaleFactor: gd.textScaleFactor,
+              )
+            : AutoSizeText(
+                "${entity.getTemperature.toInt()}",
+                style: ThemeInfo.textNameButtonActive.copyWith(
+                  color: ThemeInfo.colorBottomSheet,
+                  fontSize: 100,
+                ),
+                textScaleFactor: gd.textScaleFactor,
+              ),
       );
     } else if (entity.entityId.contains("alarm_control_panel")) {
       iconWidget = FittedBox(

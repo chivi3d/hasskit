@@ -26,8 +26,9 @@ class EntityControlClimate extends StatelessWidget {
 //            fontSize: 30.0,
 //            fontWeight: FontWeight.w600),
         modifier: (double value) {
-          var temp = value.toInt();
-          return '$temp˚';
+          if (gd.entities[entityId].targetTempStep == 0.5)
+            return ' ${gd.roundTo05(value)}˚';
+          return ' ${value.toInt()}˚';
         });
 
     var customColors05 = CustomSliderColors(
@@ -57,17 +58,31 @@ class EntityControlClimate extends StatelessWidget {
       initialValue: entity.getTemperature,
       onChangeEnd: (double value) {
         print('onChangeEnd $value');
+        var outMsg;
+        if (gd.entities[entityId].targetTempStep == 0.5) {
+          outMsg = {
+            "id": gd.socketId,
+            "type": "call_service",
+            "domain": "climate",
+            "service": "set_temperature",
+            "service_data": {
+              "entity_id": entity.entityId,
+              "temperature": gd.roundTo05(value),
+            }
+          };
+        } else {
+          outMsg = {
+            "id": gd.socketId,
+            "type": "call_service",
+            "domain": "climate",
+            "service": "set_temperature",
+            "service_data": {
+              "entity_id": entity.entityId,
+              "temperature": value.toInt(),
+            }
+          };
+        }
 
-        var outMsg = {
-          "id": gd.socketId,
-          "type": "call_service",
-          "domain": "climate",
-          "service": "set_temperature",
-          "service_data": {
-            "entity_id": entity.entityId,
-            "temperature": value.toInt(),
-          }
-        };
         var outMsgEncoded = json.encode(outMsg);
         gd.sendSocketMessage(outMsgEncoded);
       },
@@ -80,9 +95,23 @@ class EntityControlClimate extends StatelessWidget {
           height: 240,
           child: slider,
         ),
-        FanSpeed(entityId: entityId),
-        SizedBox(height: 16),
-        HvacModes(entityId: entityId),
+        gd.entities[entityId].fanModes.length > 1
+            ? FanSpeed(entityId: entityId)
+            : Container(),
+        gd.entities[entityId].hvacModes.length > 1
+            ? SizedBox(height: 16)
+            : Container(),
+        gd.entities[entityId].hvacModes.length > 1
+            ? HvacModes(entityId: entityId)
+            : Container(),
+        gd.entities[entityId].presetModes.length > 1
+            ? SizedBox(height: 16)
+            : Container(),
+        gd.entities[entityId].presetModes.length > 1
+            ? PresetModes(
+                entityId: entityId,
+              )
+            : Container(),
       ],
     );
   }
@@ -179,6 +208,57 @@ class _HvacModesState extends State<HvacModes> {
               "service_data": {
                 "entity_id": widget.entityId,
                 "hvac_mode": "$groupValue"
+              }
+            };
+            var message = json.encode(outMsg);
+            gd.sendSocketMessage(message);
+          });
+        },
+        groupValue: groupValue,
+      ),
+    );
+  }
+}
+
+class PresetModes extends StatefulWidget {
+  final String entityId;
+  const PresetModes({@required this.entityId});
+  @override
+  _PresetModesState createState() => _PresetModesState();
+}
+
+class _PresetModesState extends State<PresetModes> {
+  final children = <String, Widget>{};
+  Entity entity;
+  String groupValue;
+
+  @override
+  Widget build(BuildContext context) {
+    entity = gd.entities[widget.entityId];
+    groupValue = entity.presetMode;
+    for (String presetMode in entity.presetModes) {
+      children[presetMode] = Text(
+        gd.textToDisplay(presetMode),
+        textScaleFactor: gd.textScaleFactorFix,
+        overflow: TextOverflow.ellipsis,
+      );
+    }
+
+    return Container(
+      child: CupertinoSlidingSegmentedControl<String>(
+        thumbColor: gd.climateModeToColor(groupValue),
+        children: children,
+        onValueChanged: (String val) {
+          setState(() {
+            groupValue = val;
+            var outMsg = {
+              "id": gd.socketId,
+              "type": "call_service",
+              "domain": "climate",
+              "service": "set_preset_mode",
+              "service_data": {
+                "entity_id": widget.entityId,
+                "preset_mode": "$groupValue"
               }
             };
             var message = json.encode(outMsg);

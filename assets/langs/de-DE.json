@@ -83,6 +83,7 @@
         "3_buttons": "3 Knöpfe",
         "4_buttons": "4 Knöpfe",
         "settingLocked": "Serververbindung, Cloud Sync und Raumeinstellungen sperren"
+
     },
     "google_sync": {
         "use": "Cloud Daten Synchronisation verwenden",
