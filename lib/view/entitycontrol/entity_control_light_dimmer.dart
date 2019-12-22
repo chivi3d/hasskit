@@ -252,6 +252,7 @@ class LightSliderState extends State<LightSlider> {
                         textAlign: TextAlign.center,
                         textScaleFactor: gd.textScaleFactorFix,
                         overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
                       ),
                     ),
                   ),

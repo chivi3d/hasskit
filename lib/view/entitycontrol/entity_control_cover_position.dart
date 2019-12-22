@@ -113,6 +113,7 @@ class CoverSliderState extends State<CoverSlider> {
                     textAlign: TextAlign.center,
                     textScaleFactor: gd.textScaleFactorFix,
                     overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
                   ),
                 ),
               ),

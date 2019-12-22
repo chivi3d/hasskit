@@ -755,7 +755,8 @@ class Entity {
     }
     if (double.tryParse(state) != null) {
       var recVal = double.parse(state);
-      if (recVal >= 100) return recVal.toStringAsFixed(0);
+      if (recVal >= 100 || recVal.toStringAsFixed(1).contains(".0"))
+        return recVal.toStringAsFixed(0);
       return recVal.toStringAsFixed(1);
     }
     return state;
