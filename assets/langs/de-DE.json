@@ -83,7 +83,8 @@
         "about": "Over HassKit",
         "about_info": "HassKit ist eine Touch-Friendly - Zero Config App, mit der Benutzer sofort mit der Benutzung von Home Assistant beginnen können.\n\nHome Assistant ist eine der besten Plattformen für die Hausautomatisierung mit leistungsstarken Funktionen und der weltweit umfangreichsten Geräteunterstützung. Home Assistant benötigt nur eine einfache Hardware um starten zu können. Allerdings ist Home Assistant nicht immer einfach zu konfigurieren und es dauert eine Weile an deine jeweiligen Bedürfnisse anzupassen. HassKit zielt darauf ab, die Lernschritte zu erleichtern und die Lebensqualität der Home Assistant-Anwender zu verbessern, indem es ein hervorragendes Layout und eine 10-Sekunden-Einrichtung bietet, um mit der Nutzung der Home Automation-Plattform zu beginnen.\n\nHassKit ist kostenlos, Open-Soure und immer noch in Entwicklung. Wir brauchen deine Hilfe, um die Funktionen der App zu verbessern, damit wir deine Bedürfnisse noch besser bedienen können.\n\nBitte finde uns auf Discord und/oder Facebook. Deine Beiträge sind immer willkommen.",
         "3_buttons": "3 Knöpfe",
-        "4_buttons": "4 Knöpfe"
+        "4_buttons": "4 Knöpfe",
+        "settingLocked": "Sperren Sie die Serververbindung, die Cloud-Synchronisierung und die Raumeinstellungen"
     },
     "google_sync": {
         "use": "Benutze Cloud Data Synchronisation",

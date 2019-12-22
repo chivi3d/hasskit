@@ -229,10 +229,10 @@ class GeneralData with ChangeNotifier {
         continue;
       }
 
-      if (entity.friendlyName.contains("Stairway")) {
-        log.w("\n socketGetStates ${entity.entityId}");
-        print("\n mess ${mess}");
-      }
+//      if (entity.targetTempStep != null) {
+//        log.w("\n socketGetStates ${entity.entityId}");
+//        print("\n entity.targetTempStep ${entity.targetTempStep}");
+//      }
 
       if (previousEntitiesList.contains(entity.entityId))
         previousEntitiesList.remove(entity.entityId);
@@ -851,7 +851,7 @@ class GeneralData with ChangeNotifier {
     'assets/background_images/Van_Gogh_12.jpg',
     'assets/background_images/Van_Gogh_13.jpg',
     'assets/background_images/Van_Gogh_14.jpg',
-    'assets/background_images/Green_Leaf.jpg',
+    'assets/background_images/Blue_Galaxy.png',
     'assets/background_images/World_1.png',
     'assets/background_images/World_2.png',
   ];
@@ -2362,5 +2362,16 @@ class GeneralData with ChangeNotifier {
       return imageUrl;
     }
     return null;
+  }
+
+  double roundTo05(double input) {
+    var inputToInt = input.toInt();
+    var decVal = input - inputToInt;
+    if (decVal > 0.75) {
+      return (inputToInt + 1).toDouble();
+    } else if (decVal > 0.25) {
+      return inputToInt + 0.5;
+    }
+    return inputToInt.toDouble();
   }
 }
