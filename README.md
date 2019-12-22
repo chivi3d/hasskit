@@ -24,7 +24,7 @@ An Elegant Home Assistant Control App
 </tr>
 <tr align="center">
 <td><img width="480" src="https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Promo/curtain.gif"></td>
-<td><img width="480" src="https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Promo/garage.gif"></td>
+<td><img width="480" src="https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Promo/graph.gif"></td>
 </tr>
 </tbody>
 </table>
