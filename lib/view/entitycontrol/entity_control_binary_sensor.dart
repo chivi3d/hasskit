@@ -311,7 +311,7 @@ class _EntityControlBinarySensorState extends State<EntityControlBinarySensor> {
 }
 
 String stateString(String deviceClass, bool isStateOn, BuildContext context) {
-  log.d("stateString deviceClass $deviceClass isStateOn $isStateOn");
+//  log.d("stateString deviceClass $deviceClass isStateOn $isStateOn");
   if (deviceClass.contains("garage_door") ||
       deviceClass.contains("door") ||
       deviceClass.contains("lock") ||

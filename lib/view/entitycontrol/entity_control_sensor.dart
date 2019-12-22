@@ -23,12 +23,11 @@ class EntityControlSensor extends StatefulWidget {
 }
 
 class _EntityControlSensorState extends State<EntityControlSensor> {
-  String batteryLevel;
-  String deviceClass;
   bool inAsyncCall = true;
   double stateMin;
   double stateMax;
-  List<FlSpot> flSpots = [];
+  List<FlSpot> flSpotsYesterday = [];
+  List<FlSpot> flSpotsToday = [];
   @override
   void initState() {
     super.initState();
@@ -37,25 +36,38 @@ class _EntityControlSensorState extends State<EntityControlSensor> {
 
   @override
   Widget build(BuildContext context) {
-    Widget displayWidget;
-    if (inAsyncCall)
-      displayWidget = Container();
-    else if (gd.sensors.length < 1)
-      displayWidget = Container(
+    Widget displayWidgetYesterday;
+    Widget displayWidgetToday;
+    if (inAsyncCall) {
+      displayWidgetYesterday = Container();
+      displayWidgetToday = Container();
+    } else if (gd.sensors.length < 1) {
+      displayWidgetYesterday = Container(
         child: Center(
           child: Text(
               "${gd.textToDisplay(gd.entities[widget.entityId].getOverrideName)} ${Translate.getString('global.no_data', context)} ${gd.sensors.length}"),
         ),
       );
-    else if (gd.sensors.length < 4) {
-      displayWidget = SensorLowNumber();
+      displayWidgetToday = Container();
+    } else if (gd.sensors.length < 4) {
+      displayWidgetYesterday = SensorLowNumber();
+      displayWidgetToday = Container();
     } else {
-      displayWidget = SensorChart(
+      displayWidgetYesterday = SensorChart(
         stateMin: stateMin,
         stateMax: stateMax,
-        flSpots: flSpots,
+        title: DateFormat("EEEE, dd MMMM")
+            .format(DateTime.now().subtract(Duration(days: 1))),
+        flSpots: flSpotsYesterday,
+      );
+      displayWidgetToday = SensorChart(
+        stateMin: stateMin,
+        stateMax: stateMax,
+        title: DateFormat("EEEE, dd MMMM").format(DateTime.now()),
+        flSpots: flSpotsToday,
       );
     }
+
     return Container(
       alignment: Alignment.center,
       padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
@@ -71,10 +83,36 @@ class _EntityControlSensorState extends State<EntityControlSensor> {
           size: 40,
           color: ThemeInfo.colorIconActive.withOpacity(0.5),
         ),
-        child: Container(
-          height: gd.mediaQueryWidth * 5 / 8,
-          child: displayWidget,
-        ),
+        child: !gd.isTablet ||
+                MediaQuery.of(context).orientation != Orientation.landscape
+            ? Column(
+                children: <Widget>[
+                  Expanded(
+                    child: displayWidgetYesterday,
+                  ),
+                  SizedBox(
+                    width: 8,
+                    height: 8,
+                  ),
+                  Expanded(
+                    child: displayWidgetToday,
+                  ),
+                ],
+              )
+            : Row(
+                children: <Widget>[
+                  Expanded(
+                    child: displayWidgetYesterday,
+                  ),
+                  SizedBox(
+                    width: 8,
+                    height: 8,
+                  ),
+                  Expanded(
+                    child: displayWidgetToday,
+                  ),
+                ],
+              ),
       ),
     );
   }
@@ -82,14 +120,36 @@ class _EntityControlSensorState extends State<EntityControlSensor> {
   void getHistory() async {
     var continueBreak = 0;
     var client = new http.Client();
+
+    var startPeriod = DateTime.now().subtract(Duration(hours: 24));
+    startPeriod = startPeriod.subtract(Duration(hours: DateTime.now().hour));
+    startPeriod =
+        startPeriod.subtract(Duration(minutes: DateTime.now().minute));
+    startPeriod =
+        startPeriod.subtract(Duration(seconds: DateTime.now().second + 1));
+
+    var startPeriodString =
+        DateFormat("yyyy-MM-dd'T'HH:mm:ss").format(startPeriod);
+    startPeriodString = startPeriodString + DateTime.now().timeZoneName + ":00";
+
+    var endPeriodString = DateFormat("yyyy-MM-dd'T'HH:mm:ss")
+        .format(startPeriod.add(Duration(days: 2)));
+    endPeriodString = endPeriodString + DateTime.now().timeZoneName + ":00";
+    endPeriodString = Uri.encodeComponent(endPeriodString);
+
     var url = gd.currentUrl +
-        "/api/history/period?filter_entity_id=${widget.entityId}";
+        "/api/history/period/$startPeriodString"
+            "?"
+            "end_time=$endPeriodString"
+            "&"
+            "filter_entity_id=${widget.entityId}"
+            "";
     Map<String, String> headers = {
       'content-type': 'application/json',
       'Authorization': 'Bearer ${gd.loginDataCurrent.longToken}',
     };
 
-    log.d("url $url");
+    log.d("startPeriodString $startPeriodString url $url");
 
     try {
       var response = await http.get(url, headers: headers);
@@ -128,16 +188,6 @@ class _EntityControlSensorState extends State<EntityControlSensor> {
           if (state < stateMin) stateMin = state;
         }
 
-//        log.d("gd.sensors.length ${gd.sensors.length}");
-
-        if (jsonResponse[0] != null && jsonResponse[0][0] != null) {
-          batteryLevel =
-              (jsonResponse[0][0]["attributes"]["battery_level"]).toString();
-          deviceClass =
-              (jsonResponse[0][0]["attributes"]["device_class"]).toString();
-          log.d(
-              "gd.sensors.length ${gd.sensors.length} batteryLevel $batteryLevel deviceClass $deviceClass");
-        }
         gd.sensors.sort((a, b) => DateTime.parse(a.lastUpdated)
             .toLocal()
             .compareTo(DateTime.parse(b.lastUpdated).toLocal()));
@@ -172,21 +222,39 @@ class _EntityControlSensorState extends State<EntityControlSensor> {
   }
 
   void processTable() {
-    var now = DateTime.now().toLocal().millisecondsSinceEpoch.toDouble();
-    var now24 = DateTime.now()
-        .toLocal()
-        .subtract(Duration(hours: 24))
-        .millisecondsSinceEpoch
-        .toDouble();
     log.d("processTable");
+
+//    var now = DateTime.now().toLocal().millisecondsSinceEpoch.toDouble();
+//    var now24 = DateTime.now()
+//        .toLocal()
+//        .subtract(Duration(hours: 24))
+//        .millisecondsSinceEpoch
+//        .toDouble();
 
     trimData();
 
+    var startPeriod = DateTime.now().subtract(Duration(hours: 24));
+    startPeriod = startPeriod.subtract(Duration(hours: DateTime.now().hour));
+    startPeriod =
+        startPeriod.subtract(Duration(minutes: DateTime.now().minute));
+    startPeriod =
+        startPeriod.subtract(Duration(seconds: DateTime.now().second));
+
+    double startPeriodEpoch = startPeriod.millisecondsSinceEpoch.toDouble();
+    double startTodayEpoch =
+        startPeriod.add(Duration(days: 1)).millisecondsSinceEpoch.toDouble();
+    double endTodayEpoch =
+        startPeriod.add(Duration(days: 2)).millisecondsSinceEpoch.toDouble();
+
+//    log.d(
+//        "startPeriodEpoch $startPeriodEpoch startTodayEpoch $startTodayEpoch endTodayEpoch $endTodayEpoch");
+
     for (int i = 0; i < gd.sensors.length; i++) {
-      var lastChanged = DateTime.tryParse(gd.sensors[i].lastUpdated)
-          .toUtc()
+      var lastChanged = DateTime.tryParse(gd.sensors[i].lastChanged)
+          .toLocal()
           .millisecondsSinceEpoch
           .toDouble();
+
       if (lastChanged == null) {
         log.e("Can't parse lastChanged ${gd.sensors[i].lastUpdated}");
         continue;
@@ -197,12 +265,25 @@ class _EntityControlSensorState extends State<EntityControlSensor> {
         continue;
       }
 
-      var lastChangedMapped = gd.mapNumber(lastChanged, now24, now, 0, 24);
-//      var stateMapped = gd.mapNumber(state, stateMin, stateMax, 0, 12);
-//
-//      log.d("stateMapped $stateMapped lastChangedMapped $lastChangedMapped");
+      if (lastChanged < startTodayEpoch) {
+        var lastChangedMapped =
+            gd.mapNumber(lastChanged, startPeriodEpoch, startTodayEpoch, 0, 24);
+//        log.d("flSpotsYesterday add $lastChangedMapped - $state");
+        flSpotsYesterday.add(FlSpot(lastChangedMapped, state));
+      } else {
+        var lastChangedMapped =
+            gd.mapNumber(lastChanged, startTodayEpoch, endTodayEpoch, 0, 24);
+//        log.d("flSpotsToday add $lastChangedMapped - $state");
+        flSpotsToday.add(FlSpot(lastChangedMapped, state));
+      }
+    }
 
-      flSpots.add(FlSpot(lastChangedMapped, state));
+    if (flSpotsYesterday.length < 1) {
+      flSpotsYesterday.add(FlSpot(0, 0));
+    }
+
+    if (flSpotsToday.length < 1) {
+      flSpotsToday.add(FlSpot(0, 0));
     }
   }
 

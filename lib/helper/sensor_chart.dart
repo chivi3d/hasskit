@@ -2,16 +2,18 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:hasskit/helper/logger.dart';
 import 'package:hasskit/helper/theme_info.dart';
-import 'package:intl/intl.dart';
+import 'general_data.dart';
 
 class SensorChart extends StatefulWidget {
   final double stateMin;
   final double stateMax;
+  final String title;
   final List<FlSpot> flSpots;
 
   const SensorChart(
       {@required this.stateMin,
       @required this.stateMax,
+      @required this.title,
       @required this.flSpots});
 
   @override
@@ -28,7 +30,7 @@ class _SensorChartState extends State<SensorChart> {
     return Stack(
       children: <Widget>[
         AspectRatio(
-          aspectRatio: 8 / 5,
+          aspectRatio: 9 / 5,
           child: Container(
             decoration: BoxDecoration(
                 borderRadius: const BorderRadius.all(
@@ -37,7 +39,7 @@ class _SensorChartState extends State<SensorChart> {
                 color: const Color(0xff232d37)),
             child: Padding(
               padding: const EdgeInsets.only(
-                  right: 12.0, left: 8.0, top: 12, bottom: 4),
+                  right: 12.0, left: 0, top: 12, bottom: 4),
               child: LineChart(
                 mainData(
                     stateMin: widget.stateMin,
@@ -47,6 +49,13 @@ class _SensorChartState extends State<SensorChart> {
             ),
           ),
         ),
+        Positioned(
+            right: 8,
+            top: 4,
+            child: Text(
+              widget.title,
+              textScaleFactor: gd.textScaleFactorFix,
+            )),
       ],
     );
   }
@@ -95,20 +104,23 @@ class _SensorChartState extends State<SensorChart> {
           getTitles: (value) {
             switch (value.toInt()) {
               case 0:
-                return DateFormat('H')
-                    .format(DateTime.now().subtract(Duration(hours: 24)));
+                return "0";
+              case 3:
+                return "3";
               case 6:
-                return DateFormat('H')
-                    .format(DateTime.now().subtract(Duration(hours: 18)));
+                return "6";
+              case 9:
+                return "9";
               case 12:
-                return DateFormat('H')
-                    .format(DateTime.now().subtract(Duration(hours: 12)));
+                return "12";
+              case 15:
+                return "15";
               case 18:
-                return DateFormat('H')
-                    .format(DateTime.now().subtract(Duration(hours: 6)));
-
+                return "18";
+              case 21:
+                return "21";
               case 24:
-                return DateFormat('H').format(DateTime.now());
+                return "24";
             }
             return '';
           },

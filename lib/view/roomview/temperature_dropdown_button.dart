@@ -24,8 +24,8 @@ class _TemperatureDropdownButtonState extends State<TemperatureDropdownButton> {
     }
 
     List<DropdownMenuItem<String>> dropdownMenuItems = [];
-
-    var emptyDropdownMenuItem = DropdownMenuItem<String>(
+    List<String> entitiyIds = [];
+    var clearDropdown = DropdownMenuItem<String>(
       value: "",
       child: ListTile(
         contentPadding: EdgeInsets.fromLTRB(4, 2, 2, 2),
@@ -43,7 +43,8 @@ class _TemperatureDropdownButtonState extends State<TemperatureDropdownButton> {
         ),
       ),
     );
-    dropdownMenuItems.add(emptyDropdownMenuItem);
+    dropdownMenuItems.add(clearDropdown);
+
     List<Entity> entities = gd.entities.values
         .where((e) =>
             !e.entityId.contains("binary_sensor.") &&
@@ -74,8 +75,15 @@ class _TemperatureDropdownButtonState extends State<TemperatureDropdownButton> {
         ),
       );
 
-      dropdownMenuItems.add(dropdownMenuItem);
+      print(
+          "selectedValue $selectedValue dropdownMenuItems.add ${entity.entityId} ${entity.getFriendlyName}");
+      if (!entitiyIds.contains(entity.entityId)) {
+        dropdownMenuItems.add(dropdownMenuItem);
+        entitiyIds.add(entity.entityId);
+      }
     }
+
+    if (!entitiyIds.contains(selectedValue)) selectedValue = "";
     return SliverList(
       delegate: SliverChildListDelegate(
         [
