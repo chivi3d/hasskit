@@ -201,7 +201,7 @@ class _EntityButtonDisplayState extends State<EntityButtonDisplay> {
                           ),
                         ),
                         AutoSizeText(
-                          "${gd.textToDisplay(gd.entities[widget.entityId].getStateDisplayTranslated(context))}${gd.entities[widget.entityId].unitOfMeasurement}",
+                          "${gd.textToDisplay(gd.entities[widget.entityId].getStateDisplayTranslated(context))} ${gd.entities[widget.entityId].unitOfMeasurement}",
                           style: gd.entities[widget.entityId].isStateOn
                               ? ThemeInfo.textStatusButtonActive
                               : ThemeInfo.textStatusButtonInActive,
@@ -257,7 +257,7 @@ class _EntityButtonDisplayState extends State<EntityButtonDisplay> {
                           child: Container(),
                         ),
                         AutoSizeText(
-                          "${gd.textToDisplay(gd.entities[widget.entityId].getStateDisplayTranslated(context))}${gd.entities[widget.entityId].unitOfMeasurement}",
+                          "${gd.textToDisplay(gd.entities[widget.entityId].getStateDisplayTranslated(context))} ${gd.entities[widget.entityId].unitOfMeasurement}",
                           style: gd.entities[widget.entityId].isStateOn
                               ? ThemeInfo.textStatusButtonActive
                               : ThemeInfo.textStatusButtonInActive,
