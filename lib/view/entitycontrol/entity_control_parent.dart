@@ -472,7 +472,7 @@ class _EditEntityNormalState extends State<EditEntityNormal> {
                     maxLines: 1,
                     textAlign: TextAlign.center,
                     autocorrect: false,
-                    autofocus: true,
+                    autofocus: false,
                     onEditingComplete: () {
                       setState(
                         () {
