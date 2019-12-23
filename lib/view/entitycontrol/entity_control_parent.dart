@@ -138,13 +138,18 @@ class _EntityControlParentState extends State<EntityControlParent> {
           entityControl = EntityControlGeneral(entityId: widget.entityId);
         }
 
+        print(
+            "MediaQuery.of(context).padding.top ${MediaQuery.of(gd.mediaQueryContext).padding.top}");
+
         return SafeArea(
           child: Stack(
             children: <Widget>[
               Column(
                 children: <Widget>[
                   SizedBox(
-                    height: gd.mediaQueryLongestSide > 600 ? 48 : 24,
+                    height: gd.mediaQueryLongestSide > 600
+                        ? MediaQuery.of(gd.mediaQueryContext).padding.top * 2
+                        : MediaQuery.of(gd.mediaQueryContext).padding.top,
                     child: Container(),
                   ),
                   EditEntityNormal(
@@ -228,33 +233,35 @@ class _EntityControlParentState extends State<EntityControlParent> {
                       ),
                     )
                   : Container(),
-              Positioned(
-                bottom: 8,
-                right: 8,
-                child: InkWell(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: ThemeInfo.colorBottomSheet,
-                      boxShadow: [
-                        new BoxShadow(
-                          color: ThemeInfo.colorBottomSheet,
-                          offset: new Offset(0.0, 0.0),
-                          blurRadius: 6.0,
-                        )
-                      ],
-                    ),
-                    child: Icon(
-                      Icons.cancel,
-                      color: ThemeInfo.colorBottomSheetReverse.withOpacity(1),
-                      size: 28,
-                    ),
-                  ),
-                ),
-              ),
+//              Positioned(
+//                top: gd.mediaQueryLongestSide > 600
+//                    ? MediaQuery.of(gd.mediaQueryContext).padding.top * 2
+//                    : MediaQuery.of(gd.mediaQueryContext).padding.top,
+//                left: 0,
+//                child: InkWell(
+//                  onTap: () {
+//                    Navigator.pop(context);
+//                  },
+//                  child: Container(
+//                    decoration: BoxDecoration(
+//                      shape: BoxShape.circle,
+//                      color: ThemeInfo.colorBottomSheet,
+//                      boxShadow: [
+//                        new BoxShadow(
+//                          color: ThemeInfo.colorBottomSheet,
+//                          offset: new Offset(0.0, 0.0),
+//                          blurRadius: 6.0,
+//                        )
+//                      ],
+//                    ),
+//                    child: Icon(
+//                      Icons.chevron_left,
+//                      color: ThemeInfo.colorBottomSheetReverse.withOpacity(1),
+//                      size: 28,
+//                    ),
+//                  ),
+//                ),
+//              ),
             ],
           ),
         );
@@ -425,26 +432,27 @@ class _EditEntityNormalState extends State<EditEntityNormal> {
     return Container(
       child: Row(
         children: <Widget>[
-          Container(
-            width: 50,
-            height: 50,
-            child: Icon(
-              MaterialDesignIcons.getIconDataFromIconName(
-                entity.getDefaultIcon,
+          InkWell(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Container(
+              width: 40,
+              height: 40,
+              child: Icon(
+                Icons.chevron_left,
+                size: 40,
               ),
-              color: entity.isStateOn
-                  ? ThemeInfo.colorIconActive
-                  : ThemeInfo.colorIconInActive,
-              size: 35,
             ),
           ),
+          SizedBox(width: 20),
           Expanded(
             child: !widget.showEditName
                 ? Text(
                     gd.textToDisplay(entity.getOverrideName),
                     style: Theme.of(context).textTheme.title,
                     textScaleFactor: gd.textScaleFactorFix,
-                    maxLines: 1,
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
                   )
@@ -499,13 +507,24 @@ class _EditEntityNormalState extends State<EditEntityNormal> {
                 },
               );
             },
-            child: Container(
-              width: 50,
-              height: 50,
-              child: Icon(
-                !widget.showEditName ? Icons.edit : Icons.save,
-                size: 35,
-              ),
+            child: Row(
+              children: <Widget>[
+                Icon(
+                  MaterialDesignIcons.getIconDataFromIconName(
+                    entity.getDefaultIcon,
+                  ),
+                  color: entity.isStateOn
+                      ? ThemeInfo.colorIconActive
+                      : ThemeInfo.colorIconInActive,
+                  size: 40,
+                ),
+                Container(
+                  child: Icon(
+                    !widget.showEditName ? Icons.edit : Icons.save,
+                    size: 20,
+                  ),
+                ),
+              ],
             ),
           ),
         ],

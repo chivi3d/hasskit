@@ -64,8 +64,6 @@ class CoverSliderState extends State<CoverSlider> {
         buttonValue = mapValue;
       }
     }
-    log.d(
-        "CoverSliderState currentPosition ${gd.entities[widget.entityId].currentPosition} buttonValue $buttonValue ");
 
     return new GestureDetector(
       onVerticalDragStart: (DragStartDetails details) =>
