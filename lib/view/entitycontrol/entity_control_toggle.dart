@@ -83,7 +83,6 @@ class _EntityControlToggleState extends State<EntityControlToggle> {
                         gd.textToDisplay(gd.entities[widget.entityId]
                             .getStateDisplayTranslated(context)),
                         style: TextStyle(
-                          fontSize: 20,
                           color: gd.entities[widget.entityId].isStateOn
                               ? ThemeInfo.colorIconActive
                               : ThemeInfo.colorGray,

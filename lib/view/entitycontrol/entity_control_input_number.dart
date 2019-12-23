@@ -116,7 +116,6 @@ class CoverSliderState extends State<CoverSlider> {
                               .toInt()
                               .toString(),
                           style: TextStyle(
-                            fontSize: 20,
                             color: gd.entities[widget.entityId].isStateOn
                                 ? ThemeInfo.colorIconActive
                                 : ThemeInfo.colorGray,

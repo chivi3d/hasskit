@@ -246,7 +246,6 @@ class LightSliderState extends State<LightSlider> {
                             .toInt()
                             .toString(),
                         style: TextStyle(
-                          fontSize: 20,
                           color: sliderColor,
                         ),
                         textAlign: TextAlign.center,

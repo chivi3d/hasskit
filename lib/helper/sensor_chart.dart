@@ -39,7 +39,7 @@ class _SensorChartState extends State<SensorChart> {
                 color: const Color(0xff232d37)),
             child: Padding(
               padding: const EdgeInsets.only(
-                  right: 12.0, left: 0, top: 12, bottom: 4),
+                  right: 12.0, left: 0, top: 12, bottom: 6),
               child: LineChart(
                 mainData(
                     stateMin: widget.stateMin,
@@ -55,6 +55,11 @@ class _SensorChartState extends State<SensorChart> {
             child: Text(
               widget.title,
               textScaleFactor: gd.textScaleFactorFix,
+              style: TextStyle(
+                color: Colors.white54,
+                fontWeight: FontWeight.normal,
+                fontSize: 12,
+              ),
             )),
       ],
     );
@@ -96,31 +101,32 @@ class _SensorChartState extends State<SensorChart> {
         show: true,
         bottomTitles: SideTitles(
           showTitles: true,
-          reservedSize: 22,
+          reservedSize: 14,
           textStyle: TextStyle(
-              color: const Color(0xff68737d),
-              fontWeight: FontWeight.bold,
-              fontSize: 16),
+            color: Colors.white54,
+            fontWeight: FontWeight.normal,
+            fontSize: 12,
+          ),
           getTitles: (value) {
             switch (value.toInt()) {
               case 0:
-                return "0";
+                return "0h";
               case 3:
-                return "3";
+                return "3h";
               case 6:
-                return "6";
+                return "6h";
               case 9:
-                return "9";
+                return "9h";
               case 12:
-                return "12";
+                return "12h";
               case 15:
-                return "15";
+                return "15h";
               case 18:
-                return "18";
+                return "18h";
               case 21:
-                return "21";
+                return "21h";
               case 24:
-                return "24";
+                return "24h";
             }
             return '';
           },
@@ -130,9 +136,9 @@ class _SensorChartState extends State<SensorChart> {
           interval: (widget.stateMax - widget.stateMin),
           showTitles: true,
           textStyle: TextStyle(
-            color: const Color(0xff67727d),
-            fontWeight: FontWeight.bold,
-            fontSize: 15,
+            color: Colors.white54,
+            fontWeight: FontWeight.normal,
+            fontSize: 12,
           ),
           getTitles: (value) {
             if (value <= widget.stateMin) {
@@ -146,7 +152,7 @@ class _SensorChartState extends State<SensorChart> {
 
             return '';
           },
-          reservedSize: 28,
+          reservedSize: 24,
           margin: 12,
         ),
       ),

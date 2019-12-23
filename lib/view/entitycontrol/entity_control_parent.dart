@@ -445,7 +445,7 @@ class _EditEntityNormalState extends State<EditEntityNormal> {
               ),
             ),
           ),
-          SizedBox(width: 20),
+          SizedBox(width: 8),
           Expanded(
             child: !widget.showEditName
                 ? Text(
@@ -507,7 +507,7 @@ class _EditEntityNormalState extends State<EditEntityNormal> {
                 },
               );
             },
-            child: Row(
+            child: Stack(
               children: <Widget>[
                 Icon(
                   MaterialDesignIcons.getIconDataFromIconName(
@@ -518,15 +518,24 @@ class _EditEntityNormalState extends State<EditEntityNormal> {
                       : ThemeInfo.colorIconInActive,
                   size: 40,
                 ),
-                Container(
-                  child: Icon(
-                    !widget.showEditName ? Icons.edit : Icons.save,
-                    size: 20,
+                Positioned(
+                  right: 0,
+                  top: 0,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: ThemeInfo.colorBottomSheet.withOpacity(0.5),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Icon(
+                      !widget.showEditName ? Icons.edit : Icons.save,
+                      size: 20,
+                    ),
                   ),
                 ),
               ],
             ),
           ),
+          SizedBox(width: 8),
         ],
       ),
     );
