@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hasskit/helper/general_data.dart';
 import 'package:hasskit/helper/logger.dart';
@@ -518,18 +519,26 @@ class _EditEntityNormalState extends State<EditEntityNormal> {
                       : ThemeInfo.colorIconInActive,
                   size: 40,
                 ),
-                Positioned(
-                  right: 0,
-                  top: 0,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: ThemeInfo.colorBottomSheet.withOpacity(0.5),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Icon(
-                      !widget.showEditName ? Icons.edit : Icons.save,
-                      size: 20,
-                    ),
+                SizedBox(
+                  width: 40,
+                  height: 40,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      Spacer(),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: ThemeInfo.colorBottomSheet.withOpacity(0.75),
+                        ),
+                        child: Text(
+                          !widget.showEditName ? "EDIT" : "SAVE",
+                          textAlign: TextAlign.center,
+                          textScaleFactor: gd.textScaleFactorFix * 0.6,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
