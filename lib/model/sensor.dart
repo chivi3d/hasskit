@@ -22,7 +22,7 @@ class Sensor {
         state: json['state'],
       );
     } catch (e) {
-      log.e("EntityOverride.fromJson $e");
+      log.e("EntiSensor.fromJson $e");
       return null;
     }
   }

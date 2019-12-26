@@ -40,8 +40,9 @@ android/key.properties
 android/app/google-services.json
 ios/Runner/GoogleService-Info.plist
 ios/Runner/Info.plist
-
+android/app/src/main/AndroidManifest.xml
 
 # Exceptions to above rules.
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
+
 

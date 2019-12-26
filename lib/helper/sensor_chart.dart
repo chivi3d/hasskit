@@ -55,6 +55,7 @@ class _SensorChartState extends State<SensorChart> {
             child: Text(
               widget.title,
               textScaleFactor: gd.textScaleFactorFix,
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 color: Colors.white54,
                 fontWeight: FontWeight.normal,

@@ -253,7 +253,12 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
                 backgroundColor: ThemeInfo.colorBottomSheet.withOpacity(0.5),
                 onTap: (int) {
                   log.d("CupertinoTabBar onTap $int");
-                  gd.viewMode = ViewMode.normal;
+                  if (gd.entityControlPageParentShow) {
+                    print(
+                        "CupertinoTabBar Navigator.pop(context) ${gd.entityControlPageParentShow}");
+//                    Navigator.pop(context);
+                    gd.viewMode = ViewMode.normal;
+                  }
                 },
                 currentIndex: 0,
                 items: [

@@ -82,6 +82,9 @@ class Entity {
   //netatmo climate
   String presetMode;
   List<String> presetModes;
+  //gps
+  double latitude;
+  double longitude;
   Entity({
     this.entityId,
     this.deviceClass,
@@ -142,6 +145,9 @@ class Entity {
     //netatmo climate
     this.presetMode,
     this.presetModes,
+    //gps
+    this.latitude,
+    this.longitude,
   });
 
   factory Entity.fromJson(Map<String, dynamic> json) {
@@ -167,28 +173,27 @@ class Entity {
             : [],
         minTemp:
             double.tryParse(json['attributes']['min_temp'].toString()) != null
-                ? double.tryParse(json['attributes']['min_temp'].toString())
+                ? double.parse(json['attributes']['min_temp'].toString())
                 : 0,
         maxTemp:
             double.tryParse(json['attributes']['max_temp'].toString()) != null
-                ? double.tryParse(json['attributes']['max_temp'].toString())
+                ? double.parse(json['attributes']['max_temp'].toString())
                 : 0,
         targetTempStep: double.tryParse(
                     json['attributes']['target_temp_step'].toString()) !=
                 null
-            ? double.tryParse(json['attributes']['target_temp_step'].toString())
+            ? double.parse(json['attributes']['target_temp_step'].toString())
             : null,
         temperature:
             double.tryParse(json['attributes']['temperature'].toString()) !=
                     null
-                ? double.tryParse(json['attributes']['temperature'].toString())
+                ? double.parse(json['attributes']['temperature'].toString())
                 : 0,
 
         currentTemperature: double.tryParse(
                     json['attributes']['current_temperature'].toString()) !=
                 null
-            ? double.tryParse(
-                json['attributes']['current_temperature'].toString())
+            ? double.parse(json['attributes']['current_temperature'].toString())
             : 0,
         fanMode: json['attributes']['fan_mode'].toString() != null
             ? json['attributes']['fan_mode'].toString()
@@ -198,7 +203,7 @@ class Entity {
             : [],
         deviceCode:
             int.tryParse(json['attributes']['device_code'].toString()) != null
-                ? int.tryParse(json['attributes']['device_code'].toString())
+                ? int.parse(json['attributes']['device_code'].toString())
                 : 0,
         manufacturer: json['attributes']['manufacturer'].toString() != null
             ? json['attributes']['manufacturer'].toString()
@@ -219,32 +224,32 @@ class Entity {
                     : "0",
 
         angle: int.tryParse(json['attributes']['angle'].toString()) != null
-            ? int.tryParse(json['attributes']['angle'].toString())
+            ? int.parse(json['attributes']['angle'].toString())
             : 0,
         //supported_features
-        supportedFeatures: int.tryParse(
-                    json['attributes']['supported_features'].toString()) !=
-                null
-            ? int.tryParse(json['attributes']['supported_features'].toString())
-            : 0,
+        supportedFeatures:
+            int.tryParse(json['attributes']['supported_features'].toString()) !=
+                    null
+                ? int.parse(json['attributes']['supported_features'].toString())
+                : 0,
         brightness:
             int.tryParse(json['attributes']['brightness'].toString()) != null
-                ? int.tryParse(json['attributes']['brightness'].toString())
+                ? int.parse(json['attributes']['brightness'].toString())
                 : 0,
         rgbColor: json['attributes']['rgb_color'] != null
             ? List<int>.from(json['attributes']['rgb_color'])
             : [],
         minMireds:
             int.tryParse(json['attributes']['min_mireds'].toString()) != null
-                ? int.tryParse(json['attributes']['min_mireds'].toString())
+                ? int.parse(json['attributes']['min_mireds'].toString())
                 : 0,
         maxMireds:
             int.tryParse(json['attributes']['max_mireds'].toString()) != null
-                ? int.tryParse(json['attributes']['max_mireds'].toString())
+                ? int.parse(json['attributes']['max_mireds'].toString())
                 : 0,
         colorTemp:
             int.tryParse(json['attributes']['color_temp'].toString()) != null
-                ? int.tryParse(json['attributes']['color_temp'].toString())
+                ? int.parse(json['attributes']['color_temp'].toString())
                 : 0,
         effect: json['attributes']['effect'].toString() != null
             ? json['attributes']['effect'].toString()
@@ -255,38 +260,38 @@ class Entity {
         currentPosition: double.tryParse(
                     json['attributes']['current_position'].toString()) !=
                 null
-            ? double.tryParse(json['attributes']['current_position'].toString())
+            ? double.parse(json['attributes']['current_position'].toString())
             : null,
         //input_number
         initial:
             double.tryParse(json['attributes']['initial'].toString()) != null
-                ? double.tryParse(json['attributes']['initial'].toString())
+                ? double.parse(json['attributes']['initial'].toString())
                 : 0,
         min: double.tryParse(json['attributes']['min'].toString()) != null
-            ? double.tryParse(json['attributes']['min'].toString())
+            ? double.parse(json['attributes']['min'].toString())
             : 0,
         max: double.tryParse(json['attributes']['max'].toString()) != null
-            ? double.tryParse(json['attributes']['max'].toString())
+            ? double.parse(json['attributes']['max'].toString())
             : 0,
         step: double.tryParse(json['attributes']['step'].toString()) != null
-            ? double.tryParse(json['attributes']['step'].toString())
+            ? double.parse(json['attributes']['step'].toString())
             : 0,
         //media_player
         volumeLevel:
             double.tryParse(json['attributes']['volume_level'].toString()) !=
                     null
-                ? double.tryParse(json['attributes']['volume_level'].toString())
+                ? double.parse(json['attributes']['volume_level'].toString())
                 : 0,
-        mediaDuration: double.tryParse(
-                    json["attributes"]["media_duration"].toString()) !=
-                null
-            ? double.tryParse(json["attributes"]["media_duration"].toString())
-            : -1,
-        mediaPosition: double.tryParse(
-                    json["attributes"]["media_position"].toString()) !=
-                null
-            ? double.tryParse(json["attributes"]["media_position"].toString())
-            : -1,
+        mediaDuration:
+            double.tryParse(json["attributes"]["media_duration"].toString()) !=
+                    null
+                ? double.parse(json["attributes"]["media_duration"].toString())
+                : -1,
+        mediaPosition:
+            double.tryParse(json["attributes"]["media_position"].toString()) !=
+                    null
+                ? double.parse(json["attributes"]["media_position"].toString())
+                : -1,
         isVolumeMuted: json['attributes']['is_volume_muted'] != null
             ? json['attributes']['is_volume_muted']
             : false,
@@ -333,6 +338,14 @@ class Entity {
         presetModes: json['attributes']['preset_modes'] != null
             ? List<String>.from(json['attributes']['preset_modes'])
             : [],
+        latitude:
+            double.tryParse(json["attributes"]["latitude"].toString()) != null
+                ? double.parse(json["attributes"]["latitude"].toString())
+                : null,
+        longitude:
+            double.tryParse(json["attributes"]["longitude"].toString()) != null
+                ? double.parse(json["attributes"]["longitude"].toString())
+                : null,
       );
     } catch (e) {
       log.e("Entity.fromJson newEntity $e");

@@ -10,6 +10,7 @@ import 'package:hasskit/view/entitycontrol/entity_control_alarm_panel.dart';
 import 'package:hasskit/view/entitycontrol/entity_control_climate.dart';
 import 'package:hasskit/view/entitycontrol/entity_control_cover_position.dart';
 import 'package:hasskit/view/entitycontrol/entity_control_general.dart';
+import 'package:hasskit/view/entitycontrol/entity_control_google_maps.dart';
 import 'package:hasskit/view/entitycontrol/entity_control_media_player.dart';
 import 'package:hasskit/view/entitycontrol/entity_control_vacuum.dart';
 import 'package:provider/provider.dart';
@@ -66,6 +67,7 @@ class _EntityControlParentState extends State<EntityControlParent> {
         }
 
         Widget entityControl;
+        print("EntityControlParent widget.entityId ${widget.entityId}");
 
         if (entity.entityType == EntityType.climateFans &&
             entity.hvacModes != null &&
@@ -120,11 +122,6 @@ class _EntityControlParentState extends State<EntityControlParent> {
           entityControl = EntityControlMediaPlayer(entityId: widget.entityId);
         } else if (entity.entityId.contains("vacuum.")) {
           entityControl = EntityControlVacuum(entityId: widget.entityId);
-        } else if (entity.entityType == EntityType.lightSwitches ||
-            entity.entityType == EntityType.mediaPlayers ||
-            entity.entityId.contains("group.") ||
-            entity.entityId.contains("scene.")) {
-          entityControl = EntityControlToggle(entityId: widget.entityId);
         } else if (entity.entityId.contains("binary_sensor.")
 //            ||            entity.entityId.contains("device_tracker.") //Need more data check
             ) {
@@ -135,12 +132,20 @@ class _EntityControlParentState extends State<EntityControlParent> {
           entityControl = EntityControlSensor(entityId: widget.entityId);
         } else if (entity.entityId.contains("alarm_control_panel.")) {
           entityControl = EntityControlAlarmPanel(entityId: widget.entityId);
+        } else if (entity.entityId.contains("device_tracker.") ||
+            entity.entityId.contains("person.")) {
+          entityControl = EntityControlGoogleMaps(entityId: widget.entityId);
+        } else if (entity.entityType == EntityType.lightSwitches ||
+            entity.entityType == EntityType.mediaPlayers ||
+            entity.entityId.contains("group.") ||
+            entity.entityId.contains("scene.")) {
+          entityControl = EntityControlToggle(entityId: widget.entityId);
         } else {
           entityControl = EntityControlGeneral(entityId: widget.entityId);
         }
 
-        print(
-            "MediaQuery.of(context).padding.top ${MediaQuery.of(gd.mediaQueryContext).padding.top}");
+//        print(
+//            "MediaQuery.of(context).padding.top ${MediaQuery.of(gd.mediaQueryContext).padding.top}");
 
         return SafeArea(
           child: Stack(
@@ -149,8 +154,8 @@ class _EntityControlParentState extends State<EntityControlParent> {
                 children: <Widget>[
                   SizedBox(
                     height: gd.mediaQueryLongestSide > 600
-                        ? MediaQuery.of(gd.mediaQueryContext).padding.top * 2
-                        : MediaQuery.of(gd.mediaQueryContext).padding.top,
+                        ? MediaQuery.of(gd.mediaQueryContext).padding.top * 1
+                        : MediaQuery.of(gd.mediaQueryContext).padding.top * 1,
                     child: Container(),
                   ),
                   EditEntityNormal(
@@ -177,16 +182,8 @@ class _EntityControlParentState extends State<EntityControlParent> {
                         )
                       : Container(),
                   !showEditName
-                      ? Expanded(
-                          child: Container(),
-                        )
-                      : Container(),
-                  !showEditName ? entityControl : Container(),
-                  !showEditName
-                      ? Expanded(
-                          child: Container(),
-                        )
-                      : Container(),
+                      ? Expanded(child: entityControl)
+                      : Expanded(child: Container()),
                   !showEditName &&
                           (entity.entityType == EntityType.lightSwitches ||
                               entity.entityType == EntityType.climateFans)
@@ -234,35 +231,6 @@ class _EntityControlParentState extends State<EntityControlParent> {
                       ),
                     )
                   : Container(),
-//              Positioned(
-//                top: gd.mediaQueryLongestSide > 600
-//                    ? MediaQuery.of(gd.mediaQueryContext).padding.top * 2
-//                    : MediaQuery.of(gd.mediaQueryContext).padding.top,
-//                left: 0,
-//                child: InkWell(
-//                  onTap: () {
-//                    Navigator.pop(context);
-//                  },
-//                  child: Container(
-//                    decoration: BoxDecoration(
-//                      shape: BoxShape.circle,
-//                      color: ThemeInfo.colorBottomSheet,
-//                      boxShadow: [
-//                        new BoxShadow(
-//                          color: ThemeInfo.colorBottomSheet,
-//                          offset: new Offset(0.0, 0.0),
-//                          blurRadius: 6.0,
-//                        )
-//                      ],
-//                    ),
-//                    child: Icon(
-//                      Icons.chevron_left,
-//                      color: ThemeInfo.colorBottomSheetReverse.withOpacity(1),
-//                      size: 28,
-//                    ),
-//                  ),
-//                ),
-//              ),
             ],
           ),
         );
@@ -430,7 +398,8 @@ class _EditEntityNormalState extends State<EditEntityNormal> {
   Widget build(BuildContext context) {
     Entity entity = gd.entities[widget.entityId];
     _controller.text = '${gd.entities[widget.entityId].getOverrideName}';
-    return Container(
+    return Material(
+      elevation: 1,
       child: Row(
         children: <Widget>[
           InkWell(
@@ -528,7 +497,7 @@ class _EditEntityNormalState extends State<EditEntityNormal> {
                       Spacer(),
                       Container(
                         decoration: BoxDecoration(
-                          color: ThemeInfo.colorBottomSheet.withOpacity(0.75),
+                          color: ThemeInfo.colorBottomSheet.withOpacity(0.5),
                         ),
                         child: Text(
                           !widget.showEditName ? "EDIT" : "SAVE",

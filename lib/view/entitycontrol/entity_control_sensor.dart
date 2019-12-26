@@ -71,10 +71,6 @@ class _EntityControlSensorState extends State<EntityControlSensor> {
     return Container(
       alignment: Alignment.center,
       padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
-      height: gd.mediaQueryHeight -
-          kBottomNavigationBarHeight -
-          kToolbarHeight -
-          20,
       width: gd.mediaQueryWidth,
       child: ModalProgressHUD(
         inAsyncCall: inAsyncCall,
@@ -86,30 +82,38 @@ class _EntityControlSensorState extends State<EntityControlSensor> {
         child: !gd.isTablet ||
                 MediaQuery.of(context).orientation != Orientation.landscape
             ? Column(
+                mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
                   Expanded(
-                    child: displayWidgetYesterday,
+                    child: Container(
+                        alignment: Alignment.center,
+                        child: displayWidgetYesterday),
                   ),
                   SizedBox(
                     width: 8,
                     height: 8,
                   ),
                   Expanded(
-                    child: displayWidgetToday,
+                    child: Container(
+                        alignment: Alignment.center, child: displayWidgetToday),
                   ),
                 ],
               )
             : Row(
+                mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
                   Expanded(
-                    child: displayWidgetYesterday,
+                    child: Container(
+                        alignment: Alignment.center,
+                        child: displayWidgetYesterday),
                   ),
                   SizedBox(
                     width: 8,
                     height: 8,
                   ),
                   Expanded(
-                    child: displayWidgetToday,
+                    child: Container(
+                        alignment: Alignment.center, child: displayWidgetToday),
                   ),
                 ],
               ),
@@ -118,7 +122,6 @@ class _EntityControlSensorState extends State<EntityControlSensor> {
   }
 
   void getHistory() async {
-    var continueBreak = 0;
     var client = new http.Client();
 
     var startPeriod = DateTime.now().subtract(Duration(hours: 24));
@@ -159,24 +162,18 @@ class _EntityControlSensorState extends State<EntityControlSensor> {
         log.d("getHistory jsonResponse $jsonResponse");
         gd.sensors = [];
         for (var rec in jsonResponse[0]) {
-          if (continueBreak > 5) {
-            break;
-          }
           var sensor = Sensor.fromJson(rec);
 
           var lastUpdated = DateTime.tryParse(sensor.lastUpdated);
           if (lastUpdated == null) {
-            continueBreak++;
             continue;
           }
           var lastChanged = DateTime.tryParse(sensor.lastChanged);
           if (lastChanged == null) {
-            continueBreak++;
             continue;
           }
           var state = double.tryParse(sensor.state);
           if (state == null) {
-            continueBreak++;
             continue;
           }
 

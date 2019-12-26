@@ -80,6 +80,13 @@ class SliverEntitiesNormal extends StatelessWidget {
           entityId: entityId,
           onTapCallback: () {
             log.d("$entityId SliverEntitiesNormal onTapCallback");
+//            Navigator.push(
+//              context,
+//              MaterialPageRoute(
+//                builder: (context) =>
+//                    EntityControlPageParent(entityId: entityId),
+//              ),
+//            );
 
             if (gd.entities[entityId].entityType == EntityType.group ||
                 gd.entities[entityId].entityType == EntityType.mediaPlayers ||

@@ -19,6 +19,7 @@ import 'package:hasskit/model/camera_info.dart';
 import 'package:hasskit/model/device_setting.dart';
 import 'package:hasskit/model/entity.dart';
 import 'package:hasskit/model/entity_override.dart';
+import 'package:hasskit/model/location.dart';
 import 'package:hasskit/model/login_data.dart';
 import 'package:hasskit/model/room.dart';
 import 'package:hasskit/model/sensor.dart';
@@ -229,9 +230,9 @@ class GeneralData with ChangeNotifier {
         continue;
       }
 
-//      if (entity.targetTempStep != null) {
+//      if (entity.entityId.contains("zone.")) {
 //        log.w("\n socketGetStates ${entity.entityId}");
-//        print("\n entity.targetTempStep ${entity.targetTempStep}");
+//        print("\n zone. mess $mess");
 //      }
 
       if (previousEntitiesList.contains(entity.entityId))
@@ -684,21 +685,20 @@ class GeneralData with ChangeNotifier {
     Room(
         name: 'HassKit',
         imageIndex: 17,
-        tempEntityId: "sensor.temperature_158d0002e98f27",
+        tempEntityId: "sensor.netatmo_netatmo_living_room_temperature",
         favorites: [
           "fan.acorn_fan",
           "climate.air_conditioner_1",
           "cover.cover_06",
-          "binary_sensor.motion_sensor_158d000358b1a2",
           "alarm_control_panel.home_alarm",
           "cover.cover_03",
           "fan.living_room_ceiling_fan",
           "light.light_01",
           "lock.lock_9",
-          "sensor.humidity_158d0002e98f27",
-          "sensor.pressure_158d0002e98f27",
-          "sensor.temperature_158d0002e98f27",
           "light.gateway_light_7c49eb891797",
+          "sensor.speedtest_download",
+          "sensor.speedtest_ping",
+          "sensor.speedtest_upload",
         ],
         entities: [
           "camera.camera_1",
@@ -721,7 +721,7 @@ class GeneralData with ChangeNotifier {
     Room(
         name: 'Living Room',
         imageIndex: 18,
-        tempEntityId: "sensor.aeotec_temperature_27",
+        tempEntityId: "sensor.netatmo_netatmo_living_room_temperature",
         favorites: [
           "climate.air_conditioner_2",
           "climate.air_conditioner_3",
@@ -733,6 +733,11 @@ class GeneralData with ChangeNotifier {
           "light.light_02",
           "fan.lucci_air_fan",
           "camera.camera_1",
+          "sensor.netatmo_netatmo_living_room_temperature",
+          "sensor.netatmo_netatmo_living_room_co2",
+          "sensor.netatmo_netatmo_living_room_humidity",
+          "sensor.netatmo_netatmo_living_room_noise",
+          "sensor.netatmo_netatmo_living_room_pressure",
         ],
         entities: [],
         row3: [],
@@ -740,7 +745,7 @@ class GeneralData with ChangeNotifier {
     Room(
         name: 'Kitchen',
         imageIndex: 19,
-        tempEntityId: "sensor.fibaro_temperature_31",
+        tempEntityId: "sensor.netatmo_netatmo_living_room_temperature",
         favorites: [
           "camera.camera_2",
           "switch.aeotec_motion_26",
@@ -759,7 +764,7 @@ class GeneralData with ChangeNotifier {
     Room(
         name: 'Bedroom',
         imageIndex: 20,
-        tempEntityId: "sensor.temperature_158d0002e98f27",
+        tempEntityId: "sensor.netatmo_netatmo_living_room_temperature",
         favorites: [
           "climate.air_conditioner_2",
           "cover.cover_07",
@@ -1516,8 +1521,6 @@ class GeneralData with ChangeNotifier {
       "fan.acorn_fan",
       "climate.air_conditioner_1",
       "cover.cover_06",
-      "binary_sensor.motion_sensor_158d000358b1a2",
-      "binary_sensor.motion_sensor_158d0002f1d1d2",
       "cover.cover_03",
       "light.light_01",
       "lock.lock_9",
@@ -2111,6 +2114,7 @@ class GeneralData with ChangeNotifier {
   }
 
   List<Sensor> sensors = [];
+  List<Location> locations = [];
 
   String classDefaultIcon(String deviceClass) {
     deviceClass = deviceClass.replaceAll(".", "");
@@ -2374,4 +2378,6 @@ class GeneralData with ChangeNotifier {
     }
     return inputToInt.toDouble();
   }
+
+  bool entityControlPageParentShow = false;
 }
