@@ -26,9 +26,13 @@ class EntityControlClimate extends StatelessWidget {
 //            fontSize: 30.0,
 //            fontWeight: FontWeight.w600),
         modifier: (double value) {
-          if (gd.entities[entityId].targetTempStep == 0.5)
+          if (gd.entities[entityId].targetTempStep == 0.5) {
             return ' ${gd.roundTo05(value)}˚';
-          return ' ${value.toInt()}˚';
+          } else if (gd.entities[entityId].targetTempStep == 0.5) {
+            return ' ${value.toStringAsFixed(1)}˚';
+          } else {
+            return ' ${value.toInt()}˚';
+          }
         });
 
     var customColors05 = CustomSliderColors(
@@ -59,7 +63,18 @@ class EntityControlClimate extends StatelessWidget {
       onChangeEnd: (double value) {
         print('onChangeEnd $value');
         var outMsg;
-        if (gd.entities[entityId].targetTempStep == 0.5) {
+        if (gd.entities[entityId].targetTempStep == 0.1) {
+          outMsg = {
+            "id": gd.socketId,
+            "type": "call_service",
+            "domain": "climate",
+            "service": "set_temperature",
+            "service_data": {
+              "entity_id": entity.entityId,
+              "temperature": double.parse(value.toStringAsFixed(1)),
+            }
+          };
+        } else if (gd.entities[entityId].targetTempStep == 0.5) {
           outMsg = {
             "id": gd.socketId,
             "type": "call_service",

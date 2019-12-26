@@ -200,20 +200,23 @@ class _EntityControlGoogleMapsState extends State<EntityControlGoogleMaps> {
             placeMarker(location);
           });
         },
+        //Container prevent click gap that drag map
         child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 4),
-          padding: EdgeInsets.symmetric(horizontal: 8),
-          decoration: BoxDecoration(
-            color: location.lastChanged.toString() == selected ||
-                    i == gd.locations.length - 1 && selected == ""
-                ? Colors.red.withOpacity(0.8)
-                : ThemeInfo.colorIconActive.withOpacity(0.8),
-            borderRadius: BorderRadius.circular(4),
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 4),
+            padding: EdgeInsets.symmetric(horizontal: 8),
+            decoration: BoxDecoration(
+              color: location.lastChanged.toString() == selected ||
+                      i == gd.locations.length - 1 && selected == ""
+                  ? Colors.red.withOpacity(0.8)
+                  : ThemeInfo.colorIconActive.withOpacity(0.8),
+              borderRadius: BorderRadius.circular(4),
+            ),
+            alignment: Alignment.center,
+            child: Text(location.state == "not_home"
+                ? "$timeDisplay"
+                : "$timeDisplay ${gd.textToDisplay(location.state)}"),
           ),
-          alignment: Alignment.center,
-          child: Text(location.state == "not_home"
-              ? "$timeDisplay"
-              : "$timeDisplay ${gd.textToDisplay(location.state)}"),
         ),
       );
       locationListViews.add(locationListView);
