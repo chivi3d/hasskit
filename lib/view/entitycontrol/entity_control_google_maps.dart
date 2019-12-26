@@ -27,8 +27,8 @@ class _EntityControlGoogleMapsState extends State<EntityControlGoogleMaps> {
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   List<Widget> locationListViews = [];
   String locationSelected = "";
-  double offset = 0.037;
-//  double offset = 0.0;
+//  double offset = 0.037;
+  double offset = 0.0;
   final Set<Factory> gestureRecognizers = [
     Factory(() => EagerGestureRecognizer()),
   ].toSet();
