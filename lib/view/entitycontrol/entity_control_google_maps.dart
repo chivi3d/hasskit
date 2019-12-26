@@ -144,12 +144,12 @@ class _EntityControlGoogleMapsState extends State<EntityControlGoogleMaps> {
       var response = await http.get(url, headers: headers);
       if (response.statusCode == 200) {
         var jsonResponse = jsonDecode(response.body);
-        print("jsonResponse $jsonResponse");
+//        print("jsonResponse $jsonResponse");
 
         for (var rec in jsonResponse[0]) {
           var location = Location.fromJson(rec);
-          print(
-              "${location.latitude} ${location.longitude} ${location.lastChanged} ${location.source} ${location.state}");
+//          print(
+//              "${location.latitude} ${location.longitude} ${location.lastChanged} ${location.source} ${location.state}");
           if (location.lastChanged == null ||
               location.latitude == null ||
               location.longitude == null) {
@@ -163,7 +163,7 @@ class _EntityControlGoogleMapsState extends State<EntityControlGoogleMaps> {
           placeMarker(gd.locations[0]);
         }
 
-        print("gd.locations.length ${gd.locations.length}");
+//        print("gd.locations.length ${gd.locations.length}");
       } else {
         log.e("Request failed with status: ${response.statusCode}.");
       }
@@ -180,7 +180,7 @@ class _EntityControlGoogleMapsState extends State<EntityControlGoogleMaps> {
   }
 
   Widget listViewBuilder(String selected) {
-    print("listViewBuilder $selected");
+//    print("listViewBuilder $selected");
     locationListViews = [];
     int i = 0;
     for (Location location in gd.locations) {
