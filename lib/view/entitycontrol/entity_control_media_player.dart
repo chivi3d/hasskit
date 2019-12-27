@@ -35,8 +35,10 @@ class EntityControlMediaPlayer extends StatelessWidget {
           "",
       builder: (_, generalData, __) {
         Entity entity = gd.entities[entityId];
-        return SingleChildScrollView(
+        return Container(
+          alignment: Alignment.center,
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               MediaPlayerButton(
                 entityId: entityId,

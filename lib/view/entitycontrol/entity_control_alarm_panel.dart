@@ -181,6 +181,7 @@ class _EntityControlAlarmPanelState extends State<EntityControlAlarmPanel> {
         return new Container(
           child: new Column(
             children: <Widget>[
+              Spacer(),
               Stack(
                 alignment: Alignment.bottomCenter,
                 children: <Widget>[
@@ -192,10 +193,6 @@ class _EntityControlAlarmPanelState extends State<EntityControlAlarmPanel> {
                         width: 2,
                         color: alarmColor,
                       ),
-//                      side: BorderSide(
-//                        color: alarmColor,
-//                        width: 2.0,
-//                      ),
                     ),
                     child: Container(
                       width: 100,
@@ -284,7 +281,8 @@ class _EntityControlAlarmPanelState extends State<EntityControlAlarmPanel> {
                     ],
                   )
                 ],
-              )
+              ),
+              Spacer(),
             ],
           ),
         );

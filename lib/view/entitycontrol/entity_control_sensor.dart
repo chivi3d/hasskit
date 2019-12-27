@@ -63,7 +63,8 @@ class _EntityControlSensorState extends State<EntityControlSensor> {
       displayWidgetToday = SensorChart(
         stateMin: stateMin,
         stateMax: stateMax,
-        title: DateFormat("EEEE, dd MMMM").format(DateTime.now()),
+        title:
+            "${gd.textToDisplay(gd.entities[widget.entityId].getStateDisplay)} ${gd.textToDisplay(gd.entities[widget.entityId].unitOfMeasurement)} | ${DateFormat("EEEE, dd MMMM").format(DateTime.now())}",
         flSpots: flSpotsToday,
       );
     }

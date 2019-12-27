@@ -28,7 +28,7 @@ class EntityControlClimate extends StatelessWidget {
         modifier: (double value) {
           if (gd.entities[entityId].targetTempStep == 0.5) {
             return ' ${gd.roundTo05(value)}˚';
-          } else if (gd.entities[entityId].targetTempStep == 0.5) {
+          } else if (gd.entities[entityId].targetTempStep == 0.1) {
             return ' ${value.toStringAsFixed(1)}˚';
           } else {
             return ' ${value.toInt()}˚';
@@ -105,6 +105,7 @@ class EntityControlClimate extends StatelessWidget {
 
     return Column(
       children: <Widget>[
+        Spacer(),
         SizedBox(
           width: 240,
           height: 240,
@@ -127,6 +128,7 @@ class EntityControlClimate extends StatelessWidget {
                 entityId: entityId,
               )
             : Container(),
+        Spacer(),
       ],
     );
   }
