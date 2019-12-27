@@ -105,6 +105,7 @@ class EntityControlClimate extends StatelessWidget {
 
     return Column(
       children: <Widget>[
+        Spacer(),
         SizedBox(
           width: 240,
           height: 240,
@@ -127,6 +128,7 @@ class EntityControlClimate extends StatelessWidget {
                 entityId: entityId,
               )
             : Container(),
+        Spacer(),
       ],
     );
   }

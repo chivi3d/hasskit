@@ -161,6 +161,7 @@ class _EntityControlVacuumState extends State<EntityControlVacuum> {
     }
     return Column(
       children: <Widget>[
+        Spacer(),
         Icon(
           MaterialDesignIcons.getIconDataFromIconName(entity.getDefaultIcon),
           size: 200,
@@ -228,6 +229,7 @@ class _EntityControlVacuumState extends State<EntityControlVacuum> {
             });
           },
         ),
+        Spacer(),
       ],
     );
   }
