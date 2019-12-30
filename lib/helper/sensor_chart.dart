@@ -39,7 +39,7 @@ class _SensorChartState extends State<SensorChart> {
                 color: const Color(0xff232d37)),
             child: Padding(
               padding: const EdgeInsets.only(
-                  right: 12.0, left: 0, top: 20, bottom: 6),
+                  right: 12.0, left: 0, top: 26, bottom: 6),
               child: LineChart(
                 mainData(
                     stateMin: widget.stateMin,
@@ -51,7 +51,7 @@ class _SensorChartState extends State<SensorChart> {
         ),
         Positioned(
             left: 35,
-            top: 0,
+            top: 6,
             child: Text(
               widget.title,
               textScaleFactor: gd.textScaleFactorFix,
@@ -59,7 +59,7 @@ class _SensorChartState extends State<SensorChart> {
               style: TextStyle(
                 color: Colors.white54,
                 fontWeight: FontWeight.normal,
-                fontSize: 16,
+                fontSize: 12,
               ),
             )),
       ],
