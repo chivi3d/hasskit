@@ -230,10 +230,10 @@ class GeneralData with ChangeNotifier {
         continue;
       }
 
-      if (entity.entityId.contains("fan.")) {
-        log.w("\n socketGetStates ${entity.entityId}");
-        print("\n zone. mess $mess");
-      }
+//      if (entity.entityId.contains("fan.")) {
+//        log.w("\n socketGetStates ${entity.entityId}");
+//        print("\n zone. mess $mess");
+//      }
 
       if (previousEntitiesList.contains(entity.entityId))
         previousEntitiesList.remove(entity.entityId);
