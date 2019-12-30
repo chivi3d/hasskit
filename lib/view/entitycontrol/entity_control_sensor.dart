@@ -65,7 +65,7 @@ class _EntityControlSensorState extends State<EntityControlSensor> {
         stateMin: stateMin,
         stateMax: stateMax,
         title:
-            "${gd.textToDisplay(gd.entities[widget.entityId].getStateDisplay)} ${gd.textToDisplay(gd.entities[widget.entityId].unitOfMeasurement)} | ${DateFormat("EEEE, dd MMMM").format(DateTime.now())}",
+            "${DateFormat("EEEE, dd MMMM").format(DateTime.now())} | ${gd.textToDisplay(gd.entities[widget.entityId].getStateDisplay)} ${gd.textToDisplay(gd.entities[widget.entityId].unitOfMeasurement)}",
         flSpots: flSpotsToday,
       );
     }

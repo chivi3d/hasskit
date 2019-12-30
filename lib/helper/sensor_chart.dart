@@ -50,7 +50,7 @@ class _SensorChartState extends State<SensorChart> {
           ),
         ),
         Positioned(
-            right: 8,
+            left: 35,
             top: 0,
             child: Text(
               widget.title,
