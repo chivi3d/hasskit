@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hasskit/helper/general_data.dart';
@@ -84,10 +85,11 @@ class _EntityControlSensorState extends State<EntityControlSensor> {
                 MediaQuery.of(context).orientation != Orientation.landscape
             ? Column(
                 mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   Expanded(
                     child: Container(
-                        alignment: Alignment.center,
+                        alignment: Alignment.bottomCenter,
                         child: displayWidgetYesterday),
                   ),
                   SizedBox(
@@ -96,7 +98,8 @@ class _EntityControlSensorState extends State<EntityControlSensor> {
                   ),
                   Expanded(
                     child: Container(
-                        alignment: Alignment.center, child: displayWidgetToday),
+                        alignment: Alignment.topCenter,
+                        child: displayWidgetToday),
                   ),
                 ],
               )
@@ -105,7 +108,7 @@ class _EntityControlSensorState extends State<EntityControlSensor> {
                 children: <Widget>[
                   Expanded(
                     child: Container(
-                        alignment: Alignment.center,
+                        alignment: Alignment.centerRight,
                         child: displayWidgetYesterday),
                   ),
                   SizedBox(
@@ -114,7 +117,8 @@ class _EntityControlSensorState extends State<EntityControlSensor> {
                   ),
                   Expanded(
                     child: Container(
-                        alignment: Alignment.center, child: displayWidgetToday),
+                        alignment: Alignment.centerLeft,
+                        child: displayWidgetToday),
                   ),
                 ],
               ),

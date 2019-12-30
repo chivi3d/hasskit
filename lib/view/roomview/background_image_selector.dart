@@ -141,13 +141,6 @@ class _BackgroundImageSelectorState extends State<BackgroundImageSelector> {
                       ),
                       showPicker
                           ? Container(
-//                              decoration: BoxDecoration(
-//                                image: DecorationImage(
-//                                    image: AssetImage(
-//                                        "assets/images/gradient-1.png"),
-//                                    fit: BoxFit.fill),
-//                                color: Colors.black,
-//                              ),
                               height: 150,
                               child: CupertinoPicker(
                                 squeeze: 0.9,

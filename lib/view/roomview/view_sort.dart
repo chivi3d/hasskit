@@ -122,7 +122,7 @@ class ViewSort extends StatelessWidget {
   }
 
   List<Entity> entityFilter(int roomIndex, List<EntityType> types) {
-    List<String> roomEntities = gd.roomList[roomIndex].entities;
+    List<String> roomEntities = gd.roomList[roomIndex].row2;
     List<Entity> entitiesFilter = [];
 
     for (String entityId in roomEntities) {
@@ -137,10 +137,10 @@ class ViewSort extends StatelessWidget {
 
   List<Entity> entityFrontRow(int roomIndex) {
     //prevent old data fuck up
-    if (gd.roomList[roomIndex].favorites == null) {
-      gd.roomList[roomIndex].favorites = [];
+    if (gd.roomList[roomIndex].row1 == null) {
+      gd.roomList[roomIndex].row1 = [];
     }
-    List<String> frontRowEntities = gd.roomList[roomIndex].favorites;
+    List<String> frontRowEntities = gd.roomList[roomIndex].row1;
     List<Entity> entitiesFilter = [];
 
     for (String entityId in frontRowEntities) {
@@ -155,10 +155,10 @@ class ViewSort extends StatelessWidget {
 
   List<Entity> entityFrontRowCamera(int roomIndex) {
     //prevent old data fuck up
-    if (gd.roomList[roomIndex].favorites == null) {
-      gd.roomList[roomIndex].favorites = [];
+    if (gd.roomList[roomIndex].row1 == null) {
+      gd.roomList[roomIndex].row1 = [];
     }
-    List<String> frontRowEntities = gd.roomList[roomIndex].favorites;
+    List<String> frontRowEntities = gd.roomList[roomIndex].row1;
     List<Entity> entitiesFilter = [];
 
     for (String entityId in frontRowEntities) {

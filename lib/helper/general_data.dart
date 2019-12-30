@@ -230,10 +230,10 @@ class GeneralData with ChangeNotifier {
         continue;
       }
 
-//      if (entity.entityId.contains("zone.")) {
-//        log.w("\n socketGetStates ${entity.entityId}");
-//        print("\n zone. mess $mess");
-//      }
+      if (entity.entityId.contains("fan.")) {
+        log.w("\n socketGetStates ${entity.entityId}");
+        print("\n zone. mess $mess");
+      }
 
       if (previousEntitiesList.contains(entity.entityId))
         previousEntitiesList.remove(entity.entityId);
@@ -651,42 +651,36 @@ class GeneralData with ChangeNotifier {
 
   List<Room> roomList = [];
   List<Room> roomListDefault = [
-    Room(
-        name: 'Home',
-        imageIndex: 17,
-        favorites: [],
-        entities: [],
-        row3: [],
-        row4: []),
+    Room(name: 'Home', imageIndex: 17, row1: [], row2: [], row3: [], row4: []),
     Room(
         name: 'Living Room',
         imageIndex: 18,
-        favorites: [],
-        entities: [],
+        row1: [],
+        row2: [],
         row3: [],
         row4: []),
     Room(
         name: 'Kitchen',
         imageIndex: 19,
-        favorites: [],
-        entities: [],
+        row1: [],
+        row2: [],
         row3: [],
         row4: []),
     Room(
         name: 'Bedroom',
         imageIndex: 20,
-        favorites: [],
-        entities: [],
+        row1: [],
+        row2: [],
         row3: [],
         row4: []),
   ];
 
   List<Room> roomListHassKit = [
     Room(
-        name: 'HassKit',
+        name: 'Demo Home',
         imageIndex: 17,
         tempEntityId: "sensor.netatmo_netatmo_living_room_temperature",
-        favorites: [
+        row1: [
           "fan.acorn_fan",
           "climate.air_conditioner_1",
           "cover.cover_06",
@@ -700,7 +694,7 @@ class GeneralData with ChangeNotifier {
           "sensor.speedtest_ping",
           "sensor.speedtest_upload",
         ],
-        entities: [
+        row2: [
           "camera.camera_1",
           "camera.camera_2",
           "WebView1",
@@ -722,7 +716,7 @@ class GeneralData with ChangeNotifier {
         name: 'Living Room',
         imageIndex: 18,
         tempEntityId: "sensor.netatmo_netatmo_living_room_temperature",
-        favorites: [
+        row1: [
           "climate.air_conditioner_2",
           "climate.air_conditioner_3",
           "cover.cover_01",
@@ -739,14 +733,14 @@ class GeneralData with ChangeNotifier {
           "sensor.netatmo_netatmo_living_room_noise",
           "sensor.netatmo_netatmo_living_room_pressure",
         ],
-        entities: [],
+        row2: [],
         row3: [],
         row4: []),
     Room(
         name: 'Kitchen',
         imageIndex: 19,
         tempEntityId: "sensor.netatmo_netatmo_living_room_temperature",
-        favorites: [
+        row1: [
           "camera.camera_2",
           "switch.aeotec_motion_26",
           "climate.air_conditioner_4",
@@ -758,14 +752,14 @@ class GeneralData with ChangeNotifier {
           "fan.super_fan",
           "cover.cover_09",
         ],
-        entities: [],
+        row2: [],
         row3: [],
         row4: []),
     Room(
         name: 'Bedroom',
         imageIndex: 20,
         tempEntityId: "sensor.netatmo_netatmo_living_room_temperature",
-        favorites: [
+        row1: [
           "climate.air_conditioner_2",
           "cover.cover_07",
           "cover.cover_08",
@@ -773,7 +767,7 @@ class GeneralData with ChangeNotifier {
           "switch.tuya_neo_coolcam_10a",
           "WebView1",
         ],
-        entities: [],
+        row2: [],
         row3: [],
         row4: []),
   ];
@@ -807,9 +801,9 @@ class GeneralData with ChangeNotifier {
     log.w('roomEntitySwap oldEntityId $oldEntityId newEntityId $newEntityId');
     var entitiesRef;
     if (rowNumber == 1) {
-      entitiesRef = gd.roomList[roomIndex].favorites;
+      entitiesRef = gd.roomList[roomIndex].row1;
     } else if (rowNumber == 2) {
-      entitiesRef = gd.roomList[roomIndex].entities;
+      entitiesRef = gd.roomList[roomIndex].row2;
     } else if (rowNumber == 3) {
       entitiesRef = gd.roomList[roomIndex].row3;
     } else {
@@ -910,8 +904,8 @@ class GeneralData with ChangeNotifier {
     var newRoom = Room(
       name: 'Room ' + millisecondsSinceEpoch,
       imageIndex: random.nextInt(gd.backgroundImage.length),
-      favorites: [],
-      entities: [],
+      row1: [],
+      row2: [],
       row3: [],
       row4: [],
     );
@@ -1167,7 +1161,7 @@ class GeneralData with ChangeNotifier {
   List<String> get entitiesInRoomsExceptDefault {
     List<String> recVal = [];
     for (int i = 0; i < roomList.length - 2; i++) {
-      recVal = recVal + roomList[i].entities;
+      recVal = recVal + roomList[i].row2;
     }
     return recVal;
   }
@@ -1175,8 +1169,8 @@ class GeneralData with ChangeNotifier {
   void removeEntityInRoom(String entityId, int roomIndex, String friendlyName,
       BuildContext context) {
     log.w('removeEntityInRoom $entityId roomIndex $roomIndex');
-    if (gd.roomList[roomIndex].entities.contains(entityId)) {
-      gd.roomList[roomIndex].entities.remove(entityId);
+    if (gd.roomList[roomIndex].row2.contains(entityId)) {
+      gd.roomList[roomIndex].row2.remove(entityId);
       notifyListeners();
       Flushbar(
 //        title: "Require Slide to Open",
@@ -1191,8 +1185,8 @@ class GeneralData with ChangeNotifier {
   void showEntityInRoom(String entityId, int roomIndex, String friendlyName,
       BuildContext context) {
     log.w('showEntityInRoom $entityId roomIndex $roomIndex');
-    if (!gd.roomList[roomIndex].entities.contains(entityId)) {
-      gd.roomList[roomIndex].entities.add(entityId);
+    if (!gd.roomList[roomIndex].row2.contains(entityId)) {
+      gd.roomList[roomIndex].row2.add(entityId);
       notifyListeners();
       Flushbar(
 //        title: "Require Slide to Open",

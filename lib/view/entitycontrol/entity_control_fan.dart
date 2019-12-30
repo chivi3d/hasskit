@@ -28,7 +28,6 @@ class _EntityControlFanState extends State<EntityControlFan> {
   int division = 4;
   int currentStep = 0;
   double stepLength;
-  DateTime isSliding = DateTime.now();
   List<Widget> positionStacks = [];
 
   @override
@@ -50,22 +49,19 @@ class _EntityControlFanState extends State<EntityControlFan> {
       );
       positionStacks.add(positionStack);
     }
+
+    if (!entity.isStateOn) {
+      buttonValue = lowerPartHeight;
+    } else {
+      if (entity.speedList.contains(entity.speed)) {
+        currentStep = entity.speedList.indexOf(entity.speed.toString());
+        buttonValue = lowerPartHeight + currentStep * stepLength;
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (isSliding.isBefore(DateTime.now())) {
-      var entity = gd.entities[widget.entityId];
-      if (!entity.isStateOn) {
-        buttonValue = lowerPartHeight;
-      } else {
-        if (entity.speedList.contains(entity.speed)) {
-          currentStep = entity.speedList.indexOf(entity.speed.toString());
-          buttonValue = lowerPartHeight + currentStep * stepLength;
-        }
-      }
-    }
-
     return Column(
       children: <Widget>[
         Spacer(),
@@ -264,18 +260,6 @@ class _EntityControlFanState extends State<EntityControlFan> {
                     Oscillating(entityId: widget.entityId),
                   ],
                 ),
-//            child: SizedBox(
-//              width: 50,
-//              height: 50,
-//              child: Icon(
-//                MaterialDesignIcons.getIconDataFromIconName(
-//                    gd.entities[widget.entityId].getDefaultIcon),
-//                size: 45,
-//                color: gd.entities[widget.entityId].isStateOn
-//                    ? ThemeInfo.colorIconActive
-//                    : ThemeInfo.colorGray,
-//              ),
-//            ),
               ),
             ],
           ),
@@ -289,7 +273,6 @@ class _EntityControlFanState extends State<EntityControlFan> {
     final RenderBox box = context.findRenderObject();
     final Offset localOffset = box.globalToLocal(details.globalPosition);
     buttonValueOnTapDown = buttonValue;
-    isSliding = DateTime.now().add(Duration(minutes: 1));
     setState(() {
       startPosX = localOffset.dx;
       startPosY = localOffset.dy;
@@ -312,34 +295,20 @@ class _EntityControlFanState extends State<EntityControlFan> {
 
       var outMsg;
 
-      if (currentStep == 0) {
+      if (!gd.entities[widget.entityId].isStateOn) {
         outMsg = {
           "id": gd.socketId,
           "type": "call_service",
           "domain": "fan",
-          "service": "turn_off",
+          "service": "turn_on",
           "service_data": {
             "entity_id": widget.entityId,
           }
         };
-        gd.entities[widget.entityId].state = "off";
+        gd.entities[widget.entityId].state = "on";
         var outMsgEncoded = json.encode(outMsg);
         gd.sendSocketMessage(outMsgEncoded);
-      } else {
-        if (!gd.entities[widget.entityId].isStateOn) {
-          outMsg = {
-            "id": gd.socketId,
-            "type": "call_service",
-            "domain": "fan",
-            "service": "turn_on",
-            "service_data": {
-              "entity_id": widget.entityId,
-            }
-          };
-          var outMsgEncoded = json.encode(outMsg);
-          gd.sendSocketMessage(outMsgEncoded);
-          gd.entities[widget.entityId].state = "on";
-        }
+
         outMsg = {
           "id": gd.socketId,
           "type": "call_service",
@@ -350,20 +319,18 @@ class _EntityControlFanState extends State<EntityControlFan> {
             "speed": gd.entities[widget.entityId].speedList[currentStep],
           }
         };
-
-        gd.entities[widget.entityId].speed =
-            gd.entities[widget.entityId].speedList[currentStep];
-        var outMsgEncoded = json.encode(outMsg);
-        gd.sendSocketMessage(outMsgEncoded);
       }
-      isSliding = DateTime.now().add(Duration(seconds: 1));
+
+      gd.entities[widget.entityId].speed =
+          gd.entities[widget.entityId].speedList[currentStep];
+      var outMsgEncoded = json.encode(outMsg);
+      gd.sendSocketMessage(outMsgEncoded);
     });
   }
 
   _onVerticalDragUpdate(BuildContext context, DragUpdateDetails details) {
     final RenderBox box = context.findRenderObject();
     final Offset localOffset = box.globalToLocal(details.globalPosition);
-    isSliding = DateTime.now().add(Duration(minutes: 1));
     setState(() {
       currentPosX = localOffset.dx;
       currentPosY = localOffset.dy;

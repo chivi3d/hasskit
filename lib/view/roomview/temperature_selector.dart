@@ -160,12 +160,6 @@ class _TemperatureSelectorState extends State<TemperatureSelector> {
                       ),
                       showPicker
                           ? Container(
-//                              decoration: BoxDecoration(
-//                                image: DecorationImage(
-//                                    image: AssetImage(
-//                                        "assets/images/gradient-1.png"),
-//                                    fit: BoxFit.fill),
-//                              ),
                               height: 150,
                               child: CupertinoPicker(
                                 squeeze: 0.9,

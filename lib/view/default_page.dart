@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hasskit/helper/general_data.dart';
 import 'package:hasskit/helper/locale_helper.dart';
 import 'package:hasskit/helper/material_design_icons.dart';
+import 'package:hasskit/helper/theme_info.dart';
 
 class DefaultPage extends StatelessWidget {
   final String error;
@@ -36,6 +38,10 @@ class DefaultPage extends StatelessWidget {
                 maxLines: 3,
                 textScaleFactor: gd.textScaleFactorFix,
                 overflow: TextOverflow.ellipsis,
+              ),
+              SpinKitThreeBounce(
+                size: 40,
+                color: ThemeInfo.colorIconActive.withOpacity(0.5),
               ),
             ],
           ),

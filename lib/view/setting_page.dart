@@ -12,6 +12,7 @@ import 'package:hasskit/model/local_language.dart';
 import 'package:hasskit/model/login_data.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
+import 'package:upgrader/upgrader.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:validators/validators.dart';
 import 'setting_lock.dart';
@@ -215,13 +216,14 @@ class _SettingPageState extends State<SettingPage> {
                                         onChanged: (val) {
                                           gd.useSSL = val;
                                         }),
-                                    Text(
-                                      Translate.getString(
-                                          "settings.use_https", context),
-                                      textScaleFactor: gd.textScaleFactorFix,
-                                      overflow: TextOverflow.ellipsis,
+                                    Expanded(
+                                      child: Text(
+                                        Translate.getString(
+                                            "settings.use_https", context),
+                                        textScaleFactor: gd.textScaleFactorFix,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
                                     ),
-                                    Expanded(child: Container()),
                                     RaisedButton(
                                       onPressed: showConnect
                                           ? () {
@@ -374,57 +376,43 @@ class _SettingPageState extends State<SettingPage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
-                            SizedBox(width: 10),
+                            SizedBox(width: 8),
                             Expanded(
                               child: RaisedButton(
+                                elevation: 1,
                                 onPressed: _launchDiscord,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    SizedBox(
-                                      width: 32,
-                                      height: 32,
-                                      child: Image(
-                                        image: AssetImage(
-                                            'assets/images/discord-512.png'),
-                                      ),
-                                    ),
-                                    SizedBox(width: 10),
-                                    Text(
-                                      "Discord ",
-                                      textScaleFactor: gd.textScaleFactorFix,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ],
+                                child: Text(
+                                  "Discord ",
+                                  textScaleFactor: gd.textScaleFactorFix,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ),
                             ),
-                            SizedBox(width: 10),
+                            SizedBox(width: 4),
                             Expanded(
                               child: RaisedButton(
+                                elevation: 1,
                                 onPressed: _launchFacebook,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    SizedBox(
-                                      width: 32,
-                                      height: 32,
-                                      child: Image(
-                                        image: AssetImage(
-                                            'assets/images/facebook-logo.png'),
-                                      ),
-                                    ),
-                                    SizedBox(width: 10),
-                                    Text(
-                                      "Facebook",
-                                      textScaleFactor: gd.textScaleFactorFix,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ],
+                                child: Text(
+                                  "Facebook",
+                                  textScaleFactor: gd.textScaleFactorFix,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ),
                             ),
-                            SizedBox(width: 10),
+                            SizedBox(width: 4),
+                            Expanded(
+                              child: RaisedButton(
+                                elevation: 1,
+                                onPressed: _launchGitHub,
+                                child: Text(
+                                  "Github",
+                                  textScaleFactor: gd.textScaleFactorFix,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 8),
                           ],
                         ),
                       ),
@@ -448,6 +436,10 @@ class _SettingPageState extends State<SettingPage> {
                           ),
                         ),
                       ),
+                      Container(
+                        padding: EdgeInsets.all(8),
+                        child: UpgradeCard(),
+                      )
                     ],
                   ),
                 ),
@@ -464,6 +456,15 @@ class _SettingPageState extends State<SettingPage> {
 
   _launchDiscord() async {
     const url = 'https://discord.gg/cqYr52P';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  _launchGitHub() async {
+    const url = 'https://github.com/tuanha2000vn/hasskit';
     if (await canLaunch(url)) {
       await launch(url);
     } else {

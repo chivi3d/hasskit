@@ -79,8 +79,8 @@ class SinglePage extends StatelessWidget {
           "${generalData.roomList[roomIndex].name} |" +
           "${generalData.roomList[roomIndex].tempEntityId} |" +
           "${generalData.roomList[roomIndex].imageIndex} |" +
-          "${generalData.roomList[roomIndex].favorites.toList()} |" +
-          "${generalData.roomList[roomIndex].entities.toList()} |" +
+          "${generalData.roomList[roomIndex].row1.toList()} |" +
+          "${generalData.roomList[roomIndex].row2.toList()} |" +
           "${generalData.roomList[roomIndex].row3.toList()} |" +
           "${generalData.roomList[roomIndex].row4.toList()} |",
       builder: (context, data, child) {

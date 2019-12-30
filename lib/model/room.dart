@@ -5,8 +5,8 @@ class Room {
   int imageIndex;
   String tempEntityId;
   String humidEntityId;
-  List<String> favorites;
-  List<String> entities;
+  List<String> row1;
+  List<String> row2;
   List<String> row3;
   List<String> row4;
 
@@ -15,8 +15,8 @@ class Room {
       @required this.imageIndex,
       this.tempEntityId = "",
       this.humidEntityId = "",
-      this.entities,
-      this.favorites,
+      this.row1,
+      this.row2,
       this.row3,
       this.row4});
 
@@ -25,8 +25,8 @@ class Room {
         'imageIndex': imageIndex,
         'tempEntityId': tempEntityId,
         'humidEntityId': humidEntityId,
-        'favorites': favorites,
-        'entities': entities,
+        'favorites': row1,
+        'entities': row2,
         'row3': row3,
         'row4': row4,
       };
@@ -37,10 +37,9 @@ class Room {
       imageIndex: json['imageIndex'],
       tempEntityId: json['tempEntityId'] != null ? json['tempEntityId'] : "",
       humidEntityId: json['humidEntityId'] != null ? json['humidEntityId'] : "",
-      favorites:
+      row1:
           json['favorites'] != null ? List<String>.from(json['favorites']) : [],
-      entities:
-          json['entities'] != null ? List<String>.from(json['entities']) : [],
+      row2: json['entities'] != null ? List<String>.from(json['entities']) : [],
       row3: json['row3'] != null ? List<String>.from(json['row3']) : [],
       row4: json['row4'] != null ? List<String>.from(json['row4']) : [],
     );

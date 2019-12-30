@@ -265,8 +265,8 @@ class __EditItemsState extends State<_EditItems> {
     if (!widget.selectedItem) {
       entities = gd.entities.values
           .where((e) =>
-              !gd.roomList[widget.roomIndex].favorites.contains(e.entityId) &&
-              !gd.roomList[widget.roomIndex].entities.contains(e.entityId) &&
+              !gd.roomList[widget.roomIndex].row1.contains(e.entityId) &&
+              !gd.roomList[widget.roomIndex].row2.contains(e.entityId) &&
               !gd.roomList[widget.roomIndex].row3.contains(e.entityId) &&
               !gd.roomList[widget.roomIndex].row4.contains(e.entityId) &&
               widget.types.contains(e.entityType) &&
@@ -279,20 +279,54 @@ class __EditItemsState extends State<_EditItems> {
                       .contains(widget.keyword.toLowerCase())))
           .toList();
     } else {
-      entities = gd.entities.values
-          .where((e) =>
-              (gd.roomList[widget.roomIndex].favorites.contains(e.entityId) ||
-                  gd.roomList[widget.roomIndex].entities.contains(e.entityId) ||
-                  gd.roomList[widget.roomIndex].row3.contains(e.entityId) ||
-                  gd.roomList[widget.roomIndex].row4.contains(e.entityId)) &&
-              (widget.keyword.length < 1 ||
-                  e.getOverrideName
-                      .toLowerCase()
-                      .contains(widget.keyword.toLowerCase()) ||
-                  e.entityId
-                      .toLowerCase()
-                      .contains(widget.keyword.toLowerCase())))
-          .toList();
+//      entities = gd.entities.values
+//          .where((e) =>
+//              (gd.roomList[widget.roomIndex].favorites.contains(e.entityId) ||
+//                  gd.roomList[widget.roomIndex].entities.contains(e.entityId) ||
+//                  gd.roomList[widget.roomIndex].row3.contains(e.entityId) ||
+//                  gd.roomList[widget.roomIndex].row4.contains(e.entityId)) &&
+//              (widget.keyword.length < 1 ||
+//                  e.getOverrideName
+//                      .toLowerCase()
+//                      .contains(widget.keyword.toLowerCase()) ||
+//                  e.entityId
+//                      .toLowerCase()
+//                      .contains(widget.keyword.toLowerCase())))
+//          .toList();
+
+      entities = [];
+
+      bool checkEntity(Entity entity) {
+        if (entity == null) return false;
+
+        if (widget.keyword.length < 1 ||
+            entity.entityId
+                .toLowerCase()
+                .contains(widget.keyword.toLowerCase()) ||
+            entity.getOverrideName
+                .toLowerCase()
+                .contains(widget.keyword.toLowerCase())) {
+          return true;
+        }
+        return false;
+      }
+
+      for (String entityId in gd.roomList[widget.roomIndex].row1) {
+        Entity entity = gd.entities[entityId];
+        if (checkEntity(entity)) entities.add(entity);
+      }
+      for (String entityId in gd.roomList[widget.roomIndex].row2) {
+        Entity entity = gd.entities[entityId];
+        if (checkEntity(entity)) entities.add(entity);
+      }
+      for (String entityId in gd.roomList[widget.roomIndex].row3) {
+        Entity entity = gd.entities[entityId];
+        if (checkEntity(entity)) entities.add(entity);
+      }
+      for (String entityId in gd.roomList[widget.roomIndex].row4) {
+        Entity entity = gd.entities[entityId];
+        if (checkEntity(entity)) entities.add(entity);
+      }
     }
 
     if (entities.length < 1) {
@@ -316,9 +350,9 @@ class __EditItemsState extends State<_EditItems> {
             child: Row(
               children: <Widget>[
                 Opacity(
-                  opacity: (gd.roomList[widget.roomIndex].favorites
+                  opacity: (gd.roomList[widget.roomIndex].row1
                               .contains(entities[index].entityId) ||
-                          gd.roomList[widget.roomIndex].entities
+                          gd.roomList[widget.roomIndex].row2
                               .contains(entities[index].entityId) ||
                           gd.roomList[widget.roomIndex].row3
                               .contains(entities[index].entityId) ||
@@ -335,9 +369,9 @@ class __EditItemsState extends State<_EditItems> {
                 SizedBox(width: 8),
                 Expanded(
                   child: Opacity(
-                    opacity: (gd.roomList[widget.roomIndex].favorites
+                    opacity: (gd.roomList[widget.roomIndex].row1
                                 .contains(entities[index].entityId) ||
-                            gd.roomList[widget.roomIndex].entities
+                            gd.roomList[widget.roomIndex].row2
                                 .contains(entities[index].entityId) ||
                             gd.roomList[widget.roomIndex].row3
                                 .contains(entities[index].entityId) ||
@@ -356,12 +390,12 @@ class __EditItemsState extends State<_EditItems> {
                 ),
                 InkWell(
                   onTap: () {
-                    if (gd.roomList[widget.roomIndex].favorites
+                    if (gd.roomList[widget.roomIndex].row1
                         .contains(entities[index].entityId)) {
-                      gd.roomList[widget.roomIndex].favorites
+                      gd.roomList[widget.roomIndex].row1
                           .remove(entities[index].entityId);
                     } else {
-                      gd.roomList[widget.roomIndex].favorites
+                      gd.roomList[widget.roomIndex].row1
                           .add(entities[index].entityId);
                       removeItemFromGroup(widget.roomIndex,
                           entities[index].entityId, "favorites");
@@ -374,7 +408,7 @@ class __EditItemsState extends State<_EditItems> {
                   child: Icon(
                     Icons.looks_one,
                     size: 28,
-                    color: gd.roomList[widget.roomIndex].favorites
+                    color: gd.roomList[widget.roomIndex].row1
                             .contains(entities[index].entityId)
                         ? Theme.of(context).textTheme.title.color
                         : Theme.of(context)
@@ -387,12 +421,12 @@ class __EditItemsState extends State<_EditItems> {
                 SizedBox(width: 0),
                 InkWell(
                   onTap: () {
-                    if (gd.roomList[widget.roomIndex].entities
+                    if (gd.roomList[widget.roomIndex].row2
                         .contains(entities[index].entityId)) {
-                      gd.roomList[widget.roomIndex].entities
+                      gd.roomList[widget.roomIndex].row2
                           .remove(entities[index].entityId);
                     } else {
-                      gd.roomList[widget.roomIndex].entities
+                      gd.roomList[widget.roomIndex].row2
                           .add(entities[index].entityId);
                       removeItemFromGroup(widget.roomIndex,
                           entities[index].entityId, "entities");
@@ -404,7 +438,7 @@ class __EditItemsState extends State<_EditItems> {
                   child: Icon(
                     Icons.looks_two,
                     size: 28,
-                    color: gd.roomList[widget.roomIndex].entities
+                    color: gd.roomList[widget.roomIndex].row2
                             .contains(entities[index].entityId)
                         ? Theme.of(context).textTheme.title.color
                         : Theme.of(context)
@@ -529,12 +563,10 @@ class __EditItemsState extends State<_EditItems> {
 }
 
 void removeItemFromGroup(int roomIndex, String entityId, String except) {
-  if (except != "favorites" &&
-      gd.roomList[roomIndex].favorites.contains(entityId))
-    gd.roomList[roomIndex].favorites.remove(entityId);
-  if (except != "entities" &&
-      gd.roomList[roomIndex].entities.contains(entityId))
-    gd.roomList[roomIndex].entities.remove(entityId);
+  if (except != "favorites" && gd.roomList[roomIndex].row1.contains(entityId))
+    gd.roomList[roomIndex].row1.remove(entityId);
+  if (except != "entities" && gd.roomList[roomIndex].row2.contains(entityId))
+    gd.roomList[roomIndex].row2.remove(entityId);
   if (except != "row3" && gd.roomList[roomIndex].row3.contains(entityId))
     gd.roomList[roomIndex].row3.remove(entityId);
   if (except != "row4" && gd.roomList[roomIndex].row4.contains(entityId))
@@ -567,9 +599,9 @@ class _WebViewItemsState extends State<WebViewItems> {
             child: Row(
               children: <Widget>[
                 Opacity(
-                  opacity: (gd.roomList[widget.roomIndex].favorites
+                  opacity: (gd.roomList[widget.roomIndex].row1
                               .contains("WebView${index + 1}") ||
-                          gd.roomList[widget.roomIndex].entities
+                          gd.roomList[widget.roomIndex].row2
                               .contains("WebView${index + 1}") ||
                           gd.roomList[widget.roomIndex].row3
                               .contains("WebView${index + 1}") ||
@@ -586,9 +618,9 @@ class _WebViewItemsState extends State<WebViewItems> {
                 SizedBox(width: 8),
                 Expanded(
                   child: Opacity(
-                    opacity: (gd.roomList[widget.roomIndex].favorites
+                    opacity: (gd.roomList[widget.roomIndex].row1
                                 .contains("WebView${index + 1}") ||
-                            gd.roomList[widget.roomIndex].entities
+                            gd.roomList[widget.roomIndex].row2
                                 .contains("WebView${index + 1}") ||
                             gd.roomList[widget.roomIndex].row3
                                 .contains("WebView${index + 1}") ||
@@ -607,12 +639,12 @@ class _WebViewItemsState extends State<WebViewItems> {
                 ),
                 InkWell(
                   onTap: () {
-                    if (gd.roomList[widget.roomIndex].favorites
+                    if (gd.roomList[widget.roomIndex].row1
                         .contains("WebView${index + 1}")) {
-                      gd.roomList[widget.roomIndex].favorites
+                      gd.roomList[widget.roomIndex].row1
                           .remove("WebView${index + 1}");
                     } else {
-                      gd.roomList[widget.roomIndex].favorites
+                      gd.roomList[widget.roomIndex].row1
                           .add("WebView${index + 1}");
                       removeItemFromGroup(
                           widget.roomIndex, "WebView${index + 1}", "favorites");
@@ -625,7 +657,7 @@ class _WebViewItemsState extends State<WebViewItems> {
                   child: Icon(
                     Icons.looks_one,
                     size: 28,
-                    color: gd.roomList[widget.roomIndex].favorites
+                    color: gd.roomList[widget.roomIndex].row1
                             .contains("WebView${index + 1}")
                         ? Theme.of(context).textTheme.title.color
                         : Theme.of(context)
@@ -638,12 +670,12 @@ class _WebViewItemsState extends State<WebViewItems> {
                 SizedBox(width: 0),
                 InkWell(
                   onTap: () {
-                    if (gd.roomList[widget.roomIndex].entities
+                    if (gd.roomList[widget.roomIndex].row2
                         .contains("WebView${index + 1}")) {
-                      gd.roomList[widget.roomIndex].entities
+                      gd.roomList[widget.roomIndex].row2
                           .remove("WebView${index + 1}");
                     } else {
-                      gd.roomList[widget.roomIndex].entities
+                      gd.roomList[widget.roomIndex].row2
                           .add("WebView${index + 1}");
                       removeItemFromGroup(
                           widget.roomIndex, "WebView${index + 1}", "entities");
@@ -655,7 +687,7 @@ class _WebViewItemsState extends State<WebViewItems> {
                   child: Icon(
                     Icons.looks_two,
                     size: 28,
-                    color: gd.roomList[widget.roomIndex].entities
+                    color: gd.roomList[widget.roomIndex].row2
                             .contains("WebView${index + 1}")
                         ? Theme.of(context).textTheme.title.color
                         : Theme.of(context)

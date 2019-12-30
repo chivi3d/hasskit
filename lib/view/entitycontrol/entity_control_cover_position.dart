@@ -46,25 +46,22 @@ class CoverSliderState extends State<CoverSlider> {
   double buttonValue = 0;
   double lowerPartHeight = 68.0;
   double buttonValueOnTapDown = 0;
-  DateTime draggingTime = DateTime.now();
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (!gd.entities[widget.entityId].isStateOn) {
+      buttonValue = lowerPartHeight;
+    } else {
+      var mapValue = gd.mapNumber(gd.entities[widget.entityId].currentPosition,
+          0, 100, lowerPartHeight, buttonHeight);
+      buttonValue = mapValue;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    if (draggingTime.millisecondsSinceEpoch <
-        DateTime.now().millisecondsSinceEpoch) {
-      if (!gd.entities[widget.entityId].isStateOn) {
-        buttonValue = lowerPartHeight;
-      } else {
-        var mapValue = gd.mapNumber(
-            gd.entities[widget.entityId].currentPosition,
-            0,
-            100,
-            lowerPartHeight,
-            buttonHeight);
-        buttonValue = mapValue;
-      }
-    }
-
     return new GestureDetector(
       onVerticalDragStart: (DragStartDetails details) =>
           _onVerticalDragStart(context, details),
@@ -152,7 +149,6 @@ class CoverSliderState extends State<CoverSlider> {
     final RenderBox box = context.findRenderObject();
     final Offset localOffset = box.globalToLocal(details.globalPosition);
     setState(() {
-      draggingTime = DateTime.now().add(Duration(seconds: 1));
       startPosX = localOffset.dx;
       startPosY = localOffset.dy;
       buttonValueOnTapDown = buttonValue;
@@ -165,7 +161,6 @@ class CoverSliderState extends State<CoverSlider> {
       BuildContext context, DragEndDetails details, Entity entity) {
     setState(
       () {
-        draggingTime = DateTime.now().add(Duration(seconds: 1));
         var sendValue =
             gd.mapNumber(buttonValue, lowerPartHeight, buttonHeight, 0, 100);
 
@@ -203,7 +198,6 @@ class CoverSliderState extends State<CoverSlider> {
     final RenderBox box = context.findRenderObject();
     final Offset localOffset = box.globalToLocal(details.globalPosition);
     setState(() {
-      draggingTime = DateTime.now().add(Duration(seconds: 1));
       currentPosX = localOffset.dx;
       currentPosY = localOffset.dy;
 //      log.d(

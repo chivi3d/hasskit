@@ -11,7 +11,7 @@ class BottomSheetMenu {
   mainBottomSheet(int roomIndex, BuildContext context) {
     bool showSort = false;
     List<String> classIds = [];
-    for (String entityId in gd.roomList[roomIndex].favorites) {
+    for (String entityId in gd.roomList[roomIndex].row1) {
       if (!classIds.contains(gd.entityTypeCombined(entityId))) {
         classIds.add(gd.entityTypeCombined(entityId));
       } else {
@@ -22,7 +22,7 @@ class BottomSheetMenu {
 
     if (!showSort) {
       classIds.clear();
-      for (String entityId in gd.roomList[roomIndex].entities) {
+      for (String entityId in gd.roomList[roomIndex].row2) {
         if (!classIds.contains(gd.entityTypeCombined(entityId))) {
           classIds.add(gd.entityTypeCombined(entityId));
         } else {

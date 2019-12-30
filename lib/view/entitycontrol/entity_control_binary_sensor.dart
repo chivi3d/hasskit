@@ -256,7 +256,7 @@ class _EntityControlBinarySensorState extends State<EntityControlBinarySensor> {
 
   void getHistory() async {
 //    log.d("getHistory Start");
-    await Future.delayed(const Duration(milliseconds: 1000));
+    await Future.delayed(const Duration(milliseconds: 500));
     var client = new http.Client();
     var url = gd.currentUrl +
         "/api/history/period?filter_entity_id=${widget.entityId}";

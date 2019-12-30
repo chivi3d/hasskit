@@ -14,6 +14,7 @@ import 'package:hasskit/view/page_view_builder.dart';
 import 'package:hasskit/view/setting_page.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:provider/provider.dart';
+import 'package:upgrader/upgrader.dart';
 import 'helper/general_data.dart';
 import 'helper/google_sign.dart';
 import 'helper/logger.dart';
@@ -57,10 +58,13 @@ class MyApp extends StatelessWidget {
             supportedLocales: [
               Locale('en', 'US'), //MUST BE FIRST FOR DEFAULT LANGUAGE
               Locale('bg', 'BG'),
+              Locale('de', 'DE'),
               Locale('el', 'GR'),
               Locale('fr', 'FR'),
               Locale('he', 'IL'),
+              Locale('hu', 'HU'),
               Locale('nl', 'NL'),
+              Locale('pl', 'PL'),
               Locale('pt', 'PT'),
               Locale('ru', 'RU'),
               Locale('sv', 'SE'),
@@ -240,107 +244,110 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
           "${generalData.roomList.length} | ",
       builder: (context, data, child) {
         return Scaffold(
-          body: ModalProgressHUD(
-            inAsyncCall: showLoading,
-            opacity: 1,
-            progressIndicator: SpinKitThreeBounce(
-              size: 40,
-              color: ThemeInfo.colorIconActive.withOpacity(0.5),
-            ),
-            color: ThemeInfo.colorBackgroundDark,
-            child: CupertinoTabScaffold(
-              tabBar: CupertinoTabBar(
-                backgroundColor: ThemeInfo.colorBottomSheet.withOpacity(0.5),
-                onTap: (int) {
-                  log.d("CupertinoTabBar onTap $int");
-                  if (gd.entityControlPageParentShow) {
-                    print(
-                        "CupertinoTabBar Navigator.pop(context) ${gd.entityControlPageParentShow}");
+          body: UpgradeAlert(
+            debugLogging: true,
+            child: ModalProgressHUD(
+              inAsyncCall: showLoading,
+              opacity: 1,
+              progressIndicator: SpinKitThreeBounce(
+                size: 40,
+                color: ThemeInfo.colorIconActive.withOpacity(0.5),
+              ),
+              color: ThemeInfo.colorBackgroundDark,
+              child: CupertinoTabScaffold(
+                tabBar: CupertinoTabBar(
+                  backgroundColor: ThemeInfo.colorBottomSheet.withOpacity(0.5),
+                  onTap: (int) {
+                    log.d("CupertinoTabBar onTap $int");
+                    if (gd.entityControlPageParentShow) {
+                      print(
+                          "CupertinoTabBar Navigator.pop(context) ${gd.entityControlPageParentShow}");
 //                    Navigator.pop(context);
-                    gd.viewMode = ViewMode.normal;
+                      gd.viewMode = ViewMode.normal;
+                    }
+                  },
+                  currentIndex: 0,
+                  items: [
+                    BottomNavigationBarItem(
+                      icon: Icon(MaterialDesignIcons.getIconDataFromIconName(
+                          "mdi:home-automation")),
+                      title: Text(
+                        gd.getRoomName(0),
+                        maxLines: 1,
+                        textScaleFactor: gd.textScaleFactorFix,
+                        overflow: TextOverflow.ellipsis,
+                        style:
+                            TextStyle(color: ThemeInfo.colorBottomSheetReverse),
+                      ),
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(
+                        MaterialDesignIcons.getIconDataFromIconName(
+                            "mdi:view-carousel"),
+                      ),
+                      title: Text(
+//                  gd.getRoomName(gd.lastSelectedRoom + 1),
+                        Translate.getString("global.rooms", context),
+                        maxLines: 1,
+                        textScaleFactor: gd.textScaleFactorFix,
+                        overflow: TextOverflow.ellipsis,
+                        style:
+                            TextStyle(color: ThemeInfo.colorBottomSheetReverse),
+                      ),
+//                title: TestWidget(),
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(MaterialDesignIcons.getIconDataFromIconName(
+                          "mdi:settings")),
+                      title: Text(
+                        Translate.getString("global.settings", context),
+                        maxLines: 1,
+                        textScaleFactor: gd.textScaleFactorFix,
+                        overflow: TextOverflow.ellipsis,
+                        style:
+                            TextStyle(color: ThemeInfo.colorBottomSheetReverse),
+                      ),
+                    ),
+                  ],
+                ),
+                tabBuilder: (context, index) {
+                  switch (index) {
+                    case 0:
+                      return CupertinoTabView(
+                        builder: (context) {
+                          return CupertinoPageScaffold(
+                            child: SinglePage(roomIndex: 0),
+//                          child: HassKitReview(),
+                          );
+                        },
+                      );
+                    case 1:
+                      return CupertinoTabView(
+                        builder: (context) {
+                          return CupertinoPageScaffold(
+                            child: PageViewBuilder(),
+                          );
+                        },
+                      );
+                    case 2:
+                      return CupertinoTabView(
+                        builder: (context) {
+                          return CupertinoPageScaffold(
+                            child: SettingPage(),
+                          );
+                        },
+                      );
+                    default:
+                      return CupertinoTabView(
+                        builder: (context) {
+                          return CupertinoPageScaffold(
+                            child: SinglePage(roomIndex: 0),
+                          );
+                        },
+                      );
                   }
                 },
-                currentIndex: 0,
-                items: [
-                  BottomNavigationBarItem(
-                    icon: Icon(MaterialDesignIcons.getIconDataFromIconName(
-                        "mdi:home-automation")),
-                    title: Text(
-                      gd.getRoomName(0),
-                      maxLines: 1,
-                      textScaleFactor: gd.textScaleFactorFix,
-                      overflow: TextOverflow.ellipsis,
-                      style:
-                          TextStyle(color: ThemeInfo.colorBottomSheetReverse),
-                    ),
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(
-                      MaterialDesignIcons.getIconDataFromIconName(
-                          "mdi:view-carousel"),
-                    ),
-                    title: Text(
-//                  gd.getRoomName(gd.lastSelectedRoom + 1),
-                      Translate.getString("global.rooms", context),
-                      maxLines: 1,
-                      textScaleFactor: gd.textScaleFactorFix,
-                      overflow: TextOverflow.ellipsis,
-                      style:
-                          TextStyle(color: ThemeInfo.colorBottomSheetReverse),
-                    ),
-//                title: TestWidget(),
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(MaterialDesignIcons.getIconDataFromIconName(
-                        "mdi:settings")),
-                    title: Text(
-                      Translate.getString("global.settings", context),
-                      maxLines: 1,
-                      textScaleFactor: gd.textScaleFactorFix,
-                      overflow: TextOverflow.ellipsis,
-                      style:
-                          TextStyle(color: ThemeInfo.colorBottomSheetReverse),
-                    ),
-                  ),
-                ],
               ),
-              tabBuilder: (context, index) {
-                switch (index) {
-                  case 0:
-                    return CupertinoTabView(
-                      builder: (context) {
-                        return CupertinoPageScaffold(
-                          child: SinglePage(roomIndex: 0),
-//                          child: HassKitReview(),
-                        );
-                      },
-                    );
-                  case 1:
-                    return CupertinoTabView(
-                      builder: (context) {
-                        return CupertinoPageScaffold(
-                          child: PageViewBuilder(),
-                        );
-                      },
-                    );
-                  case 2:
-                    return CupertinoTabView(
-                      builder: (context) {
-                        return CupertinoPageScaffold(
-                          child: SettingPage(),
-                        );
-                      },
-                    );
-                  default:
-                    return CupertinoTabView(
-                      builder: (context) {
-                        return CupertinoPageScaffold(
-                          child: SinglePage(roomIndex: 0),
-                        );
-                      },
-                    );
-                }
-              },
             ),
           ),
         );

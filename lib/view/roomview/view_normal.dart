@@ -177,7 +177,7 @@ class ViewNormal extends StatelessWidget {
   }
 
   List<Entity> entityFilter(int roomIndex, List<EntityType> types) {
-    List<String> roomEntities = gd.roomList[roomIndex].entities;
+    List<String> roomEntities = gd.roomList[roomIndex].row2;
     List<Entity> entitiesFilter = [];
 
     for (String entityId in roomEntities) {
@@ -191,7 +191,7 @@ class ViewNormal extends StatelessWidget {
   }
 
   List<Entity> entityFrontRow(int roomIndex) {
-    List<String> frontRowEntities = gd.roomList[roomIndex].favorites;
+    List<String> frontRowEntities = gd.roomList[roomIndex].row1;
     List<Entity> entitiesFilter = [];
 
     for (String entityId in frontRowEntities) {
@@ -205,7 +205,7 @@ class ViewNormal extends StatelessWidget {
   }
 
   List<Entity> entityFrontRowCamera(int roomIndex) {
-    List<String> frontRowEntities = gd.roomList[roomIndex].favorites;
+    List<String> frontRowEntities = gd.roomList[roomIndex].row1;
     List<Entity> entitiesFilter = [];
 
     for (String entityId in frontRowEntities) {
@@ -226,7 +226,7 @@ List<String> webViewByRow(int roomIndex, int rowNumber) {
     case 1:
       {
         for (int i = 0; i < gd.webViewSupportMax; i++) {
-          if (gd.roomList[roomIndex].favorites.contains("WebView${i + 1}")) {
+          if (gd.roomList[roomIndex].row1.contains("WebView${i + 1}")) {
             webViews.add("WebView${i + 1}");
           }
         }
@@ -235,7 +235,7 @@ List<String> webViewByRow(int roomIndex, int rowNumber) {
     case 2:
       {
         for (int i = 0; i < gd.webViewSupportMax; i++) {
-          if (gd.roomList[roomIndex].entities.contains("WebView${i + 1}")) {
+          if (gd.roomList[roomIndex].row2.contains("WebView${i + 1}")) {
             webViews.add("WebView${i + 1}");
           }
         }
@@ -262,7 +262,7 @@ List<String> webViewByRow(int roomIndex, int rowNumber) {
     default:
       {
         for (int i = 0; i < gd.webViewSupportMax; i++) {
-          if (gd.roomList[roomIndex].favorites.contains("WebView${i + 1}")) {
+          if (gd.roomList[roomIndex].row1.contains("WebView${i + 1}")) {
             webViews.add("WebView${i + 1}");
           }
         }
@@ -279,12 +279,12 @@ List<String> entityFilterByRow(int roomIndex, int rowNumber, bool isCamera) {
   switch (rowNumber) {
     case 1:
       {
-        roomRowEntities = gd.roomList[roomIndex].favorites;
+        roomRowEntities = gd.roomList[roomIndex].row1;
       }
       break;
     case 2:
       {
-        roomRowEntities = gd.roomList[roomIndex].entities;
+        roomRowEntities = gd.roomList[roomIndex].row2;
       }
       break;
     case 3:
@@ -299,7 +299,7 @@ List<String> entityFilterByRow(int roomIndex, int rowNumber, bool isCamera) {
       break;
     default:
       {
-        roomRowEntities = gd.roomList[roomIndex].favorites;
+        roomRowEntities = gd.roomList[roomIndex].row1;
       }
       break;
   }
