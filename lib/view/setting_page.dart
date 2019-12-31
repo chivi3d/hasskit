@@ -12,7 +12,6 @@ import 'package:hasskit/model/local_language.dart';
 import 'package:hasskit/model/login_data.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
-import 'package:upgrader/upgrader.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:validators/validators.dart';
 import 'setting_lock.dart';
@@ -436,10 +435,6 @@ class _SettingPageState extends State<SettingPage> {
                           ),
                         ),
                       ),
-                      Container(
-                        padding: EdgeInsets.all(8),
-                        child: UpgradeCard(),
-                      )
                     ],
                   ),
                 ),
