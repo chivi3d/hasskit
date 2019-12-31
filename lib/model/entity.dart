@@ -776,7 +776,7 @@ class Entity {
   }
 
   String getStateDisplayTranslated(BuildContext context) {
-    if (isStateOn && entityId.contains("fan.")) {
+    if (entityId.contains("fan.")) {
       if (speed != null && speed.length > 0 && speed != "null") {
         if (speed.toLowerCase() == "high")
           return Translate.getString("states.fan_high", context);

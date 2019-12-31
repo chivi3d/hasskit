@@ -116,69 +116,67 @@ class SliverNavigationBar extends StatelessWidget {
             style: TextStyle(color: ThemeInfo.colorBottomSheetReverse),
             overflow: TextOverflow.ellipsis,
           ),
-          trailing: Container(
-            width: 100,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                gd.activeDevicesOn.length > 0
-                    ? InkWell(
-                        onTap: () {
-                          gd.activeDevicesShow = !gd.activeDevicesShow;
-                          if (gd.activeDevicesShow)
-                            gd.viewNormalController.animateTo(0,
-                                duration: Duration(milliseconds: 300),
-                                curve: Curves.easeIn);
-                        },
-                        child: Stack(
-                          alignment: Alignment.topRight,
-                          children: <Widget>[
-                            Icon(Icons.notifications,
-                                color: Theme.of(context).textTheme.title.color),
-                            Container(
-                              width: 15,
-                              height: 15,
-                              padding: EdgeInsets.all(2),
-                              decoration: BoxDecoration(
-                                color: ThemeInfo.colorIconActive,
-                                shape: BoxShape.circle,
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              gd.activeDevicesOn.length > 0
+                  ? InkWell(
+                      onTap: () {
+                        gd.activeDevicesShow = !gd.activeDevicesShow;
+                        if (gd.activeDevicesShow)
+                          gd.viewNormalController.animateTo(0,
+                              duration: Duration(milliseconds: 300),
+                              curve: Curves.easeIn);
+                      },
+                      child: Stack(
+                        alignment: Alignment.topRight,
+                        children: <Widget>[
+                          Icon(Icons.notifications,
+                              color: Theme.of(context).textTheme.title.color),
+                          Container(
+                            width: 15,
+                            height: 15,
+                            padding: EdgeInsets.all(2),
+                            decoration: BoxDecoration(
+                              color: ThemeInfo.colorIconActive,
+                              shape: BoxShape.circle,
+                            ),
+                            child: FittedBox(
+                              child: AutoSizeText(
+                                "${gd.activeDevicesOn.length}",
+                                style: TextStyle(color: Colors.white),
+                                maxLines: 1,
                               ),
-                              child: FittedBox(
-                                child: AutoSizeText(
-                                  "${gd.activeDevicesOn.length}",
-                                  style: TextStyle(color: Colors.white),
-                                  maxLines: 1,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      )
-                    : Container(),
-                gd.roomList.length > 0 && !gd.deviceSetting.settingLocked
-                    ? InkWell(
-                        onTap: () {
-                          if (gd.viewMode != ViewMode.sort &&
-                              gd.viewMode != ViewMode.edit) {
-                            bottomSheetMenu.mainBottomSheet(roomIndex, context);
-                          } else {
-                            gd.viewMode = ViewMode.normal;
-                          }
-                        },
-                        child: Container(
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  : Container(),
+              gd.roomList.length > 0 && !gd.deviceSetting.settingLocked
+                  ? InkWell(
+                      onTap: () {
+                        if (gd.viewMode != ViewMode.sort &&
+                            gd.viewMode != ViewMode.edit) {
+                          bottomSheetMenu.mainBottomSheet(roomIndex, context);
+                        } else {
+                          gd.viewMode = ViewMode.normal;
+                        }
+                      },
+                      child: Container(
 //                          padding: EdgeInsets.fromLTRB(2, 0, 2, 0),
 //                          decoration: BoxDecoration(
 //                              borderRadius: BorderRadius.circular(4),
 //                              color: Colors.black.withOpacity(0.5)),
-                          child: Icon(
-                            topIcon,
-                            color: Theme.of(context).textTheme.title.color,
-                          ),
+                        child: Icon(
+                          topIcon,
+                          color: Theme.of(context).textTheme.title.color,
                         ),
-                      )
-                    : Container(),
-              ],
-            ),
+                      ),
+                    )
+                  : Container(),
+            ],
           ),
         );
       },

@@ -293,38 +293,23 @@ class _EntityControlFanState extends State<EntityControlFan> {
       log.d(
           "_onVerticalDragEnd currentStep $currentStep buttonValue $buttonValue");
 
-      var outMsg;
-
-      if (!gd.entities[widget.entityId].isStateOn) {
-        outMsg = {
-          "id": gd.socketId,
-          "type": "call_service",
-          "domain": "fan",
-          "service": "turn_on",
-          "service_data": {
-            "entity_id": widget.entityId,
-          }
-        };
-        gd.entities[widget.entityId].state = "on";
-        var outMsgEncoded = json.encode(outMsg);
-        gd.sendSocketMessage(outMsgEncoded);
-
-        outMsg = {
-          "id": gd.socketId,
-          "type": "call_service",
-          "domain": "fan",
-          "service": "set_speed",
-          "service_data": {
-            "entity_id": widget.entityId,
-            "speed": gd.entities[widget.entityId].speedList[currentStep],
-          }
-        };
-      }
+      var outMsg = {
+        "id": gd.socketId,
+        "type": "call_service",
+        "domain": "fan",
+        "service": "set_speed",
+        "service_data": {
+          "entity_id": widget.entityId,
+          "speed": gd.entities[widget.entityId].speedList[currentStep],
+        }
+      };
 
       gd.entities[widget.entityId].speed =
           gd.entities[widget.entityId].speedList[currentStep];
-      var outMsgEncoded = json.encode(outMsg);
-      gd.sendSocketMessage(outMsgEncoded);
+      print(
+          "gd.entities[widget.entityId].speed ${gd.entities[widget.entityId].speed}");
+      var message = json.encode(outMsg);
+      gd.sendSocketMessage(message);
     });
   }
 

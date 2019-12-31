@@ -15,35 +15,12 @@ import 'package:hasskit/view/page_view_builder.dart';
 import 'package:hasskit/view/setting_page.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:provider/provider.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:upgrader/upgrader.dart';
 import 'helper/general_data.dart';
 import 'helper/google_sign.dart';
 import 'helper/logger.dart';
 import 'helper/material_design_icons.dart';
-
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
-
-// Streams are created so that app can respond to notification-related events since the plugin is initialised in the `main` function
-final BehaviorSubject<ReceivedNotification> didReceiveLocalNotificationSubject =
-    BehaviorSubject<ReceivedNotification>();
-
-final BehaviorSubject<String> selectNotificationSubject =
-    BehaviorSubject<String>();
-
-class ReceivedNotification {
-  final int id;
-  final String title;
-  final String body;
-  final String payload;
-
-  ReceivedNotification(
-      {@required this.id,
-      @required this.title,
-      @required this.body,
-      @required this.payload});
-}
+import 'helper/local_notification.dart';
 
 Future<void> main() async {
   // needed if you intend to initialize in the `main` function

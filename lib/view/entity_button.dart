@@ -216,7 +216,7 @@ class _EntityButtonDisplayState extends State<EntityButtonDisplay> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.end,
                           children: <Widget>[
                             Expanded(
                               flex: 100,

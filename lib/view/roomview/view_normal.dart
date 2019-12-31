@@ -52,6 +52,12 @@ class ViewNormal extends StatelessWidget {
       controller: gd.viewNormalController,
       slivers: [
         SliverNavigationBar(roomIndex: roomIndex),
+//        SliverFixedExtentList(
+//          itemExtent: 10,
+//          delegate: SliverChildListDelegate(
+//            [Container()],
+//          ),
+//        ),
         SliverEntityStatusRunning(),
         showAddFirstButton
             ? SliverPadding(
@@ -89,12 +95,6 @@ class ViewNormal extends StatelessWidget {
                 ),
               )
             : gd.emptySliver,
-        SliverFixedExtentList(
-          itemExtent: 10,
-          delegate: SliverChildListDelegate(
-            [Container()],
-          ),
-        ),
         row1.length + row1Cam.length > 0
             ? SliverHeaderNormal(icon: Icon(Icons.looks_one), title: '')
             : gd.emptySliver,

@@ -12,6 +12,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:hasskit/helper/local_notification.dart';
 import 'package:hasskit/helper/theme_info.dart';
 import 'package:hasskit/helper/web_socket.dart';
 import 'package:hasskit/model/base_setting.dart';
@@ -280,6 +281,22 @@ class GeneralData with ChangeNotifier {
           "\n socketSubscribeEvents $entityId message ${message['event']['data']['new_state']}");
       if (!_entities.containsKey(entityId)) {
         log.e("_entities.containsKey($entityId");
+      }
+    }
+
+    if (baseSetting.notificationDevices.contains(entityId)) {
+//      print("baseSetting.notificationDevices $entityId");
+      var oldState = jsonEncode(message['event']['data']['old_state']["state"]);
+      var newState = jsonEncode(message['event']['data']['new_state']["state"]);
+      if (oldState != null && newState != null && oldState != newState) {
+        print(
+            "notificationDevices ${gd.entities[entityId].getFriendlyName} $entityId oldState $oldState newState $newState");
+        var title = gd.textToDisplay(gd.entities[entityId].getFriendlyName);
+        var body = gd.textToDisplay(
+            "${gd.entities[entityId].getStateDisplayTranslated(mediaQueryContext)}");
+//        LocalNotification.showNotification(title, body, entityId);
+        LocalNotification.showNotificationWithNoBody(
+            title + ": " + body, entityId);
       }
     }
 
