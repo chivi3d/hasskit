@@ -288,13 +288,22 @@ class GeneralData with ChangeNotifier {
 //      print("baseSetting.notificationDevices $entityId");
       var oldState = jsonEncode(message['event']['data']['old_state']["state"]);
       var newState = jsonEncode(message['event']['data']['new_state']["state"]);
-      if (oldState != null && newState != null && oldState != newState) {
+
+      if (![
+            null,
+            'unavaliable',
+            'unknown',
+          ].contains(oldState) &&
+          ![
+            null,
+            'unavaliable',
+            'unknown',
+          ].contains(newState)) {
         print(
             "notificationDevices ${gd.entities[entityId].getFriendlyName} $entityId oldState $oldState newState $newState");
         var title = gd.textToDisplay(gd.entities[entityId].getFriendlyName);
         var body = gd.textToDisplay(
             "${gd.entities[entityId].getStateDisplayTranslated(mediaQueryContext)}");
-//        LocalNotification.showNotification(title, body, entityId);
         LocalNotification.showNotificationWithNoBody(
             title + ": " + body, entityId);
       }
