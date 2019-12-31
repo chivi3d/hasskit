@@ -129,20 +129,41 @@ class _EntityControlSensorState extends State<EntityControlSensor> {
   void getHistory() async {
     var client = new http.Client();
 
+    var timeZoneOffset = DateTime.now().timeZoneOffset;
+    var timeZoneOffsetHour =
+        timeZoneOffset.inHours.toInt().abs().toString().padLeft(2, '0');
+    var timeZoneOffsetMinute =
+        ((timeZoneOffset - Duration(hours: timeZoneOffset.inHours.toInt()))
+                .inMinutes)
+            .toString()
+            .padLeft(2, '0');
+    var timeZoneOffsetString = timeZoneOffsetHour + ":" + timeZoneOffsetMinute;
+    if (timeZoneOffset.isNegative) {
+      timeZoneOffsetString = "-" + timeZoneOffsetString;
+    } else {
+      timeZoneOffsetString = "+" + timeZoneOffsetString;
+    }
+    print("timeZoneOffset $timeZoneOffset");
+    print("timeZoneOffsetHour $timeZoneOffsetHour");
+    print("timeZoneOffsetMinute $timeZoneOffsetMinute");
+    print("timeZoneOffsetString $timeZoneOffsetString");
+
     var startPeriod = DateTime.now().subtract(Duration(hours: 24));
     startPeriod = startPeriod.subtract(Duration(hours: DateTime.now().hour));
     startPeriod =
         startPeriod.subtract(Duration(minutes: DateTime.now().minute));
     startPeriod =
-        startPeriod.subtract(Duration(seconds: DateTime.now().second + 1));
+        startPeriod.subtract(Duration(seconds: DateTime.now().second));
 
     var startPeriodString =
         DateFormat("yyyy-MM-dd'T'HH:mm:ss").format(startPeriod);
-    startPeriodString = startPeriodString + DateTime.now().timeZoneName + ":00";
+    startPeriodString = startPeriodString + timeZoneOffsetString;
+    print("startPeriodString $startPeriodString");
 
     var endPeriodString = DateFormat("yyyy-MM-dd'T'HH:mm:ss")
-        .format(startPeriod.add(Duration(days: 2)));
-    endPeriodString = endPeriodString + DateTime.now().timeZoneName + ":00";
+        .format(startPeriod.add(Duration(minutes: 2879)));
+    endPeriodString = endPeriodString + timeZoneOffsetString;
+    print("endPeriodString $endPeriodString");
     endPeriodString = Uri.encodeComponent(endPeriodString);
 
     var url = gd.currentUrl +
@@ -157,7 +178,7 @@ class _EntityControlSensorState extends State<EntityControlSensor> {
       'Authorization': 'Bearer ${gd.loginDataCurrent.longToken}',
     };
 
-    log.d("startPeriodString $startPeriodString url $url");
+    log.d("url $url");
 
     try {
       var response = await http.get(url, headers: headers);

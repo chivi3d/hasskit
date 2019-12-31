@@ -116,14 +116,34 @@ class _EntityControlGoogleMapsState extends State<EntityControlGoogleMaps> {
 
   void getHistory() async {
     log.d("getHistory Start");
+
+    var timeZoneOffset = DateTime.now().timeZoneOffset;
+    var timeZoneOffsetHour =
+        timeZoneOffset.inHours.toInt().abs().toString().padLeft(2, '0');
+    var timeZoneOffsetMinute =
+        ((timeZoneOffset - Duration(hours: timeZoneOffset.inHours.toInt()))
+                .inMinutes)
+            .toString()
+            .padLeft(2, '0');
+    var timeZoneOffsetString = timeZoneOffsetHour + ":" + timeZoneOffsetMinute;
+    if (timeZoneOffset.isNegative) {
+      timeZoneOffsetString = "-" + timeZoneOffsetString;
+    } else {
+      timeZoneOffsetString = "+" + timeZoneOffsetString;
+    }
+    print("timeZoneOffset $timeZoneOffset");
+    print("timeZoneOffsetHour $timeZoneOffsetHour");
+    print("timeZoneOffsetMinute $timeZoneOffsetMinute");
+    print("timeZoneOffsetString $timeZoneOffsetString");
+
     var startPeriod = DateTime.now().subtract(Duration(hours: 168));
     var startPeriodString =
         DateFormat("yyyy-MM-dd'T'HH:mm:ss").format(startPeriod);
-    startPeriodString = startPeriodString + DateTime.now().timeZoneName + ":00";
+    startPeriodString = startPeriodString + timeZoneOffsetString;
 
     var endPeriodString =
         DateFormat("yyyy-MM-dd'T'HH:mm:ss").format(DateTime.now());
-    endPeriodString = endPeriodString + DateTime.now().timeZoneName + ":00";
+    endPeriodString = endPeriodString + timeZoneOffsetString;
     endPeriodString = Uri.encodeComponent(endPeriodString);
     var client = new http.Client();
 //    var url = gd.currentUrl +
