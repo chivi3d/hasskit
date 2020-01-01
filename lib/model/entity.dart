@@ -194,7 +194,7 @@ class Entity {
                     json['attributes']['current_temperature'].toString()) !=
                 null
             ? double.parse(json['attributes']['current_temperature'].toString())
-            : 0,
+            : null,
         fanMode: json['attributes']['fan_mode'].toString() != null
             ? json['attributes']['fan_mode'].toString()
             : "",

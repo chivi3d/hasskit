@@ -298,7 +298,8 @@ class GeneralData with ChangeNotifier {
             null,
             'unavaliable',
             'unknown',
-          ].contains(newState)) {
+          ].contains(newState) &&
+          oldState != newState) {
         print(
             "notificationDevices ${gd.entities[entityId].getFriendlyName} $entityId oldState $oldState newState $newState");
         var title = gd.textToDisplay(gd.entities[entityId].getFriendlyName);

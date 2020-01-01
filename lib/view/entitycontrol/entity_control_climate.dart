@@ -14,12 +14,14 @@ class EntityControlClimate extends StatelessWidget {
   Widget build(BuildContext context) {
     var entity = gd.entities[entityId];
     var info04 = InfoProperties(
-//            bottomLabelStyle: Theme.of(context).textTheme.title,
+        bottomLabelStyle: Theme.of(context).textTheme.title,
 //        bottomLabelStyle: TextStyle(
 //            color: HexColor('#54826D'),
 //            fontSize: 14,
 //            fontWeight: FontWeight.w600),
-//            bottomLabelText: entity.getOverrideName,
+        bottomLabelText: entity.currentTemperature != null
+            ? entity.currentTemperature.toString() + " ˚"
+            : "",
         mainLabelStyle: Theme.of(context).textTheme.display3,
 //        mainLabelStyle: TextStyle(
 //            color: HexColor('#54826D'),
