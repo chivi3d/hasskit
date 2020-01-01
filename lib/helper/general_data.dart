@@ -291,12 +291,12 @@ class GeneralData with ChangeNotifier {
 
       if (![
             null,
-            'unavaliable',
+            'unavailable',
             'unknown',
           ].contains(oldState) &&
           ![
             null,
-            'unavaliable',
+            'unavailable',
             'unknown',
           ].contains(newState) &&
           oldState != newState) {

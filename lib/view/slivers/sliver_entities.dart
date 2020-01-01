@@ -6,6 +6,7 @@ import 'package:hasskit/model/entity.dart';
 import 'package:hasskit/view/entity_button.dart';
 import 'package:hasskit/view/entity_camera.dart';
 import 'package:hasskit/view/entitycontrol/entity_control_camera_video_player.dart';
+import 'package:hasskit/view/entitycontrol/entity_control_camera_webview.dart';
 import 'package:hasskit/view/entitycontrol/entity_control_parent.dart';
 import 'package:hasskit/view/slivers/sliver_web_view.dart';
 import 'package:reorderables/reorderables.dart';
@@ -49,8 +50,7 @@ class SliverEntitiesNormal extends StatelessWidget {
               useRootNavigator: true,
               builder: (BuildContext context) {
                 return Theme.of(context).platform == TargetPlatform.iOS
-//                    ? EntityControlCameraWebView(entityId: entityId)
-                    ? EntityControlCameraVideoPlayer(entityId: entityId)
+                    ? EntityControlCameraWebView(entityId: entityId)
                     : EntityControlCameraVideoPlayer(entityId: entityId);
               },
             );
@@ -68,8 +68,7 @@ class SliverEntitiesNormal extends StatelessWidget {
               useRootNavigator: true,
               builder: (BuildContext context) {
                 return Theme.of(context).platform == TargetPlatform.iOS
-//                    ? EntityControlCameraWebView(entityId: entityId)
-                    ? EntityControlCameraVideoPlayer(entityId: entityId)
+                    ? EntityControlCameraWebView(entityId: entityId)
                     : EntityControlCameraVideoPlayer(entityId: entityId);
               },
             );
