@@ -28,7 +28,7 @@ class ReceivedNotification {
 
 class LocalNotification {
   static Future<void> showNotification(
-      String entityId, String title, String body, String payload) async {
+      String title, String body, String payload) async {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
         'your channel id', 'your channel name', 'your channel description',
         importance: Importance.Max, priority: Priority.High, ticker: 'ticker');
@@ -36,7 +36,7 @@ class LocalNotification {
     var platformChannelSpecifics = NotificationDetails(
         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
 
-    var uniqueNumber = gd.entities.keys.toList().indexOf(entityId);
+    var uniqueNumber = gd.entities.keys.toList().indexOf(payload);
     if (uniqueNumber == null) uniqueNumber = 0;
     await flutterLocalNotificationsPlugin.show(
         uniqueNumber, title, body, platformChannelSpecifics,
@@ -46,21 +46,20 @@ class LocalNotification {
   }
 
   static Future<void> showNotificationWithNoBody(
-      String entityId, String title, String payload) async {
+      String title, String payload) async {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
         'your channel id', 'your channel name', 'your channel description',
         importance: Importance.Max, priority: Priority.High, ticker: 'ticker');
     var iOSPlatformChannelSpecifics = IOSNotificationDetails();
     var platformChannelSpecifics = NotificationDetails(
         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
-    var uniqueNumber = gd.entities.keys.toList().indexOf(entityId);
+    var uniqueNumber = gd.entities.keys.toList().indexOf(payload);
     if (uniqueNumber == null) uniqueNumber = 0;
     await flutterLocalNotificationsPlugin.show(
         uniqueNumber, title, null, platformChannelSpecifics,
         payload: payload);
 
-    print(
-        "showNotificationWithNoBody uniqueNumber $uniqueNumber title $title payload $payload");
+    print("uniqueNumber $uniqueNumber title $title payload $payload\n ");
   }
 
   static Future<void> cancelNotification() async {

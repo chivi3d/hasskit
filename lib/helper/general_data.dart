@@ -303,8 +303,13 @@ class GeneralData with ChangeNotifier {
         var title = gd.textToDisplay(gd.entities[entityId].getFriendlyName);
         var body = gd.textToDisplay(
             "${gd.entities[entityId].getStateDisplayTranslated(mediaQueryContext)}");
+        var uniqueNumber = gd.entities.keys.toList().indexOf(entityId);
+        if (uniqueNumber == null) uniqueNumber = 0;
+        print(
+            "\nshowNotificationWithNoBody\noldState $oldState newState $newState");
+
         LocalNotification.showNotificationWithNoBody(
-            entityId, title + ": " + body, entityId);
+            title + ": " + body, entityId);
       }
     }
 
