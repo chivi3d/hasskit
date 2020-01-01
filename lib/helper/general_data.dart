@@ -293,20 +293,18 @@ class GeneralData with ChangeNotifier {
             null,
             'unavailable',
             'unknown',
-          ].contains(oldState) &&
+          ].contains(oldState.toLowerCase()) &&
           ![
             null,
             'unavailable',
             'unknown',
-          ].contains(newState) &&
+          ].contains(newState.toLowerCase()) &&
           oldState != newState) {
-        print(
-            "notificationDevices ${gd.entities[entityId].getFriendlyName} $entityId oldState $oldState newState $newState");
         var title = gd.textToDisplay(gd.entities[entityId].getFriendlyName);
         var body = gd.textToDisplay(
             "${gd.entities[entityId].getStateDisplayTranslated(mediaQueryContext)}");
         LocalNotification.showNotificationWithNoBody(
-            title + ": " + body, entityId);
+            entityId, title + ": " + body, entityId);
       }
     }
 
