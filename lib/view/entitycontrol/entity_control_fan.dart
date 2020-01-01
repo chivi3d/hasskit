@@ -36,6 +36,11 @@ class _EntityControlFanState extends State<EntityControlFan> {
     buttonValue = lowerPartHeight;
     buttonValueOnTapDown = lowerPartHeight;
     Entity entity = gd.entities[widget.entityId];
+    if (!entity.speedList.contains("off") &&
+        !entity.speedList.contains("Off") &&
+        !entity.speedList.contains("OFF")) {
+      entity.speedList.insert(0, 'off');
+    }
     division = entity.speedList.length - 1;
     stepLength = (buttonHeight - lowerPartHeight) / division;
 
@@ -293,16 +298,30 @@ class _EntityControlFanState extends State<EntityControlFan> {
       log.d(
           "_onVerticalDragEnd currentStep $currentStep buttonValue $buttonValue");
 
-      var outMsg = {
-        "id": gd.socketId,
-        "type": "call_service",
-        "domain": "fan",
-        "service": "set_speed",
-        "service_data": {
-          "entity_id": widget.entityId,
-          "speed": gd.entities[widget.entityId].speedList[currentStep],
-        }
-      };
+      var outMsg;
+
+      if (currentStep == 0) {
+        outMsg = {
+          "id": gd.socketId,
+          "type": "call_service",
+          "domain": "fan",
+          "service": "turn_off",
+          "service_data": {
+            "entity_id": widget.entityId,
+          }
+        };
+      } else {
+        outMsg = {
+          "id": gd.socketId,
+          "type": "call_service",
+          "domain": "fan",
+          "service": "set_speed",
+          "service_data": {
+            "entity_id": widget.entityId,
+            "speed": gd.entities[widget.entityId].speedList[currentStep],
+          }
+        };
+      }
 
       gd.entities[widget.entityId].speed =
           gd.entities[widget.entityId].speedList[currentStep];

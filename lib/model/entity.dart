@@ -85,6 +85,9 @@ class Entity {
   //gps
   double latitude;
   double longitude;
+  //input_select
+  List<String> options;
+
   Entity({
     this.entityId,
     this.deviceClass,
@@ -148,6 +151,8 @@ class Entity {
     //gps
     this.latitude,
     this.longitude,
+    //input_select
+    this.options,
   });
 
   factory Entity.fromJson(Map<String, dynamic> json) {
@@ -346,6 +351,9 @@ class Entity {
             double.tryParse(json["attributes"]["longitude"].toString()) != null
                 ? double.parse(json["attributes"]["longitude"].toString())
                 : null,
+        options: json['attributes']['options'] != null
+            ? List<String>.from(json['attributes']['options'])
+            : [],
       );
     } catch (e) {
       log.e("Entity.fromJson newEntity $e");

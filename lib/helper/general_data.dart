@@ -231,10 +231,10 @@ class GeneralData with ChangeNotifier {
         continue;
       }
 
-//      if (entity.entityId.contains("fan.")) {
-//        log.w("\n socketGetStates ${entity.entityId}");
-//        print("\n zone. mess $mess");
-//      }
+      if (entity.entityId.contains("input_select.")) {
+        log.w("socketGetStates ${entity.entityId}");
+        print("mess $mess");
+      }
 
       if (previousEntitiesList.contains(entity.entityId))
         previousEntitiesList.remove(entity.entityId);
@@ -289,24 +289,25 @@ class GeneralData with ChangeNotifier {
       var oldState = jsonEncode(message['event']['data']['old_state']["state"]);
       var newState = jsonEncode(message['event']['data']['new_state']["state"]);
 
-      if (![
-            null,
-            'unavailable',
-            'unknown',
-          ].contains(oldState.toLowerCase()) &&
-          ![
-            null,
-            'unavailable',
-            'unknown',
-          ].contains(newState.toLowerCase()) &&
-          oldState != newState) {
+      if (oldState == null ||
+          oldState.toLowerCase() == "unavailable" ||
+          oldState.toLowerCase() == "unknown") {
+        print("nshowNotificationWithNoBody $entityId oldState unavailable");
+      } else if (newState == null ||
+          newState.toLowerCase() == "unavailable" ||
+          newState.toLowerCase() == "unknown") {
+        print("nshowNotificationWithNoBody $entityId newState unavailable");
+      } else if (newState == oldState) {
+        print(
+            "nshowNotificationWithNoBody $entityId newState == oldState $newState");
+      } else {
         var title = gd.textToDisplay(gd.entities[entityId].getFriendlyName);
         var body = gd.textToDisplay(
             "${gd.entities[entityId].getStateDisplayTranslated(mediaQueryContext)}");
         var uniqueNumber = gd.entities.keys.toList().indexOf(entityId);
         if (uniqueNumber == null) uniqueNumber = 0;
         print(
-            "\nshowNotificationWithNoBody\noldState $oldState newState $newState");
+            "\nshowNotificationWithNoBody\n$entityId oldState $oldState newState $newState");
 
         LocalNotification.showNotificationWithNoBody(
             title + ": " + body, entityId);

@@ -320,12 +320,13 @@ class EntityIcon extends StatelessWidget {
         alignment: Alignment.center,
         padding: EdgeInsets.all(4 * gd.textScaleFactor),
         child: entity.getTemperature != entity.getTemperature.toInt()
-            ? AutoSizeText(
+            ? Text(
                 "${entity.getTemperature}",
                 style: ThemeInfo.textNameButtonActive.copyWith(
                   color: ThemeInfo.colorBottomSheet,
                   fontSize: 100,
                 ),
+                maxLines: 1,
                 textScaleFactor: gd.textScaleFactor,
               )
             : AutoSizeText(
@@ -334,6 +335,7 @@ class EntityIcon extends StatelessWidget {
                   color: ThemeInfo.colorBottomSheet,
                   fontSize: 100,
                 ),
+                maxLines: 1,
                 textScaleFactor: gd.textScaleFactor,
               ),
       );

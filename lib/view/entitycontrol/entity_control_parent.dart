@@ -11,6 +11,7 @@ import 'package:hasskit/view/entitycontrol/entity_control_climate.dart';
 import 'package:hasskit/view/entitycontrol/entity_control_cover_position.dart';
 import 'package:hasskit/view/entitycontrol/entity_control_general.dart';
 import 'package:hasskit/view/entitycontrol/entity_control_google_maps.dart';
+import 'package:hasskit/view/entitycontrol/entity_control_input_select.dart';
 import 'package:hasskit/view/entitycontrol/entity_control_media_player.dart';
 import 'package:hasskit/view/entitycontrol/entity_control_vacuum.dart';
 import 'package:provider/provider.dart';
@@ -135,6 +136,8 @@ class _EntityControlParentState extends State<EntityControlParent> {
         } else if (entity.entityId.contains("device_tracker.") ||
             entity.entityId.contains("person.")) {
           entityControl = EntityControlGoogleMaps(entityId: widget.entityId);
+        } else if (entity.entityId.contains("input_select.")) {
+          entityControl = EntityControlInputSelect(entityId: widget.entityId);
         } else if (entity.entityType == EntityType.lightSwitches ||
             entity.entityType == EntityType.mediaPlayers ||
             entity.entityId.contains("group.") ||

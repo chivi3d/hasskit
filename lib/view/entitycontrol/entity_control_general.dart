@@ -18,7 +18,9 @@ class EntityControlGeneral extends StatelessWidget {
       builder: (context, data, child) {
         var entity = gd.entities[entityId];
         return Container(
+          alignment: Alignment.center,
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Icon(
                 entity.mdiIcon,
