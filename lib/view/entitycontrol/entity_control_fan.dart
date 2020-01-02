@@ -29,6 +29,7 @@ class _EntityControlFanState extends State<EntityControlFan> {
   int currentStep = 0;
   double stepLength;
   List<Widget> positionStacks = [];
+  List<String> speedList = [];
 
   @override
   void initState() {
@@ -36,15 +37,16 @@ class _EntityControlFanState extends State<EntityControlFan> {
     buttonValue = lowerPartHeight;
     buttonValueOnTapDown = lowerPartHeight;
     Entity entity = gd.entities[widget.entityId];
-    if (!entity.speedList.contains("off") &&
-        !entity.speedList.contains("Off") &&
-        !entity.speedList.contains("OFF")) {
-      entity.speedList.insert(0, 'off');
+    speedList = entity.speedList;
+    if (!speedList.contains("off") &&
+        !speedList.contains("Off") &&
+        !speedList.contains("OFF")) {
+      speedList.insert(0, 'off');
     }
-    division = entity.speedList.length - 1;
+    division = speedList.length - 1;
     stepLength = (buttonHeight - lowerPartHeight) / division;
 
-    for (int i = 0; i < entity.speedList.length; i++) {
+    for (int i = 0; i < speedList.length; i++) {
       var positionStack = Positioned(
         top: i * stepLength,
         child: Container(
@@ -58,8 +60,8 @@ class _EntityControlFanState extends State<EntityControlFan> {
     if (!entity.isStateOn) {
       buttonValue = lowerPartHeight;
     } else {
-      if (entity.speedList.contains(entity.speed)) {
-        currentStep = entity.speedList.indexOf(entity.speed.toString());
+      if (speedList.contains(entity.speed)) {
+        currentStep = speedList.indexOf(entity.speed.toString());
         buttonValue = lowerPartHeight + currentStep * stepLength;
       }
     }
@@ -226,7 +228,7 @@ class _EntityControlFanState extends State<EntityControlFan> {
                       ),
                       child: Text(
                         gd.textToDisplay(
-                            "${gd.entities[widget.entityId].getStateDisplayTranslated(context)}"),
+                            "${gd.entities[widget.entityId].getStateDisplayTranslated(gd.mediaQueryContext)}"),
                         style: ThemeInfo.textStatusButtonActive,
                         maxLines: 2,
                         textScaleFactor: gd.textScaleFactorFix,
@@ -310,6 +312,7 @@ class _EntityControlFanState extends State<EntityControlFan> {
             "entity_id": widget.entityId,
           }
         };
+        gd.entities[widget.entityId].state = "off";
       } else {
         if (!gd.entities[widget.entityId].isStateOn) {
           outMsg = {
@@ -321,6 +324,7 @@ class _EntityControlFanState extends State<EntityControlFan> {
               "entity_id": widget.entityId,
             }
           };
+          gd.entities[widget.entityId].state = "on";
           var message = json.encode(outMsg);
           gd.sendSocketMessage(message);
         }
@@ -332,15 +336,13 @@ class _EntityControlFanState extends State<EntityControlFan> {
           "service": "set_speed",
           "service_data": {
             "entity_id": widget.entityId,
-            "speed": gd.entities[widget.entityId].speedList[currentStep],
+            "speed": speedList[currentStep],
           }
         };
       }
-
-      gd.entities[widget.entityId].speed =
-          gd.entities[widget.entityId].speedList[currentStep];
+      gd.entities[widget.entityId].speed = speedList[currentStep];
       print(
-          "gd.entities[widget.entityId].speed ${gd.entities[widget.entityId].speed}");
+          "XXX speed ${gd.entities[widget.entityId].speed} state ${gd.entities[widget.entityId].state} getStateDisplay ${gd.entities[widget.entityId].getStateDisplay} getStateDisplayTranslated ${gd.entities[widget.entityId].getStateDisplayTranslated(context)}");
       var message = json.encode(outMsg);
       gd.sendSocketMessage(message);
     });

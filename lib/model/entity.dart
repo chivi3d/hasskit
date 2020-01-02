@@ -226,7 +226,7 @@ class Entity {
                 ? json['attributes']['direct_speed'].toString()
                 : json['attributes']['speed'] != null
                     ? json['attributes']['speed'].toString()
-                    : "0",
+                    : "Off",
 
         angle: int.tryParse(json['attributes']['angle'].toString()) != null
             ? int.parse(json['attributes']['angle'].toString())
@@ -785,21 +785,19 @@ class Entity {
 
   String getStateDisplayTranslated(BuildContext context) {
     if (entityId.contains("fan.")) {
-      if (speed != null && speed.length > 0 && speed != "null") {
-        if (speed.toLowerCase() == "high")
-          return Translate.getString("states.fan_high", context);
-        if (speed.toLowerCase() == "mediumhigh")
-          return Translate.getString("states.fan_high_medium", context);
-        if (speed.toLowerCase() == "medium")
-          return Translate.getString("states.fan_medium", context);
-        if (speed.toLowerCase() == "mediumlow")
-          return Translate.getString("states.fan_medium_low", context);
-        if (speed.toLowerCase() == "low")
-          return Translate.getString("states.fan_low", context);
-        if (speed.toLowerCase() == "lowest")
-          return Translate.getString("states.fan_lowest", context);
-        return speed;
-      }
+      if (speed.toLowerCase() == "high")
+        return Translate.getString("states.fan_high", context);
+      if (speed.toLowerCase() == "mediumhigh")
+        return Translate.getString("states.fan_high_medium", context);
+      if (speed.toLowerCase() == "medium")
+        return Translate.getString("states.fan_medium", context);
+      if (speed.toLowerCase() == "mediumlow")
+        return Translate.getString("states.fan_medium_low", context);
+      if (speed.toLowerCase() == "low")
+        return Translate.getString("states.fan_low", context);
+      if (speed.toLowerCase() == "lowest")
+        return Translate.getString("states.fan_lowest", context);
+      return speed;
     }
 
     if (state.toLowerCase() == "on")
