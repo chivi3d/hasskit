@@ -30,10 +30,10 @@ class EntityControlClimate extends StatelessWidget {
         modifier: (double value) {
           if (gd.entities[entityId].targetTempStep == 0.5) {
             return ' ${gd.roundTo05(value)}˚';
-          } else if (gd.entities[entityId].targetTempStep == 0.1) {
-            return ' ${value.toStringAsFixed(1)}˚';
-          } else {
+          } else if (gd.entities[entityId].targetTempStep == 1) {
             return ' ${value.toInt()}˚';
+          } else {
+            return ' ${value.toStringAsFixed(1)}˚';
           }
         });
 
@@ -65,7 +65,7 @@ class EntityControlClimate extends StatelessWidget {
       onChangeEnd: (double value) {
         print('onChangeEnd $value');
         var outMsg;
-        if (gd.entities[entityId].targetTempStep == 0.1) {
+        if (gd.entities[entityId].targetTempStep == 1) {
           outMsg = {
             "id": gd.socketId,
             "type": "call_service",
@@ -73,7 +73,7 @@ class EntityControlClimate extends StatelessWidget {
             "service": "set_temperature",
             "service_data": {
               "entity_id": entity.entityId,
-              "temperature": double.parse(value.toStringAsFixed(1)),
+              "temperature": value.toInt(),
             }
           };
         } else if (gd.entities[entityId].targetTempStep == 0.5) {
@@ -95,7 +95,7 @@ class EntityControlClimate extends StatelessWidget {
             "service": "set_temperature",
             "service_data": {
               "entity_id": entity.entityId,
-              "temperature": value.toInt(),
+              "temperature": double.parse(value.toStringAsFixed(1)),
             }
           };
         }

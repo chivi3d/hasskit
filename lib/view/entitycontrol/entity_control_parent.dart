@@ -402,6 +402,7 @@ class _EditEntityNormalState extends State<EditEntityNormal> {
     Entity entity = gd.entities[widget.entityId];
     _controller.text = '${gd.entities[widget.entityId].getOverrideName}';
     return Material(
+      color: ThemeInfo.colorBottomSheet,
       elevation: 1,
       child: Row(
         children: <Widget>[

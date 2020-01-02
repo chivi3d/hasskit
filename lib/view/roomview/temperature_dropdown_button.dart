@@ -47,8 +47,7 @@ class _TemperatureDropdownButtonState extends State<TemperatureDropdownButton> {
 
     List<Entity> entities = gd.entities.values
         .where((e) =>
-            !e.entityId.contains("binary_sensor.") &&
-            e.entityId.contains("sensor.") &&
+            (e.unitOfMeasurement == "°F" || e.unitOfMeasurement == "°C") &&
             double.tryParse(e.state) != null)
         .toList();
     entities.sort((a, b) => gd

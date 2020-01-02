@@ -299,7 +299,7 @@ class GeneralData with ChangeNotifier {
         print(
             "3 showNotificationWithNoBody $entityId newState == oldState $newState");
       } else {
-        var title = gd.textToDisplay(gd.entities[entityId].getFriendlyName);
+        var title = gd.textToDisplay(gd.entities[entityId].getOverrideName);
         var body = gd.textToDisplay(
             "${gd.entities[entityId].getStateDisplayTranslated(mediaQueryContext)}");
         var uniqueNumber = gd.entities.keys.toList().indexOf(entityId);

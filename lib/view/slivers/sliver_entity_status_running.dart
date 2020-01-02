@@ -83,7 +83,9 @@ class Status2ndRowItem extends StatelessWidget {
               filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
               child: Container(
                 padding: EdgeInsets.all(4),
-                color: entityId.contains("binary_sensor")
+                color: entityId.contains("binary_sensor.") ||
+                        entityId.contains("device_tracker.") ||
+                        entityId.contains("person.")
                     ? ThemeInfo.colorBackgroundActive.withOpacity(0.1)
                     : ThemeInfo.colorBackgroundActive,
                 child: Column(

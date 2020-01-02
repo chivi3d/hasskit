@@ -55,16 +55,23 @@ class SliverNavigationBar extends StatelessWidget {
         if (tempState != null) {
 //          log.d("tempState $tempState");
 
-          if (tempState > 35) {
+          var tempC = tempState;
+          if (gd.entities[gd.roomList[roomIndex].tempEntityId]
+                  .unitOfMeasurement ==
+              "°F") {
+            tempC = (tempState - 32) * 5 / 9;
+          }
+
+          if (tempC > 35) {
 //            backgroundColor = ThemeInfo.colorTemp05.withOpacity(0.5);
             iconColor = ThemeInfo.colorTemp05;
-          } else if (tempState > 30) {
+          } else if (tempC > 30) {
 //            backgroundColor = ThemeInfo.colorTemp04.withOpacity(0.5);
             iconColor = ThemeInfo.colorTemp04;
-          } else if (tempState > 20) {
+          } else if (tempC > 20) {
 //            backgroundColor = ThemeInfo.colorTemp03.withOpacity(0.5);
             iconColor = ThemeInfo.colorTemp03;
-          } else if (tempState > 15) {
+          } else if (tempC > 15) {
 //            backgroundColor = ThemeInfo.colorTemp02.withOpacity(0.5);
             iconColor = ThemeInfo.colorTemp02;
           } else {

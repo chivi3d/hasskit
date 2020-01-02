@@ -311,6 +311,20 @@ class _EntityControlFanState extends State<EntityControlFan> {
           }
         };
       } else {
+        if (!gd.entities[widget.entityId].isStateOn) {
+          outMsg = {
+            "id": gd.socketId,
+            "type": "call_service",
+            "domain": "fan",
+            "service": "turn_on",
+            "service_data": {
+              "entity_id": widget.entityId,
+            }
+          };
+          var message = json.encode(outMsg);
+          gd.sendSocketMessage(message);
+        }
+
         outMsg = {
           "id": gd.socketId,
           "type": "call_service",
