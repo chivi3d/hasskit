@@ -103,6 +103,7 @@ class WebSocket {
         gd.longTokenId = 0;
         gd.getStatesId = 0;
         gd.cameraInfosActive.clear();
+        gd.entities.clear();
       }
     }
   }

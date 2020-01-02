@@ -81,6 +81,23 @@ class _SettingLockDetailState extends State<SettingLockDetail> {
         child: Column(
           children: <Widget>[
             Container(height: MediaQuery.of(gd.mediaQueryContext).padding.top),
+            Row(
+              children: <Widget>[
+                InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    width: 40,
+                    height: 40,
+                    child: Icon(
+                      Icons.chevron_left,
+                      size: 40,
+                    ),
+                  ),
+                ),
+              ],
+            ),
             Spacer(),
             Container(
               padding: EdgeInsets.all(8),

@@ -7,6 +7,7 @@ import 'package:hasskit/helper/material_design_icons.dart';
 import 'package:hasskit/helper/theme_info.dart';
 import 'package:hasskit/view/roomview/background_image_dropdown_button.dart';
 import 'package:hasskit/model/entity.dart';
+import 'package:hasskit/view/roomview/view_edit_group_name.dart';
 import 'package:hasskit/view/slivers/sliver_header.dart';
 import 'package:hasskit/view/slivers/sliver_navigation_bar.dart';
 import 'temperature_dropdown_button.dart';
@@ -97,6 +98,9 @@ class _ViewEditState extends State<ViewEdit> {
 //        TemperatureSelector(roomIndex: widget.roomIndex),
         TemperatureDropdownButton(roomIndex: widget.roomIndex),
 //        HumiditySelector(roomIndex: widget.roomIndex),
+        ViewEditGroupName(
+          roomIndex: widget.roomIndex,
+        ),
         SliverHeaderEdit(
           title: "Embeded Website",
           icon: Icon(MaterialDesignIcons.getIconDataFromIconName("mdi:web")),

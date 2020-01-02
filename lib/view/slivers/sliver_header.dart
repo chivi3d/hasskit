@@ -53,41 +53,57 @@ class SliverHeaderNormal extends StatelessWidget {
             child: Stack(
               alignment: Alignment.centerLeft,
               children: <Widget>[
-                Container(
-                  margin: EdgeInsets.fromLTRB(30, 0, 12, 0),
-                  height: 1,
-                  width: gd.mediaQueryWidth - 32,
-                  padding: icon.icon == Icons.looks_one ||
-                          icon.icon == Icons.looks_two ||
-                          icon.icon == Icons.looks_3 ||
-                          icon.icon == Icons.looks_4
-                      ? EdgeInsets.fromLTRB(10, 2, 10, 2)
-                      : EdgeInsets.fromLTRB(16, 2, 8, 2),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.topRight,
-                        colors: [
-                          ThemeInfo.colorBottomSheetReverse.withOpacity(0.0),
-                          ThemeInfo.colorBottomSheetReverse.withOpacity(0.0),
-                          ThemeInfo.colorBottomSheetReverse.withOpacity(0.5),
-                          ThemeInfo.colorBottomSheetReverse.withOpacity(0.0),
-                        ]),
-                    boxShadow: [
-//                      new BoxShadow(
-//                        color: ThemeInfo.colorBottomSheet.withOpacity(0.5),
-//                        offset: new Offset(0.0, 1.0),
-//                        blurRadius: 1.0,
-//                      )
-                    ],
-                  ),
-                ),
+//                Container(
+//                  margin: EdgeInsets.fromLTRB(30, 0, 12, 0),
+//                  height: 1,
+//                  width: gd.mediaQueryWidth - 32,
+//                  padding: icon.icon == Icons.looks_one ||
+//                          icon.icon == Icons.looks_two ||
+//                          icon.icon == Icons.looks_3 ||
+//                          icon.icon == Icons.looks_4
+//                      ? EdgeInsets.fromLTRB(10, 2, 10, 2)
+//                      : EdgeInsets.fromLTRB(16, 2, 8, 2),
+//                  decoration: BoxDecoration(
+//                    gradient: LinearGradient(
+//                        begin: Alignment.topLeft,
+//                        end: Alignment.topRight,
+//                        colors: [
+//                          ThemeInfo.colorBottomSheetReverse.withOpacity(0.0),
+//                          ThemeInfo.colorBottomSheetReverse.withOpacity(0.0),
+//                          ThemeInfo.colorBottomSheetReverse.withOpacity(0.5),
+//                          ThemeInfo.colorBottomSheetReverse.withOpacity(0.0),
+//                        ]),
+//                    boxShadow: [
+////                      new BoxShadow(
+////                        color: ThemeInfo.colorBottomSheet.withOpacity(0.5),
+////                        offset: new Offset(0.0, 1.0),
+////                        blurRadius: 1.0,
+////                      )
+//                    ],
+//                  ),
+//                ),
                 Row(
                   children: <Widget>[
                     SizedBox(width: 10),
-                    Opacity(opacity: 0.5, child: icon),
+                    Opacity(
+                        opacity: title != null && title.length > 0 ? 0.5 : 0.0,
+                        child: icon),
                     SizedBox(width: 8),
-                    Text("$title"),
+                    Text(
+                      title != null && title.length > 0 ? title : "",
+                      overflow: TextOverflow.ellipsis,
+                      textScaleFactor: gd.textScaleFactorFix,
+                      style: TextStyle(
+                        color: Colors.white,
+                        shadows: <Shadow>[
+                          Shadow(
+                            offset: Offset(0.5, 0.5),
+                            blurRadius: 1.0,
+                            color: ThemeInfo.colorBackgroundDark,
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ],

@@ -75,8 +75,8 @@ class _TemperatureDropdownButtonState extends State<TemperatureDropdownButton> {
         ),
       );
 
-      print(
-          "selectedValue $selectedValue dropdownMenuItems.add ${entity.entityId} ${entity.getFriendlyName}");
+//      print(
+//          "selectedValue $selectedValue dropdownMenuItems.add ${entity.entityId} ${entity.getFriendlyName}");
       if (!entitiyIds.contains(entity.entityId)) {
         dropdownMenuItems.add(dropdownMenuItem);
         entitiyIds.add(entity.entityId);

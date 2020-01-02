@@ -52,12 +52,6 @@ class ViewNormal extends StatelessWidget {
       controller: gd.viewNormalController,
       slivers: [
         SliverNavigationBar(roomIndex: roomIndex),
-//        SliverFixedExtentList(
-//          itemExtent: 10,
-//          delegate: SliverChildListDelegate(
-//            [Container()],
-//          ),
-//        ),
         SliverEntityStatusRunning(),
         showAddFirstButton
             ? SliverPadding(
@@ -95,8 +89,16 @@ class ViewNormal extends StatelessWidget {
                 ),
               )
             : gd.emptySliver,
+        SliverFixedExtentList(
+          itemExtent: 10,
+          delegate: SliverChildListDelegate(
+            [Container()],
+          ),
+        ),
         row1.length + row1Cam.length > 0
-            ? SliverHeaderNormal(icon: Icon(Icons.looks_one), title: '')
+            ? SliverHeaderNormal(
+                icon: Icon(Icons.looks_one),
+                title: gd.roomList[roomIndex].row1Name)
             : gd.emptySliver,
         row1.length > 0
             ? SliverEntitiesNormal(
@@ -115,7 +117,9 @@ class ViewNormal extends StatelessWidget {
               )
             : gd.emptySliver,
         row2.length + row2Cam.length > 0
-            ? SliverHeaderNormal(icon: Icon(Icons.looks_two), title: '')
+            ? SliverHeaderNormal(
+                icon: Icon(Icons.looks_two),
+                title: gd.roomList[roomIndex].row2Name)
             : gd.emptySliver,
         row2.length > 0
             ? SliverEntitiesNormal(
@@ -134,7 +138,9 @@ class ViewNormal extends StatelessWidget {
               )
             : gd.emptySliver,
         row3.length + row3Cam.length > 0
-            ? SliverHeaderNormal(icon: Icon(Icons.looks_3), title: '')
+            ? SliverHeaderNormal(
+                icon: Icon(Icons.looks_3),
+                title: gd.roomList[roomIndex].row3Name)
             : gd.emptySliver,
         row3.length > 0
             ? SliverEntitiesNormal(
@@ -153,7 +159,9 @@ class ViewNormal extends StatelessWidget {
               )
             : gd.emptySliver,
         row4.length + row4Cam.length > 0
-            ? SliverHeaderNormal(icon: Icon(Icons.looks_4), title: '')
+            ? SliverHeaderNormal(
+                icon: Icon(Icons.looks_4),
+                title: gd.roomList[roomIndex].row4Name)
             : gd.emptySliver,
         row4.length > 0
             ? SliverEntitiesNormal(

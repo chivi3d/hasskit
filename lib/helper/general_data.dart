@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:collection';
 import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
@@ -214,12 +213,12 @@ class GeneralData with ChangeNotifier {
     });
   }
 
-  Map<String, Entity> _entities = {};
+  Map<String, Entity> entities = {};
 
-//  List<Entity> _entities = [];
-  UnmodifiableMapView<String, Entity> get entities {
-    return UnmodifiableMapView(_entities);
-  }
+////  List<Entity> _entities = [];
+//  UnmodifiableMapView<String, Entity> get entities {
+//    return UnmodifiableMapView(_entities);
+//  }
 
   void socketGetStates(List<dynamic> message) {
     List<String> previousEntitiesList = entities.keys.toList();
@@ -231,22 +230,22 @@ class GeneralData with ChangeNotifier {
         continue;
       }
 
-      if (entity.entityId.contains("input_select.")) {
-        log.w("socketGetStates ${entity.entityId}");
-        print("mess $mess");
-      }
+//      if (entity.entityId.contains("input_select.")) {
+//        log.w("socketGetStates ${entity.entityId}");
+//        print("mess $mess");
+//      }
 
       if (previousEntitiesList.contains(entity.entityId))
         previousEntitiesList.remove(entity.entityId);
 
-      _entities[entity.entityId] = entity;
+      entities[entity.entityId] = entity;
     }
 
     if (previousEntitiesList.length > 0) {
       for (String entityId in previousEntitiesList) {
         log.e(
             "Remove $entityId from _entities, it's no longer in recent get_states");
-        _entities.remove(entityId);
+        entities.remove(entityId);
       }
     }
 
@@ -269,17 +268,16 @@ class GeneralData with ChangeNotifier {
 
     eventEntityUpdate(entityId);
 
-    _entities[entityId] =
-        Entity.fromJson(message['event']['data']['new_state']);
-    _entities[entityId].oldState =
+    entities[entityId] = Entity.fromJson(message['event']['data']['new_state']);
+    entities[entityId].oldState =
         jsonEncode(message['event']['data']['old_state']);
-    _entities[entityId].newState =
+    entities[entityId].newState =
         jsonEncode(message['event']['data']['new_state']);
 
-    if (_entities[entityId].entityId.contains("vacuum.")) {
+    if (entities[entityId].entityId.contains("vacuum.")) {
       log.w(
           "\n socketSubscribeEvents $entityId message ${message['event']['data']['new_state']}");
-      if (!_entities.containsKey(entityId)) {
+      if (!entities.containsKey(entityId)) {
         log.e("_entities.containsKey($entityId");
       }
     }
@@ -290,16 +288,16 @@ class GeneralData with ChangeNotifier {
       var newState = jsonEncode(message['event']['data']['new_state']["state"]);
 
       if (oldState == null ||
-          oldState.toLowerCase() == "unavailable" ||
-          oldState.toLowerCase() == "unknown") {
-        print("nshowNotificationWithNoBody $entityId oldState unavailable");
+          oldState.toLowerCase().contains("unavailable") ||
+          oldState.toLowerCase().contains("unknown")) {
+        print("1 showNotificationWithNoBody $entityId oldState unavailable");
       } else if (newState == null ||
-          newState.toLowerCase() == "unavailable" ||
-          newState.toLowerCase() == "unknown") {
-        print("nshowNotificationWithNoBody $entityId newState unavailable");
+          newState.toLowerCase().contains("unavailable") ||
+          newState.toLowerCase().contains("unknown")) {
+        print("2 showNotificationWithNoBody $entityId newState unavailable");
       } else if (newState == oldState) {
         print(
-            "nshowNotificationWithNoBody $entityId newState == oldState $newState");
+            "3 showNotificationWithNoBody $entityId newState == oldState $newState");
       } else {
         var title = gd.textToDisplay(gd.entities[entityId].getFriendlyName);
         var body = gd.textToDisplay(
@@ -684,123 +682,156 @@ class GeneralData with ChangeNotifier {
   List<Room> roomListDefault = [
     Room(name: 'Home', imageIndex: 17, row1: [], row2: [], row3: [], row4: []),
     Room(
-        name: 'Living Room',
-        imageIndex: 18,
-        row1: [],
-        row2: [],
-        row3: [],
-        row4: []),
+      name: 'Living Room',
+      imageIndex: 18,
+      row1: [],
+      row1Name: "Group 1",
+      row2: [],
+      row2Name: "Group 2",
+      row3: [],
+      row3Name: "Group 3",
+      row4: [],
+      row4Name: "Group 4",
+    ),
     Room(
-        name: 'Kitchen',
-        imageIndex: 19,
-        row1: [],
-        row2: [],
-        row3: [],
-        row4: []),
+      name: 'Kitchen',
+      imageIndex: 19,
+      row1: [],
+      row1Name: "Group 1",
+      row2: [],
+      row2Name: "Group 2",
+      row3: [],
+      row3Name: "Group 3",
+      row4: [],
+      row4Name: "Group 4",
+    ),
     Room(
-        name: 'Bedroom',
-        imageIndex: 20,
-        row1: [],
-        row2: [],
-        row3: [],
-        row4: []),
+      name: 'Bedroom',
+      imageIndex: 20,
+      row1: [],
+      row1Name: "Group 1",
+      row2: [],
+      row2Name: "Group 2",
+      row3: [],
+      row3Name: "Group 3",
+      row4: [],
+      row4Name: "Group 4",
+    ),
   ];
 
   List<Room> roomListHassKit = [
     Room(
-        name: 'Demo Home',
-        imageIndex: 17,
-        tempEntityId: "sensor.netatmo_netatmo_living_room_temperature",
-        row1: [
-          "fan.acorn_fan",
-          "climate.air_conditioner_1",
-          "cover.cover_06",
-          "alarm_control_panel.home_alarm",
-          "cover.cover_03",
-          "fan.living_room_ceiling_fan",
-          "light.light_01",
-          "lock.lock_9",
-          "light.gateway_light_7c49eb891797",
-          "sensor.speedtest_download",
-          "sensor.speedtest_ping",
-          "sensor.speedtest_upload",
-        ],
-        row2: [
-          "camera.camera_1",
-          "camera.camera_2",
-          "WebView1",
-        ],
-        row3: [
-          "switch.socket_sonoff_s20",
-          "switch.tuya_neo_coolcam_10a",
-        ],
-        row4: [
-          "climate.air_conditioner_2",
-          "climate.air_conditioner_3",
-          "climate.air_conditioner_4",
-          "climate.air_conditioner_5",
-          "fan.kaze_fan",
-          "fan.lucci_air_fan",
-          "fan.super_fan",
-        ]),
+      name: 'Demo Home',
+      imageIndex: 17,
+      tempEntityId: "sensor.netatmo_netatmo_living_room_temperature",
+      row1: [
+        "fan.acorn_fan",
+        "climate.air_conditioner_1",
+        "cover.cover_06",
+        "alarm_control_panel.home_alarm",
+        "cover.cover_03",
+        "fan.living_room_ceiling_fan",
+        "light.light_01",
+        "lock.lock_9",
+        "light.gateway_light_7c49eb891797",
+        "sensor.speedtest_download",
+        "sensor.speedtest_ping",
+        "sensor.speedtest_upload",
+      ],
+      row1Name: "Group 1",
+      row2: [
+        "camera.camera_1",
+        "camera.camera_2",
+        "WebView1",
+      ],
+      row2Name: "Group 2",
+      row3: [
+        "switch.socket_sonoff_s20",
+        "switch.tuya_neo_coolcam_10a",
+      ],
+      row3Name: "Group 3",
+      row4: [
+        "climate.air_conditioner_2",
+        "climate.air_conditioner_3",
+        "climate.air_conditioner_4",
+        "climate.air_conditioner_5",
+        "fan.kaze_fan",
+        "fan.lucci_air_fan",
+        "fan.super_fan",
+      ],
+      row4Name: "Group 4",
+    ),
     Room(
-        name: 'Living Room',
-        imageIndex: 18,
-        tempEntityId: "sensor.netatmo_netatmo_living_room_temperature",
-        row1: [
-          "climate.air_conditioner_2",
-          "climate.air_conditioner_3",
-          "cover.cover_01",
-          "cover.cover_02",
-          "cover.cover_04",
-          "fan.kaze_fan",
-          "light.light_03",
-          "light.light_02",
-          "fan.lucci_air_fan",
-          "camera.camera_1",
-          "sensor.netatmo_netatmo_living_room_temperature",
-          "sensor.netatmo_netatmo_living_room_co2",
-          "sensor.netatmo_netatmo_living_room_humidity",
-          "sensor.netatmo_netatmo_living_room_noise",
-          "sensor.netatmo_netatmo_living_room_pressure",
-        ],
-        row2: [],
-        row3: [],
-        row4: []),
+      name: 'Living Room',
+      imageIndex: 18,
+      tempEntityId: "sensor.netatmo_netatmo_living_room_temperature",
+      row1: [
+        "climate.air_conditioner_2",
+        "climate.air_conditioner_3",
+        "cover.cover_01",
+        "cover.cover_02",
+        "cover.cover_04",
+        "fan.kaze_fan",
+        "light.light_03",
+        "light.light_02",
+        "fan.lucci_air_fan",
+        "camera.camera_1",
+        "sensor.netatmo_netatmo_living_room_temperature",
+        "sensor.netatmo_netatmo_living_room_co2",
+        "sensor.netatmo_netatmo_living_room_humidity",
+        "sensor.netatmo_netatmo_living_room_noise",
+        "sensor.netatmo_netatmo_living_room_pressure",
+      ],
+      row1Name: "Group 1",
+      row2: [],
+      row2Name: "Group 2",
+      row3: [],
+      row3Name: "Group 3",
+      row4: [],
+      row4Name: "Group 4",
+    ),
     Room(
-        name: 'Kitchen',
-        imageIndex: 19,
-        tempEntityId: "sensor.netatmo_netatmo_living_room_temperature",
-        row1: [
-          "camera.camera_2",
-          "switch.aeotec_motion_26",
-          "climate.air_conditioner_4",
-          "climate.air_conditioner_5",
-          "light.light_04",
-          "light.light_05",
-          "cover.cover_07",
-          "cover.cover_08",
-          "fan.super_fan",
-          "cover.cover_09",
-        ],
-        row2: [],
-        row3: [],
-        row4: []),
+      name: 'Kitchen',
+      imageIndex: 19,
+      tempEntityId: "sensor.netatmo_netatmo_living_room_temperature",
+      row1: [
+        "camera.camera_2",
+        "switch.aeotec_motion_26",
+        "climate.air_conditioner_4",
+        "climate.air_conditioner_5",
+        "light.light_04",
+        "light.light_05",
+        "cover.cover_07",
+        "cover.cover_08",
+        "fan.super_fan",
+        "cover.cover_09",
+      ],
+      row2: [],
+      row2Name: "Group 2",
+      row3: [],
+      row3Name: "Group 3",
+      row4: [],
+      row4Name: "Group 4",
+    ),
     Room(
-        name: 'Bedroom',
-        imageIndex: 20,
-        tempEntityId: "sensor.netatmo_netatmo_living_room_temperature",
-        row1: [
-          "climate.air_conditioner_2",
-          "cover.cover_07",
-          "cover.cover_08",
-          "switch.socket_sonoff_s20",
-          "switch.tuya_neo_coolcam_10a",
-          "WebView1",
-        ],
-        row2: [],
-        row3: [],
-        row4: []),
+      name: 'Bedroom',
+      imageIndex: 20,
+      tempEntityId: "sensor.netatmo_netatmo_living_room_temperature",
+      row1: [
+        "climate.air_conditioner_2",
+        "cover.cover_07",
+        "cover.cover_08",
+        "switch.socket_sonoff_s20",
+        "switch.tuya_neo_coolcam_10a",
+        "WebView1",
+      ],
+      row2: [],
+      row2Name: "Group 2",
+      row3: [],
+      row3Name: "Group 3",
+      row4: [],
+      row4Name: "Group 4",
+    ),
   ];
 
   void roomListClear() {

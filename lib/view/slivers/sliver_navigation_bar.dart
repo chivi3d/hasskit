@@ -162,6 +162,7 @@ class SliverNavigationBar extends StatelessWidget {
                           bottomSheetMenu.mainBottomSheet(roomIndex, context);
                         } else {
                           gd.viewMode = ViewMode.normal;
+                          gd.roomListSave(true);
                         }
                       },
                       child: Container(
