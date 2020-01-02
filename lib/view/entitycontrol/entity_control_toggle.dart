@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:hasskit/helper/general_data.dart';
@@ -132,6 +134,24 @@ class _EntityControlToggleState extends State<EntityControlToggle> {
               ),
             ],
           ),
+          widget.entityId.contains("automation.")
+              ? RaisedButton(
+                  onPressed: () {
+                    var outMsg = {
+                      "id": gd.socketId,
+                      "type": "call_service",
+                      "domain": "automation",
+                      "service": "trigger",
+                      "service_data": {
+                        "entity_id": widget.entityId,
+                      }
+                    };
+                    var message = json.encode(outMsg);
+                    gd.sendSocketMessage(message);
+                  },
+                  child: Text("Trigger"),
+                )
+              : Container(),
         ],
       ),
     );

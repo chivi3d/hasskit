@@ -140,8 +140,10 @@ class _EntityControlParentState extends State<EntityControlParent> {
           entityControl = EntityControlInputSelect(entityId: widget.entityId);
         } else if (entity.entityType == EntityType.lightSwitches ||
             entity.entityType == EntityType.mediaPlayers ||
+            entity.entityId.contains("automation.") ||
             entity.entityId.contains("group.") ||
-            entity.entityId.contains("scene.")) {
+            entity.entityId.contains("scene.") ||
+            entity.entityId.contains("script.")) {
           entityControl = EntityControlToggle(entityId: widget.entityId);
         } else {
           entityControl = EntityControlGeneral(entityId: widget.entityId);
