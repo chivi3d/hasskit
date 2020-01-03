@@ -46,18 +46,15 @@ dependencies:
   #firebase
   # Check that you have this dependency (added in the previous step)
   firebase_core: ^0.4.2+1
-
   # Add the dependency for the FlutterFire plugin for Google Analytics
   firebase_analytics: ^5.0.6
-
   # Add the dependencies for any other Firebase products you want to use in your app
   # For example, to use Firebase Authentication and Cloud Firestore
   firebase_auth: ^0.15.0+1
   cloud_firestore: ^0.12.11
-
+  firebase_messaging: ^6.0.9
   google_sign_in: ^4.0.14
-  #color stuff
-#  tinycolor: ^1.0.2
+
   flushbar: ^1.9.1
   flutter_webview_plugin: ^0.3.9+1
   duration: ^2.0.8
@@ -67,7 +64,6 @@ dependencies:
   auto_size_text: ^2.1.0
   vector_math: ^2.0.8
   flutter_inappwebview: ^2.1.0+1
-#  rate_my_app: ^0.4.0
   app_review: ^1.0.0
   image_picker: ^0.6.2+3
   google_maps_flutter: ^0.5.21+15
