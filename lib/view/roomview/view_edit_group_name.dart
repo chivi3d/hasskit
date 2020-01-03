@@ -28,7 +28,7 @@ class _ViewEditGroupNameState extends State<ViewEditGroupName> {
     _controller1.text = gd.roomList[widget.roomIndex].row1Name;
     _controller2.text = gd.roomList[widget.roomIndex].row2Name;
     _controller3.text = gd.roomList[widget.roomIndex].row3Name;
-    _controller4.text = gd.roomList[widget.roomIndex].row3Name;
+    _controller4.text = gd.roomList[widget.roomIndex].row4Name;
   }
 
   @override

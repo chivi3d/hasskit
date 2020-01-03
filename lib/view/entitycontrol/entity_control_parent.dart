@@ -69,6 +69,7 @@ class _EntityControlParentState extends State<EntityControlParent> {
 
         Widget entityControl;
         print("EntityControlParent widget.entityId ${widget.entityId}");
+        print("EntityControlParent currentPosition ${entity.currentPosition}");
 
         if (entity.entityType == EntityType.climateFans &&
             entity.hvacModes != null &&

@@ -1,10 +1,10 @@
 import 'dart:ui';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:hasskit/helper/general_data.dart';
 import 'package:hasskit/helper/material_design_icons.dart';
 import 'package:hasskit/helper/theme_info.dart';
+import 'package:hasskit/view/entitycontrol/entity_control_parent.dart';
 import 'package:provider/provider.dart';
 
 class SliverEntityStatusRunning extends StatelessWidget {
@@ -68,7 +68,20 @@ class Status2ndRowItem extends StatelessWidget {
       aspectRatio: 8 / 5,
       child: InkWell(
         onTap: () {
-          gd.toggleStatus(gd.entities[entityId]);
+          if (entityId.contains('alarm_control_panel.')) {
+            showModalBottomSheet(
+              context: context,
+              elevation: 1,
+              backgroundColor: ThemeInfo.colorBottomSheet,
+              isScrollControlled: true,
+              useRootNavigator: true,
+              builder: (BuildContext context) {
+                return EntityControlParent(entityId: entityId);
+              },
+            );
+          } else {
+            gd.toggleStatus(gd.entities[entityId]);
+          }
           if (gd.activeDevicesOn.length <= 0) {
             gd.activeDevicesOffTimer(0);
           } else {

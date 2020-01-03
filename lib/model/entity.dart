@@ -595,6 +595,7 @@ class Entity {
         stateLower == 'none' ||
         stateLower == 'off' ||
         stateLower == 'unavailable' ||
+        stateLower == 'disarmed' ||
         stateLower == 'unknown') return false;
 
     if ([
@@ -784,6 +785,24 @@ class Entity {
   }
 
   String getStateDisplayTranslated(BuildContext context) {
+    var openPercent = "";
+    if (isStateOn &&
+        entityId.contains("light.") &&
+        brightness != null &&
+        brightness > 0) {
+      openPercent = " " +
+          gd
+              .mapNumber(brightness.toDouble(), 0, 254, 0, 100)
+              .toStringAsFixed(0) +
+          "%";
+    }
+    if (isStateOn &&
+        entityId.contains("cover.") &&
+        currentPosition != null &&
+        currentPosition > 0) {
+      openPercent = " " + currentPosition.toStringAsFixed(0) + "%";
+    }
+
     if (entityId.contains("fan.")) {
       if (speed.toLowerCase() == "high")
         return Translate.getString("states.fan_high", context);
@@ -801,7 +820,7 @@ class Entity {
     }
 
     if (state.toLowerCase() == "on")
-      return Translate.getString("states.on", context);
+      return Translate.getString("states.on", context) + openPercent;
     if (state.toLowerCase() == "turning on...")
       return Translate.getString("states.turning_on", context);
     if (state.toLowerCase() == "off")
@@ -813,7 +832,7 @@ class Entity {
     if (state.toLowerCase() == "closing...")
       return Translate.getString("states.closing", context);
     if (state.toLowerCase() == "open")
-      return Translate.getString("states.open", context);
+      return Translate.getString("states.open", context) + openPercent;
     if (state.toLowerCase() == "opening...")
       return Translate.getString("states.opening", context);
     if (state.toLowerCase() == "locked")

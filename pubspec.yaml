@@ -11,7 +11,7 @@ description: A new Flutter application.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 3.7.4+3.7.4
+version: 3.7.5+3.7.5
 
 environment:
   sdk: ">=2.3.0 <3.0.0"
@@ -52,7 +52,7 @@ dependencies:
   # For example, to use Firebase Authentication and Cloud Firestore
   firebase_auth: ^0.15.0+1
   cloud_firestore: ^0.12.11
-  firebase_messaging: ^6.0.9
+#  firebase_messaging: ^6.0.9
   google_sign_in: ^4.0.14
 
   flushbar: ^1.9.1
