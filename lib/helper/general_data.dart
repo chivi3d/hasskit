@@ -2237,7 +2237,8 @@ class GeneralData with ChangeNotifier {
         entityId.contains("device_tracker.") ||
         entityId.contains("person.") ||
         entityId.contains("input_boolean.") ||
-        entityId.contains("binary_sensor.")) {
+        entityId.contains("binary_sensor.") ||
+        entityId.contains("alarm_control_panel.")) {
       return true;
     }
     return false;
