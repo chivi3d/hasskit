@@ -13,11 +13,11 @@ Create a folder name notify_hasskit inside Home Assistant folder in the followin
 |       |-- manifest.json
 |       |-- services.yaml
 ```
-[Download](https://github.com/tuanha2000vn/hasskit/tree/master/custom_components/notify_hasskit.zip)
+[Download](https://github.com/tuanha2000vn/hasskit/raw/master/custom_components/notify_hasskit.zip)
 ## 2. Edit .homeassistant/configuration.yaml
 ![alt text](https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/notification_token.png "Notification Token Guide")
 
-Add the following line:
+Replace the 'Notification Token Copy From Device 1' with the Token Code in your phone:
 ```yaml
 notify_hasskit:
   token:
