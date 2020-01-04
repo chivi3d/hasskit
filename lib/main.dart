@@ -172,8 +172,7 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
           msg: "${gd.firebaseMessagingTitle} ${gd.firebaseMessagingBody}",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.TOP,
-          timeInSecForIos: 1,
-          backgroundColor: ThemeInfo.colorBottomSheet.withOpacity(1),
+          backgroundColor: ThemeInfo.colorIconActive.withOpacity(0.9),
           textColor: Theme.of(context).textTheme.title.color,
           fontSize: 14.0);
     }, onResume: (Map<String, dynamic> message) async {
@@ -184,8 +183,7 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
           msg: "${gd.firebaseMessagingTitle} ${gd.firebaseMessagingBody}",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.TOP,
-          timeInSecForIos: 1,
-          backgroundColor: ThemeInfo.colorBottomSheet.withOpacity(1),
+          backgroundColor: ThemeInfo.colorIconActive.withOpacity(0.9),
           textColor: Theme.of(context).textTheme.title.color,
           fontSize: 14.0);
     }, onLaunch: (Map<String, dynamic> message) async {
@@ -196,8 +194,7 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
           msg: "${gd.firebaseMessagingTitle} ${gd.firebaseMessagingBody}",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.TOP,
-          timeInSecForIos: 1,
-          backgroundColor: ThemeInfo.colorBottomSheet.withOpacity(1),
+          backgroundColor: ThemeInfo.colorIconActive.withOpacity(0.9),
           textColor: Theme.of(context).textTheme.title.color,
           fontSize: 14.0);
     });

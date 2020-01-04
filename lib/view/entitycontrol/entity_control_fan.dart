@@ -394,8 +394,7 @@ class Oscillating extends StatelessWidget {
                 : "Oscilation Enabled",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.TOP,
-            timeInSecForIos: 1,
-            backgroundColor: ThemeInfo.colorBottomSheet.withOpacity(1),
+            backgroundColor: ThemeInfo.colorIconActive.withOpacity(0.9),
             textColor: Theme.of(context).textTheme.title.color,
             fontSize: 14.0);
       },

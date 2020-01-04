@@ -63,8 +63,7 @@ class ServerSelectPanel extends StatelessWidget {
                 msg: "Swipe Right to Refresh, Left to Disconnect/Delete Server",
                 toastLength: Toast.LENGTH_SHORT,
                 gravity: ToastGravity.TOP,
-                timeInSecForIos: 1,
-                backgroundColor: ThemeInfo.colorBottomSheet.withOpacity(1),
+                backgroundColor: ThemeInfo.colorIconActive.withOpacity(0.9),
                 textColor: Theme.of(context).textTheme.title.color,
                 fontSize: 14.0);
           } else {
@@ -72,8 +71,7 @@ class ServerSelectPanel extends StatelessWidget {
                 msg: "Swipe Right to Connect, Left to Delete Server",
                 toastLength: Toast.LENGTH_SHORT,
                 gravity: ToastGravity.TOP,
-                timeInSecForIos: 1,
-                backgroundColor: ThemeInfo.colorBottomSheet.withOpacity(1),
+                backgroundColor: ThemeInfo.colorIconActive.withOpacity(0.9),
                 textColor: Theme.of(context).textTheme.title.color,
                 fontSize: 14.0);
           }
