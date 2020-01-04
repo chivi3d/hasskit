@@ -11,7 +11,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:hasskit/helper/local_notification.dart';
 import 'package:hasskit/helper/theme_info.dart';
 import 'package:hasskit/helper/web_socket.dart';
 import 'package:hasskit/model/base_setting.dart';
@@ -282,35 +281,35 @@ class GeneralData with ChangeNotifier {
       }
     }
 
-    if (baseSetting.notificationDevices.contains(entityId)) {
-//      print("baseSetting.notificationDevices $entityId");
-      var oldState = jsonEncode(message['event']['data']['old_state']["state"]);
-      var newState = jsonEncode(message['event']['data']['new_state']["state"]);
-
-      if (oldState == null ||
-          oldState.toLowerCase().contains("unavailable") ||
-          oldState.toLowerCase().contains("unknown")) {
-        print("1 showNotificationWithNoBody $entityId oldState unavailable");
-      } else if (newState == null ||
-          newState.toLowerCase().contains("unavailable") ||
-          newState.toLowerCase().contains("unknown")) {
-        print("2 showNotificationWithNoBody $entityId newState unavailable");
-      } else if (newState == oldState) {
-        print(
-            "3 showNotificationWithNoBody $entityId newState == oldState $newState");
-      } else {
-        var title = gd.textToDisplay(gd.entities[entityId].getOverrideName);
-        var body = gd.textToDisplay(
-            "${gd.entities[entityId].getStateDisplayTranslated(mediaQueryContext)}");
-        var uniqueNumber = gd.entities.keys.toList().indexOf(entityId);
-        if (uniqueNumber == null) uniqueNumber = 0;
-        print(
-            "\nshowNotificationWithNoBody\n$entityId oldState $oldState newState $newState");
-
-        LocalNotification.showNotificationWithNoBody(
-            title + ": " + body, entityId);
-      }
-    }
+//    if (baseSetting.notificationDevices.contains(entityId)) {
+////      print("baseSetting.notificationDevices $entityId");
+//      var oldState = jsonEncode(message['event']['data']['old_state']["state"]);
+//      var newState = jsonEncode(message['event']['data']['new_state']["state"]);
+//
+//      if (oldState == null ||
+//          oldState.toLowerCase().contains("unavailable") ||
+//          oldState.toLowerCase().contains("unknown")) {
+//        print("1 showNotificationWithNoBody $entityId oldState unavailable");
+//      } else if (newState == null ||
+//          newState.toLowerCase().contains("unavailable") ||
+//          newState.toLowerCase().contains("unknown")) {
+//        print("2 showNotificationWithNoBody $entityId newState unavailable");
+//      } else if (newState == oldState) {
+//        print(
+//            "3 showNotificationWithNoBody $entityId newState == oldState $newState");
+//      } else {
+//        var title = gd.textToDisplay(gd.entities[entityId].getOverrideName);
+//        var body = gd.textToDisplay(
+//            "${gd.entities[entityId].getStateDisplayTranslated(mediaQueryContext)}");
+//        var uniqueNumber = gd.entities.keys.toList().indexOf(entityId);
+//        if (uniqueNumber == null) uniqueNumber = 0;
+//        print(
+//            "\nshowNotificationWithNoBody\n$entityId oldState $oldState newState $newState");
+//
+//        LocalNotification.showNotificationWithNoBody(
+//            title + ": " + body, entityId);
+//      }
+//    }
 
     notifyListeners();
   }
@@ -2437,4 +2436,8 @@ class GeneralData with ChangeNotifier {
   }
 
   bool entityControlPageParentShow = false;
+
+  String firebaseMessagingToken = "";
+  String firebaseMessagingTitle = "";
+  String firebaseMessagingBody = "";
 }

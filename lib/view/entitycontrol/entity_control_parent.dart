@@ -162,7 +162,6 @@ class _EntityControlParentState extends State<EntityControlParent> {
                     height: gd.mediaQueryLongestSide > 600
                         ? MediaQuery.of(gd.mediaQueryContext).padding.top * 1
                         : MediaQuery.of(gd.mediaQueryContext).padding.top * 1,
-                    child: Container(),
                   ),
                   EditEntityNormal(
                     entityId: widget.entityId,

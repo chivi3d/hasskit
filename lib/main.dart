@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -124,6 +125,15 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
   Timer timer5;
   Timer timer60;
 
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+
+  _register() {
+    _firebaseMessaging.getToken().then((token) {
+      gd.firebaseMessagingToken = token;
+      print("firebaseMessagingToken ${gd.firebaseMessagingToken}");
+    });
+  }
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     setState(
@@ -153,6 +163,30 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
     );
   }
 
+  void getMessage() {
+    _firebaseMessaging.configure(
+        onMessage: (Map<String, dynamic> message) async {
+      setState(() {
+        print('on message $message');
+        gd.firebaseMessagingTitle = message["notification"]["title"];
+        gd.firebaseMessagingBody = message["notification"]["body"];
+      });
+    }, onResume: (Map<String, dynamic> message) async {
+      print('on resume $message');
+      setState(() {
+        print('on resumeresume $message');
+        gd.firebaseMessagingTitle = message["notification"]["title"];
+        gd.firebaseMessagingBody = message["notification"]["body"];
+      });
+    }, onLaunch: (Map<String, dynamic> message) async {
+      setState(() {
+        print('on launch $message');
+        gd.firebaseMessagingTitle = message["notification"]["title"];
+        gd.firebaseMessagingBody = message["notification"]["body"];
+      });
+    });
+  }
+
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
@@ -163,6 +197,8 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
   void initState() {
     super.initState();
 
+    getMessage();
+    _register();
     WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
     WidgetsBinding.instance.addObserver(this);
     googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
