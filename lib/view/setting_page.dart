@@ -346,43 +346,19 @@ class _SettingPageState extends State<SettingPage> {
                 icon: Icon(
                   MaterialDesignIcons.getIconDataFromIconName("mdi:bell-ring"),
                 ),
-                title: Translate.getString("settings.notification", context),
+                title: "Notification Token",
               ),
               SliverList(
                 delegate: SliverChildListDelegate(
                   [
                     Container(
-                      padding: EdgeInsets.fromLTRB(8, 8, 8, 0),
-                      margin: EdgeInsets.symmetric(horizontal: 8),
-                      child: Text(
-                          "Add the following code to Home Assistant configuration.yaml"),
-                    ),
-                    Container(
                       padding: EdgeInsets.all(8),
                       margin: EdgeInsets.all(8),
                       decoration: BoxDecoration(
                           color: ThemeInfo.colorBottomSheet.withOpacity(0.5),
                           borderRadius: BorderRadius.circular(8)),
                       child: SelectableText(
-                        "notify_hasskit:\n  token:\n    - ${gd.firebaseMessagingToken}",
-                        toolbarOptions:
-                            ToolbarOptions(copy: true, selectAll: true),
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.fromLTRB(8, 8, 8, 0),
-                      margin: EdgeInsets.symmetric(horizontal: 8),
-                      child: Text(
-                          "Add  another code to Home Assistant automations.yaml test HassKit notification"),
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(8),
-                      margin: EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                          color: ThemeInfo.colorBottomSheet.withOpacity(0.5),
-                          borderRadius: BorderRadius.circular(8)),
-                      child: SelectableText(
-                        "- alias: HassKit Test:\n  trigger:\n    - entity_id: switch.switch_1\n      platform: state\n      to: 'on'\n  action:\n    - service: notify_hasskit.send\n      data:\n        device_index: 1\n        title: switch_1\n        body: 'Turned On'",
+                        "${gd.firebaseMessagingToken}",
                         toolbarOptions:
                             ToolbarOptions(copy: true, selectAll: true),
                       ),
