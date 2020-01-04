@@ -56,7 +56,7 @@ header_parameters = {'Authorization': api_key, 'content-type': 'application/json
 
 import requests
 def send_msg(token_, title_, body_):
-    data_msg = {"to": token_, "collapse_key": "type_a", "notification": {"body": body_, "title": title_}}
+    data_msg = {"to": token_, "notification": {"body": body_, "title": title_}}
     status_response = requests.post(url, json = data_msg, headers = header_parameters).status_code
     if (status_response != 200): # try again
         requests.post(url, json = data_msg, headers = header_parameters)
