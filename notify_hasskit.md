@@ -20,13 +20,13 @@ Add the following line:
 ```yaml
 notify_hasskit:
   token:
-    - 'device_1_token'
-    - 'device_2_token'
-    - 'device_3_token'
+    - 'Notification Token of Device 1'
+    - 'Notification Token of Device 2'
+    - 'Notification Token of Device 3'
 ```
 ## 3 Edit .homeassistant/automations.yaml
 ```yaml
-- alias: HassKit Test
+- alias: HassKit Test Notification
   trigger:
     - entity_id: light.light_1
       platform: state
