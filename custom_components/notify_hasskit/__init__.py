@@ -3,7 +3,10 @@ Notification component using Firebase Cloud Messaging
 Version 1.0 04 Jan 2020
 Give Dust Hoof (^_^)
 
-# [your_config]/custom_components/notify_hasskit
+1. Setup a custom component
+
+Create a folder name notify_hasskit inside Home Assistant folder in the following file structure:
+
 .homeassistant/
 |-- custom_components/
 |   |-- notify_hasskit/
@@ -11,21 +14,29 @@ Give Dust Hoof (^_^)
 |       |-- manifest.json
 |       |-- services.yaml
 
-# Config in configuration.yaml file for Home Assistant
+2. Edit .homeassistant/configuration.yaml
+
+Add the following line:
+
 notify_hasskit:
   token:
-    - 'abc_token_device_1'
-    - 'abc_token_device_2'
-    - 'abc_token_device_n'
+    - 'Notification Token of Device 1'
+    - 'Notification Token of Device 2'
+    - 'Notification Token of Device 3'
 
-# Code in script
-notify_msg:
-  sequence:
+3. Edit .homeassistant/automations.yaml
+
+- alias: HassKit Test Notification
+  trigger:
+    - entity_id: light.light_1
+      platform: state
+      to: "on"
+  action:
     - service: notify_hasskit.send
       data:
-        device_index: 1 # for abc_token_device_1
-        title: Tiêu đề thông báo
-        body: Đây là nội dung thông báo.
+        device_index: 1
+        title: "Light 1"
+        body: "Turned On"
 """
 
 # declare variables

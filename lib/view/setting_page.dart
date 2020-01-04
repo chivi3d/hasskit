@@ -357,10 +357,24 @@ class _SettingPageState extends State<SettingPage> {
                       decoration: BoxDecoration(
                           color: ThemeInfo.colorBottomSheet.withOpacity(0.5),
                           borderRadius: BorderRadius.circular(8)),
-                      child: SelectableText(
-                        "${gd.firebaseMessagingToken}",
-                        toolbarOptions:
-                            ToolbarOptions(copy: true, selectAll: true),
+                      child: Column(
+                        children: <Widget>[
+                          SelectableText(
+                            "${gd.firebaseMessagingToken}",
+                            toolbarOptions:
+                                ToolbarOptions(copy: true, selectAll: true),
+                          ),
+                          RaisedButton(
+                            elevation: 1,
+                            onPressed: _launchNotificationGuide,
+                            child: Text(
+                              "Notification Setup Guide",
+                              textScaleFactor: gd.textScaleFactorFix,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                       ),
                     ),
                   ],
@@ -503,14 +517,16 @@ class _SettingPageState extends State<SettingPage> {
     } catch (e) {
       await launch(fallbackUrl, forceSafariVC: false);
     }
+  }
 
-//    const url = 'https://www.facebook.com/groups/709634206223205/';
-//
-//    if (await canLaunch(url)) {
-//      await launch(url);
-//    } else {
-//      throw 'Could not launch $url';
-//    }
+  _launchNotificationGuide() async {
+    const url =
+        'https://github.com/tuanha2000vn/hasskit/blob/master/notify_hasskit.md';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   Future<void> _initPackageInfo() async {

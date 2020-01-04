@@ -2,7 +2,7 @@
 
 HassKit support notification send directly from Home Assistant. To enable this feature, please follow these 3 easy steps
 
-## 1 Setup a custom component
+## 1. Setup a custom component
 
 Create a folder name notify_hasskit inside Home Assistant folder in the following file structure:
 ```yaml
@@ -14,18 +14,18 @@ Create a folder name notify_hasskit inside Home Assistant folder in the followin
 |       |-- services.yaml
 ```
 [Download](https://github.com/tuanha2000vn/hasskit/tree/master/custom_components/notify_hasskit)
-## 2 Edit .homeassistant/configuration.yaml
+## 2. Edit .homeassistant/configuration.yaml
 ![alt text](https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/notification_token.png "Notification Token Guide")
 
 Add the following line:
 ```yaml
 notify_hasskit:
   token:
-    - 'Notification Token of Device 1'
-    - 'Notification Token of Device 2'
-    - 'Notification Token of Device 3'
+    - 'Notification Token Copy From Device 1'
+    - 'Notification Token Copy From Device 2'
+    - 'Notification Token Copy From Device 3'
 ```
-## 3 Edit .homeassistant/automations.yaml
+## 3. Edit .homeassistant/automations.yaml
 ```yaml
 - alias: HassKit Test Notification
   trigger:
