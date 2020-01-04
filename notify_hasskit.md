@@ -17,7 +17,7 @@ Create a folder name notify_hasskit inside Home Assistant folder in the followin
 ## 2. Edit .homeassistant/configuration.yaml
 ![alt text](https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/notification_token.png "Notification Token Guide")
 
-Replace the 'Notification Token Copy From Device 1' with the Token Code in your phone:
+Replace the 'Notification Token Copy From Device 1' with the Notification Token Code in your phone:
 ```yaml
 notify_hasskit:
   token:
@@ -26,6 +26,7 @@ notify_hasskit:
     - 'Notification Token Copy From Device 3'
 ```
 ## 3. Edit .homeassistant/automations.yaml
+Make a simple notification when the light turned on (replace light.light_1 with your light entity Id):
 ```yaml
 - alias: HassKit Test Notification
   trigger:

@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hasskit/helper/general_data.dart';
 import 'package:hasskit/helper/logger.dart';
 import 'package:hasskit/helper/material_design_icons.dart';
@@ -388,13 +388,16 @@ class Oscillating extends StatelessWidget {
 
         gd.setFanOscillating(entity, !oscillating, json.encode(outMsg));
 
-        Flushbar(
-          title: !entity.oscillating
-              ? "Oscilation Disabled"
-              : "Oscilation Enabled",
-          message: "${gd.textToDisplay(gd.entities[entityId].getOverrideName)}",
-          duration: Duration(seconds: 3),
-        )..show(context);
+        Fluttertoast.showToast(
+            msg: !entity.oscillating
+                ? "Oscilation Disabled"
+                : "Oscilation Enabled",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.TOP,
+            timeInSecForIos: 1,
+            backgroundColor: ThemeInfo.colorBottomSheet.withOpacity(1),
+            textColor: Theme.of(context).textTheme.title.color,
+            fontSize: 14.0);
       },
       child: Container(
         child: !oscillating

@@ -6,10 +6,10 @@ import 'dart:math';
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hasskit/helper/theme_info.dart';
 import 'package:hasskit/helper/web_socket.dart';
@@ -1233,11 +1233,14 @@ class GeneralData with ChangeNotifier {
     if (gd.roomList[roomIndex].row2.contains(entityId)) {
       gd.roomList[roomIndex].row2.remove(entityId);
       notifyListeners();
-      Flushbar(
-//        title: "Require Slide to Open",
-        message: "Removed $friendlyName from ${roomList[roomIndex].name}",
-        duration: Duration(seconds: 3),
-      )..show(context);
+      Fluttertoast.showToast(
+          msg: "Removed $friendlyName from ${roomList[roomIndex].name}",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.TOP,
+          timeInSecForIos: 1,
+          backgroundColor: ThemeInfo.colorBottomSheet.withOpacity(1),
+          textColor: Theme.of(context).textTheme.title.color,
+          fontSize: 14.0);
       roomListSave(true);
     }
     delayCancelEditModeTimer(300);
@@ -1249,11 +1252,14 @@ class GeneralData with ChangeNotifier {
     if (!gd.roomList[roomIndex].row2.contains(entityId)) {
       gd.roomList[roomIndex].row2.add(entityId);
       notifyListeners();
-      Flushbar(
-//        title: "Require Slide to Open",
-        message: "Added $friendlyName to ${roomList[roomIndex].name}",
-        duration: Duration(seconds: 3),
-      )..show(context);
+      Fluttertoast.showToast(
+          msg: "Added $friendlyName to ${roomList[roomIndex].name}",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.TOP,
+          timeInSecForIos: 1,
+          backgroundColor: ThemeInfo.colorBottomSheet.withOpacity(1),
+          textColor: Theme.of(context).textTheme.title.color,
+          fontSize: 14.0);
       roomListSave(true);
     }
     delayCancelEditModeTimer(300);
@@ -1409,8 +1415,6 @@ class GeneralData with ChangeNotifier {
     notifyListeners();
     entitiesOverrideSave(true);
   }
-
-  Flushbar settingLockFlushbar;
 
   DeviceSetting deviceSetting = DeviceSetting(
     phoneLayout: 3,

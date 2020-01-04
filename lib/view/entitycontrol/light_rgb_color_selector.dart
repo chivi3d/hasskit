@@ -1,8 +1,7 @@
 import 'dart:convert';
-
-import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hasskit/helper/general_data.dart';
 import 'package:hasskit/helper/locale_helper.dart';
 import 'package:hasskit/helper/logger.dart';
@@ -34,12 +33,14 @@ class _LightRgbColorSelectorState extends State<LightRgbColorSelector> {
           pickerColor =
               gd.stringToColor(gd.baseSetting.colorPicker[selectedIndex]);
           if (showFlush) {
-            Flushbar(
-              backgroundColor: ThemeInfo.colorBottomSheet,
-              icon: Icon(Icons.info),
-              messageText: Text(Translate.getString("edit.rbg_color", context)),
-              duration: Duration(seconds: 3),
-            )..show(context);
+            Fluttertoast.showToast(
+                msg: Translate.getString("edit.rbg_color", context),
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.TOP,
+                timeInSecForIos: 1,
+                backgroundColor: ThemeInfo.colorBottomSheet.withOpacity(1),
+                textColor: Theme.of(context).textTheme.title.color,
+                fontSize: 14.0);
             showFlush = false;
           }
           sendColor();

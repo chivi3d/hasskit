@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:ui';
 
-import 'package:flushbar/flushbar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hasskit/helper/general_data.dart';
 import 'package:hasskit/helper/locale_helper.dart';
 import 'package:hasskit/helper/logger.dart';
@@ -310,17 +310,16 @@ class _WebViewState extends State<WebView> {
           changeOpacity();
           if (showAddress) changeUrl(textController.text.trim());
           showAddress = !showAddress;
-          Flushbar(
-            message: showAddress
-                ? Translate.getString("webview.edit", context)
-                : Translate.getString("webview.saved", context),
-            duration: Duration(seconds: 3),
-            shouldIconPulse: true,
-            icon: Icon(
-              Icons.info,
-              color: ThemeInfo.colorIconActive,
-            ),
-          )..show(context);
+          Fluttertoast.showToast(
+              msg: showAddress
+                  ? Translate.getString("webview.edit", context)
+                  : Translate.getString("webview.saved", context),
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.TOP,
+              timeInSecForIos: 1,
+              backgroundColor: ThemeInfo.colorBottomSheet.withOpacity(1),
+              textColor: Theme.of(context).textTheme.title.color,
+              fontSize: 14.0);
         });
       },
       child: Container(
@@ -348,15 +347,15 @@ class _WebViewState extends State<WebView> {
             onTap: () {
               changeOpacity();
               webController.reload();
-              Flushbar(
-                message: Translate.getString("webview.reload", context),
-                duration: Duration(seconds: 3),
-                shouldIconPulse: true,
-                icon: Icon(
-                  Icons.info,
-                  color: ThemeInfo.colorIconActive,
-                ),
-              )..show(context);
+
+              Fluttertoast.showToast(
+                  msg: Translate.getString("webview.reload", context),
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.TOP,
+                  timeInSecForIos: 1,
+                  backgroundColor: ThemeInfo.colorBottomSheet.withOpacity(1),
+                  textColor: Theme.of(context).textTheme.title.color,
+                  fontSize: 14.0);
             },
             child: Container(
               decoration: BoxDecoration(
@@ -383,17 +382,16 @@ class _WebViewState extends State<WebView> {
               setState(() {
                 changeOpacity();
                 pinWebView = !pinWebView;
-                Flushbar(
-                  message: pinWebView
-                      ? Translate.getString("webview.pin", context)
-                      : Translate.getString("webview.unpin", context),
-                  duration: Duration(seconds: 3),
-                  shouldIconPulse: true,
-                  icon: Icon(
-                    Icons.info,
-                    color: ThemeInfo.colorIconActive,
-                  ),
-                )..show(context);
+                Fluttertoast.showToast(
+                    msg: pinWebView
+                        ? Translate.getString("webview.pin", context)
+                        : Translate.getString("webview.unpin", context),
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.TOP,
+                    timeInSecForIos: 1,
+                    backgroundColor: ThemeInfo.colorBottomSheet.withOpacity(1),
+                    textColor: Theme.of(context).textTheme.title.color,
+                    fontSize: 14.0);
               });
             },
             child: Container(

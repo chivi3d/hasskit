@@ -1,10 +1,11 @@
-import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hasskit/helper/general_data.dart';
 import 'package:hasskit/helper/locale_helper.dart';
 import 'package:hasskit/helper/logger.dart';
 import 'package:hasskit/helper/material_design_icons.dart';
+import 'package:hasskit/helper/theme_info.dart';
 import 'package:hasskit/helper/web_socket.dart';
 import 'package:hasskit/model/login_data.dart';
 
@@ -58,18 +59,23 @@ class ServerSelectPanel extends StatelessWidget {
           debugPrint("debugPrint OnTap");
           if (gd.loginDataCurrent.getUrl == loginData.getUrl &&
               gd.connectionStatus == "Connected") {
-            Flushbar(
-//              title: "Require Slide to Open",
-              message:
-                  "Swipe Right to Refresh, Left to Disconnect/Delete Server",
-              duration: Duration(seconds: 3),
-            )..show(context);
+            Fluttertoast.showToast(
+                msg: "Swipe Right to Refresh, Left to Disconnect/Delete Server",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.TOP,
+                timeInSecForIos: 1,
+                backgroundColor: ThemeInfo.colorBottomSheet.withOpacity(1),
+                textColor: Theme.of(context).textTheme.title.color,
+                fontSize: 14.0);
           } else {
-            Flushbar(
-//              title: "Require Slide to Open",
-              message: "Swipe Right to Connect, Left to Delete Server",
-              duration: Duration(seconds: 3),
-            )..show(context);
+            Fluttertoast.showToast(
+                msg: "Swipe Right to Connect, Left to Delete Server",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.TOP,
+                timeInSecForIos: 1,
+                backgroundColor: ThemeInfo.colorBottomSheet.withOpacity(1),
+                textColor: Theme.of(context).textTheme.title.color,
+                fontSize: 14.0);
           }
           FocusScope.of(context).requestFocus(new FocusNode());
         },

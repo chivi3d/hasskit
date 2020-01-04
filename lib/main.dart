@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hasskit/helper/locale_helper.dart';
 import 'package:hasskit/helper/theme_info.dart';
@@ -166,24 +167,41 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
   void getMessage() {
     _firebaseMessaging.configure(
         onMessage: (Map<String, dynamic> message) async {
-      setState(() {
-        print('on message $message');
-        gd.firebaseMessagingTitle = message["notification"]["title"];
-        gd.firebaseMessagingBody = message["notification"]["body"];
-      });
+      print('on message $message');
+      gd.firebaseMessagingTitle = message["notification"]["title"];
+      gd.firebaseMessagingBody = message["notification"]["body"];
+      Fluttertoast.showToast(
+          msg: "${gd.firebaseMessagingTitle} ${gd.firebaseMessagingBody}",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.TOP,
+          timeInSecForIos: 1,
+          backgroundColor: ThemeInfo.colorBottomSheet.withOpacity(1),
+          textColor: Theme.of(context).textTheme.title.color,
+          fontSize: 14.0);
     }, onResume: (Map<String, dynamic> message) async {
       print('on resume $message');
-      setState(() {
-        print('on resumeresume $message');
-        gd.firebaseMessagingTitle = message["notification"]["title"];
-        gd.firebaseMessagingBody = message["notification"]["body"];
-      });
+      gd.firebaseMessagingTitle = message["notification"]["title"];
+      gd.firebaseMessagingBody = message["notification"]["body"];
+      Fluttertoast.showToast(
+          msg: "${gd.firebaseMessagingTitle} ${gd.firebaseMessagingBody}",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.TOP,
+          timeInSecForIos: 1,
+          backgroundColor: ThemeInfo.colorBottomSheet.withOpacity(1),
+          textColor: Theme.of(context).textTheme.title.color,
+          fontSize: 14.0);
     }, onLaunch: (Map<String, dynamic> message) async {
-      setState(() {
-        print('on launch $message');
-        gd.firebaseMessagingTitle = message["notification"]["title"];
-        gd.firebaseMessagingBody = message["notification"]["body"];
-      });
+      print('on launch $message');
+      gd.firebaseMessagingTitle = message["notification"]["title"];
+      gd.firebaseMessagingBody = message["notification"]["body"];
+      Fluttertoast.showToast(
+          msg: "${gd.firebaseMessagingTitle} ${gd.firebaseMessagingBody}",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.TOP,
+          timeInSecForIos: 1,
+          backgroundColor: ThemeInfo.colorBottomSheet.withOpacity(1),
+          textColor: Theme.of(context).textTheme.title.color,
+          fontSize: 14.0);
     });
   }
 

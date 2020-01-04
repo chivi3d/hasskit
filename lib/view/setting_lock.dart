@@ -1,6 +1,6 @@
-import 'package:flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hasskit/helper/general_data.dart';
 import 'package:hasskit/helper/locale_helper.dart';
 import 'package:hasskit/helper/material_design_icons.dart';
@@ -166,14 +166,19 @@ class _SettingLockDetailState extends State<SettingLockDetail> {
                                     gd.deviceSettingSave();
                                     Navigator.pop(context);
 
-                                    gd.settingLockFlushbar = Flushbar(
-                                      backgroundColor:
-                                          ThemeInfo.colorBottomSheet,
-                                      icon: Icon(Icons.info),
-                                      messageText: Text(
-                                          "${gd.deviceSetting.settingPin}"),
-                                      duration: Duration(seconds: 6),
-                                    )..show(context);
+                                    Fluttertoast.showToast(
+                                        msg: "${gd.deviceSetting.settingPin}",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.TOP,
+                                        timeInSecForIos: 1,
+                                        backgroundColor: ThemeInfo
+                                            .colorBottomSheet
+                                            .withOpacity(1),
+                                        textColor: Theme.of(context)
+                                            .textTheme
+                                            .title
+                                            .color,
+                                        fontSize: 14.0);
                                   });
                                 }
                               : null,
@@ -256,8 +261,6 @@ class _SettingLockDetailState extends State<SettingLockDetail> {
   buttonPressed(String text) {
     setState(
       () {
-        if (gd.settingLockFlushbar != null)
-          gd.settingLockFlushbar.dismiss(true);
         settingPin = settingPin + text;
         if (settingPin.length == 4) {
           if (gd.deviceSetting.settingLocked) {
