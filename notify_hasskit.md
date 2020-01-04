@@ -15,6 +15,7 @@ Create a folder name notify_hasskit inside Home Assistant folder in the followin
 ```
 [Download](https://github.com/tuanha2000vn/hasskit/tree/master/custom_components/notify_hasskit)
 ## 2 Edit .homeassistant/configuration.yaml
+![alt text](https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/notification_token.png "Notification Token Guide")
 
 Add the following line:
 ```yaml
