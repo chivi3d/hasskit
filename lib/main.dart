@@ -5,7 +5,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -21,7 +20,6 @@ import 'helper/general_data.dart';
 import 'helper/google_sign.dart';
 import 'helper/logger.dart';
 import 'helper/material_design_icons.dart';
-import 'helper/local_notification.dart';
 
 Future<void> main() async {
   // needed if you intend to initialize in the `main` function
@@ -31,22 +29,22 @@ Future<void> main() async {
   // var notificationAppLaunchDetails =
   //     await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
 
-  var initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
-  var initializationSettingsIOS = IOSInitializationSettings(
-      onDidReceiveLocalNotification:
-          (int id, String title, String body, String payload) async {
-    didReceiveLocalNotificationSubject.add(ReceivedNotification(
-        id: id, title: title, body: body, payload: payload));
-  });
-  var initializationSettings = InitializationSettings(
-      initializationSettingsAndroid, initializationSettingsIOS);
-  await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-      onSelectNotification: (String payload) async {
-    if (payload != null) {
-      debugPrint('notification payload: ' + payload);
-    }
-    selectNotificationSubject.add(payload);
-  });
+//  var initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
+//  var initializationSettingsIOS = IOSInitializationSettings(
+//      onDidReceiveLocalNotification:
+//          (int id, String title, String body, String payload) async {
+//    didReceiveLocalNotificationSubject.add(ReceivedNotification(
+//        id: id, title: title, body: body, payload: payload));
+//  });
+//  var initializationSettings = InitializationSettings(
+//      initializationSettingsAndroid, initializationSettingsIOS);
+//  await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+//      onSelectNotification: (String payload) async {
+//    if (payload != null) {
+//      debugPrint('notification payload: ' + payload);
+//    }
+//    selectNotificationSubject.add(payload);
+//  });
 
   runApp(
     EasyLocalization(
