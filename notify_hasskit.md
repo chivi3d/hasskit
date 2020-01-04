@@ -26,7 +26,7 @@ notify_hasskit:
 ```
 ## 3 Edit .homeassistant/automations.yaml
 ```yaml
-- alias: HassKit Test
+- alias: HassKit Test Notification
   trigger:
     - entity_id: light.light_1
       platform: state
