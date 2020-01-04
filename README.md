@@ -30,17 +30,6 @@ An Elegant Home Assistant Control App
 </table>
 <br><br>
 
-## Please join us on
-
-<table width="100%">
-<tbody>
-<tr align="center">
-<td><a href="https://discord.gg/cqYr52P"><img src="https://github.com/tuanha2000vn/hasskit/blob/master/assets/images/discord-512.png" alt="" width="200" /><br />Discord</a></td>
-<td><a href="https://www.facebook.com/groups/709634206223205"><img src="https://github.com/tuanha2000vn/hasskit/blob/master/assets/images/facebook-logo.png" alt="" width="200" /><br />Facebook</a></td>
-</tr>
-</tbody>
-</table>
-
 ## What is HassKit
 
 HassKit is a Touch-Friendly - Zero Config App to help users instantly start using Home Assistant (Hass).
