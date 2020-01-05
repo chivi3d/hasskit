@@ -170,10 +170,15 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
 //        print("on message Fluttertoast.showToast");
         print('on message $message');
 //        print('on message 1 ${message["aps"]["alert"]["title"]}');
-        gd.firebaseMessagingTitle = message["aps"]["alert"]["title"];
-        gd.firebaseMessagingBody = message["aps"]["alert"]["body"];
+        if (Platform.isIOS) {
+          gd.firebaseMessagingTitle = message["aps"]["alert"]["title"];
+          gd.firebaseMessagingBody = message["aps"]["alert"]["body"];
+        } else {
+          gd.firebaseMessagingTitle = message["notification"]["title"];
+          gd.firebaseMessagingBody = message["notification"]["body"];
+        }
         Fluttertoast.showToast(
-            msg: "${gd.firebaseMessagingTitle} ${gd.firebaseMessagingBody}",
+            msg: "${gd.firebaseMessagingTitle}\n${gd.firebaseMessagingBody}",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.TOP,
             backgroundColor: ThemeInfo.colorIconActive.withOpacity(1),
