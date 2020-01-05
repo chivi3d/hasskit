@@ -167,9 +167,11 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
 
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
+//        print("on message Fluttertoast.showToast");
         print('on message $message');
-        gd.firebaseMessagingTitle = message["notification"]["title"];
-        gd.firebaseMessagingBody = message["notification"]["body"];
+//        print('on message 1 ${message["aps"]["alert"]["title"]}');
+        gd.firebaseMessagingTitle = message["aps"]["alert"]["title"];
+        gd.firebaseMessagingBody = message["aps"]["alert"]["body"];
         Fluttertoast.showToast(
             msg: "${gd.firebaseMessagingTitle} ${gd.firebaseMessagingBody}",
             toastLength: Toast.LENGTH_SHORT,
