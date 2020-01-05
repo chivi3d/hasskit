@@ -87,6 +87,7 @@ class Entity {
   double longitude;
   //input_select
   List<String> options;
+  bool hidden;
 
   Entity({
     this.entityId,
@@ -153,6 +154,7 @@ class Entity {
     this.longitude,
     //input_select
     this.options,
+    this.hidden = false,
   });
 
   factory Entity.fromJson(Map<String, dynamic> json) {
@@ -354,6 +356,9 @@ class Entity {
         options: json['attributes']['options'] != null
             ? List<String>.from(json['attributes']['options'])
             : [],
+        hidden: json['attributes']['hidden'] != null
+            ? json['attributes']['hidden']
+            : false,
       );
     } catch (e) {
       log.e("Entity.fromJson newEntity $e");

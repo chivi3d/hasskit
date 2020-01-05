@@ -1237,7 +1237,7 @@ class GeneralData with ChangeNotifier {
           msg: "Removed $friendlyName from ${roomList[roomIndex].name}",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.TOP,
-          backgroundColor: ThemeInfo.colorIconActive.withOpacity(0.9),
+          backgroundColor: ThemeInfo.colorIconActive.withOpacity(1),
           textColor: Theme.of(context).textTheme.title.color,
           fontSize: 14.0);
       roomListSave(true);
@@ -1255,7 +1255,7 @@ class GeneralData with ChangeNotifier {
           msg: "Added $friendlyName to ${roomList[roomIndex].name}",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.TOP,
-          backgroundColor: ThemeInfo.colorIconActive.withOpacity(0.9),
+          backgroundColor: ThemeInfo.colorIconActive.withOpacity(1),
           textColor: Theme.of(context).textTheme.title.color,
           fontSize: 14.0);
       roomListSave(true);

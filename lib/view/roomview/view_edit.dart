@@ -269,6 +269,7 @@ class __EditItemsState extends State<_EditItems> {
     if (!widget.selectedItem) {
       entities = gd.entities.values
           .where((e) =>
+              !e.hidden &&
               !gd.roomList[widget.roomIndex].row1.contains(e.entityId) &&
               !gd.roomList[widget.roomIndex].row2.contains(e.entityId) &&
               !gd.roomList[widget.roomIndex].row3.contains(e.entityId) &&

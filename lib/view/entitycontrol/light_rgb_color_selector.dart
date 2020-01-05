@@ -36,7 +36,7 @@ class _LightRgbColorSelectorState extends State<LightRgbColorSelector> {
             Fluttertoast.showToast(
                 msg: Translate.getString("edit.rbg_color", context),
                 toastLength: Toast.LENGTH_SHORT,
-                backgroundColor: ThemeInfo.colorIconActive.withOpacity(0.9),
+                backgroundColor: ThemeInfo.colorIconActive.withOpacity(1),
                 textColor: Theme.of(context).textTheme.title.color,
                 fontSize: 14.0);
             showFlush = false;

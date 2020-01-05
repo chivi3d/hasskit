@@ -167,7 +167,7 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
           msg: "${gd.firebaseMessagingTitle} ${gd.firebaseMessagingBody}",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.TOP,
-          backgroundColor: ThemeInfo.colorIconActive.withOpacity(0.9),
+          backgroundColor: ThemeInfo.colorIconActive.withOpacity(1),
           textColor: Theme.of(context).textTheme.title.color,
           fontSize: 14.0);
     }, onResume: (Map<String, dynamic> message) async {
@@ -178,7 +178,7 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
           msg: "${gd.firebaseMessagingTitle} ${gd.firebaseMessagingBody}",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.TOP,
-          backgroundColor: ThemeInfo.colorIconActive.withOpacity(0.9),
+          backgroundColor: ThemeInfo.colorIconActive.withOpacity(1),
           textColor: Theme.of(context).textTheme.title.color,
           fontSize: 14.0);
     }, onLaunch: (Map<String, dynamic> message) async {
@@ -189,7 +189,7 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
           msg: "${gd.firebaseMessagingTitle} ${gd.firebaseMessagingBody}",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.TOP,
-          backgroundColor: ThemeInfo.colorIconActive.withOpacity(0.9),
+          backgroundColor: ThemeInfo.colorIconActive.withOpacity(1),
           textColor: Theme.of(context).textTheme.title.color,
           fontSize: 14.0);
     });
@@ -342,11 +342,11 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
                 backgroundColor: ThemeInfo.colorBottomSheet.withOpacity(0.5),
                 onTap: (int) {
                   log.d("CupertinoTabBar onTap $int");
+                  gd.viewMode = ViewMode.normal;
                   if (gd.entityControlPageParentShow) {
                     print(
                         "CupertinoTabBar Navigator.pop(context) ${gd.entityControlPageParentShow}");
 //                    Navigator.pop(context);
-                    gd.viewMode = ViewMode.normal;
                   }
                 },
                 currentIndex: 0,

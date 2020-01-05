@@ -172,7 +172,7 @@ class _SettingLockDetailState extends State<SettingLockDetail> {
                                         gravity: ToastGravity.TOP,
                                         timeInSecForIos: 1,
                                         backgroundColor: ThemeInfo
-                                            .colorBottomSheet
+                                            .colorIconActive
                                             .withOpacity(1),
                                         textColor: Theme.of(context)
                                             .textTheme

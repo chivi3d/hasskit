@@ -75,7 +75,7 @@ class EntityCamera extends StatelessWidget {
                       ),
                       Container(
                         decoration: BoxDecoration(
-                          color: ThemeInfo.colorBottomSheet.withOpacity(0.9),
+                          color: ThemeInfo.colorBottomSheet.withOpacity(1),
                           borderRadius: BorderRadius.only(
                               bottomLeft: Radius.circular(8),
                               bottomRight: Radius.circular(8)),
