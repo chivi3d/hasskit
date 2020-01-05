@@ -29,7 +29,7 @@ notify_hasskit:
 ![alt text](https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Notification/image.png "Notification iOS")
 ![alt text](https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Notification/Screenshot_20200105-102626.png "Notification Android")
 
-This sample automation will send a notification to your phone when the light turned on (replace light.light_1 with your light entity Id):
+This sample Home Assistant Automation will send a notification to your phone when the light turned on (replace light.light_1 with your light entity Id):
 ```yaml
 - alias: HassKit Test Notification
   trigger:
@@ -43,3 +43,5 @@ This sample automation will send a notification to your phone when the light tur
         title: "Light 1"
         body: "Turned On"
 ```
+![alt text](https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Notification/node_red.png "Notification Node Red")
+And this is the sample using Node-Red
