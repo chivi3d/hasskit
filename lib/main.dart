@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -157,56 +158,45 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
 
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
-  void firebaseInit() {
-    _firebaseMessaging.configure(
-        onMessage: (Map<String, dynamic> message) async {
-      print('on message $message');
-      gd.firebaseMessagingTitle = message["notification"]["title"];
-      gd.firebaseMessagingBody = message["notification"]["body"];
-      Fluttertoast.showToast(
-          msg: "${gd.firebaseMessagingTitle} ${gd.firebaseMessagingBody}",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.TOP,
-          backgroundColor: ThemeInfo.colorIconActive.withOpacity(1),
-          textColor: Theme.of(context).textTheme.title.color,
-          fontSize: 14.0);
-    }, onResume: (Map<String, dynamic> message) async {
-      print('on resume $message');
-      gd.firebaseMessagingTitle = message["notification"]["title"];
-      gd.firebaseMessagingBody = message["notification"]["body"];
-      Fluttertoast.showToast(
-          msg: "${gd.firebaseMessagingTitle} ${gd.firebaseMessagingBody}",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.TOP,
-          backgroundColor: ThemeInfo.colorIconActive.withOpacity(1),
-          textColor: Theme.of(context).textTheme.title.color,
-          fontSize: 14.0);
-    }, onLaunch: (Map<String, dynamic> message) async {
-      print('on launch $message');
-      gd.firebaseMessagingTitle = message["notification"]["title"];
-      gd.firebaseMessagingBody = message["notification"]["body"];
-      Fluttertoast.showToast(
-          msg: "${gd.firebaseMessagingTitle} ${gd.firebaseMessagingBody}",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.TOP,
-          backgroundColor: ThemeInfo.colorIconActive.withOpacity(1),
-          textColor: Theme.of(context).textTheme.title.color,
-          fontSize: 14.0);
+  void firebaseCloudMessagingListeners() {
+    if (Platform.isIOS) iOSPermission();
+
+    _firebaseMessaging.getToken().then((token) {
+      print(token);
     });
 
-    _firebaseMessaging.requestNotificationPermissions(
-        const IosNotificationSettings(
-            sound: true, badge: true, alert: true, provisional: true));
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print('on message $message');
+        gd.firebaseMessagingTitle = message["notification"]["title"];
+        gd.firebaseMessagingBody = message["notification"]["body"];
+        Fluttertoast.showToast(
+            msg: "${gd.firebaseMessagingTitle} ${gd.firebaseMessagingBody}",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.TOP,
+            backgroundColor: ThemeInfo.colorIconActive.withOpacity(1),
+            textColor: Theme.of(context).textTheme.title.color,
+            fontSize: 14.0);
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print('on resume $message');
+        gd.firebaseMessagingTitle = message["notification"]["title"];
+        gd.firebaseMessagingBody = message["notification"]["body"];
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print('on launch $message');
+        gd.firebaseMessagingTitle = message["notification"]["title"];
+        gd.firebaseMessagingBody = message["notification"]["body"];
+      },
+    );
+  }
 
+  void iOSPermission() {
+    _firebaseMessaging.requestNotificationPermissions(
+        IosNotificationSettings(sound: true, badge: true, alert: true));
     _firebaseMessaging.onIosSettingsRegistered
         .listen((IosNotificationSettings settings) {
       print("Settings registered: $settings");
-    });
-
-    _firebaseMessaging.getToken().then((String token) {
-      assert(token != null);
-      gd.firebaseMessagingToken = token;
-      print("firebaseMessagingToken ${gd.firebaseMessagingToken}");
     });
   }
 
@@ -219,8 +209,7 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-
-    firebaseInit();
+    firebaseCloudMessagingListeners();
     WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
     WidgetsBinding.instance.addObserver(this);
     googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
