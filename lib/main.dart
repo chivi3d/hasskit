@@ -162,7 +162,8 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
     if (Platform.isIOS) iOSPermission();
 
     _firebaseMessaging.getToken().then((token) {
-      print(token);
+      print("\n\ngd.firebaseMessagingToken\n$token\n\n");
+      gd.firebaseMessagingToken = token;
     });
 
     _firebaseMessaging.configure(
