@@ -44,4 +44,5 @@ This sample Home Assistant Automation will send a notification to your phone whe
         body: "Turned On"
 ```
 ![alt text](https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Notification/node_red.png "Notification Node Red")
-And this is the sample using Node-Red
+
+And this is the sample using Node-Red (Thank side on Discord channel)
