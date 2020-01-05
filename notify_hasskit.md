@@ -1,10 +1,10 @@
 ## Notification
 
+![alt text](https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Notification/image.png "Notification iOS")
+
 HassKit support notification send directly from Home Assistant. To enable this feature, please follow these 3 easy steps
 
 ## 1. Setup a custom component
-
-![alt text](https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Notification/image.png "Notification iOS")
 
 Create a folder name notify_hasskit inside Home Assistant folder in the following file structure:
 ```yaml
