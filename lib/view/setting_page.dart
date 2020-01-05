@@ -361,8 +361,12 @@ class _SettingPageState extends State<SettingPage> {
                         children: <Widget>[
                           SelectableText(
                             "${gd.firebaseMessagingToken}",
-                            toolbarOptions:
-                                ToolbarOptions(copy: true, selectAll: true),
+                            toolbarOptions: ToolbarOptions(
+                              copy: true,
+                              selectAll: true,
+                              cut: false,
+                              paste: false,
+                            ),
                           ),
                           RaisedButton(
                             elevation: 1,

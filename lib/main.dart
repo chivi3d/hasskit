@@ -76,6 +76,8 @@ class MyApp extends StatelessWidget {
             localizationsDelegates: [
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+              DefaultCupertinoLocalizations.delegate,
               EasylocaLizationDelegate(
                   locale: data.locale, path: 'assets/langs')
             ],
@@ -124,15 +126,6 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
   Timer timer5;
   Timer timer60;
 
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-
-  _register() {
-    _firebaseMessaging.getToken().then((token) {
-      gd.firebaseMessagingToken = token;
-      print("firebaseMessagingToken ${gd.firebaseMessagingToken}");
-    });
-  }
-
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     setState(
@@ -162,7 +155,9 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
     );
   }
 
-  void getMessage() {
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+
+  void firebaseInit() {
     _firebaseMessaging.configure(
         onMessage: (Map<String, dynamic> message) async {
       print('on message $message');
@@ -198,6 +193,21 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
           textColor: Theme.of(context).textTheme.title.color,
           fontSize: 14.0);
     });
+
+    _firebaseMessaging.requestNotificationPermissions(
+        const IosNotificationSettings(
+            sound: true, badge: true, alert: true, provisional: true));
+
+    _firebaseMessaging.onIosSettingsRegistered
+        .listen((IosNotificationSettings settings) {
+      print("Settings registered: $settings");
+    });
+
+    _firebaseMessaging.getToken().then((String token) {
+      assert(token != null);
+      gd.firebaseMessagingToken = token;
+      print("firebaseMessagingToken ${gd.firebaseMessagingToken}");
+    });
   }
 
   @override
@@ -210,8 +220,7 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
   void initState() {
     super.initState();
 
-    getMessage();
-    _register();
+    firebaseInit();
     WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
     WidgetsBinding.instance.addObserver(this);
     googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
