@@ -44,6 +44,9 @@ This sample Home Assistant Automation will send a notification to your phone whe
         title: "Light 1"
         body: "Turned On"
 ```
+
+**Restart Home Assistant**
+
 Use Developer Tools to send test notification:
 ![alt text](https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Notification/developer_tools.png "Notification Developer Tools")
 
