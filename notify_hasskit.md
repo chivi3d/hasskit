@@ -6,7 +6,7 @@ HassKit support notification send directly from Home Assistant. To enable this f
 
 ## 1. Setup a custom component
 
-Create a folder name notify_hasskit inside Home Assistant folder in the following file structure:
+Create a folder name notify_hasskit inside Home Assistant's custom_components folder like the following file structure:
 ```yaml
 .homeassistant/
 |-- custom_components/
