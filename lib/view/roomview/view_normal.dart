@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hasskit/helper/general_data.dart';
-import 'package:hasskit/helper/theme_info.dart';
 import 'package:hasskit/model/entity.dart';
 import 'package:hasskit/view/slivers/sliver_entities.dart';
 import 'package:hasskit/view/slivers/sliver_entity_status_running.dart';
@@ -34,67 +33,67 @@ class ViewNormal extends StatelessWidget {
 //        "row4Cam ${row4Cam.length} "
 //        "");
 
-    bool showAddFirstButton = false;
-    if (row1.length +
-            row1Cam.length +
-            row2.length +
-            row2Cam.length +
-            row3.length +
-            row3Cam.length +
-            row4.length +
-            row4Cam.length <
-        1) {
-      showAddFirstButton = true;
-//      log.d("showAddFirstButton $showAddFirstButton");
-    }
+//    bool showAddFirstButton = false;
+//    if (row1.length +
+//            row1Cam.length +
+//            row2.length +
+//            row2Cam.length +
+//            row3.length +
+//            row3Cam.length +
+//            row4.length +
+//            row4Cam.length <
+//        1) {
+//      showAddFirstButton = true;
+////      log.d("showAddFirstButton $showAddFirstButton");
+//    }
 
     return CustomScrollView(
       controller: gd.viewNormalController,
       slivers: [
         SliverNavigationBar(roomIndex: roomIndex),
         SliverEntityStatusRunning(),
-        showAddFirstButton
-            ? SliverPadding(
-                padding: EdgeInsets.all(12),
-                sliver: SliverGrid(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: gd.layoutCameraCount,
-                    mainAxisSpacing: 8.0,
-                    crossAxisSpacing: 10.0,
-                    childAspectRatio: 1,
-                  ),
-                  delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
-                      return Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: ThemeInfo.colorEntityBackground,
-                        ),
-                        child: Opacity(
-                          opacity: 0.5,
-                          child: IconButton(
-                            iconSize: 60 * 3 / gd.layoutCameraCount,
-                            onPressed: () {
-                              gd.viewMode = ViewMode.edit;
-                            },
-                            icon: Icon(
-                              Icons.add_circle,
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                    childCount: 1,
-                  ),
-                ),
-              )
-            : gd.emptySliver,
-        SliverFixedExtentList(
-          itemExtent: 10,
-          delegate: SliverChildListDelegate(
-            [Container()],
-          ),
-        ),
+//        showAddFirstButton
+//            ? SliverPadding(
+//                padding: EdgeInsets.all(12),
+//                sliver: SliverGrid(
+//                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+//                    crossAxisCount: gd.layoutCameraCount,
+//                    mainAxisSpacing: 8.0,
+//                    crossAxisSpacing: 10.0,
+//                    childAspectRatio: 1,
+//                  ),
+//                  delegate: SliverChildBuilderDelegate(
+//                    (BuildContext context, int index) {
+//                      return Container(
+//                        decoration: BoxDecoration(
+//                          borderRadius: BorderRadius.circular(8),
+//                          color: ThemeInfo.colorEntityBackground,
+//                        ),
+//                        child: Opacity(
+//                          opacity: 0.5,
+//                          child: IconButton(
+//                            iconSize: 60 * 3 / gd.layoutCameraCount,
+//                            onPressed: () {
+//                              gd.viewMode = ViewMode.edit;
+//                            },
+//                            icon: Icon(
+//                              Icons.add_circle,
+//                            ),
+//                          ),
+//                        ),
+//                      );
+//                    },
+//                    childCount: 1,
+//                  ),
+//                ),
+//              )
+//            : gd.emptySliver,
+//        SliverFixedExtentList(
+//          itemExtent: 10,
+//          delegate: SliverChildListDelegate(
+//            [Container()],
+//          ),
+//        ),
         row1.length + row1Cam.length > 0
             ? SliverHeaderNormal(
                 icon: Icon(Icons.looks_one),

@@ -46,6 +46,7 @@ class SliverHeaderNormal extends StatelessWidget {
     return SliverList(
       delegate: SliverChildListDelegate(
         [
+          SizedBox(height: 8),
           InkWell(
             onTap: () {
               FocusScope.of(context).requestFocus(new FocusNode());
