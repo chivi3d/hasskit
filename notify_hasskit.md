@@ -18,9 +18,9 @@ Create a folder name notify_hasskit inside Home Assistant's custom_components fo
 [Download](https://github.com/tuanha2000vn/hasskit/raw/master/custom_components/notify_hasskit.zip)
 ## 2. Add Notify HassKit to Congifuration
 
-![alt text](https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/notification_token.png "Notification Token Guide")
+![alt text](https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Notification/token.png "Notification Token Guide")
 
-Add the following line to **.homeassistant/configuration.yaml**. Replace the "Notification Token Copy From Device 1" with the Notification Token Code in your phone:
+Click Share button and send yourself the token and add them to **.homeassistant/configuration.yaml**. Replace the "Notification Token Copy From Device 1" with the Notification Token Code in your phone:
 ```yaml
 notify_hasskit:
   token:
