@@ -8,7 +8,7 @@ An Elegant Home Assistant Control App
 <tbody>
 <tr align="center">
 <td><img width="480" src="https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Promo/general.gif"></td>
-<td><img width="480" src="https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Promo/edit.gif"></td>
+<td><img width="480" src="https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Promo/google_map.gif"></td>
 </tr>
 <tr align="center">
 <td><img width="480" src="https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Promo/settings.gif"></td>
@@ -23,7 +23,7 @@ An Elegant Home Assistant Control App
 <td><img width="480" src="https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Promo/light.gif"></td>
 </tr>
 <tr align="center">
-<td><img width="480" src="https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Promo/curtain.gif"></td>
+<td><img width="480" src="https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Promo/edit.gif"></td>
 <td><img width="480" src="https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Promo/graph.gif"></td>
 </tr>
 </tbody>
