@@ -44,7 +44,7 @@ This sample Home Assistant Automation will send a notification to your phone whe
         title: "Light 1"
         body: "Turned On"
 ```
-Use Developer Tools to test send notification:
+Use Developer Tools to send test notification:
 ![alt text](https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Notification/developer_tools.png "Notification Developer Tools")
 
 For people use Node-Red instead of Home Assistant automation:
