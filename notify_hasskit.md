@@ -24,9 +24,9 @@ Add the following line to **configuration.yaml**. Replace the 'Notification Toke
 ```yaml
 notify_hasskit:
   token:
-    - 'Notification Token Copy From Device 1'
-    - 'Notification Token Copy From Device 2'
-    - 'Notification Token Copy From Device 3'
+    - "Notification Token Copy From Device 1"
+    - "Notification Token Copy From Device 2"
+    - "Notification Token Copy From Device 3"
 ```
 ## 3. Edit .homeassistant/automations.yaml
 
