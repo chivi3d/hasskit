@@ -10,6 +10,8 @@ import 'package:hasskit/helper/squircle_border.dart';
 import 'package:hasskit/helper/theme_info.dart';
 import 'package:hasskit/model/local_language.dart';
 import 'package:hasskit/model/login_data.dart';
+import 'package:hasskit/view/backup_restore.dart';
+import 'package:hasskit/view/notification_guide.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -348,42 +350,15 @@ class _SettingPageState extends State<SettingPage> {
                 ),
                 title: "Notification Token",
               ),
-              SliverList(
-                delegate: SliverChildListDelegate(
-                  [
-                    Container(
-                      padding: EdgeInsets.all(8),
-                      margin: EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                          color: ThemeInfo.colorBottomSheet.withOpacity(0.5),
-                          borderRadius: BorderRadius.circular(8)),
-                      child: Column(
-                        children: <Widget>[
-                          SelectableText(
-                            "${gd.firebaseMessagingToken}",
-                            toolbarOptions: ToolbarOptions(
-                              copy: true,
-                              selectAll: true,
-                              cut: false,
-                              paste: false,
-                            ),
-                          ),
-                          RaisedButton(
-                            elevation: 1,
-                            onPressed: _launchNotificationGuide,
-                            child: Text(
-                              "Notification Setup Guide",
-                              textScaleFactor: gd.textScaleFactorFix,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ],
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                      ),
-                    ),
-                  ],
+              NotificationGuide(),
+              SliverHeaderNormal(
+                icon: Icon(
+                  MaterialDesignIcons.getIconDataFromIconName(
+                      "mdi:backup-restore"),
                 ),
+                title: "Backup & Restore",
               ),
+              BackupRestore(),
               SliverHeaderNormal(
                 icon: Icon(
                   MaterialDesignIcons.getIconDataFromIconName(
@@ -520,16 +495,6 @@ class _SettingPageState extends State<SettingPage> {
       }
     } catch (e) {
       await launch(fallbackUrl, forceSafariVC: false);
-    }
-  }
-
-  _launchNotificationGuide() async {
-    const url =
-        'https://github.com/tuanha2000vn/hasskit/blob/master/notify_hasskit.md';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
     }
   }
 
