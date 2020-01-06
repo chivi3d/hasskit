@@ -1,12 +1,12 @@
 ## Notification
 
+![alt text](https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Notification/image.png "Notification iOS")
+
 HassKit support notification send directly from Home Assistant. To enable this feature, please follow these 3 easy steps
 
 ## 1. Setup a custom component
 
-![alt text](https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Notification/image.png "Notification iOS")
-
-Create a folder name notify_hasskit inside Home Assistant folder in the following file structure:
+Create a folder name notify_hasskit inside Home Assistant's custom_components folder like the following file structure:
 ```yaml
 .homeassistant/
 |-- custom_components/
@@ -44,6 +44,8 @@ This sample Home Assistant Automation will send a notification to your phone whe
         title: "Light 1"
         body: "Turned On"
 ```
+
+For people use Node-Red instead of Home Assistant automation:
 ![alt text](https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Notification/node_red.png "Notification Node Red")
 
 And this is the sample using Node-Red (Thank side on Discord channel)
