@@ -13,6 +13,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hasskit/helper/locale_helper.dart';
 import 'package:hasskit/helper/theme_info.dart';
 import 'package:hasskit/helper/web_socket.dart';
+import 'package:hasskit/integration/device_info.dart';
 import 'package:hasskit/view/page_view_builder.dart';
 import 'package:hasskit/view/setting_page.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -255,6 +256,8 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
     gd.loginDataListString = await gd.getString('loginDataList');
 
     await gd.getSettings("mainInitState");
+
+    deviceInfo.initPlatformState();
   }
 
   timer200Callback() {}
@@ -396,6 +399,7 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
                     return CupertinoTabView(
                       builder: (context) {
                         return CupertinoPageScaffold(
+//                          child: DeviceInfo(),
                           child: SinglePage(roomIndex: 0),
 //                          child: HassKitReview(),
                         );

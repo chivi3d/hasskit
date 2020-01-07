@@ -20,16 +20,17 @@ class BackupRestore extends StatelessWidget {
           content: new Row(
             children: <Widget>[
               new Expanded(
-                  child: new TextField(
-                autofocus: true,
-                decoration: new InputDecoration(
-                  labelText: 'Backup Data',
-                  hintText: 'Paste Backup Data Here',
+                child: new TextField(
+                  autofocus: true,
+                  decoration: new InputDecoration(
+                    labelText: 'Backup Data',
+                    hintText: 'Paste Backup Data Here',
+                  ),
+                  onChanged: (value) {
+                    backupData = value;
+                  },
                 ),
-                onChanged: (value) {
-                  backupData = value;
-                },
-              ))
+              )
             ],
           ),
           actions: <Widget>[

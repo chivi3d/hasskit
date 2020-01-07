@@ -9,7 +9,7 @@ class NotificationGuide extends StatelessWidget {
   Widget build(BuildContext context) {
     String subject = "HassKit Notification Setup";
     String shareContent =
-        "Add the following line to .homeassistant/configuration.yaml"
+        "Setup notify_hasskit then add the following line to .homeassistant/configuration.yaml"
         "\n\nnotify_hasskit:"
         "\n  token:"
         "\n    - \"${gd.firebaseMessagingToken}\""

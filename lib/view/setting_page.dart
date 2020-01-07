@@ -8,6 +8,7 @@ import 'package:hasskit/helper/logger.dart';
 import 'package:hasskit/helper/material_design_icons.dart';
 import 'package:hasskit/helper/squircle_border.dart';
 import 'package:hasskit/helper/theme_info.dart';
+import 'package:hasskit/integration/device_registration.dart';
 import 'package:hasskit/model/local_language.dart';
 import 'package:hasskit/model/login_data.dart';
 import 'package:hasskit/view/backup_restore.dart';
@@ -344,6 +345,13 @@ class _SettingPageState extends State<SettingPage> {
                 title: Translate.getString("settings.language", context),
               ),
               LocalLanguagePicker(),
+              SliverHeaderNormal(
+                icon: Icon(
+                  MaterialDesignIcons.getIconDataFromIconName("mdi:devices"),
+                ),
+                title: "Device Registration",
+              ),
+              DeviceRegistration(),
               SliverHeaderNormal(
                 icon: Icon(
                   MaterialDesignIcons.getIconDataFromIconName("mdi:bell-ring"),

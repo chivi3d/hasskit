@@ -13,6 +13,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hasskit/helper/theme_info.dart';
 import 'package:hasskit/helper/web_socket.dart';
+import 'package:hasskit/integration/device_integration.dart';
 import 'package:hasskit/model/base_setting.dart';
 import 'package:hasskit/model/camera_info.dart';
 import 'package:hasskit/model/device_setting.dart';
@@ -2006,17 +2007,21 @@ class GeneralData with ChangeNotifier {
 
       //force the trigger reset
       log.w(
-          "force the trigger reset entitiesOverrideString load \n entitiesOverride");
+          "force the trigger reset entitiesOverrideString load entitiesOverride");
       gd.entitiesOverrideString = "";
       gd.entitiesOverrideString = await gd.getString('entitiesOverride');
       //force the trigger reset
       log.w(
-          "force the trigger reset deviceSettingString load \n deviceSetting $url");
+          "force the trigger reset deviceIntegrationString load deviceIntegrationString");
+      gd.deviceIntegrationString = "";
+      gd.deviceIntegrationString = await gd.getString('deviceIntegration');
+      //force the trigger reset
+      log.w(
+          "force the trigger reset deviceSettingString load deviceSetting $url");
       gd.deviceSettingString = "";
       gd.deviceSettingString = await gd.getString('deviceSetting $url');
       //force the trigger reset
-      log.w(
-          "force the trigger reset baseSettingString load \n baseSetting $url");
+      log.w("force the trigger reset baseSettingString load baseSetting $url");
       gd.baseSettingString = "";
       gd.baseSettingString = await gd.getString('baseSetting $url');
       if (gd.baseSettingString == null || gd.baseSettingString.length < 1) {
@@ -2029,7 +2034,7 @@ class GeneralData with ChangeNotifier {
         }
       }
       //force the trigger reset
-      log.w("force the trigger reset roomListString load \n roomList $url");
+      log.w("force the trigger reset roomListString load roomList $url");
       gd.roomListString = "";
       gd.roomListString = await gd.getString('roomList $url');
       if (gd.roomListString == null || gd.roomListString.length < 1) {
@@ -2442,4 +2447,54 @@ class GeneralData with ChangeNotifier {
   String firebaseMessagingToken = "";
   String firebaseMessagingTitle = "";
   String firebaseMessagingBody = "";
+
+  DeviceIntegration deviceIntegration = DeviceIntegration(
+    deviceName: "",
+    cloudHookUrl: "",
+    remoteUiUrl: "",
+    secret: "",
+    webHookId: "",
+  );
+
+  String _deviceIntegrationString;
+
+  String get deviceIntegrationString => _deviceIntegrationString;
+
+  set deviceIntegrationString(val) {
+    if (_deviceIntegrationString != val) {
+      _deviceIntegrationString = val;
+
+      if (_deviceIntegrationString != null &&
+          _deviceIntegrationString.length > 0) {
+        log.w(
+            'FOUND deviceIntegration _deviceIntegrationString $_deviceIntegrationString');
+
+        val = jsonDecode(val);
+        deviceIntegration = DeviceIntegration.fromJson(val);
+      } else {
+        log.w('CAN NOT FIND deviceIntegration adding default data');
+        deviceIntegration.deviceName = "";
+        deviceIntegration.cloudHookUrl = "";
+        deviceIntegration.remoteUiUrl = "";
+        deviceIntegration.secret = "";
+        deviceIntegration.webHookId = "";
+      }
+
+      notifyListeners();
+    }
+  }
+
+  void deviceIntegrationSave() {
+    log.d("deviceIntegrationSave");
+
+    try {
+      String deviceIntegrationEncoded = jsonEncode(deviceIntegration.toJson());
+
+      gd.saveString('deviceIntegration', deviceIntegrationEncoded);
+      log.w('save deviceIntegration $deviceIntegrationEncoded');
+    } catch (e) {
+      log.w("deviceIntegrationSave $e");
+    }
+    notifyListeners();
+  }
 }
