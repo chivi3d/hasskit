@@ -2014,7 +2014,7 @@ class GeneralData with ChangeNotifier {
       log.w(
           "force the trigger reset deviceIntegrationString load deviceIntegrationString");
       gd.deviceIntegrationString = "";
-      gd.deviceIntegrationString = await gd.getString('deviceIntegration');
+      gd.deviceIntegrationString = await gd.getString('deviceIntegration $url');
       //force the trigger reset
       log.w(
           "force the trigger reset deviceSettingString load deviceSetting $url");
@@ -2489,8 +2489,11 @@ class GeneralData with ChangeNotifier {
 
     try {
       String deviceIntegrationEncoded = jsonEncode(deviceIntegration.toJson());
+      var url = gd.loginDataCurrent.getUrl.replaceAll(".", "-");
+      url = url.replaceAll("/", "-");
+      url = url.replaceAll(":", "-");
 
-      gd.saveString('deviceIntegration', deviceIntegrationEncoded);
+      gd.saveString('deviceIntegration $url', deviceIntegrationEncoded);
       log.w('save deviceIntegration $deviceIntegrationEncoded');
     } catch (e) {
       log.w("deviceIntegrationSave $e");

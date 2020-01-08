@@ -225,12 +225,12 @@ class _EntityControlBinarySensorState extends State<EntityControlBinarySensor> {
                             decoration: BoxDecoration(
                               borderRadius: rec.isStateOn
                                   ? BorderRadius.only(
-                                      topLeft: Radius.circular(8),
-                                      bottomLeft: Radius.circular(8),
+                                      topLeft: Radius.circular(80),
+                                      bottomLeft: Radius.circular(80),
                                     )
                                   : BorderRadius.only(
-                                      topRight: Radius.circular(8),
-                                      bottomRight: Radius.circular(8),
+                                      topRight: Radius.circular(80),
+                                      bottomRight: Radius.circular(80),
                                     ),
                               color: rec.isStateOn
                                   ? ThemeInfo.colorIconActive.withOpacity(0.25)

@@ -348,11 +348,11 @@ class Entity {
         latitude:
             double.tryParse(json["attributes"]["latitude"].toString()) != null
                 ? double.parse(json["attributes"]["latitude"].toString())
-                : null,
+                : 0,
         longitude:
             double.tryParse(json["attributes"]["longitude"].toString()) != null
                 ? double.parse(json["attributes"]["longitude"].toString())
-                : null,
+                : 0,
         options: json['attributes']['options'] != null
             ? List<String>.from(json['attributes']['options'])
             : [],

@@ -27,14 +27,20 @@ class _DeviceRegistrationState extends State<DeviceRegistration> {
   void getDeviceInfo() async {
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     var deviceModel = "";
+    String millisecondsSinceEpoch =
+        DateTime.now().millisecondsSinceEpoch.toString();
+    millisecondsSinceEpoch = millisecondsSinceEpoch.substring(
+        millisecondsSinceEpoch.length - 4, millisecondsSinceEpoch.length);
+
     if (Platform.isIOS) {
       IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
       print('Running on ${iosInfo.utsname.machine}');
-      deviceModel = "-" + iosInfo.utsname.machine;
+      deviceModel =
+          "-" + iosInfo.utsname.machine + "-" + millisecondsSinceEpoch;
     } else if (Platform.isAndroid) {
       AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
       print('Running on ${androidInfo.model}'); // e.g. "Moto G (4)"
-      deviceModel = "-" + androidInfo.model;
+      deviceModel = "-" + androidInfo.model + "-" + millisecondsSinceEpoch;
     }
     _controller.text = "HassKit$deviceModel";
   }
@@ -46,7 +52,7 @@ class _DeviceRegistrationState extends State<DeviceRegistration> {
         [
           Container(
             padding: EdgeInsets.all(8),
-            margin: EdgeInsets.all(8),
+            margin: EdgeInsets.fromLTRB(8, 8, 8, 0),
             decoration: BoxDecoration(
                 color: ThemeInfo.colorBottomSheet.withOpacity(0.5),
                 borderRadius: BorderRadius.circular(8)),
@@ -71,30 +77,30 @@ class _DeviceRegistrationState extends State<DeviceRegistration> {
                         : "Enter Mobile App Name",
                   ),
                   onChanged: (val) {
-                    setState(() {
-                      _controller.text = val;
-                    });
+                    setState(() {});
                   },
                 ),
-                RaisedButton(
-                  onPressed: _controller.text.trim().length > 0 &&
-                          gd.connectionStatus == "Connected"
-                      ? () {
-                          if (gd.deviceIntegration.webHookId == "") {
-                            gd.deviceIntegration
-                                .register(_controller.text.trim());
-                          } else {
-                            gd.deviceIntegration
-                                .updateRegistration(_controller.text.trim());
-                          }
-                          FocusScope.of(context).requestFocus(new FocusNode());
-                        }
-                      : null,
-                  child: Text(gd.deviceIntegration.webHookId == ""
-                      ? "Register Mobile App"
-                      : "Update Mobile App"),
-                ),
               ],
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 8),
+            child: RaisedButton(
+              onPressed: _controller.text.trim().length > 0 &&
+                      gd.connectionStatus == "Connected"
+                  ? () {
+                      if (gd.deviceIntegration.webHookId == "") {
+                        gd.deviceIntegration.register(_controller.text.trim());
+                      } else {
+                        gd.deviceIntegration
+                            .updateRegistration(_controller.text.trim());
+                      }
+                      FocusScope.of(context).requestFocus(new FocusNode());
+                    }
+                  : null,
+              child: Text(gd.deviceIntegration.webHookId == ""
+                  ? "Register Mobile App"
+                  : "Update Mobile App"),
             ),
           ),
         ],
