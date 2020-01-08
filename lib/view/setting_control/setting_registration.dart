@@ -76,6 +76,7 @@ class _SettingRegistrationState extends State<SettingRegistration> {
       var getLocationUpdatesData = {
         "type": "update_location",
         "data": {
+          "location_name": "[$latitude, $longitude]",
           "gps": [latitude, longitude],
           "gps_accuracy": accuracy,
           "speed": speed,
@@ -185,6 +186,8 @@ class _SettingRegistrationState extends State<SettingRegistration> {
                     value: gd.deviceIntegration.trackLocation,
                     onChanged: (val) {
                       setState(() {
+                        gd.locUpdateTime =
+                            DateTime.now().subtract(Duration(hours: 1));
                         gd.deviceIntegration.trackLocation = val;
                         print(
                             "onChanged $val gd.deviceIntegration.trackLocation ${gd.deviceIntegration.trackLocation}");
