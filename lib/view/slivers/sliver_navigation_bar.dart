@@ -5,7 +5,7 @@ import 'package:hasskit/helper/general_data.dart';
 import 'package:hasskit/helper/material_design_icons.dart';
 import 'package:hasskit/helper/theme_info.dart';
 import 'package:hasskit/view/custom_popup_menu.dart';
-import 'package:hasskit/view/entitycontrol/entity_control_parent.dart';
+import 'package:hasskit/view/entity_control/entity_control_parent.dart';
 import 'package:provider/provider.dart';
 
 class SliverNavigationBar extends StatelessWidget {

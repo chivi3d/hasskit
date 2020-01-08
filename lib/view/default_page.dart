@@ -25,11 +25,17 @@ class DefaultPage extends StatelessWidget {
                 size: 150,
               ),
               SizedBox(height: 20),
-              Text(
-                Translate.getString("global.connect_hass", context),
-                style: Theme.of(context).textTheme.title,
-                textAlign: TextAlign.center,
-              ),
+              gd.connectionStatus == "" && gd.autoConnect
+                  ? Text(
+                      Translate.getString("global.connect_demo", context),
+                      style: Theme.of(context).textTheme.title,
+                      textAlign: TextAlign.center,
+                    )
+                  : Text(
+                      Translate.getString("global.connect_hass", context),
+                      style: Theme.of(context).textTheme.title,
+                      textAlign: TextAlign.center,
+                    ),
               SizedBox(height: 10),
               Text(
                 error,
@@ -53,13 +59,6 @@ class DefaultPage extends StatelessWidget {
                   ? SpinKitThreeBounce(
                       size: 40,
                       color: ThemeInfo.colorIconActive.withOpacity(0.5),
-                    )
-                  : Container(),
-              gd.connectionStatus == "" && gd.autoConnect
-                  ? Text(
-                      "...Preparing Demo Server...",
-                      style: Theme.of(context).textTheme.caption,
-                      textAlign: TextAlign.center,
                     )
                   : Container(),
             ],

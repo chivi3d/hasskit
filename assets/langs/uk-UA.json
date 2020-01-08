@@ -12,6 +12,7 @@
         "left": "Ліво",
         "right": "Право",
         "connect_hass": "Будьласка, підключіться до \nHome Assistant",
+        "connect_demo": "Підключення до\nДемо-хаус",
         "last_update": "Останнє оновлення",
         "cancel": "Відмінити",
         "settings": "Налаштування",

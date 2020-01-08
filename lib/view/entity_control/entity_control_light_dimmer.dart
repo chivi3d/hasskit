@@ -6,7 +6,7 @@ import 'package:hasskit/helper/logger.dart';
 import 'package:hasskit/helper/material_design_icons.dart';
 import 'package:hasskit/helper/theme_info.dart';
 import 'package:hasskit/model/entity.dart';
-import 'package:hasskit/view/entitycontrol/light_rgb_color_selector.dart';
+import 'package:hasskit/view/entity_control/light_rgb_color_selector.dart';
 import 'package:provider/provider.dart';
 import 'light_effect_selector.dart';
 import 'light_temp_color_selector.dart';

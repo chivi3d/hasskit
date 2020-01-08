@@ -12,6 +12,7 @@
         "left": "שמאל",
         "right": "ימין",
         "connect_hass": "התחבר בבקשה ל - Home Assistant",
+        "connect_demo": "מתחבר ל\nבית הדגמה",
         "last_update": "עדכון אחרון",
         "cancel": "בטל",
         "settings": "הגדרות",

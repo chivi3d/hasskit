@@ -13,7 +13,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hasskit/helper/theme_info.dart';
 import 'package:hasskit/helper/web_socket.dart';
-import 'package:hasskit/integration/device_integration.dart';
+import 'package:hasskit/view/setting_control/device_integration.dart';
 import 'package:hasskit/model/base_setting.dart';
 import 'package:hasskit/model/camera_info.dart';
 import 'package:hasskit/model/device_setting.dart';
@@ -2465,6 +2465,7 @@ class GeneralData with ChangeNotifier {
     remoteUiUrl: "",
     secret: "",
     webHookId: "",
+    trackLocation: true,
   );
 
   String _deviceIntegrationString;
@@ -2489,6 +2490,7 @@ class GeneralData with ChangeNotifier {
         deviceIntegration.remoteUiUrl = "";
         deviceIntegration.secret = "";
         deviceIntegration.webHookId = "";
+        deviceIntegration.trackLocation = true;
       }
 
       notifyListeners();

@@ -13,6 +13,7 @@ class DeviceIntegration {
   String remoteUiUrl = "";
   String secret = "";
   String webHookId = "";
+  bool trackLocation = true;
 
   DeviceIntegration({
     @required this.deviceName,
@@ -20,6 +21,7 @@ class DeviceIntegration {
     @required this.remoteUiUrl,
     @required this.secret,
     @required this.webHookId,
+    @required this.trackLocation,
   });
 
   Map<String, dynamic> toJson() => {
@@ -28,6 +30,7 @@ class DeviceIntegration {
         'cloudhook_url': remoteUiUrl,
         'secret': secret,
         'webhook_id': webHookId,
+        'trackLocation': trackLocation,
       };
 
   factory DeviceIntegration.fromJson(Map<String, dynamic> json) {
@@ -37,6 +40,8 @@ class DeviceIntegration {
       remoteUiUrl: json['remote_ui_url'] != null ? json['remote_ui_url'] : "",
       secret: json['secret'] != null ? json['secret'] : "",
       webHookId: json['webhook_id'] != null ? json['webhook_id'] : "",
+      trackLocation:
+          json['trackLocation'] != null ? json['trackLocation'] : true,
     );
   }
 

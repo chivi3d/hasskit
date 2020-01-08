@@ -12,6 +12,7 @@
         "left": "Balra",
         "right": "Jobbra",
         "connect_hass": "Csatlakozz a\nHome Assistant-hez.",
+        "connect_demo": "Csatlakozás a\nDemo ház",
         "last_update": "Utolsó frissítés",
         "cancel": "Mégsem",
         "settings": "Beállítások",

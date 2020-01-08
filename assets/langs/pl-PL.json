@@ -12,6 +12,7 @@
         "left": "w lewo",
         "right": "w prawo",
         "connect_hass": "Połącz się\nz Home Assistant",
+        "connect_demo": "Łączenie z\nDom demonstracyjny",
         "last_update": "Ostatnia aktualizacja",
         "cancel": "Anuluj",
         "settings": "Ustawienia",

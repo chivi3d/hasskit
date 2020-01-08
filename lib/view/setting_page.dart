@@ -8,18 +8,18 @@ import 'package:hasskit/helper/logger.dart';
 import 'package:hasskit/helper/material_design_icons.dart';
 import 'package:hasskit/helper/squircle_border.dart';
 import 'package:hasskit/helper/theme_info.dart';
-import 'package:hasskit/integration/device_registration.dart';
+import 'package:hasskit/view/setting_control/setting_registration.dart';
 import 'package:hasskit/model/local_language.dart';
 import 'package:hasskit/model/login_data.dart';
-import 'package:hasskit/view/backup_restore.dart';
-import 'package:hasskit/view/notification_guide.dart';
+import 'package:hasskit/view/setting_control/backup_restore.dart';
+import 'package:hasskit/view/setting_control/notification_guide.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:validators/validators.dart';
-import 'setting_lock.dart';
+import 'setting_control/setting_lock.dart';
 import 'home_assistant_login.dart';
-import 'server_select_panel.dart';
+import 'setting_control/server_select_panel.dart';
 import 'slivers/sliver_header.dart';
 
 class SettingPage extends StatefulWidget {
@@ -112,6 +112,8 @@ class _SettingPageState extends State<SettingPage> {
 //      builder: (context, gd, child) {
     return Selector<GeneralData, String>(
       selector: (_, generalData) => ("${generalData.useSSL} | "
+          "${generalData.loginDataCurrent.url} | "
+          "${generalData.deviceIntegration.deviceName} | "
           "${generalData.currentTheme} | "
           "${generalData.connectionStatus} | "
           "${generalData.deviceSetting.settingLocked} | "
@@ -322,7 +324,7 @@ class _SettingPageState extends State<SettingPage> {
                     ),
               gd.deviceSetting.settingLocked
                   ? gd.emptySliver
-                  : DeviceRegistration(),
+                  : SettingRegistration(),
               gd.deviceSetting.settingLocked
                   ? gd.emptySliver
                   : SliverHeaderNormal(
