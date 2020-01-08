@@ -164,6 +164,7 @@ class _SettingRegistrationState extends State<SettingRegistration> {
                               "Switch.adaptive BackgroundLocation.stopLocationService");
                           BackgroundLocation.stopLocationService();
                         }
+                        gd.deviceIntegrationSave();
                       });
                     }),
                 Expanded(child: Text("Track Location")),
