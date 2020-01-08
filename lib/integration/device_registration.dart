@@ -60,7 +60,7 @@ class _DeviceRegistrationState extends State<DeviceRegistration> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 Text(
-                  "Add HassKit Mobile App component to Home Assistant to enable location tracking and push notification feature.",
+                  "Add HassKit Mobile App component to Home Assistant to enable this device location tracking and push notification.",
                   style: Theme.of(context).textTheme.caption,
                   textAlign: TextAlign.justify,
                   textScaleFactor: gd.textScaleFactorFix,

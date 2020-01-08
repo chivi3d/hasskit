@@ -680,7 +680,18 @@ class GeneralData with ChangeNotifier {
 
   List<Room> roomList = [];
   List<Room> roomListDefault = [
-    Room(name: 'Home', imageIndex: 17, row1: [], row2: [], row3: [], row4: []),
+    Room(
+      name: 'Home',
+      imageIndex: 17,
+      row1: [],
+      row1Name: "Group 1",
+      row2: [],
+      row2Name: "Group 2",
+      row3: [],
+      row3Name: "Group 3",
+      row4: [],
+      row4Name: "Group 4",
+    ),
     Room(
       name: 'Living Room',
       imageIndex: 18,

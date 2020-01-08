@@ -316,6 +316,18 @@ class _SettingPageState extends State<SettingPage> {
                   : SliverHeaderNormal(
                       icon: Icon(
                         MaterialDesignIcons.getIconDataFromIconName(
+                            "mdi:devices"),
+                      ),
+                      title: "Device Registration",
+                    ),
+              gd.deviceSetting.settingLocked
+                  ? gd.emptySliver
+                  : DeviceRegistration(),
+              gd.deviceSetting.settingLocked
+                  ? gd.emptySliver
+                  : SliverHeaderNormal(
+                      icon: Icon(
+                        MaterialDesignIcons.getIconDataFromIconName(
                             "mdi:cloud-sync"),
                       ),
                       title: Translate.getString("settings.sync", context),
@@ -345,13 +357,6 @@ class _SettingPageState extends State<SettingPage> {
                 title: Translate.getString("settings.language", context),
               ),
               LocalLanguagePicker(),
-              SliverHeaderNormal(
-                icon: Icon(
-                  MaterialDesignIcons.getIconDataFromIconName("mdi:devices"),
-                ),
-                title: "Device Registration",
-              ),
-              DeviceRegistration(),
               SliverHeaderNormal(
                 icon: Icon(
                   MaterialDesignIcons.getIconDataFromIconName("mdi:bell-ring"),
