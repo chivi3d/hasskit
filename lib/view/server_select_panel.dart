@@ -16,22 +16,26 @@ class ServerSelectPanel extends StatelessWidget {
   Widget build(BuildContext context) {
 //    log.w("Widget build ServerSelectPanel");
     List<Widget> secondaryWidgets;
-    Widget deleteWidget = new IconSlideAction(
-        caption: Translate.getString("edit.delete", context),
-        color: Colors.transparent,
-        icon: Icons.delete,
-        onTap: () {
-          log.w("ServerSelectPanel Delete");
-          gd.loginDataListDelete(loginData);
-          gd.autoConnect = false;
-          gd.currentUrl = "";
-          if (gd.loginDataCurrent.getUrl == loginData.getUrl) {
-            gd.loginDataCurrent.url = "";
-            webSocket.reset();
-            gd.roomListClear();
-          }
-        });
-    secondaryWidgets = [deleteWidget];
+
+    Widget deleteWidget = Container();
+
+    if (loginData.url != "http://hasskit.duckdns.org:8123")
+      deleteWidget = new IconSlideAction(
+          caption: Translate.getString("edit.delete", context),
+          color: Colors.transparent,
+          icon: Icons.delete,
+          onTap: () {
+            log.w("ServerSelectPanel Delete");
+            gd.loginDataListDelete(loginData);
+            gd.autoConnect = false;
+            gd.currentUrl = "";
+            if (gd.loginDataCurrent.getUrl == loginData.getUrl) {
+              gd.loginDataCurrent.url = "";
+              webSocket.reset();
+              gd.roomListClear();
+            }
+          });
+
     if (gd.loginDataCurrent.getUrl == loginData.getUrl) {
       var disconnectWidget = IconSlideAction(
           caption: Translate.getString("global.disconnect", context),

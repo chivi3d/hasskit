@@ -61,7 +61,7 @@ class _DeviceRegistrationState extends State<DeviceRegistration> {
               children: <Widget>[
                 Text(
                   "Add HassKit Mobile App component to Home Assistant to enable location tracking and push notification feature.",
-                  style: Theme.of(context).textTheme.body1,
+                  style: Theme.of(context).textTheme.caption,
                   textAlign: TextAlign.justify,
                   textScaleFactor: gd.textScaleFactorFix,
                 ),
@@ -98,9 +98,11 @@ class _DeviceRegistrationState extends State<DeviceRegistration> {
                       FocusScope.of(context).requestFocus(new FocusNode());
                     }
                   : null,
-              child: Text(gd.deviceIntegration.webHookId == ""
-                  ? "Register Mobile App"
-                  : "Update Mobile App"),
+              child: Text(
+                gd.deviceIntegration.webHookId == ""
+                    ? "Register Mobile App"
+                    : "Update Mobile App",
+              ),
             ),
           ),
         ],
