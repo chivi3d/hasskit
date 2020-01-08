@@ -1,5 +1,6 @@
+import 'dart:convert';
 import 'dart:io';
-
+import 'package:http/http.dart' as http;
 import 'package:background_location/background_location.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
@@ -15,13 +16,6 @@ class SettingRegistration extends StatefulWidget {
 class _SettingRegistrationState extends State<SettingRegistration> {
   TextEditingController _controller;
 
-  String latitude = "waiting...";
-  String longitude = "waiting...";
-  String altitude = "waiting...";
-  String accuracy = "waiting...";
-  String bearing = "waiting...";
-  String speed = "waiting...";
-
   @override
   void initState() {
     print("SettingRegistration initState ${gd.deviceIntegration.deviceName}");
@@ -33,6 +27,10 @@ class _SettingRegistrationState extends State<SettingRegistration> {
       getDeviceInfo();
     }
 
+    initLocation();
+  }
+
+  void initLocation() {
     if (gd.deviceIntegration.trackLocation &&
         gd.deviceIntegration.webHookId != "") {
       print("initState BackgroundLocation.startLocationService");
@@ -40,43 +38,78 @@ class _SettingRegistrationState extends State<SettingRegistration> {
     }
 
     BackgroundLocation.getLocationUpdates((location) {
-      setState(() {
-        this.latitude = location.latitude.toString();
-        this.longitude = location.longitude.toString();
-        this.accuracy = location.accuracy.toString();
-        this.altitude = location.altitude.toString();
-        this.bearing = location.bearing.toString();
-        this.speed = location.speed.toString();
-      });
-
-      print("""\n
-      Latitude:  $latitude
-      Longitude: $longitude
-      Altitude: $altitude
-      Accuracy: $accuracy
-      Bearing:  $bearing
-      Speed: $speed
-      """);
+      updateLocation(
+        location.latitude,
+        location.longitude,
+        location.accuracy,
+        location.speed,
+        location.altitude,
+      );
     });
+  }
+
+  void updateLocation(double latitude, double longitude, double accuracy,
+      double speed, double altitude) {
+    bool isAfter =
+        DateTime.now().isAfter(gd.locUpdateTime.add(Duration(minutes: 1)));
+    double distance =
+        gd.getDistanceFromLatLonInKm(latitude, longitude, gd.locLat, gd.locLon);
+
+    print("isAfter $isAfter distance $distance");
+
+//     0.05 = 50 meter
+    if (isAfter || distance > 0.05) {
+      print(".");
+      print("latitude $latitude");
+      print("longitude $longitude");
+      print("altitude $altitude");
+      print("accuracy $accuracy");
+      print("speed $speed");
+      print(".");
+
+      gd.locUpdateTime = DateTime.now();
+      gd.locLat = latitude;
+      gd.locLon = longitude;
+      String url =
+          gd.currentUrl + "/api/webhook/${gd.deviceIntegration.webHookId}";
+
+      var getLocationUpdatesData = {
+        "type": "update_location",
+        "data": {
+          "gps": [latitude, longitude],
+          "gps_accuracy": accuracy,
+          "speed": speed,
+          "altitude": altitude
+        }
+      };
+      String body = jsonEncode(getLocationUpdatesData);
+      print("getLocationUpdates.url $url");
+      print("getLocationUpdates.body $body");
+
+      http.post(url, body: body).then((response) {
+        if (response.statusCode >= 200 && response.statusCode < 300) {
+          print(
+              "updateLocation Response From Server With Code ${response.statusCode}");
+        } else {
+          print("updateLocation Response Error Code ${response.statusCode}");
+        }
+      }).catchError((e) {
+        print("updateLocation Response Error $e");
+      });
+    }
   }
 
   void getDeviceInfo() async {
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     var deviceModel = "";
-    String millisecondsSinceEpoch =
-        DateTime.now().millisecondsSinceEpoch.toString();
-    millisecondsSinceEpoch = millisecondsSinceEpoch.substring(
-        millisecondsSinceEpoch.length - 4, millisecondsSinceEpoch.length);
-
     if (Platform.isIOS) {
       IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
       print('Running on ${iosInfo.utsname.machine}');
-      deviceModel =
-          "-" + iosInfo.utsname.machine + "-" + millisecondsSinceEpoch;
+      deviceModel = "-" + iosInfo.utsname.machine;
     } else if (Platform.isAndroid) {
       AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
       print('Running on ${androidInfo.model}'); // e.g. "Moto G (4)"
-      deviceModel = "-" + androidInfo.model + "-" + millisecondsSinceEpoch;
+      deviceModel = "-" + androidInfo.model;
     }
     _controller.text = "HassKit$deviceModel";
   }
@@ -133,7 +166,7 @@ class _SettingRegistrationState extends State<SettingRegistration> {
                           Icon(MaterialDesignIcons.getIconDataFromIconName(
                               "mdi:map-marker")),
                           Text(
-                            "Lat: $latitude Long: $longitude",
+                            "Lat: ${gd.locLat} - Lon: ${gd.locLon}",
                             style: Theme.of(context).textTheme.caption,
                             textAlign: TextAlign.justify,
                             textScaleFactor: gd.textScaleFactorFix,
@@ -156,9 +189,11 @@ class _SettingRegistrationState extends State<SettingRegistration> {
                         print(
                             "onChanged $val gd.deviceIntegration.trackLocation ${gd.deviceIntegration.trackLocation}");
                         if (val == true) {
-                          print(
-                              "Switch.adaptive BackgroundLocation.startLocationService");
-                          BackgroundLocation.startLocationService();
+                          if (gd.deviceIntegration.webHookId != "") {
+                            print(
+                                "Switch.adaptive BackgroundLocation.startLocationService");
+                            BackgroundLocation.startLocationService();
+                          }
                         } else {
                           print(
                               "Switch.adaptive BackgroundLocation.stopLocationService");
