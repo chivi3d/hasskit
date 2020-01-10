@@ -2552,11 +2552,20 @@ class GeneralData with ChangeNotifier {
   }
 
   //0.05 = 50 meter
-  double _locationUpdateMinDistance = 0.05;
+  double _locationUpdateMinDistance = 0.1;
   double get locationUpdateMinDistance => _locationUpdateMinDistance;
   set locationUpdateMinDistance(val) {
     if (_locationUpdateMinDistance != val) {
       _locationUpdateMinDistance = val;
+      notifyListeners();
+    }
+  }
+
+  bool _locationShowAdvancedSetting = false;
+  bool get locationShowAdvancedSetting => _locationShowAdvancedSetting;
+  set locationShowAdvancedSetting(val) {
+    if (_locationShowAdvancedSetting != val) {
+      _locationShowAdvancedSetting = val;
       notifyListeners();
     }
   }

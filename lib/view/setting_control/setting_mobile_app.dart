@@ -643,6 +643,66 @@ class _SettingMobileAppRegistrationState
                         ],
                       )
                     : Container(),
+                Row(
+                  children: <Widget>[
+                    Switch.adaptive(
+                        value: gd.locationShowAdvancedSetting,
+                        onChanged: (val) {
+                          setState(() {
+                            gd.locationShowAdvancedSetting = val;
+                            print(
+                                "onChanged $val gd.deviceIntegration.trackLocation ${gd.settingMobileApp.trackLocation}");
+                          });
+                        }),
+                    SizedBox(width: 4),
+                    Expanded(
+                      child: Text(
+                        "Location Advanced Setting",
+                      ),
+                    ),
+                  ],
+                ),
+                gd.locationShowAdvancedSetting
+                    ? Column(
+                        children: <Widget>[
+                          Slider(
+                            value: gd.locationUpdateInterval.toDouble(),
+                            onChanged: (val) {
+                              setState(() {
+                                gd.locationUpdateInterval = val.toInt();
+                              });
+                            },
+                            min: 1,
+                            max: 30,
+                          ),
+                          Row(
+                            children: <Widget>[
+                              SizedBox(width: 24),
+                              Text(
+                                  "Minumum Update Interval: ${gd.locationUpdateInterval} minutes")
+                            ],
+                          ),
+                          Slider(
+                            value: gd.locationUpdateMinDistance,
+                            onChanged: (val) {
+                              setState(() {
+                                gd.locationUpdateMinDistance = val;
+                              });
+                            },
+                            min: 0.05,
+                            max: 0.5,
+                            divisions: 45,
+                          ),
+                          Row(
+                            children: <Widget>[
+                              SizedBox(width: 24),
+                              Text(
+                                  "Minimum Distance Change: ${(gd.locationUpdateMinDistance * 1000).toInt()} meters")
+                            ],
+                          ),
+                        ],
+                      )
+                    : Container(),
 //                Text(
 //                    "Debug: trackLocation ${gd.settingMobileApp.trackLocation}\n"
 //                    "deviceName ${gd.settingMobileApp.deviceName}\n"
