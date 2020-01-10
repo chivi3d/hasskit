@@ -2541,6 +2541,26 @@ class GeneralData with ChangeNotifier {
     }
   }
 
+  //Update have 5 min cooldown
+  int _locationUpdateInterval = 5;
+  int get locationUpdateInterval => _locationUpdateInterval;
+  set locationUpdateInterval(val) {
+    if (_locationUpdateInterval != val) {
+      _locationUpdateInterval = val;
+      notifyListeners();
+    }
+  }
+
+  //0.05 = 50 meter
+  double _locationUpdateMinDistance = 0.05;
+  double get locationUpdateMinDistance => _locationUpdateMinDistance;
+  set locationUpdateMinDistance(val) {
+    if (_locationUpdateMinDistance != val) {
+      _locationUpdateMinDistance = val;
+      notifyListeners();
+    }
+  }
+
   List<LocationZone> locationZones = [];
 
   double getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {

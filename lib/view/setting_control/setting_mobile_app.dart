@@ -337,15 +337,25 @@ class SettingMobileApp {
 
   Future<void> updateLocation(double latitude, double longitude,
       double accuracy, double speed, double altitude) async {
-    bool timeInterval =
-        DateTime.now().isAfter(gd.locationUpdateTime.add(Duration(minutes: 1)));
+    bool timeInterval = DateTime.now().isAfter(gd.locationUpdateTime
+        .add(Duration(minutes: gd.locationUpdateInterval)));
+
+    if (!timeInterval) {
+      print(
+          "timeInterval ${(gd.locationUpdateTime.add(Duration(minutes: gd.locationUpdateInterval)).difference(DateTime.now())).inSeconds} seconds left");
+      return;
+    }
+
     double distance = gd.getDistanceFromLatLonInKm(
         latitude, longitude, gd.locationLatitude, gd.locationLongitude);
 
-    print("timeInterval $timeInterval distance $distance");
+    if (distance < gd.locationUpdateMinDistance) {
+      print("distance $distance < ${gd.locationUpdateMinDistance}");
+      return;
+    }
 
 //     0.05 = 50 meter
-    if (timeInterval || distance > 0.05) {
+    if (timeInterval && distance >= gd.locationUpdateMinDistance) {
       print(".");
       print("latitude $latitude");
       print("longitude $longitude");
@@ -395,7 +405,12 @@ class SettingMobileApp {
           if (first.subThoroughfare != null && first.thoroughfare != null) {
             gd.locationName = "${first.subThoroughfare}, ${first.thoroughfare}";
           } else if (first.addressLine != null) {
-            gd.locationName = "${first.addressLine}";
+            var split = first.addressLine.split(",");
+            if (split.length >= 2) {
+              gd.locationName = split[0] + "," + split[1];
+            } else {
+              gd.locationName = "${first.addressLine}";
+            }
           } else {
             gd.locationName = "$latitude, $longitude";
           }
@@ -613,6 +628,7 @@ class _SettingMobileAppRegistrationState
                                   gd.settingMobileAppSave();
                                 });
                               }),
+                          SizedBox(width: 4),
                           Expanded(
                             child: Text(
                               gd.settingMobileApp.trackLocation
