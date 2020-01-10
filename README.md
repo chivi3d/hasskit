@@ -59,4 +59,4 @@ https://play.google.com/store/apps/details?id=com.thhkstudio.hasskit
 
 ## How can I send notification to #HassKit?
 You can send notification directly from Home Assistant to #HassKit using this guide.
-https://github.com/tuanha2000vn/hasskit/blob/master/notify_hasskit.md
+https://github.com/tuanha2000vn/hasskit/blob/master/mobile_app.md

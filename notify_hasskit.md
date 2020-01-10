@@ -1,3 +1,6 @@
+# This feature is replaced by the new Mobile App release.
+https://github.com/tuanha2000vn/hasskit/blob/master/mobile_app.md
+
 ## Notification
 
 ![alt text](https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Notification/image.png "Notification iOS")
