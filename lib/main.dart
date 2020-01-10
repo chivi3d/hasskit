@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:background_location/background_location.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -266,7 +267,17 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
 
     await gd.getSettings("mainInitState");
 
-    deviceInfo.initPlatformState();
+    deviceInfo.getDeviceInfo();
+//hook a location update here ready whenever it fire
+    BackgroundLocation.getLocationUpdates((location) {
+      gd.settingMobileApp.updateLocation(
+        location.latitude,
+        location.longitude,
+        location.accuracy,
+        location.speed,
+        location.altitude,
+      );
+    });
   }
 
   timer200Callback() {}

@@ -9,7 +9,7 @@ class DeviceInfo {
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
   Map<String, dynamic> deviceData;
 
-  Future<void> initPlatformState() async {
+  Future<void> getDeviceInfo() async {
     try {
       if (Platform.isAndroid) {
         deviceData = _readAndroidBuildData(await deviceInfoPlugin.androidInfo);

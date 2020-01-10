@@ -49,7 +49,7 @@ class BackupRestore extends StatelessWidget {
 //                  print("\n\nbackupData $backupData");
 //                }
 
-                if (backupDatas.length != 6 ||
+                if (backupDatas.length != 7 ||
                     backupDatas[1] == null ||
                     backupDatas[1].length < 10) {
                   Fluttertoast.showToast(
@@ -66,6 +66,7 @@ class BackupRestore extends StatelessWidget {
                     gd.saveString('entitiesOverride', backupDatas[2]);
                     gd.saveString('deviceSetting $url', backupDatas[3]);
                     gd.saveString('roomList $url', backupDatas[4]);
+                    gd.saveString('settingMobileApp $url', backupDatas[6]);
 
                     gd.loginDataListString = "";
                     gd.loginDataListString = backupDatas[1];
@@ -110,13 +111,15 @@ class BackupRestore extends StatelessWidget {
     String loginDataList = json.encode(gd.loginDataList);
     String entitiesOverride = json.encode(gd.entitiesOverride);
     String deviceSetting = json.encode(gd.deviceSetting);
+    String settingMobileApp = json.encode(gd.settingMobileApp);
     String roomList = json.encode(gd.roomList);
     String shareContent = "$url"
         "_hasskit_backup_data_$loginDataList"
         "_hasskit_backup_data_$entitiesOverride"
         "_hasskit_backup_data_$deviceSetting"
         "_hasskit_backup_data_$roomList"
-        "_hasskit_backup_data_${gd.currentUrl}";
+        "_hasskit_backup_data_${gd.currentUrl}"
+        "_hasskit_backup_data_$settingMobileApp";
 
     return SliverList(
       delegate: SliverChildListDelegate(

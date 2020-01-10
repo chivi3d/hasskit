@@ -179,10 +179,6 @@ class _EntityControlGoogleMapsState extends State<EntityControlGoogleMaps> {
           gd.locations.add(location);
         }
 
-        if (gd.locations.length > 0) {
-          placeMarker(gd.locations[0]);
-        }
-
 //        print("gd.locations.length ${gd.locations.length}");
       } else {
         log.e("Request failed with status: ${response.statusCode}.");
@@ -193,6 +189,9 @@ class _EntityControlGoogleMapsState extends State<EntityControlGoogleMaps> {
     } finally {
       setState(() {
 //        log.d("getHistory finally");
+        if (gd.locations.length > 0) {
+          placeMarker(gd.locations[gd.locations.length - 1]);
+        }
         inAsyncCall = false;
         client.close();
       });
@@ -235,7 +234,7 @@ class _EntityControlGoogleMapsState extends State<EntityControlGoogleMaps> {
             alignment: Alignment.center,
             child: Text(location.state == "not_home"
                 ? "$timeDisplay"
-                : "$timeDisplay ${gd.textToDisplay(location.state)}"),
+                : "$timeDisplay | ${gd.textToDisplay(location.state)}"),
           ),
         ),
       );

@@ -13,7 +13,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hasskit/helper/theme_info.dart';
 import 'package:hasskit/helper/web_socket.dart';
-import 'package:hasskit/view/setting_control/device_integration.dart';
+import 'package:hasskit/model/location_zone.dart';
+import 'package:hasskit/view/setting_control/setting_mobile_app.dart';
 import 'package:hasskit/model/base_setting.dart';
 import 'package:hasskit/model/camera_info.dart';
 import 'package:hasskit/model/device_setting.dart';
@@ -222,6 +223,7 @@ class GeneralData with ChangeNotifier {
 
   void socketGetStates(List<dynamic> message) {
     List<String> previousEntitiesList = entities.keys.toList();
+    locationZones = [];
 
     for (dynamic mess in message) {
       Entity entity = Entity.fromJson(mess);
@@ -230,10 +232,12 @@ class GeneralData with ChangeNotifier {
         continue;
       }
 
-//      if (entity.entityId.contains("input_select.")) {
-//        log.w("socketGetStates ${entity.entityId}");
-//        print("mess $mess");
-//      }
+      if (entity.entityId.contains("zone.")) {
+        LocationZone locationZone = LocationZone.fromJson(mess);
+//        print(
+//            "locationZone friendly_name ${locationZone.friendly_name} latitude ${locationZone.latitude} longitude ${locationZone.longitude} radius ${locationZone.radius}");
+        locationZones.add(locationZone);
+      }
 
       if (previousEntitiesList.contains(entity.entityId))
         previousEntitiesList.remove(entity.entityId);
@@ -448,8 +452,6 @@ class GeneralData with ChangeNotifier {
   String get loginDataListString => _loginDataListString;
 
   set loginDataListString(val) {
-    if (val == _loginDataListString) return;
-
     _loginDataListString = val;
 
     if (_loginDataListString != null && _loginDataListString.length > 0) {
@@ -518,8 +520,17 @@ class GeneralData with ChangeNotifier {
     }
   }
 
-  void loginDataListDelete(LoginData loginData) {
+  Future<void> loginDataListDelete(LoginData loginData) async {
     log.d('LoginData.loginDataListDelete ${loginData.url}');
+    var url = loginData.url.replaceAll(".", "-");
+    url = url.replaceAll("/", "-");
+    url = url.replaceAll(":", "-");
+    var _preferences = await SharedPreferences.getInstance();
+    print("_preferences.remove deviceSetting $url");
+    _preferences.remove("deviceSetting $url");
+    print("_preferences.remove settingMobileApp $url");
+    _preferences.remove("settingMobileApp $url");
+
     if (loginData != null) {
       loginDataList.remove(loginData);
       log.d('loginDataList.remove ${loginData.url}');
@@ -1068,49 +1079,41 @@ class GeneralData with ChangeNotifier {
   String get roomListString => _roomListString;
 
   set roomListString(val) {
-    if (_roomListString != val) {
-      _roomListString = val;
+    _roomListString = val;
 
-      if (_roomListString != null && _roomListString.length > 0) {
-        log.w('FOUND _roomListString $_roomListString');
+    if (_roomListString != null && _roomListString.length > 0) {
+      log.w('FOUND _roomListString $_roomListString');
 //        List<dynamic> roomListJson = jsonDecode(_roomListString);
 
-        roomList.clear();
-        roomList = [];
+      roomList.clear();
+      roomList = [];
 
-        var roomListJson = jsonDecode(_roomListString);
+      var roomListJson = jsonDecode(_roomListString);
 
-        log.w("roomListJson $roomListJson");
+      log.w("roomListJson $roomListJson");
 
-        for (var roomJson in roomListJson) {
-          Room room = Room.fromJson(roomJson);
-          log.d('addRoom ${room.name}');
-          roomList.add(room);
-        }
-        log.d('loginDataList.length ${roomList.length}');
+      for (var roomJson in roomListJson) {
+        Room room = Room.fromJson(roomJson);
+        log.d('addRoom ${room.name}');
+        roomList.add(room);
       }
+      log.d('loginDataList.length ${roomList.length}');
+    }
 //      else if(currentUrl)
 //        {
 //
 //        }
-      else {
-        log.w('CAN NOT FIND roomList adding default data');
-        roomList.clear();
-        roomList = [];
-        gd.roomListString = "";
-        for (var room in roomListDefault) {
-          roomList.add(room);
-        }
+    else {
+      log.w('CAN NOT FIND roomList adding default data');
+      roomList.clear();
+      roomList = [];
+      for (var room in roomListDefault) {
+        roomList.add(room);
       }
 
       notifyListeners();
     }
   }
-
-//  loadRoomListAsync(String url) async {
-//    url = base64Url.encode(utf8.encode(url));
-//    roomListString = await gd.getString('roomList $url');
-//  }
 
   var emptySliver = SliverFixedExtentList(
     itemExtent: 0,
@@ -1444,33 +1447,28 @@ class GeneralData with ChangeNotifier {
   String get deviceSettingString => _deviceSettingString;
 
   set deviceSettingString(val) {
-    if (_deviceSettingString != val) {
-      _deviceSettingString = val;
+    _deviceSettingString = val;
 
-      if (_deviceSettingString != null && _deviceSettingString.length > 0) {
-        log.w('FOUND deviceSetting _deviceSettingString $_deviceSettingString');
+    if (_deviceSettingString != null && _deviceSettingString.length > 0) {
+      log.w('FOUND deviceSetting _deviceSettingString $_deviceSettingString');
 
-        val = jsonDecode(val);
-        deviceSetting = DeviceSetting.fromJson(val);
-      } else {
-        log.w('CAN NOT FIND deviceSetting adding default data');
-        deviceSetting.phoneLayout = 3;
-        deviceSetting.tabletLayout = 69;
-        deviceSetting.shapeLayout = 1;
-        deviceSetting.themeIndex = 1;
-        deviceSetting.lastArmType = "arm_away";
-        deviceSetting.settingLocked = false;
-        deviceSetting.settingPin = "0000";
-        deviceSetting.lockOut = "";
-        deviceSetting.failAttempt = 0;
-        deviceSetting.backgroundPhoto = [];
-      }
-
-      log.d("deviceSetting.phoneLayout 1 ${gd.deviceSetting.phoneLayout}");
-      log.d("deviceSetting.shapeLayout 1 ${gd.deviceSetting.shapeLayout}");
-
-      notifyListeners();
+      val = jsonDecode(val);
+      deviceSetting = DeviceSetting.fromJson(val);
+    } else {
+      log.w('CAN NOT FIND deviceSetting adding default data');
+      deviceSetting.phoneLayout = 3;
+      deviceSetting.tabletLayout = 69;
+      deviceSetting.shapeLayout = 1;
+      deviceSetting.themeIndex = 1;
+      deviceSetting.lastArmType = "arm_away";
+      deviceSetting.settingLocked = false;
+      deviceSetting.settingPin = "0000";
+      deviceSetting.lockOut = "";
+      deviceSetting.failAttempt = 0;
+      deviceSetting.backgroundPhoto = [];
     }
+
+    notifyListeners();
   }
 
   void deviceSettingSave() {
@@ -1516,28 +1514,26 @@ class GeneralData with ChangeNotifier {
   String get baseSettingString => _baseSettingString;
 
   set baseSettingString(val) {
-    if (_baseSettingString != val) {
-      _baseSettingString = val;
+    _baseSettingString = val;
 
-      if (_baseSettingString != null && _baseSettingString.length > 0) {
-        log.w('FOUND _baseSettingString $_baseSettingString');
+    if (_baseSettingString != null && _baseSettingString.length > 0) {
+      log.w('FOUND _baseSettingString $_baseSettingString');
 
-        val = jsonDecode(val);
-        baseSetting = BaseSetting.fromJson(val);
-      } else {
-        log.w('CAN NOT FIND baseSetting adding default data');
-        baseSetting.notificationDevices = [];
-        baseSetting.colorPicker = [
-          "0xffEEEEEE",
-          "0xffEF5350",
-          "0xffFFCA28",
-          "0xff66BB6A",
-          "0xff42A5F5",
-          "0xffAB47BC",
-        ];
-      }
-      notifyListeners();
+      val = jsonDecode(val);
+      baseSetting = BaseSetting.fromJson(val);
+    } else {
+      log.w('CAN NOT FIND baseSetting adding default data');
+      baseSetting.notificationDevices = [];
+      baseSetting.colorPicker = [
+        "0xffEEEEEE",
+        "0xffEF5350",
+        "0xffFFCA28",
+        "0xff66BB6A",
+        "0xff42A5F5",
+        "0xffAB47BC",
+      ];
     }
+    notifyListeners();
   }
 
   Timer _baseSettingSaveTimer;
@@ -2009,28 +2005,33 @@ class GeneralData with ChangeNotifier {
       return;
     }
 
+    var url = gd.loginDataCurrent.getUrl.replaceAll(".", "-");
+    url = url.replaceAll("/", "-");
+    url = url.replaceAll(":", "-");
+
+    //force the trigger reset
+    log.w(
+        "force the trigger reset settingMobileAppString load settingMobileApp $url");
+    gd.settingMobileAppString = "";
+    gd.settingMobileAppString = await gd.getString('settingMobileApp $url');
+    settingMobileApp.startStopLocationService("getSettings $reason");
+
+    //force the trigger reset
+    log.w(
+        "force the trigger reset deviceSettingString load deviceSetting $url");
+    gd.deviceSettingString = "";
+    gd.deviceSettingString = await gd.getString('deviceSetting $url');
+
     //no firebase return load disk data
     if (gd.firebaseUser == null) {
       log.e("gd.firebaseUser == null");
-      var url = gd.loginDataCurrent.getUrl.replaceAll(".", "-");
-      url = url.replaceAll("/", "-");
-      url = url.replaceAll(":", "-");
 
       //force the trigger reset
       log.w(
           "force the trigger reset entitiesOverrideString load entitiesOverride");
       gd.entitiesOverrideString = "";
       gd.entitiesOverrideString = await gd.getString('entitiesOverride');
-      //force the trigger reset
-      log.w(
-          "force the trigger reset deviceIntegrationString load deviceIntegrationString");
-      gd.deviceIntegrationString = "";
-      gd.deviceIntegrationString = await gd.getString('deviceIntegration $url');
-      //force the trigger reset
-      log.w(
-          "force the trigger reset deviceSettingString load deviceSetting $url");
-      gd.deviceSettingString = "";
-      gd.deviceSettingString = await gd.getString('deviceSetting $url');
+
       //force the trigger reset
       log.w("force the trigger reset baseSettingString load baseSetting $url");
       gd.baseSettingString = "";
@@ -2459,7 +2460,7 @@ class GeneralData with ChangeNotifier {
   String firebaseMessagingTitle = "";
   String firebaseMessagingBody = "";
 
-  DeviceIntegration deviceIntegration = DeviceIntegration(
+  SettingMobileApp settingMobileApp = SettingMobileApp(
     deviceName: "",
     cloudHookUrl: "",
     remoteUiUrl: "",
@@ -2468,55 +2469,79 @@ class GeneralData with ChangeNotifier {
     trackLocation: true,
   );
 
-  String _deviceIntegrationString;
+  String _settingMobileAppString;
 
-  String get deviceIntegrationString => _deviceIntegrationString;
+  String get settingMobileAppString => _settingMobileAppString;
 
-  set deviceIntegrationString(val) {
-    if (_deviceIntegrationString != val) {
-      _deviceIntegrationString = val;
+  set settingMobileAppString(val) {
+    _settingMobileAppString = val;
 
-      if (_deviceIntegrationString != null &&
-          _deviceIntegrationString.length > 0) {
-        log.w(
-            'FOUND deviceIntegration _deviceIntegrationString $_deviceIntegrationString');
+    if (_settingMobileAppString != null && _settingMobileAppString.length > 0) {
+      log.w(
+          'FOUND settingMobileApp _settingMobileAppString $_settingMobileAppString');
 
-        val = jsonDecode(val);
-        deviceIntegration = DeviceIntegration.fromJson(val);
-      } else {
-        log.w('CAN NOT FIND deviceIntegration adding default data');
-        deviceIntegration.deviceName = "";
-        deviceIntegration.cloudHookUrl = "";
-        deviceIntegration.remoteUiUrl = "";
-        deviceIntegration.secret = "";
-        deviceIntegration.webHookId = "";
-        deviceIntegration.trackLocation = true;
-      }
-
-      notifyListeners();
+      val = jsonDecode(val);
+      settingMobileApp = SettingMobileApp.fromJson(val);
+    } else {
+      log.w('CAN NOT FIND settingMobileApp adding default data');
+      settingMobileApp.deviceName = "";
+      settingMobileApp.cloudHookUrl = "";
+      settingMobileApp.remoteUiUrl = "";
+      settingMobileApp.secret = "";
+      settingMobileApp.webHookId = "";
+      settingMobileApp.trackLocation = true;
     }
+
+    notifyListeners();
   }
 
-  void deviceIntegrationSave() {
-    log.d("deviceIntegrationSave");
+  void settingMobileAppSave() {
+    log.d("settingMobileAppSave");
 
     try {
-      String deviceIntegrationEncoded = jsonEncode(deviceIntegration.toJson());
+      String settingMobileAppEncoded = jsonEncode(settingMobileApp.toJson());
       var url = gd.loginDataCurrent.getUrl.replaceAll(".", "-");
       url = url.replaceAll("/", "-");
       url = url.replaceAll(":", "-");
 
-      gd.saveString('deviceIntegration $url', deviceIntegrationEncoded);
-      log.w('save deviceIntegration $deviceIntegrationEncoded');
+      gd.saveString('settingMobileApp $url', settingMobileAppEncoded);
+      log.w('save settingMobileApp $settingMobileAppEncoded');
     } catch (e) {
-      log.w("deviceIntegrationSave $e");
+      log.w("settingMobileAppSave $e");
     }
     notifyListeners();
   }
 
-  DateTime locUpdateTime = DateTime.parse("2020-01-01 00:00:00");
-  double locLat = 0;
-  double locLon = 0;
+  DateTime locationUpdateTime = DateTime.parse("2020-01-01 00:00:00");
+
+  double _locationLatitude = 0;
+  double get locationLatitude => _locationLatitude;
+  set locationLatitude(val) {
+    if (_locationLatitude != val) {
+      _locationLatitude = val;
+      notifyListeners();
+    }
+  }
+
+  double _locationLongitude = 0;
+  double get locationLongitude => _locationLongitude;
+  set locationLongitude(val) {
+    if (_locationLongitude != val) {
+      _locationLongitude = val;
+      notifyListeners();
+    }
+  }
+
+  String _locationName = "";
+  String get locationName => _locationName;
+  set locationName(val) {
+    if (_locationName != val) {
+      _locationName = val;
+      notifyListeners();
+    }
+  }
+
+  List<LocationZone> locationZones = [];
 
   double getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
     var R = 6371; // Radius of the earth in km

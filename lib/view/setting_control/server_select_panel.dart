@@ -1,3 +1,4 @@
+import 'package:background_location/background_location.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -24,7 +25,7 @@ class ServerSelectPanel extends StatelessWidget {
           caption: Translate.getString("edit.delete", context),
           color: Colors.transparent,
           icon: Icons.delete,
-          onTap: () {
+          onTap: () async {
             log.w("ServerSelectPanel Delete");
             gd.loginDataListDelete(loginData);
             gd.autoConnect = false;
@@ -33,6 +34,7 @@ class ServerSelectPanel extends StatelessWidget {
               gd.loginDataCurrent.url = "";
               webSocket.reset();
               gd.roomListClear();
+              BackgroundLocation.stopLocationService();
             }
           });
 

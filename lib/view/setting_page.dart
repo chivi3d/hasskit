@@ -8,11 +8,10 @@ import 'package:hasskit/helper/logger.dart';
 import 'package:hasskit/helper/material_design_icons.dart';
 import 'package:hasskit/helper/squircle_border.dart';
 import 'package:hasskit/helper/theme_info.dart';
-import 'package:hasskit/view/setting_control/setting_registration.dart';
 import 'package:hasskit/model/local_language.dart';
 import 'package:hasskit/model/login_data.dart';
 import 'package:hasskit/view/setting_control/backup_restore.dart';
-import 'package:hasskit/view/setting_control/notification_guide.dart';
+import 'package:hasskit/view/setting_control/setting_mobile_app.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -113,7 +112,10 @@ class _SettingPageState extends State<SettingPage> {
     return Selector<GeneralData, String>(
       selector: (_, generalData) => ("${generalData.useSSL} | "
           "${generalData.loginDataCurrent.url} | "
-          "${generalData.deviceIntegration.deviceName} | "
+          "${generalData.settingMobileApp.deviceName} | "
+          "${generalData.settingMobileApp.trackLocation} | "
+          "${generalData.settingMobileApp.webHookId} | "
+          "${generalData.locationName} | "
           "${generalData.currentTheme} | "
           "${generalData.connectionStatus} | "
           "${generalData.deviceSetting.settingLocked} | "
@@ -320,11 +322,11 @@ class _SettingPageState extends State<SettingPage> {
                         MaterialDesignIcons.getIconDataFromIconName(
                             "mdi:devices"),
                       ),
-                      title: "Device Registration",
+                      title: "Mobile App",
                     ),
               gd.deviceSetting.settingLocked
                   ? gd.emptySliver
-                  : SettingRegistration(),
+                  : SettingMobileAppRegistration(),
               gd.deviceSetting.settingLocked
                   ? gd.emptySliver
                   : SliverHeaderNormal(
@@ -335,6 +337,16 @@ class _SettingPageState extends State<SettingPage> {
                       title: Translate.getString("settings.sync", context),
                     ),
               gd.deviceSetting.settingLocked ? gd.emptySliver : GoogleSign(),
+              gd.deviceSetting.settingLocked
+                  ? gd.emptySliver
+                  : SliverHeaderNormal(
+                      icon: Icon(
+                        MaterialDesignIcons.getIconDataFromIconName(
+                            "mdi:backup-restore"),
+                      ),
+                      title: "Backup & Restore",
+                    ),
+              gd.deviceSetting.settingLocked ? gd.emptySliver : BackupRestore(),
               SettingLock(),
               SliverHeaderNormal(
                 icon: Icon(
@@ -359,21 +371,14 @@ class _SettingPageState extends State<SettingPage> {
                 title: Translate.getString("settings.language", context),
               ),
               LocalLanguagePicker(),
-              SliverHeaderNormal(
-                icon: Icon(
-                  MaterialDesignIcons.getIconDataFromIconName("mdi:bell-ring"),
-                ),
-                title: "Notification Token",
-              ),
-              NotificationGuide(),
-              SliverHeaderNormal(
-                icon: Icon(
-                  MaterialDesignIcons.getIconDataFromIconName(
-                      "mdi:backup-restore"),
-                ),
-                title: "Backup & Restore",
-              ),
-              BackupRestore(),
+//              SliverHeaderNormal(
+//                icon: Icon(
+//                  MaterialDesignIcons.getIconDataFromIconName("mdi:bell-ring"),
+//                ),
+//                title: "Notification Token",
+//              ),
+//              NotificationGuide(),
+
               SliverHeaderNormal(
                 icon: Icon(
                   MaterialDesignIcons.getIconDataFromIconName(
@@ -621,9 +626,6 @@ class _LayoutSelectorState extends State<LayoutSelector> {
 
   @override
   Widget build(BuildContext context) {
-    log.d("deviceSetting.phoneLayout 2 ${gd.deviceSetting.phoneLayout}");
-    log.d("deviceSetting.shapeLayout 2 ${gd.deviceSetting.shapeLayout}");
-
     phoneValue = gd.deviceSetting.phoneLayout;
     tabletValue = gd.deviceSetting.tabletLayout;
     return SliverList(
