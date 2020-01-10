@@ -18,7 +18,7 @@ To enable this feature, please follow these 3 easy steps
 ## 2. View Mobile App Location History
 
 ![alt text](https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/mobile_app/Screenshot_3.png)
-<br>Add the Mobile App to room's screen
+<br>Add the newly registered Mobile App to room's screen.
 <br>
 ![alt text](https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/mobile_app/Screenshot_4.png)
 <br>Click to see location's history
