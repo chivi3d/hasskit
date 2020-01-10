@@ -1,21 +1,20 @@
 ## HassKit Mobile App Guide
 
-![alt text](https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Notification/image.png "Notification iOS")
+![alt text](https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/mobile_app/Screenshot_6.png)
+![alt text](https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/mobile_app/Screenshot_4.png)
 
-HassKit support notification send directly from Home Assistant. To enable this feature, please follow these 3 easy steps
+The new version bring a deeper integration into Home Assistant. You can now register #HassKit as a Mobile App and allow sending notification and update location directly into Home Assistant. Now additional custom component required.
 
-## 1. Setup a custom component
+To enable this feature, please follow these 3 easy steps
 
-Download and unzip the folder notify_hasskit inside Home Assistant's custom_components folder like the following file structure:
-```yaml
-.homeassistant/
-|-- custom_components/
-|   |-- notify_hasskit/
-|       |-- __init__.py
-|       |-- manifest.json
-|       |-- services.yaml
-```
-[Download](https://github.com/tuanha2000vn/hasskit/raw/master/custom_components/notify_hasskit.zip)
+## 1. Register Mobile App
+
+![alt text](https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/mobile_app/Screenshot_1.png)
+Click Register to regist HassKit as an Home Assistant's Mobile App
+
+![alt text](https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/mobile_app/Screenshot_2.png)
+Then Restart Home Assistant
+
 ## 2. Add Notify HassKit to Congifuration
 
 ![alt text](https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/Notification/token.png "Notification Token Guide")
