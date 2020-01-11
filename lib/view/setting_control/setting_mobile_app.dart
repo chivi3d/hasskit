@@ -350,102 +350,101 @@ class SettingMobileApp {
     double distance = gd.getDistanceFromLatLonInKm(
         latitude, longitude, gd.locationLatitude, gd.locationLongitude);
 
-    if (distance < gd.locationUpdateMinDistance) {
+    if (distance < gd.locationUpdateMinDistance &&
+        DateTime.now()
+            .isBefore(gd.locationUpdateTime.add(Duration(minutes: 60)))) {
       print("distance $distance < ${gd.locationUpdateMinDistance}");
       return;
     }
 
-//     0.05 = 50 meter
-    if (timeInterval && distance >= gd.locationUpdateMinDistance) {
-      print(".");
-      print("latitude $latitude");
-      print("longitude $longitude");
-      print("altitude $altitude");
-      print("accuracy $accuracy");
-      print("speed $speed");
-      print(".");
+    print(".");
+    print("latitude $latitude");
+    print("longitude $longitude");
+    print("altitude $altitude");
+    print("accuracy $accuracy");
+    print("speed $speed");
+    print(".");
 
-      gd.locationUpdateTime = DateTime.now();
-      gd.locationLatitude = latitude;
-      gd.locationLongitude = longitude;
-      String url =
-          gd.currentUrl + "/api/webhook/${gd.settingMobileApp.webHookId}";
+    gd.locationUpdateTime = DateTime.now();
+    gd.locationLatitude = latitude;
+    gd.locationLongitude = longitude;
+    String url =
+        gd.currentUrl + "/api/webhook/${gd.settingMobileApp.webHookId}";
 
-      final coordinates = new Coordinates(latitude, longitude);
+    final coordinates = new Coordinates(latitude, longitude);
 
-      Map<String, double> zoneDistances = {};
-      try {
-        for (LocationZone locationZone in gd.locationZones) {
-          var distance = gd.getDistanceFromLatLonInKm(latitude, longitude,
-              locationZone.latitude, locationZone.longitude);
-//          print(
-//              "distance  ${locationZone.friendly_name} $distance locationZone.radius ${locationZone.radius} ${locationZone.radius * 0.001}");
-          if (distance < locationZone.radius * 0.001) {
-            zoneDistances[locationZone.friendlyName] = distance;
-          }
+    Map<String, double> zoneDistances = {};
+    try {
+      for (LocationZone locationZone in gd.locationZones) {
+        var distance = gd.getDistanceFromLatLonInKm(
+            latitude, longitude, locationZone.latitude, locationZone.longitude);
+        print(
+            "distance  ${locationZone.friendlyName} $distance locationZone.radius ${locationZone.radius} ${locationZone.radius * 0.001}");
+        if (distance < locationZone.radius * 0.001) {
+          zoneDistances[locationZone.friendlyName] = distance;
         }
-
-        if (zoneDistances.length > 0) {
-          var shortestDistance = double.infinity;
-          var shortestName = "";
-          for (var key in zoneDistances.keys) {
-            if (zoneDistances[key] < shortestDistance) {
-              shortestDistance = zoneDistances[key];
-              shortestName = key;
-            }
-            print("zoneDistance $key ${zoneDistances[key]}");
-          }
-          gd.locationName = shortestName;
-        } else {
-          var addresses =
-              await Geocoder.local.findAddressesFromCoordinates(coordinates);
-          var first = addresses.first;
-          print(
-              "addressLine ${first.addressLine} adminArea ${first.adminArea} coordinates ${first.coordinates} countryCode ${first.countryCode} featureName ${first.featureName} locality ${first.locality} postalCode ${first.postalCode} subAdminArea ${first.subAdminArea} subLocality ${first.subLocality} subThoroughfare ${first.subThoroughfare} thoroughfare ${first.thoroughfare}");
-
-          if (first.subThoroughfare != null && first.thoroughfare != null) {
-            gd.locationName = "${first.subThoroughfare}, ${first.thoroughfare}";
-          } else if (first.addressLine != null) {
-            var split = first.addressLine.split(",");
-            if (split.length >= 2) {
-              gd.locationName = split[0] + "," + split[1];
-            } else {
-              gd.locationName = "${first.addressLine}";
-            }
-          } else {
-            gd.locationName = "$latitude, $longitude";
-          }
-        }
-      } catch (e) {
-        print("Geocoder.local.findAddressesFromCoordinates Error $e");
-        gd.locationName = "$latitude, $longitude";
       }
 
-      var getLocationUpdatesData = {
-        "type": "update_location",
-        "data": {
-          "location_name": gd.locationName,
-          "gps": [latitude, longitude],
-          "gps_accuracy": accuracy,
-          "speed": speed,
-          "altitude": altitude
+      if (zoneDistances.length > 0) {
+        var shortestDistance = double.infinity;
+        var shortestName = "";
+        for (var key in zoneDistances.keys) {
+          if (zoneDistances[key] < shortestDistance) {
+            shortestDistance = zoneDistances[key];
+            shortestName = key;
+          }
+          print("zoneDistance $key ${zoneDistances[key]}");
         }
-      };
-      String body = jsonEncode(getLocationUpdatesData);
-      print("getLocationUpdates.url $url");
-      print("getLocationUpdates.body $body");
+        gd.locationName = shortestName;
+      } else {
+        var addresses =
+            await Geocoder.local.findAddressesFromCoordinates(coordinates);
+        var first = addresses.first;
+        print(
+            "addressLine ${first.addressLine} adminArea ${first.adminArea} coordinates ${first.coordinates} countryCode ${first.countryCode} featureName ${first.featureName} locality ${first.locality} postalCode ${first.postalCode} subAdminArea ${first.subAdminArea} subLocality ${first.subLocality} subThoroughfare ${first.subThoroughfare} thoroughfare ${first.thoroughfare}");
 
-      http.post(url, body: body).then((response) {
-        if (response.statusCode >= 200 && response.statusCode < 300) {
-          print(
-              "updateLocation Response From Server With Code ${response.statusCode}");
+        if (first.subThoroughfare != null && first.thoroughfare != null) {
+          gd.locationName = "${first.subThoroughfare}, ${first.thoroughfare}";
+        } else if (first.addressLine != null) {
+          var split = first.addressLine.split(",");
+          if (split.length >= 2) {
+            gd.locationName = split[0] + "," + split[1];
+          } else {
+            gd.locationName = "${first.addressLine}";
+          }
         } else {
-          print("updateLocation Response Error Code ${response.statusCode}");
+          gd.locationName = "$latitude, $longitude";
         }
-      }).catchError((e) {
-        print("updateLocation Response Error $e");
-      });
+      }
+    } catch (e) {
+      print("Geocoder.local.findAddressesFromCoordinates Error $e");
+      gd.locationName = "$latitude, $longitude";
     }
+
+    var getLocationUpdatesData = {
+      "type": "update_location",
+      "data": {
+        "location_name": gd.locationName,
+        "gps": [latitude, longitude],
+        "gps_accuracy": accuracy,
+        "speed": speed,
+        "altitude": altitude
+      }
+    };
+    String body = jsonEncode(getLocationUpdatesData);
+    print("getLocationUpdates.url $url");
+    print("getLocationUpdates.body $body");
+
+    http.post(url, body: body).then((response) {
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        print(
+            "updateLocation Response From Server With Code ${response.statusCode}");
+      } else {
+        print("updateLocation Response Error Code ${response.statusCode}");
+      }
+    }).catchError((e) {
+      print("updateLocation Response Error $e");
+    });
   }
 }
 
@@ -592,7 +591,7 @@ class _SettingMobileAppRegistrationState
                               onChanged: (val) {
                                 setState(() {
                                   gd.locationUpdateTime = DateTime.now()
-                                      .subtract(Duration(hours: 1));
+                                      .subtract(Duration(hours: 24));
                                   gd.settingMobileApp.trackLocation = val;
                                   print(
                                       "onChanged $val gd.deviceIntegration.trackLocation ${gd.settingMobileApp.trackLocation}");
