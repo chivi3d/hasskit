@@ -2570,6 +2570,15 @@ class GeneralData with ChangeNotifier {
     }
   }
 
+  bool _locationServiceIsRunning = false;
+  bool get locationServiceIsRunning => _locationServiceIsRunning;
+  set locationServiceIsRunning(val) {
+    if (_locationServiceIsRunning != val) {
+      _locationServiceIsRunning = val;
+      notifyListeners();
+    }
+  }
+
   List<LocationZone> locationZones = [];
 
   double getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {

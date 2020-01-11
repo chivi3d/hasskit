@@ -34,7 +34,10 @@ class ServerSelectPanel extends StatelessWidget {
               gd.loginDataCurrent.url = "";
               webSocket.reset();
               gd.roomListClear();
-              BackgroundLocation.stopLocationService();
+              if (gd.locationServiceIsRunning) {
+                BackgroundLocation.stopLocationService();
+              }
+              gd.locationServiceIsRunning = false;
             }
           });
 

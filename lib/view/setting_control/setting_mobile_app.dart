@@ -326,13 +326,19 @@ class SettingMobileApp {
   void startStopLocationService(String debug) {
     if (gd.settingMobileApp.trackLocation &&
         gd.settingMobileApp.webHookId != "") {
-      print(
-          "startStopLocationService $debug BackgroundLocation.startLocationService");
-      BackgroundLocation.startLocationService();
+      if (!gd.locationServiceIsRunning) {
+        print(
+            "startStopLocationService $debug BackgroundLocation.startLocationService");
+        BackgroundLocation.startLocationService();
+        gd.locationServiceIsRunning = true;
+      }
     } else {
-      print(
-          "startStopLocationService $debug BackgroundLocation.stopLocationService");
-      BackgroundLocation.stopLocationService();
+      if (gd.locationServiceIsRunning) {
+        print(
+            "startStopLocationService $debug BackgroundLocation.stopLocationService");
+        BackgroundLocation.stopLocationService();
+        gd.locationServiceIsRunning = false;
+      }
     }
   }
 
@@ -504,12 +510,18 @@ class _SettingMobileAppRegistrationState
             onGranted: () {
               // Start location service here or do something else
               print("onGranted");
-              BackgroundLocation.startLocationService();
+              if (!gd.locationServiceIsRunning) {
+                BackgroundLocation.startLocationService();
+                gd.locationServiceIsRunning = true;
+              }
             },
             onDenied: () {
               // Show a message asking the user to reconsider or do something else
               print("onDenied");
-              BackgroundLocation.stopLocationService();
+              if (gd.locationServiceIsRunning) {
+                BackgroundLocation.stopLocationService();
+                gd.locationServiceIsRunning = false;
+              }
             },
           );
         }
@@ -599,7 +611,11 @@ class _SettingMobileAppRegistrationState
                                     if (gd.settingMobileApp.webHookId != "") {
                                       print(
                                           "Switch.adaptive BackgroundLocation.startLocationService");
-                                      BackgroundLocation.startLocationService();
+                                      if (!gd.locationServiceIsRunning) {
+                                        BackgroundLocation
+                                            .startLocationService();
+                                        gd.locationServiceIsRunning = true;
+                                      }
                                     }
 
                                     BackgroundLocation.checkPermissions()
@@ -623,7 +639,10 @@ class _SettingMobileAppRegistrationState
                                   } else {
                                     print(
                                         "Switch.adaptive BackgroundLocation.stopLocationService");
-                                    BackgroundLocation.stopLocationService();
+                                    if (gd.locationServiceIsRunning) {
+                                      BackgroundLocation.stopLocationService();
+                                      gd.locationServiceIsRunning = false;
+                                    }
                                   }
                                   gd.settingMobileAppSave();
                                 });
