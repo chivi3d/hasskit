@@ -371,8 +371,9 @@ class SettingMobileApp {
     print(".");
 
     gd.locationUpdateTime = DateTime.now();
-    gd.locationLatitude = latitude;
-    gd.locationLongitude = longitude;
+
+    String locationZoneName = "";
+    String locationGeoCoderName = "";
 
     final coordinates = new Coordinates(latitude, longitude);
 
@@ -398,7 +399,7 @@ class SettingMobileApp {
           }
           print("zoneDistance $key ${zoneDistances[key]}");
         }
-        gd.locationName = shortestName;
+        locationZoneName = shortestName;
       } else {
         var addresses =
             await Geocoder.local.findAddressesFromCoordinates(coordinates);
@@ -407,22 +408,52 @@ class SettingMobileApp {
             "addressLine ${first.addressLine} adminArea ${first.adminArea} coordinates ${first.coordinates} countryCode ${first.countryCode} featureName ${first.featureName} locality ${first.locality} postalCode ${first.postalCode} subAdminArea ${first.subAdminArea} subLocality ${first.subLocality} subThoroughfare ${first.subThoroughfare} thoroughfare ${first.thoroughfare}");
 
         if (first.subThoroughfare != null && first.thoroughfare != null) {
-          gd.locationName = "${first.subThoroughfare}, ${first.thoroughfare}";
+          locationGeoCoderName =
+              "${first.subThoroughfare}, ${first.thoroughfare}";
         } else if (first.addressLine != null) {
           var split = first.addressLine.split(",");
           if (split.length >= 2) {
-            gd.locationName = split[0] + "," + split[1];
+            locationGeoCoderName = split[0] + "," + split[1];
           } else {
-            gd.locationName = "${first.addressLine}";
+            locationGeoCoderName = "${first.addressLine}";
           }
         } else {
-          gd.locationName = "$latitude, $longitude";
+          locationGeoCoderName = "$latitude, $longitude";
         }
       }
     } catch (e) {
       print("Geocoder.local.findAddressesFromCoordinates Error $e");
-      gd.locationName = "$latitude, $longitude";
+      locationGeoCoderName = "$latitude, $longitude";
     }
+
+    //Zone Name don't change
+    if (locationZoneName != "") {
+      gd.locationName = locationZoneName;
+      print("Case 1");
+    }
+    //new locationGeoCoderName Update
+    else if (locationGeoCoderName != gd.locationName) {
+      gd.locationName = locationGeoCoderName;
+      print("Case 2");
+    }
+    //old locationGeoCoderName => Add a space
+    else if (locationGeoCoderName == gd.locationName &&
+        gd.getDistanceFromLatLonInKm(latitude, longitude, gd.locationLatitude,
+                gd.locationLongitude) >
+            gd.locationUpdateMinDistance) {
+      gd.locationName = locationGeoCoderName + ".";
+      print("Case 3");
+    }
+    //use old locationGeoCoderName HA may not update into database, update anyway
+    else {
+      gd.locationName = locationGeoCoderName;
+      print(
+          "Case 4 ${gd.getDistanceFromLatLonInKm(latitude, longitude, gd.locationLatitude, gd.locationLongitude)} | ${gd.locationUpdateMinDistance}");
+    }
+
+    //need to be here to calculate
+    gd.locationLatitude = latitude;
+    gd.locationLongitude = longitude;
 
     var getLocationUpdatesData = {
       "type": "update_location",
@@ -720,30 +751,30 @@ class _SettingMobileAppRegistrationState
                             max: 30,
                           ),
                         ),
-//                        Expandable(
-//                          collapsed: null,
-//                          expanded: Row(
-//                            children: <Widget>[
-//                              SizedBox(width: 24),
-//                              Text(
-//                                  "Min Distance Change: ${(gd.locationUpdateMinDistance * 1000).toInt()} meters")
-//                            ],
-//                          ),
-//                        ),
-//                        Expandable(
-//                          collapsed: null,
-//                          expanded: Slider(
-//                            value: gd.locationUpdateMinDistance,
-//                            onChanged: (val) {
-//                              setState(() {
-//                                gd.locationUpdateMinDistance = val;
-//                              });
-//                            },
-//                            min: 0.05,
-//                            max: 0.5,
-//                            divisions: 45,
-//                          ),
-//                        ),
+                        Expandable(
+                          collapsed: null,
+                          expanded: Row(
+                            children: <Widget>[
+                              SizedBox(width: 24),
+                              Text(
+                                  "Min Distance Change: ${(gd.locationUpdateMinDistance * 1000).toInt()} meters")
+                            ],
+                          ),
+                        ),
+                        Expandable(
+                          collapsed: null,
+                          expanded: Slider(
+                            value: gd.locationUpdateMinDistance,
+                            onChanged: (val) {
+                              setState(() {
+                                gd.locationUpdateMinDistance = val;
+                              });
+                            },
+                            min: 0.05,
+                            max: 0.5,
+                            divisions: 45,
+                          ),
+                        ),
                       ],
                     ),
                   ),
