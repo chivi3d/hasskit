@@ -11,7 +11,7 @@ To enable this feature, please follow these 3 easy steps
 
 ![alt text](https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/mobile_app/Screenshot_1.png)
 <br>Click Register to regist HassKit as an Home Assistant's Mobile App
-<br>
+<br><br>
 ![alt text](https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/mobile_app/Screenshot_2.png)
 <br>Then Restart Home Assistant
 
@@ -19,7 +19,7 @@ To enable this feature, please follow these 3 easy steps
 
 ![alt text](https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/mobile_app/Screenshot_3.png)
 <br>Add the newly registered Mobile App to room's screen.
-<br>
+<br><br>
 ![alt text](https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/mobile_app/Screenshot_4.png)
 <br>Click to see location's history
 
@@ -27,9 +27,12 @@ To enable this feature, please follow these 3 easy steps
 
 ![alt text](https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/mobile_app/Screenshot_5.png)
 <br>HassKit registered device will appear as a Mobile App, you can send notification directly into the device without additional custom component.
-<br>
+<br><br>
 ![alt text](https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/mobile_app/Screenshot_6.png)
 <br>Notification now support image and sound.
 
-## 4. Notification Automation Sample
+## 4. Delete Mobile App Integration
+Coming soon...
+
+## 5. Notification Automation Sample
 Coming soon...
