@@ -261,7 +261,7 @@ class SettingMobileApp {
             builder: (BuildContext context) {
               // return object of type Dialog
               return AlertDialog(
-                title: new Text("Raname Mobile App Success"),
+                title: new Text("Update Mobile App Success"),
                 content: new Text("Restart Home Assistant Now?"),
                 backgroundColor: ThemeInfo.colorBottomSheet,
                 shape: RoundedRectangleBorder(
