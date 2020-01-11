@@ -32,7 +32,8 @@ To enable this feature, please follow these 3 easy steps
 <br>Notification now support image and sound.
 
 ## 4. Delete Mobile App Integration
-Coming soon...
+![alt text](https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/mobile_app/Screenshot_7.png)
+<br>Go to Home Assistant > Configuration > Integrations > Mobile App: <App Name> and click the recycle bin icon.
 
 ## 5. Notification Automation Sample
 Coming soon...
