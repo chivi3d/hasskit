@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:background_location/background_location.dart';
 import 'package:device_info/device_info.dart';
+import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoder/geocoder.dart';
@@ -643,29 +644,53 @@ class _SettingMobileAppRegistrationState
                         ],
                       )
                     : Container(),
-                Row(
-                  children: <Widget>[
-                    Switch.adaptive(
-                        value: gd.locationShowAdvancedSetting,
-                        onChanged: (val) {
-                          setState(() {
-                            gd.locationShowAdvancedSetting = val;
-                            print(
-                                "onChanged $val gd.deviceIntegration.trackLocation ${gd.settingMobileApp.trackLocation}");
-                          });
-                        }),
-                    SizedBox(width: 4),
-                    Expanded(
-                      child: Text(
-                        "Location Advanced Setting",
-                      ),
-                    ),
-                  ],
-                ),
-                gd.locationShowAdvancedSetting
-                    ? Column(
-                        children: <Widget>[
-                          Slider(
+                ExpandableNotifier(
+                  child: ScrollOnExpand(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Divider(
+                          height: 1,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Builder(
+                              builder: (context) {
+                                var controller =
+                                    ExpandableController.of(context);
+                                return FlatButton(
+                                  child: Text(
+                                    controller.expanded
+                                        ? "  Hide Advance Settings  "
+                                        : "  Show Advance Settings  ",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .button
+                                        .copyWith(
+                                            color: ThemeInfo.colorIconActive),
+                                  ),
+                                  onPressed: () {
+                                    controller.toggle();
+                                  },
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                        Expandable(
+                          collapsed: null,
+                          expanded: Row(
+                            children: <Widget>[
+                              SizedBox(width: 24),
+                              Text(
+                                  "Min Update Interval: ${gd.locationUpdateInterval} minutes")
+                            ],
+                          ),
+                        ),
+                        Expandable(
+                          collapsed: null,
+                          expanded: Slider(
                             value: gd.locationUpdateInterval.toDouble(),
                             onChanged: (val) {
                               setState(() {
@@ -675,14 +700,20 @@ class _SettingMobileAppRegistrationState
                             min: 1,
                             max: 30,
                           ),
-                          Row(
+                        ),
+                        Expandable(
+                          collapsed: null,
+                          expanded: Row(
                             children: <Widget>[
                               SizedBox(width: 24),
                               Text(
-                                  "Minumum Update Interval: ${gd.locationUpdateInterval} minutes")
+                                  "Min Distance Change: ${(gd.locationUpdateMinDistance * 1000).toInt()} meters")
                             ],
                           ),
-                          Slider(
+                        ),
+                        Expandable(
+                          collapsed: null,
+                          expanded: Slider(
                             value: gd.locationUpdateMinDistance,
                             onChanged: (val) {
                               setState(() {
@@ -693,16 +724,11 @@ class _SettingMobileAppRegistrationState
                             max: 0.5,
                             divisions: 45,
                           ),
-                          Row(
-                            children: <Widget>[
-                              SizedBox(width: 24),
-                              Text(
-                                  "Minimum Distance Change: ${(gd.locationUpdateMinDistance * 1000).toInt()} meters")
-                            ],
-                          ),
-                        ],
-                      )
-                    : Container(),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
 //                Text(
 //                    "Debug: trackLocation ${gd.settingMobileApp.trackLocation}\n"
 //                    "deviceName ${gd.settingMobileApp.deviceName}\n"
