@@ -216,9 +216,6 @@ class SettingMobileApp {
 
     await getOsInfo();
 
-    String url =
-        gd.currentUrl + "/api/webhook/${gd.settingMobileApp.webHookId}";
-
     var registerUpdateData = {
       "type": "update_registration",
       "data": {
@@ -234,10 +231,12 @@ class SettingMobileApp {
         "os_version": osVersion,
       }
     };
-//          "push_url": "https://fcm.googleapis.com/fcm/send",
     String body = jsonEncode(registerUpdateData);
-    print("registerUpdateData.url $url");
     print("registerUpdateData.body $body");
+
+    String url =
+        gd.currentUrl + "/api/webhook/${gd.settingMobileApp.webHookId}";
+    print("registerUpdateData.url $url");
 
     http.post(url, body: body).then((response) {
       if (response.statusCode >= 200 && response.statusCode < 300) {
@@ -353,15 +352,15 @@ class SettingMobileApp {
       return;
     }
 
-    double distance = gd.getDistanceFromLatLonInKm(
-        latitude, longitude, gd.locationLatitude, gd.locationLongitude);
+//    double distance = gd.getDistanceFromLatLonInKm(
+//        latitude, longitude, gd.locationLatitude, gd.locationLongitude);
 
-    if (distance < gd.locationUpdateMinDistance &&
-        DateTime.now()
-            .isBefore(gd.locationUpdateTime.add(Duration(minutes: 60)))) {
-      print("distance $distance < ${gd.locationUpdateMinDistance}");
-      return;
-    }
+//    if (distance < gd.locationUpdateMinDistance &&
+//        DateTime.now()
+//            .isBefore(gd.locationUpdateTime.add(Duration(minutes: 60)))) {
+//      print("distance $distance < ${gd.locationUpdateMinDistance}");
+//      return;
+//    }
 
     print(".");
     print("latitude $latitude");
@@ -374,8 +373,6 @@ class SettingMobileApp {
     gd.locationUpdateTime = DateTime.now();
     gd.locationLatitude = latitude;
     gd.locationLongitude = longitude;
-    String url =
-        gd.currentUrl + "/api/webhook/${gd.settingMobileApp.webHookId}";
 
     final coordinates = new Coordinates(latitude, longitude);
 
@@ -438,8 +435,12 @@ class SettingMobileApp {
       }
     };
     String body = jsonEncode(getLocationUpdatesData);
-    print("getLocationUpdates.url $url");
     print("getLocationUpdates.body $body");
+
+    String url =
+        gd.currentUrl + "/api/webhook/${gd.settingMobileApp.webHookId}";
+
+    print("getLocationUpdates.url $url");
 
     http.post(url, body: body).then((response) {
       if (response.statusCode >= 200 && response.statusCode < 300) {
@@ -702,7 +703,7 @@ class _SettingMobileAppRegistrationState
                             children: <Widget>[
                               SizedBox(width: 24),
                               Text(
-                                  "Min Update Interval: ${gd.locationUpdateInterval} minutes")
+                                  "Update Interval: ${gd.locationUpdateInterval} minutes")
                             ],
                           ),
                         ),
@@ -719,30 +720,30 @@ class _SettingMobileAppRegistrationState
                             max: 30,
                           ),
                         ),
-                        Expandable(
-                          collapsed: null,
-                          expanded: Row(
-                            children: <Widget>[
-                              SizedBox(width: 24),
-                              Text(
-                                  "Min Distance Change: ${(gd.locationUpdateMinDistance * 1000).toInt()} meters")
-                            ],
-                          ),
-                        ),
-                        Expandable(
-                          collapsed: null,
-                          expanded: Slider(
-                            value: gd.locationUpdateMinDistance,
-                            onChanged: (val) {
-                              setState(() {
-                                gd.locationUpdateMinDistance = val;
-                              });
-                            },
-                            min: 0.05,
-                            max: 0.5,
-                            divisions: 45,
-                          ),
-                        ),
+//                        Expandable(
+//                          collapsed: null,
+//                          expanded: Row(
+//                            children: <Widget>[
+//                              SizedBox(width: 24),
+//                              Text(
+//                                  "Min Distance Change: ${(gd.locationUpdateMinDistance * 1000).toInt()} meters")
+//                            ],
+//                          ),
+//                        ),
+//                        Expandable(
+//                          collapsed: null,
+//                          expanded: Slider(
+//                            value: gd.locationUpdateMinDistance,
+//                            onChanged: (val) {
+//                              setState(() {
+//                                gd.locationUpdateMinDistance = val;
+//                              });
+//                            },
+//                            min: 0.05,
+//                            max: 0.5,
+//                            divisions: 45,
+//                          ),
+//                        ),
                       ],
                     ),
                   ),
