@@ -47,6 +47,7 @@ homeassistant:
 ```
 
 Add notify.ALL_DEVICES service:
+<br>
 (Replace mobile_app_hasskit_mobile_app_1 with your registered device name)
 ```
 notify:
@@ -59,6 +60,8 @@ notify:
 ```
 
 Create an Automation to send and notification with camera 1 picture when garage door is opened to HassKit app:
+<br>
+(Replace https://hasskit.duckdns.org and camera.camera_1 with your own url and camera name)
 ```
 automation:
   - alias: 'Notify when garage door opened'
