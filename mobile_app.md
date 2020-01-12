@@ -61,7 +61,7 @@ notify:
 Create an Automation to send and notification with camera 1 picture when garage door is opened to HassKit app:
 ```
 automation:
-  - alias: 'Rule 1 Light on in the evening'
+  - alias: 'Notify when garage door opened'
     trigger:
     - entity_id: cover.garage_door
       platform: state
