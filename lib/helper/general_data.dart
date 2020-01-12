@@ -2454,8 +2454,6 @@ class GeneralData with ChangeNotifier {
     return inputToInt.toDouble();
   }
 
-  bool entityControlPageParentShow = false;
-
   String firebaseMessagingToken = "";
   String firebaseMessagingTitle = "";
   String firebaseMessagingBody = "";
@@ -2514,7 +2512,7 @@ class GeneralData with ChangeNotifier {
 
   DateTime locationUpdateTime = DateTime.parse("2020-01-01 00:00:00");
 
-  double _locationLatitude = 0;
+  double _locationLatitude = 51.48;
   double get locationLatitude => _locationLatitude;
   set locationLatitude(val) {
     if (_locationLatitude != val) {

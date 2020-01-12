@@ -363,11 +363,6 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
                 onTap: (int) {
                   log.d("CupertinoTabBar onTap $int");
                   gd.viewMode = ViewMode.normal;
-                  if (gd.entityControlPageParentShow) {
-                    print(
-                        "CupertinoTabBar Navigator.pop(context) ${gd.entityControlPageParentShow}");
-//                    Navigator.pop(context);
-                  }
                 },
                 currentIndex: 0,
                 items: [
@@ -397,7 +392,6 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
                       style:
                           TextStyle(color: ThemeInfo.colorBottomSheetReverse),
                     ),
-//                title: TestWidget(),
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(MaterialDesignIcons.getIconDataFromIconName(

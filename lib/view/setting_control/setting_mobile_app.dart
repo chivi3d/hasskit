@@ -665,6 +665,9 @@ class _SettingMobileAppRegistrationState
                                     if (gd.locationServiceIsRunning) {
                                       BackgroundLocation.stopLocationService();
                                       gd.locationServiceIsRunning = false;
+                                      gd.locationName = "";
+                                      gd.locationLatitude = 51.48;
+                                      gd.locationLongitude = 0.0;
                                     }
                                   }
                                   gd.settingMobileAppSave();
