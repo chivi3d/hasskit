@@ -63,7 +63,7 @@ notify:
 
 Send a notification whenever garage door is opened:
 <br>
-(Replace https://hasskit.duckdns.org and camera.camera_1 with your own url and camera name)
+(Replace http://hasskit.duckdns.org:8123/local/camera_1.jpg with your own data)
 ```
 automation:
   - alias: 'Notify when garage door opened'
