@@ -720,30 +720,30 @@ class _SettingMobileAppRegistrationState
                             max: 30,
                           ),
                         ),
-//                        Expandable(
-//                          collapsed: null,
-//                          expanded: Row(
-//                            children: <Widget>[
-//                              SizedBox(width: 24),
-//                              Text(
-//                                  "Min Distance Change: ${(gd.locationUpdateMinDistance * 1000).toInt()} meters")
-//                            ],
-//                          ),
-//                        ),
-//                        Expandable(
-//                          collapsed: null,
-//                          expanded: Slider(
-//                            value: gd.locationUpdateMinDistance,
-//                            onChanged: (val) {
-//                              setState(() {
-//                                gd.locationUpdateMinDistance = val;
-//                              });
-//                            },
-//                            min: 0.05,
-//                            max: 0.5,
-//                            divisions: 45,
-//                          ),
-//                        ),
+                        Expandable(
+                          collapsed: null,
+                          expanded: Row(
+                            children: <Widget>[
+                              SizedBox(width: 24),
+                              Text(
+                                  "Min Distance Change: ${(gd.locationUpdateMinDistance * 1000).toInt()} meters")
+                            ],
+                          ),
+                        ),
+                        Expandable(
+                          collapsed: null,
+                          expanded: Slider(
+                            value: gd.locationUpdateMinDistance,
+                            onChanged: (val) {
+                              setState(() {
+                                gd.locationUpdateMinDistance = val;
+                              });
+                            },
+                            min: 0.05,
+                            max: 0.5,
+                            divisions: 45,
+                          ),
+                        ),
                       ],
                     ),
                   ),
