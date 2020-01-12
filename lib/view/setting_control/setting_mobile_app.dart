@@ -351,8 +351,6 @@ class SettingMobileApp {
       return;
     }
 
-    gd.locationUpdateTime = DateTime.now().add(Duration(seconds: 15));
-
     print(".");
     print("latitude $latitude");
     print("longitude $longitude");
@@ -416,6 +414,7 @@ class SettingMobileApp {
     if (locationZoneName != "") {
       if (gd.locationName == locationZoneName) {
         print("Case 1 Return");
+        gd.locationUpdateTime = DateTime.now().add(Duration(seconds: 15));
         return;
       }
       gd.locationName = locationZoneName;
@@ -433,6 +432,7 @@ class SettingMobileApp {
           gd.locationUpdateMinDistance) {
         print(
             "Case 4 Distance ${gd.getDistanceFromLatLonInKm(latitude, longitude, gd.locationLatitude, gd.locationLongitude)} < ${gd.locationUpdateMinDistance}");
+        gd.locationUpdateTime = DateTime.now().add(Duration(seconds: 15));
         return;
       } else {
         databaseName = locationGeoCoderName + ".";
