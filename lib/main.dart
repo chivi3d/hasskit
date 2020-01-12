@@ -191,7 +191,7 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
         Fluttertoast.showToast(
             msg:
                 "${gd.firebaseMessagingTitle}$spacer${gd.firebaseMessagingBody}",
-            toastLength: Toast.LENGTH_SHORT,
+            toastLength: Toast.LENGTH_LONG,
             gravity: ToastGravity.TOP,
             backgroundColor: ThemeInfo.colorIconActive.withOpacity(1),
             textColor: Theme.of(context).textTheme.title.color,
