@@ -37,6 +37,8 @@ To enable this feature, please follow these 3 easy steps
 
 ## 5. How To Send Notification To Mobile App
 
+![alt text](https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/mobile_app/Screenshot_9.png)
+
 First, we need to edit ***configuration.yaml*** by adding the following line:
 
 Allow Home Assistant write file into www folder:
@@ -83,3 +85,7 @@ automation:
           image: https://hasskit.duckdns.org/local/camera_1.jpg
       service: notify.ALL_DEVICES   
 ```
+![alt text](https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/mobile_app/Screenshot_8.png)
+<br>
+<br>
+![alt text](https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/mobile_app/Screenshot_10.png)
