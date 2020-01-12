@@ -343,14 +343,15 @@ class SettingMobileApp {
 
   Future<void> updateLocation(double latitude, double longitude,
       double accuracy, double speed, double altitude) async {
-    bool timeInterval = DateTime.now().isAfter(gd.locationUpdateTime
-        .add(Duration(minutes: gd.locationUpdateInterval)));
+    bool timeInterval = DateTime.now().isAfter(gd.locationUpdateTime);
 
     if (!timeInterval) {
       print(
-          "timeInterval ${(gd.locationUpdateTime.add(Duration(minutes: gd.locationUpdateInterval)).difference(DateTime.now())).inSeconds} seconds left");
+          "timeInterval ${(gd.locationUpdateTime.difference(DateTime.now())).inSeconds} seconds left");
       return;
     }
+
+    gd.locationUpdateTime = DateTime.now().add(Duration(seconds: 15));
 
     print(".");
     print("latitude $latitude");
@@ -471,7 +472,8 @@ class SettingMobileApp {
     //need to be here to calculate
     gd.locationLatitude = latitude;
     gd.locationLongitude = longitude;
-    gd.locationUpdateTime = DateTime.now();
+    gd.locationUpdateTime =
+        DateTime.now().add(Duration(minutes: gd.locationUpdateInterval));
   }
 }
 

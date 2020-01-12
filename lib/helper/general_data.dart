@@ -2551,7 +2551,7 @@ class GeneralData with ChangeNotifier {
     }
   }
 
-  //0.05 = 50 meter
+//  0.05 = 50 meter default to 0.1 = 100 meter
   double _locationUpdateMinDistance = 0.1;
   double get locationUpdateMinDistance => _locationUpdateMinDistance;
   set locationUpdateMinDistance(val) {
