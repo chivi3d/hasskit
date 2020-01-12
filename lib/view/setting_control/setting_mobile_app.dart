@@ -352,16 +352,6 @@ class SettingMobileApp {
       return;
     }
 
-//    double distance = gd.getDistanceFromLatLonInKm(
-//        latitude, longitude, gd.locationLatitude, gd.locationLongitude);
-
-//    if (distance < gd.locationUpdateMinDistance &&
-//        DateTime.now()
-//            .isBefore(gd.locationUpdateTime.add(Duration(minutes: 60)))) {
-//      print("distance $distance < ${gd.locationUpdateMinDistance}");
-//      return;
-//    }
-
     print(".");
     print("latitude $latitude");
     print("longitude $longitude");
@@ -370,14 +360,12 @@ class SettingMobileApp {
     print("speed $speed");
     print(".");
 
-    gd.locationUpdateTime = DateTime.now();
-
     String locationZoneName = "";
     String locationGeoCoderName = "";
-
+    var shortestDistance = double.infinity;
+    var shortestName = "";
     final coordinates = new Coordinates(latitude, longitude);
 
-    Map<String, double> zoneDistances = {};
     try {
       for (LocationZone locationZone in gd.locationZones) {
         var distance = gd.getDistanceFromLatLonInKm(
@@ -385,20 +373,16 @@ class SettingMobileApp {
         print(
             "distance  ${locationZone.friendlyName} $distance locationZone.radius ${locationZone.radius} ${locationZone.radius * 0.001}");
         if (distance < locationZone.radius * 0.001) {
-          zoneDistances[locationZone.friendlyName] = distance;
+          if (shortestDistance > distance) {
+            shortestDistance = distance;
+            shortestName = locationZone.friendlyName;
+            print(
+                "shortestName $shortestName shortestDistance $shortestDistance radius ${locationZone.radius * 0.001}");
+          }
         }
       }
 
-      if (zoneDistances.length > 0) {
-        var shortestDistance = double.infinity;
-        var shortestName = "";
-        for (var key in zoneDistances.keys) {
-          if (zoneDistances[key] < shortestDistance) {
-            shortestDistance = zoneDistances[key];
-            shortestName = key;
-          }
-          print("zoneDistance $key ${zoneDistances[key]}");
-        }
+      if (shortestName != "") {
         locationZoneName = shortestName;
       } else {
         var addresses =
@@ -426,39 +410,39 @@ class SettingMobileApp {
       locationGeoCoderName = "$latitude, $longitude";
     }
 
+    var databaseName = "";
     //Zone Name don't change
     if (locationZoneName != "") {
+      if (gd.locationName == locationZoneName) {
+        print("Case 1 Return");
+        return;
+      }
       gd.locationName = locationZoneName;
-      print("Case 1");
+      databaseName = locationZoneName;
+      print("Case 2");
     }
     //new locationGeoCoderName Update
     else if (locationGeoCoderName != gd.locationName) {
       gd.locationName = locationGeoCoderName;
-      print("Case 2");
-    }
-    //old locationGeoCoderName => Add a space
-    else if (locationGeoCoderName == gd.locationName &&
-        gd.getDistanceFromLatLonInKm(latitude, longitude, gd.locationLatitude,
-                gd.locationLongitude) >
-            gd.locationUpdateMinDistance) {
-      gd.locationName = locationGeoCoderName + ".";
+      databaseName = locationGeoCoderName;
       print("Case 3");
+    } else {
+      if (gd.getDistanceFromLatLonInKm(
+              latitude, longitude, gd.locationLatitude, gd.locationLongitude) <
+          gd.locationUpdateMinDistance) {
+        print(
+            "Case 4 Distance ${gd.getDistanceFromLatLonInKm(latitude, longitude, gd.locationLatitude, gd.locationLongitude)} < ${gd.locationUpdateMinDistance}");
+        return;
+      } else {
+        databaseName = locationGeoCoderName + ".";
+        print("Case 5");
+      }
     }
-    //use old locationGeoCoderName HA may not update into database, update anyway
-    else {
-      gd.locationName = locationGeoCoderName;
-      print(
-          "Case 4 ${gd.getDistanceFromLatLonInKm(latitude, longitude, gd.locationLatitude, gd.locationLongitude)} | ${gd.locationUpdateMinDistance}");
-    }
-
-    //need to be here to calculate
-    gd.locationLatitude = latitude;
-    gd.locationLongitude = longitude;
 
     var getLocationUpdatesData = {
       "type": "update_location",
       "data": {
-        "location_name": gd.locationName,
+        "location_name": databaseName,
         "gps": [latitude, longitude],
         "gps_accuracy": accuracy,
         "speed": speed,
@@ -483,6 +467,11 @@ class SettingMobileApp {
     }).catchError((e) {
       print("updateLocation Response Error $e");
     });
+
+    //need to be here to calculate
+    gd.locationLatitude = latitude;
+    gd.locationLongitude = longitude;
+    gd.locationUpdateTime = DateTime.now();
   }
 }
 
