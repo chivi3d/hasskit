@@ -61,7 +61,7 @@ notify:
       - service: mobile_app_hasskit_mobile_app_3
 ```
 
-Create an Automation to send and notification with camera 1 picture when garage door is opened to HassKit app:
+Send a notification whenever garage door is opened:
 <br>
 (Replace https://hasskit.duckdns.org and camera.camera_1 with your own url and camera name)
 ```
