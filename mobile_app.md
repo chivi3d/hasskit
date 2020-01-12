@@ -82,7 +82,7 @@ automation:
         title: Garage Door 
         message: Opened
         data:
-          image: https://hasskit.duckdns.org/local/camera_1.jpg
+          image: http://hasskit.duckdns.org:8123/local/camera_1.jpg
       service: notify.ALL_DEVICES   
 ```
 ![alt text](https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/mobile_app/Screenshot_8.png)
