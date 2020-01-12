@@ -35,5 +35,48 @@ To enable this feature, please follow these 3 easy steps
 ![alt text](https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/mobile_app/Screenshot_7.png)
 <br>Go to Home Assistant > Configuration > Integrations > Mobile App: <App Name> and click the recycle bin icon.
 
-## 5. Notification Automation Sample
-Coming soon...
+## 5. How To Send Notification To Mobile App
+
+First, we need to edit ***configuration.yaml*** by adding the following line:
+
+Allow Home Assistant write file into www folder:
+```
+homeassistant:
+  whitelist_external_dirs:
+    - /config/www
+```
+
+Add notify.ALL_DEVICES service:
+(Replace mobile_app_hasskit_mobile_app_1 with your registered device name)
+```
+notify:
+  - name: ALL_DEVICES
+    platform: group
+    services:
+      - service: mobile_app_hasskit_mobile_app_1
+      - service: mobile_app_hasskit_mobile_app_2
+      - service: mobile_app_hasskit_mobile_app_3
+```
+
+Create an Automation to send and notification with camera 1 picture when garage door is opened to HassKit app:
+```
+automation:
+  - alias: 'Rule 1 Light on in the evening'
+    trigger:
+    - entity_id: cover.garage_door
+      platform: state
+      to: "open"
+    action:
+    - data_template:
+        entity_id: camera.camera_1
+        filename: /config/www/camera_1.jpg
+      service: camera.snapshot
+    - delay:
+        seconds: 1
+    - data_template:
+        title: Garage Door 
+        message: Opened
+        data:
+          image: https://hasskit.duckdns.org/local/camera_1.jpg
+      service: notify.ALL_DEVICES   
+```
