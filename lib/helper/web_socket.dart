@@ -104,6 +104,7 @@ class WebSocket {
         gd.getStatesId = 0;
         gd.cameraInfosActive.clear();
         gd.entities.clear();
+        gd.configVersion = "";
       }
     }
   }
