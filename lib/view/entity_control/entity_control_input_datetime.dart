@@ -21,89 +21,91 @@ class _EntityControlInputDateTimeState
   DateTime entityStateDateTime;
   String entityState;
   @override
-  Widget datetime() {
-    return CupertinoDatePicker(
-      backgroundColor: Colors.transparent,
-      initialDateTime: entityStateDateTime,
-      onDateTimeChanged: (DateTime newdate) {
-        String newValue = DateFormat("yyyy-MM-dd HH:mm:ss").format(newdate);
-        print("date $newValue");
-        var outMsg = {
-          "id": gd.socketId,
-          "type": "call_service",
-          "domain": "input_datetime",
-          "service": "set_datetime",
-          "service_data": {
-            "entity_id": widget.entityId,
-            "datetime": newValue,
-          }
-        };
-        var outMsgEncoded = json.encode(outMsg);
-        webSocket.send(outMsgEncoded);
-      },
-      use24hFormat: true,
-      mode: CupertinoDatePickerMode.dateAndTime,
-    );
-  }
-
-  Widget date() {
-    return CupertinoDatePicker(
-      backgroundColor: Colors.transparent,
-      initialDateTime: entityStateDateTime,
-      onDateTimeChanged: (DateTime newdate) {
-        String newValue = DateFormat("yyyy-MM-dd").format(newdate);
-        print("date $newValue");
-        var outMsg = {
-          "id": gd.socketId,
-          "type": "call_service",
-          "domain": "input_datetime",
-          "service": "set_datetime",
-          "service_data": {
-            "entity_id": widget.entityId,
-            "date": newValue,
-          }
-        };
-        var outMsgEncoded = json.encode(outMsg);
-        webSocket.send(outMsgEncoded);
-      },
-      use24hFormat: true,
-      mode: CupertinoDatePickerMode.date,
-    );
-  }
-
-  Widget time() {
-    return CupertinoDatePicker(
-      backgroundColor: Colors.transparent,
-      initialDateTime: entityStateDateTime,
-      onDateTimeChanged: (DateTime newdate) {
-        String newValue = DateFormat("HH:mm:ss").format(newdate);
-        print("time $newValue");
-        var outMsg = {
-          "id": gd.socketId,
-          "type": "call_service",
-          "domain": "input_datetime",
-          "service": "set_datetime",
-          "service_data": {
-            "entity_id": widget.entityId,
-            "time": newValue,
-          }
-        };
-        var outMsgEncoded = json.encode(outMsg);
-        webSocket.send(outMsgEncoded);
-      },
-      use24hFormat: true,
-      mode: CupertinoDatePickerMode.time,
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     entityState = gd.entities[widget.entityId].state;
-
     if (entityState.contains("-")) {
       entityStateDateTime = DateTime.parse(entityState);
     } else {
       entityStateDateTime = DateTime.parse("2020-01-01 " + entityState);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Widget pickerDateTime() {
+      return CupertinoDatePicker(
+        backgroundColor: Colors.transparent,
+        initialDateTime: entityStateDateTime,
+        onDateTimeChanged: (DateTime newDate) {
+          String newValue = DateFormat("yyyy-MM-dd HH:mm:ss").format(newDate);
+          print("date $newValue");
+          var outMsg = {
+            "id": gd.socketId,
+            "type": "call_service",
+            "domain": "input_datetime",
+            "service": "set_datetime",
+            "service_data": {
+              "entity_id": widget.entityId,
+              "datetime": newValue,
+            }
+          };
+          var outMsgEncoded = json.encode(outMsg);
+          webSocket.send(outMsgEncoded);
+        },
+        use24hFormat: true,
+        mode: CupertinoDatePickerMode.dateAndTime,
+      );
+    }
+
+    Widget pickerDate() {
+      return CupertinoDatePicker(
+        backgroundColor: Colors.transparent,
+        initialDateTime: entityStateDateTime,
+        onDateTimeChanged: (DateTime newDate) {
+          String newValue = DateFormat("yyyy-MM-dd").format(newDate);
+          print("date $newValue");
+          var outMsg = {
+            "id": gd.socketId,
+            "type": "call_service",
+            "domain": "input_datetime",
+            "service": "set_datetime",
+            "service_data": {
+              "entity_id": widget.entityId,
+              "date": newValue,
+            }
+          };
+          var outMsgEncoded = json.encode(outMsg);
+          webSocket.send(outMsgEncoded);
+        },
+        use24hFormat: true,
+        mode: CupertinoDatePickerMode.date,
+      );
+    }
+
+    Widget pickerTime() {
+      return CupertinoDatePicker(
+        backgroundColor: Colors.transparent,
+        initialDateTime: entityStateDateTime,
+        onDateTimeChanged: (DateTime newDate) {
+          String newValue = DateFormat("HH:mm:ss").format(newDate);
+          print("time $newValue");
+          var outMsg = {
+            "id": gd.socketId,
+            "type": "call_service",
+            "domain": "input_datetime",
+            "service": "set_datetime",
+            "service_data": {
+              "entity_id": widget.entityId,
+              "time": newValue,
+            }
+          };
+          var outMsgEncoded = json.encode(outMsg);
+          webSocket.send(outMsgEncoded);
+        },
+        use24hFormat: true,
+        mode: CupertinoDatePickerMode.time,
+      );
     }
 
     return Column(
@@ -125,10 +127,10 @@ class _EntityControlInputDateTimeState
           ),
           child: gd.entities[widget.entityId].state.contains(":") &&
                   gd.entities[widget.entityId].state.contains("-")
-              ? datetime()
+              ? pickerDateTime()
               : gd.entities[widget.entityId].state.contains("-")
-                  ? date()
-                  : time(),
+                  ? pickerDate()
+                  : pickerTime(),
         ),
         Spacer(),
       ],

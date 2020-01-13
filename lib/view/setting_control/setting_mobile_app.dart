@@ -412,20 +412,20 @@ class SettingMobileApp {
     var databaseName = "";
     //Zone Name don't change
     if (locationZoneName != "") {
-      if (gd.locationName == locationZoneName) {
-        print("Case 1 Return");
-        gd.locationUpdateTime = DateTime.now().add(Duration(seconds: 15));
-        return;
-      }
+//      if (gd.locationName == locationZoneName) {
+//        print("Case 1 Return");
+//        gd.locationUpdateTime = DateTime.now().add(Duration(seconds: 15));
+//        return;
+//      }
       gd.locationName = locationZoneName;
       databaseName = locationZoneName;
       print("Case 2");
-    }
-    //new locationGeoCoderName Update
-    else if (locationGeoCoderName != gd.locationName) {
-      gd.locationName = locationGeoCoderName;
-      databaseName = locationGeoCoderName;
-      print("Case 3");
+//    }
+      //new locationGeoCoderName Update
+//    else if (locationGeoCoderName != gd.locationName) {
+//      gd.locationName = locationGeoCoderName;
+//      databaseName = locationGeoCoderName;
+//      print("Case 3");
     } else {
       if (gd.getDistanceFromLatLonInKm(
               latitude, longitude, gd.locationLatitude, gd.locationLongitude) <
@@ -435,8 +435,14 @@ class SettingMobileApp {
         gd.locationUpdateTime = DateTime.now().add(Duration(seconds: 15));
         return;
       } else {
-        databaseName = locationGeoCoderName + ".";
-        print("Case 5");
+        if (locationGeoCoderName == gd.locationName) {
+          databaseName = locationGeoCoderName + ".";
+          print("Case 5");
+        } else {
+          databaseName = locationGeoCoderName;
+          print("Case 6");
+        }
+        gd.locationName = locationGeoCoderName;
       }
     }
 
