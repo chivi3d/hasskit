@@ -776,7 +776,8 @@ class Entity {
       if (speed != null && speed.length > 0 && speed != "null") return speed;
     }
 
-    if (DateTime.tryParse(state) != null) {
+    if (!entityId.contains("input_datetime") &&
+        DateTime.tryParse(state) != null) {
 //      log.d("DateTime.tryParse $state");
       return DateFormat('dd/MM kk:mm').format(DateTime.parse(state));
     }

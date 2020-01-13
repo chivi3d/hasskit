@@ -17,6 +17,7 @@ import 'package:hasskit/view/entity_control/entity_control_vacuum.dart';
 import 'package:provider/provider.dart';
 import 'entity_control_binary_sensor.dart';
 import 'entity_control_fan.dart';
+import 'entity_control_input_datetime.dart';
 import 'entity_control_input_number.dart';
 import 'entity_control_light_dimmer.dart';
 import 'entity_control_sensor.dart';
@@ -68,8 +69,6 @@ class _EntityControlParentState extends State<EntityControlParent> {
         }
 
         Widget entityControl;
-        print("EntityControlParent widget.entityId ${widget.entityId}");
-        print("EntityControlParent currentPosition ${entity.currentPosition}");
 
         if (entity.entityType == EntityType.climateFans &&
             entity.hvacModes != null &&
@@ -120,6 +119,8 @@ class _EntityControlParentState extends State<EntityControlParent> {
             entity.min != null &&
             entity.max != null) {
           entityControl = EntityControlInputNumber(entityId: widget.entityId);
+        } else if (entity.entityId.contains("input_datetime.")) {
+          entityControl = EntityControlInputDateTime(entityId: widget.entityId);
         } else if (entity.entityType == EntityType.mediaPlayers) {
           entityControl = EntityControlMediaPlayer(entityId: widget.entityId);
         } else if (entity.entityId.contains("vacuum.")) {
@@ -421,52 +422,6 @@ class _EditEntityNormalState extends State<EditEntityNormal> {
               ),
             ),
           ),
-          SizedBox(width: 8),
-          Expanded(
-            child: !widget.showEditName
-                ? Text(
-                    gd.textToDisplay(entity.getOverrideName),
-                    style: Theme.of(context).textTheme.title,
-                    textScaleFactor: gd.textScaleFactorFix,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
-                  )
-                : TextField(
-                    decoration: InputDecoration(
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: ThemeInfo.colorIconActive, width: 1.0),
-                      ),
-                      contentPadding: EdgeInsets.zero,
-                      hintText:
-                          '${gd.entities[widget.entityId].getFriendlyName}',
-                    ),
-                    focusNode: _focusNode,
-                    controller: _controller,
-                    style: Theme.of(context).textTheme.title,
-                    maxLines: 1,
-                    textAlign: TextAlign.center,
-                    autocorrect: false,
-                    autofocus: false,
-                    onEditingComplete: () {
-                      setState(
-                        () {
-                          if (gd.entitiesOverride[widget.entityId] != null) {
-                            gd.entitiesOverride[widget.entityId].friendlyName =
-                                _controller.text.trim();
-                          } else {
-                            gd.entitiesOverride[widget.entityId] =
-                                EntityOverride(
-                                    friendlyName: _controller.text.trim());
-                          }
-                          gd.entitiesOverrideSave(true);
-                          widget.showEditNameToggle();
-                        },
-                      );
-                    },
-                  ),
-          ),
           InkWell(
             onTap: () {
               setState(
@@ -518,6 +473,52 @@ class _EditEntityNormalState extends State<EditEntityNormal> {
                 ),
               ],
             ),
+          ),
+          SizedBox(width: 8),
+          Expanded(
+            child: !widget.showEditName
+                ? Text(
+                    gd.textToDisplay(entity.getOverrideName),
+                    style: Theme.of(context).textTheme.title,
+                    textScaleFactor: gd.textScaleFactorFix,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.left,
+                  )
+                : TextField(
+                    decoration: InputDecoration(
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: ThemeInfo.colorIconActive, width: 1.0),
+                      ),
+                      contentPadding: EdgeInsets.zero,
+                      hintText:
+                          '${gd.entities[widget.entityId].getFriendlyName}',
+                    ),
+                    focusNode: _focusNode,
+                    controller: _controller,
+                    style: Theme.of(context).textTheme.title,
+                    maxLines: 1,
+                    textAlign: TextAlign.left,
+                    autocorrect: false,
+                    autofocus: false,
+                    onEditingComplete: () {
+                      setState(
+                        () {
+                          if (gd.entitiesOverride[widget.entityId] != null) {
+                            gd.entitiesOverride[widget.entityId].friendlyName =
+                                _controller.text.trim();
+                          } else {
+                            gd.entitiesOverride[widget.entityId] =
+                                EntityOverride(
+                                    friendlyName: _controller.text.trim());
+                          }
+                          gd.entitiesOverrideSave(true);
+                          widget.showEditNameToggle();
+                        },
+                      );
+                    },
+                  ),
           ),
           SizedBox(width: 8),
         ],

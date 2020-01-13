@@ -370,7 +370,7 @@ class SettingMobileApp {
         var distance = gd.getDistanceFromLatLonInKm(
             latitude, longitude, locationZone.latitude, locationZone.longitude);
         print(
-            "distance  ${locationZone.friendlyName} $distance locationZone.radius ${locationZone.radius} ${locationZone.radius * 0.001}");
+            "distance ${locationZone.friendlyName} $distance locationZone.radius ${locationZone.radius} ${locationZone.radius * 0.001}");
         if (distance < locationZone.radius * 0.001) {
           if (shortestDistance > distance) {
             shortestDistance = distance;

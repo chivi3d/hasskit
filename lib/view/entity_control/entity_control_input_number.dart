@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:hasskit/helper/general_data.dart';
 import 'package:hasskit/helper/logger.dart';

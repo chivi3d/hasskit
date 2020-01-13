@@ -239,8 +239,13 @@ class GeneralData with ChangeNotifier {
         locationZones.add(locationZone);
       }
 
-      if (previousEntitiesList.contains(entity.entityId))
+      if (entity.entityId.contains('input_datetime')) {
+        print("input_datetime $mess");
+      }
+
+      if (previousEntitiesList.contains(entity.entityId)) {
         previousEntitiesList.remove(entity.entityId);
+      }
 
       entities[entity.entityId] = entity;
     }
