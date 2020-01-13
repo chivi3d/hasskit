@@ -2377,13 +2377,16 @@ class GeneralData with ChangeNotifier {
         print("jsonResponse $url $jsonResponse");
         configVersion = jsonResponse['version'];
         configLocationName = jsonResponse['location_name'];
-        configTemperature = jsonResponse['unit_system']['temperature'];
+        configUnitSystem =
+            Map<String, dynamic>.from(jsonResponse['unit_system']);
         configComponent = List<String>.from(jsonResponse['components']);
 
-        print("configVersion $configVersion");
-        print("configLocationName $configLocationName");
-        print("configTemperature $configTemperature");
         print("configComponent $configComponent");
+        print("configLocationName $configLocationName");
+        print("configUnitSystem $configUnitSystem");
+        print(
+            "configUnitSystem['temperature'] ${configUnitSystem['temperature']}");
+        print("configVersion $configVersion");
       } else {
         log.e(
             "httpApiStates Request $url failed with status: ${response.statusCode}");
@@ -2633,7 +2636,7 @@ class GeneralData with ChangeNotifier {
     return deg * (Math.pi / 180);
   }
 
-  String configTemperature = "°C";
+  Map<String, dynamic> configUnitSystem = {};
   String configVersion = "";
   String configLocationName = "";
   List<String> configComponent = [];
