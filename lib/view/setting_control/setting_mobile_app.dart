@@ -351,6 +351,8 @@ class SettingMobileApp {
       return;
     }
 
+    gd.locationUpdateTime = DateTime.now().add(Duration(seconds: 15));
+
     print(".");
     print("latitude $latitude");
     print("longitude $longitude");
@@ -396,7 +398,11 @@ class SettingMobileApp {
         } else if (first.addressLine != null) {
           var split = first.addressLine.split(",");
           if (split.length >= 2) {
-            locationGeoCoderName = split[0] + "," + split[1];
+            if (split[0].length < 20) {
+              locationGeoCoderName = split[0] + "," + split[1];
+            } else {
+              locationGeoCoderName = split[0];
+            }
           } else {
             locationGeoCoderName = "${first.addressLine}";
           }
@@ -412,27 +418,14 @@ class SettingMobileApp {
     var databaseName = "";
     //Zone Name don't change
     if (locationZoneName != "") {
-//      if (gd.locationName == locationZoneName) {
-//        print("Case 1 Return");
-//        gd.locationUpdateTime = DateTime.now().add(Duration(seconds: 15));
-//        return;
-//      }
-      gd.locationName = locationZoneName;
       databaseName = locationZoneName;
       print("Case 2");
-//    }
-      //new locationGeoCoderName Update
-//    else if (locationGeoCoderName != gd.locationName) {
-//      gd.locationName = locationGeoCoderName;
-//      databaseName = locationGeoCoderName;
-//      print("Case 3");
     } else {
       if (gd.getDistanceFromLatLonInKm(
               latitude, longitude, gd.locationLatitude, gd.locationLongitude) <
           gd.locationUpdateMinDistance) {
         print(
             "Case 4 Distance ${gd.getDistanceFromLatLonInKm(latitude, longitude, gd.locationLatitude, gd.locationLongitude)} < ${gd.locationUpdateMinDistance}");
-        gd.locationUpdateTime = DateTime.now().add(Duration(seconds: 15));
         return;
       } else {
         if (locationGeoCoderName == gd.locationName) {
@@ -442,7 +435,6 @@ class SettingMobileApp {
           databaseName = locationGeoCoderName;
           print("Case 6");
         }
-        gd.locationName = locationGeoCoderName;
       }
     }
 
@@ -468,18 +460,19 @@ class SettingMobileApp {
       if (response.statusCode >= 200 && response.statusCode < 300) {
         print(
             "updateLocation Response From Server With Code ${response.statusCode}");
+        gd.locationRecordName = databaseName;
+        gd.locationRecordTime = DateTime.now();
+        gd.locationName = databaseName;
+        gd.locationLatitude = latitude;
+        gd.locationLongitude = longitude;
+        gd.locationUpdateTime =
+            DateTime.now().add(Duration(minutes: gd.locationUpdateInterval));
       } else {
         print("updateLocation Response Error Code ${response.statusCode}");
       }
     }).catchError((e) {
       print("updateLocation Response Error $e");
     });
-
-    //need to be here to calculate
-    gd.locationLatitude = latitude;
-    gd.locationLongitude = longitude;
-    gd.locationUpdateTime =
-        DateTime.now().add(Duration(minutes: gd.locationUpdateInterval));
   }
 }
 
@@ -775,6 +768,14 @@ class _SettingMobileAppRegistrationState
                             divisions: 45,
                           ),
                         ),
+//                        Expandable(
+//                          collapsed: null,
+//                          expanded: Text("locationName ${gd.locationName}\n"
+//                              "locationUpdateTime ${DateFormat("dd-MM-yyyy HH:mm").format(gd.locationUpdateTime.toLocal())}\n"
+//                              "locationServiceIsRunning ${gd.locationServiceIsRunning}\n"
+//                              "locationRecordName ${gd.locationRecordName}\n"
+//                              "locationRecordTime ${DateFormat("dd-MM-yyyy HH:mm").format(gd.locationRecordTime.toLocal())}"),
+//                        ),
                       ],
                     ),
                   ),

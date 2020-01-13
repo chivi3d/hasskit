@@ -2340,6 +2340,7 @@ class GeneralData with ChangeNotifier {
 
   void httpApiStates() async {
     var client = new http.Client();
+
     var url = gd.currentUrl + "/api/states";
     Map<String, String> headers = {
       'content-type': 'application/json',
@@ -2357,7 +2358,35 @@ class GeneralData with ChangeNotifier {
         socketGetStates(jsonResponse);
       } else {
         log.e(
-            "httpApiStates Request failed with status: ${response.statusCode}.");
+            "httpApiStates Request $url ailed with status: ${response.statusCode}");
+      }
+    } finally {
+      client.close();
+    }
+
+    if (configVersion != "") return;
+
+    client = new http.Client();
+    url = gd.currentUrl + "/api/config";
+    log.d("httpApiStates api/config $url");
+
+    try {
+      var response = await http.get(url, headers: headers);
+      if (response.statusCode == 200) {
+        var jsonResponse = jsonDecode(response.body);
+        print("jsonResponse $url $jsonResponse");
+        configVersion = jsonResponse['version'];
+        configLocationName = jsonResponse['location_name'];
+        configTemperature = jsonResponse['unit_system']['temperature'];
+        configComponent = List<String>.from(jsonResponse['components']);
+
+        print("configVersion $configVersion");
+        print("configLocationName $configLocationName");
+        print("configTemperature $configTemperature");
+        print("configComponent $configComponent");
+      } else {
+        log.e(
+            "httpApiStates Request $url failed with status: ${response.statusCode}");
       }
     } finally {
       client.close();
@@ -2583,6 +2612,8 @@ class GeneralData with ChangeNotifier {
   }
 
   List<LocationZone> locationZones = [];
+  String locationRecordName = "";
+  DateTime locationRecordTime = DateTime.parse("2020-01-01 00:00:00");
 
   double getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
     var R = 6371; // Radius of the earth in km
@@ -2601,4 +2632,9 @@ class GeneralData with ChangeNotifier {
   double deg2rad(deg) {
     return deg * (Math.pi / 180);
   }
+
+  String configTemperature = "°C";
+  String configVersion = "";
+  String configLocationName = "";
+  List<String> configComponent = [];
 }

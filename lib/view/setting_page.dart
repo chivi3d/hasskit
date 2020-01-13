@@ -464,7 +464,8 @@ class _SettingPageState extends State<SettingPage> {
 //                        "App Name: ${_packageInfo.appName} - "
 //                      "Package: ${_packageInfo.packageName}\n"
                             "Version: ${_packageInfo.version} - "
-                            "Build: ${_packageInfo.buildNumber}",
+                            "Build: ${_packageInfo.buildNumber} - "
+                            "HA: ${gd.configVersion}",
                             style: Theme.of(context).textTheme.body1,
                             textAlign: TextAlign.center,
                             textScaleFactor: gd.textScaleFactorFix,

@@ -29,8 +29,7 @@ class EntityControlClimate extends StatelessWidget {
 //            fontWeight: FontWeight.w600),
         modifier: (double value) {
           if (gd.entities[entityId].targetTempStep == 1 ||
-              gd.entities[entityId].unitOfMeasurement.toLowerCase().trim() !=
-                  "°C".toLowerCase()) {
+              gd.configTemperature != "°C") {
             return ' ${value.toInt()}˚';
           } else if (gd.entities[entityId].targetTempStep == 0.5) {
             return ' ${gd.roundTo05(value)}˚';
@@ -68,8 +67,7 @@ class EntityControlClimate extends StatelessWidget {
         print('onChangeEnd $value');
         var outMsg;
         if (gd.entities[entityId].targetTempStep == 1 ||
-            gd.entities[entityId].unitOfMeasurement.toLowerCase().trim() !=
-                "°C".toLowerCase()) {
+            gd.configTemperature != "°C") {
           outMsg = {
             "id": gd.socketId,
             "type": "call_service",
