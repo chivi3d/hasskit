@@ -464,8 +464,12 @@ class _SettingPageState extends State<SettingPage> {
 //                        "App Name: ${_packageInfo.appName} - "
 //                      "Package: ${_packageInfo.packageName}\n"
                             "Version: ${_packageInfo.version} - "
-                            "Build: ${_packageInfo.buildNumber} - "
-                            "HA: ${gd.configVersion}",
+                            "Build: ${_packageInfo.buildNumber}\n"
+                            "${gd.configLocationName} - "
+                            "Version: ${gd.configVersion}"
+//                            "temperature: ${gd.configUnitSystem['temperature']}"
+                            "",
+                            maxLines: 4,
                             style: Theme.of(context).textTheme.body1,
                             textAlign: TextAlign.center,
                             textScaleFactor: gd.textScaleFactorFix,
