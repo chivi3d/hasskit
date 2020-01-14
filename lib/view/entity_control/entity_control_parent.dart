@@ -542,6 +542,7 @@ class _EditModeState extends State<EditMode> {
                         } else {
                           room.row1.add(widget.entityId);
                         }
+                        gd.roomListSave(true);
                       });
                     },
                     child: Icon(
@@ -575,6 +576,7 @@ class _EditModeState extends State<EditMode> {
                         } else {
                           room.row2.add(widget.entityId);
                         }
+                        gd.roomListSave(true);
                       });
                     },
                     child: Icon(
@@ -608,6 +610,7 @@ class _EditModeState extends State<EditMode> {
                         } else {
                           room.row3.add(widget.entityId);
                         }
+                        gd.roomListSave(true);
                       });
                     },
                     child: Icon(
@@ -641,6 +644,7 @@ class _EditModeState extends State<EditMode> {
                         } else {
                           room.row4.add(widget.entityId);
                         }
+                        gd.roomListSave(true);
                       });
                     },
                     child: Icon(
