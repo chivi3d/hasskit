@@ -315,7 +315,8 @@ class _SettingPageState extends State<SettingPage> {
                         childCount: gd.loginDataList.length,
                       ),
                     ),
-              gd.deviceSetting.settingLocked
+              gd.deviceSetting.settingLocked ||
+                      gd.currentUrl.contains("hasskit.duckdns.org")
                   ? gd.emptySliver
                   : SliverHeaderNormal(
                       icon: Icon(
@@ -324,7 +325,8 @@ class _SettingPageState extends State<SettingPage> {
                       ),
                       title: "Mobile App",
                     ),
-              gd.deviceSetting.settingLocked
+              gd.deviceSetting.settingLocked ||
+                      gd.currentUrl.contains("hasskit.duckdns.org")
                   ? gd.emptySliver
                   : SettingMobileAppRegistration(),
               gd.deviceSetting.settingLocked

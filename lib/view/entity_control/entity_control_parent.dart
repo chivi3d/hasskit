@@ -160,9 +160,7 @@ class _EntityControlParentState extends State<EntityControlParent> {
               Column(
                 children: <Widget>[
                   SizedBox(
-                    height: gd.mediaQueryLongestSide > 600
-                        ? MediaQuery.of(gd.mediaQueryContext).padding.top * 1
-                        : MediaQuery.of(gd.mediaQueryContext).padding.top * 1,
+                    height: MediaQuery.of(gd.mediaQueryContext).padding.top,
                   ),
                   EditEntityNormal(
                     entityId: widget.entityId,
