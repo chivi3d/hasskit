@@ -730,11 +730,10 @@ class _EditModeState extends State<EditMode> {
                       IconButton(
                         onPressed: () {
                           setState(() {
-                            Entity entity = gd.entities[widget.entityId];
-                            _controllerName.text = '${entity.friendlyName}';
+                            _controllerName.text = '';
+//                            Entity entity = gd.entities[widget.entityId];
                             gd.entitiesOverride[widget.entityId] =
-                                EntityOverride(
-                                    friendlyName: _controllerName.text.trim());
+                                EntityOverride(friendlyName: "");
                             gd.entitiesOverrideSave(true);
                             FocusScope.of(context)
                                 .requestFocus(new FocusNode());
