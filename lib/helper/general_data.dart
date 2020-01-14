@@ -439,13 +439,11 @@ class GeneralData with ChangeNotifier {
 
   LoginData loginDataHassKit = LoginData(
     url: "http://hasskit.duckdns.org:8123",
-    accessToken:
-        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmM2NlNzViNTViNDA0YWQyYWE5YzZhYTBlMTBlYWZhYSIsImlhdCI6MTU3ODk4MzQxNCwiZXhwIjoxNTc4OTg1MjE0fQ.QrasZcasRKjtmIJP7kiEdOsdSy6s_3Tq54WL1LenREk",
+    accessToken: "",
     longToken:
         "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIyMDVhM2M3N2JjYjg0ZjBlYjI3MzZmNGJiNGUyZWI3OSIsImlhdCI6MTU3ODk4MzQxNCwiZXhwIjoxNjEwNTE5NDE0fQ.jkw-hk8UG0yK_6UHKdkY6kUkIfK4702FqKfRa5JsCk4",
     expiresIn: 1800,
-    refreshToken:
-        "12fdb55a7aad0e9f3df62feba798dfba964c30f4e21012a4d33f0fadf56af601e6c9494f567e43419c7dc19696941765078f2f8ca953e96593be5ff94cfcc469",
+    refreshToken: "",
     tokenType: "Bearer",
     lastAccess: 1573693868837,
   );
