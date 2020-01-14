@@ -445,7 +445,7 @@ class _EditEntityNormalState extends State<EditEntityNormal> {
               );
             },
             child: Icon(
-              MaterialDesignIcons.getIconDataFromIconName("mdi:settings"),
+              widget.showEditName ? Icons.edit : Icons.edit,
               size: 30,
             ),
           ),

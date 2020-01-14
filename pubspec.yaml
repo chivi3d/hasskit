@@ -72,6 +72,7 @@ dependencies:
   background_location: ^0.0.9+1
   geocoder: ^0.2.1
   expandable: ^4.0.2
+  flutter_cupertino_date_picker: ^1.0.12
 
 flutter_icons:
   android: false
