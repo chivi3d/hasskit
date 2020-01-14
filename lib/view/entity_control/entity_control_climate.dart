@@ -257,6 +257,7 @@ class _PresetModesState extends State<PresetModes> {
   Widget build(BuildContext context) {
     entity = gd.entities[widget.entityId];
     groupValue = entity.presetMode;
+    if (groupValue == null) groupValue = entity.presetModes.first;
     for (String presetMode in entity.presetModes) {
       children[presetMode] = Text(
         gd.textToDisplay(presetMode),
