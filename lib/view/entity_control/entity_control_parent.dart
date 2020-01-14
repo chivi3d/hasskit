@@ -497,8 +497,6 @@ class _EditModeState extends State<EditMode> {
     List<Widget> roomWidgets = [];
 
     for (var room in gd.roomList) {
-      print(room.name);
-
       var roomWidget = Container(
         margin: EdgeInsets.fromLTRB(8, 8, 8, 8),
         padding: EdgeInsets.all(8),
@@ -525,6 +523,7 @@ class _EditModeState extends State<EditMode> {
                 Icon(
                   Icons.looks_one,
                 ),
+                SizedBox(width: 4, height: 30),
                 Expanded(
                   child: Text(
                     room.row1Name,
@@ -557,6 +556,7 @@ class _EditModeState extends State<EditMode> {
                 Icon(
                   Icons.looks_two,
                 ),
+                SizedBox(width: 4, height: 30),
                 Expanded(
                   child: Text(
                     room.row2Name,
@@ -589,6 +589,7 @@ class _EditModeState extends State<EditMode> {
                 Icon(
                   Icons.looks_3,
                 ),
+                SizedBox(width: 4, height: 30),
                 Expanded(
                   child: Text(
                     room.row3Name,
@@ -621,6 +622,7 @@ class _EditModeState extends State<EditMode> {
                 Icon(
                   Icons.looks_4,
                 ),
+                SizedBox(width: 4, height: 30),
                 Expanded(
                   child: Text(
                     room.row4Name,
