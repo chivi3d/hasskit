@@ -502,7 +502,7 @@ class _EditModeState extends State<EditMode> {
         padding: EdgeInsets.all(8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          color: ThemeInfo.colorBottomSheetReverse.withOpacity(0.5),
+          color: ThemeInfo.colorBottomSheetReverse.withOpacity(0.25),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -518,141 +518,145 @@ class _EditModeState extends State<EditMode> {
                 ),
               ],
             ),
-            Row(
-              children: <Widget>[
-                Icon(
-                  Icons.looks_one,
-                ),
-                SizedBox(width: 4, height: 30),
-                Expanded(
-                  child: Text(
-                    room.row1Name,
-                    textScaleFactor: gd.textScaleFactorFix,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(color: ThemeInfo.colorBottomSheetReverse),
+            InkWell(
+              onTap: () {
+                setState(() {
+                  if (room.row1.contains(widget.entityId)) {
+                    room.row1.remove(widget.entityId);
+                  } else {
+                    room.row1.add(widget.entityId);
+                  }
+                  gd.roomListSave(true);
+                });
+              },
+              child: Row(
+                children: <Widget>[
+                  Icon(
+                    Icons.looks_one,
                   ),
-                ),
-                Opacity(
-                  opacity: room.row1.contains(widget.entityId) ? 1 : 0.2,
-                  child: InkWell(
-                    onTap: () {
-                      setState(() {
-                        if (room.row1.contains(widget.entityId)) {
-                          room.row1.remove(widget.entityId);
-                        } else {
-                          room.row1.add(widget.entityId);
-                        }
-                        gd.roomListSave(true);
-                      });
-                    },
+                  SizedBox(width: 4, height: 30),
+                  Expanded(
+                    child: Text(
+                      room.row1Name,
+                      textScaleFactor: gd.textScaleFactorFix,
+                      overflow: TextOverflow.ellipsis,
+                      style:
+                          TextStyle(color: ThemeInfo.colorBottomSheetReverse),
+                    ),
+                  ),
+                  Opacity(
+                    opacity: room.row1.contains(widget.entityId) ? 1 : 0.2,
                     child: Icon(
                       Icons.check_circle,
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-            Row(
-              children: <Widget>[
-                Icon(
-                  Icons.looks_two,
-                ),
-                SizedBox(width: 4, height: 30),
-                Expanded(
-                  child: Text(
-                    room.row2Name,
-                    textScaleFactor: gd.textScaleFactorFix,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(color: ThemeInfo.colorBottomSheetReverse),
+            InkWell(
+              onTap: () {
+                setState(() {
+                  if (room.row2.contains(widget.entityId)) {
+                    room.row2.remove(widget.entityId);
+                  } else {
+                    room.row2.add(widget.entityId);
+                  }
+                  gd.roomListSave(true);
+                });
+              },
+              child: Row(
+                children: <Widget>[
+                  Icon(
+                    Icons.looks_two,
                   ),
-                ),
-                Opacity(
-                  opacity: room.row2.contains(widget.entityId) ? 1 : 0.2,
-                  child: InkWell(
-                    onTap: () {
-                      setState(() {
-                        if (room.row2.contains(widget.entityId)) {
-                          room.row2.remove(widget.entityId);
-                        } else {
-                          room.row2.add(widget.entityId);
-                        }
-                        gd.roomListSave(true);
-                      });
-                    },
+                  SizedBox(width: 4, height: 30),
+                  Expanded(
+                    child: Text(
+                      room.row2Name,
+                      textScaleFactor: gd.textScaleFactorFix,
+                      overflow: TextOverflow.ellipsis,
+                      style:
+                          TextStyle(color: ThemeInfo.colorBottomSheetReverse),
+                    ),
+                  ),
+                  Opacity(
+                    opacity: room.row2.contains(widget.entityId) ? 1 : 0.2,
                     child: Icon(
                       Icons.check_circle,
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-            Row(
-              children: <Widget>[
-                Icon(
-                  Icons.looks_3,
-                ),
-                SizedBox(width: 4, height: 30),
-                Expanded(
-                  child: Text(
-                    room.row3Name,
-                    textScaleFactor: gd.textScaleFactorFix,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(color: ThemeInfo.colorBottomSheetReverse),
+            InkWell(
+              onTap: () {
+                setState(() {
+                  if (room.row3.contains(widget.entityId)) {
+                    room.row3.remove(widget.entityId);
+                  } else {
+                    room.row3.add(widget.entityId);
+                  }
+                  gd.roomListSave(true);
+                });
+              },
+              child: Row(
+                children: <Widget>[
+                  Icon(
+                    Icons.looks_3,
                   ),
-                ),
-                Opacity(
-                  opacity: room.row3.contains(widget.entityId) ? 1 : 0.2,
-                  child: InkWell(
-                    onTap: () {
-                      setState(() {
-                        if (room.row3.contains(widget.entityId)) {
-                          room.row3.remove(widget.entityId);
-                        } else {
-                          room.row3.add(widget.entityId);
-                        }
-                        gd.roomListSave(true);
-                      });
-                    },
+                  SizedBox(width: 4, height: 30),
+                  Expanded(
+                    child: Text(
+                      room.row3Name,
+                      textScaleFactor: gd.textScaleFactorFix,
+                      overflow: TextOverflow.ellipsis,
+                      style:
+                          TextStyle(color: ThemeInfo.colorBottomSheetReverse),
+                    ),
+                  ),
+                  Opacity(
+                    opacity: room.row3.contains(widget.entityId) ? 1 : 0.2,
                     child: Icon(
                       Icons.check_circle,
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-            Row(
-              children: <Widget>[
-                Icon(
-                  Icons.looks_4,
-                ),
-                SizedBox(width: 4, height: 30),
-                Expanded(
-                  child: Text(
-                    room.row4Name,
-                    textScaleFactor: gd.textScaleFactorFix,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(color: ThemeInfo.colorBottomSheetReverse),
+            InkWell(
+              onTap: () {
+                setState(() {
+                  if (room.row4.contains(widget.entityId)) {
+                    room.row4.remove(widget.entityId);
+                  } else {
+                    room.row4.add(widget.entityId);
+                  }
+                  gd.roomListSave(true);
+                });
+              },
+              child: Row(
+                children: <Widget>[
+                  Icon(
+                    Icons.looks_4,
                   ),
-                ),
-                Opacity(
-                  opacity: room.row4.contains(widget.entityId) ? 1 : 0.2,
-                  child: InkWell(
-                    onTap: () {
-                      setState(() {
-                        if (room.row4.contains(widget.entityId)) {
-                          room.row4.remove(widget.entityId);
-                        } else {
-                          room.row4.add(widget.entityId);
-                        }
-                        gd.roomListSave(true);
-                      });
-                    },
+                  SizedBox(width: 4, height: 30),
+                  Expanded(
+                    child: Text(
+                      room.row4Name,
+                      textScaleFactor: gd.textScaleFactorFix,
+                      overflow: TextOverflow.ellipsis,
+                      style:
+                          TextStyle(color: ThemeInfo.colorBottomSheetReverse),
+                    ),
+                  ),
+                  Opacity(
+                    opacity: room.row4.contains(widget.entityId) ? 1 : 0.2,
                     child: Icon(
                       Icons.check_circle,
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),
@@ -684,7 +688,7 @@ class _EditModeState extends State<EditMode> {
                   margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
-                    color: ThemeInfo.colorBottomSheetReverse.withOpacity(0.5),
+                    color: ThemeInfo.colorBottomSheetReverse.withOpacity(0.25),
                   ),
                   child: Row(
                     children: <Widget>[
@@ -750,7 +754,7 @@ class _EditModeState extends State<EditMode> {
                   padding: EdgeInsets.fromLTRB(4, 12, 4, 12),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
-                    color: ThemeInfo.colorBottomSheetReverse.withOpacity(0.5),
+                    color: ThemeInfo.colorBottomSheetReverse.withOpacity(0.25),
                   ),
                   height: MediaQuery.of(context).viewInsets.bottom > 0
                       ? gd.mediaQueryHeight * 0.5
@@ -887,7 +891,7 @@ class _EditModeState extends State<EditMode> {
                                                     gd.mdiIcon(
                                                         iconsOverrideFiltered[
                                                             index]),
-                                                    size: 40,
+                                                    size: 34,
                                                     color: ThemeInfo
                                                         .colorBottomSheetReverse
                                                         .withOpacity(0.75),
@@ -899,7 +903,7 @@ class _EditModeState extends State<EditMode> {
                                                         TextOverflow.ellipsis,
                                                     textScaleFactor:
                                                         gd.textScaleFactorFix *
-                                                            0.5,
+                                                            0.75,
                                                     textAlign: TextAlign.center,
                                                   ),
                                                 ],
