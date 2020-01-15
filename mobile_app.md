@@ -92,10 +92,18 @@ automation:
 
 ## 6. Troubleshooting
 
-Error 404 during Mobile App registration:
+### Error 404 during Mobile App registration:
 - Make sure you have ***default_config:*** in configuration.yaml
 - If you don't, add this line to configuration.yaml and restart Home Assistant
 ```
 mobile_app:
 ```
 https://developers.home-assistant.io/docs/en/app_integration_setup.html
+
+### iPhone Location Tracking, Always Allow
+By default, iOS will only allow HassKit to track your location `While Using the App`. If you want you can allow HassKit to be able to update your location always.
+
+1. Open iOS `Settings`.
+2. Go into: `Privacy` > `Location Services`.
+3. Find `HassKit` in the list and click it.
+4. Change `Allow Location Access` to `Always`.
