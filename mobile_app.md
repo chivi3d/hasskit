@@ -89,3 +89,13 @@ automation:
 <br>
 <br>
 ![alt text](https://github.com/tuanha2000vn/hasskit/blob/master/graphic%20template/mobile_app/Screenshot_10.png)
+
+## 6. Troubleshooting
+
+Error 404 during Mobile App registration:
+- Make sure you have ***default_config:*** in configuration.yaml
+- If you don't, add this line to configuration.yaml and restart Home Assistant
+```
+mobile_app:
+```
+https://developers.home-assistant.io/docs/en/app_integration_setup.html
