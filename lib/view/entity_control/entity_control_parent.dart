@@ -730,10 +730,9 @@ class _EditModeState extends State<EditMode> {
                       IconButton(
                         onPressed: () {
                           setState(() {
-                            _controllerName.text = '';
-//                            Entity entity = gd.entities[widget.entityId];
-                            gd.entitiesOverride[widget.entityId] =
-                                EntityOverride(friendlyName: "");
+                            _controllerName.clear();
+                            gd.entitiesOverride[widget.entityId].friendlyName =
+                                "";
                             gd.entitiesOverrideSave(true);
                             FocusScope.of(context)
                                 .requestFocus(new FocusNode());
@@ -745,6 +744,7 @@ class _EditModeState extends State<EditMode> {
                     ],
                   ),
                 ),
+                //Icon
                 Container(
                   margin: EdgeInsets.all(8),
                   padding: EdgeInsets.fromLTRB(4, 12, 4, 12),
@@ -776,6 +776,9 @@ class _EditModeState extends State<EditMode> {
                               textAlign: TextAlign.left,
                               autocorrect: false,
                               autofocus: false,
+                              onChanged: (val) {
+                                setState(() {});
+                              },
                               onEditingComplete: () {
                                 setState(
                                   () {
@@ -854,46 +857,53 @@ class _EditModeState extends State<EditMode> {
                                         });
                                       },
                                       child: Container(
+                                        padding: EdgeInsets.all(2),
                                         decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(8),
                                             color: ThemeInfo.colorBottomSheet
                                                 .withOpacity(0.25)),
                                         alignment: Alignment.center,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: <Widget>[
-                                            index == 0
-                                                ? Text(
-                                                    Translate.getString(
-                                                        "edit.reset_icon",
-                                                        context),
-                                                    style: ThemeInfo
-                                                        .textStatusButtonInActive
-                                                        .copyWith(
-                                                            color: ThemeInfo
-                                                                .colorBottomSheetReverse
-                                                                .withOpacity(
-                                                                    0.75)),
-                                                    textScaleFactor:
-                                                        gd.textScaleFactorFix,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    textAlign: TextAlign.center,
-                                                    maxLines: 3,
-                                                  )
-                                                : Icon(
+                                        child: index == 0
+                                            ? Text(
+                                                Translate.getString(
+                                                    "edit.reset_icon", context),
+                                                style: ThemeInfo
+                                                    .textStatusButtonInActive
+                                                    .copyWith(
+                                                        color: ThemeInfo
+                                                            .colorBottomSheetReverse
+                                                            .withOpacity(0.75)),
+                                                textScaleFactor:
+                                                    gd.textScaleFactorFix,
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.center,
+                                                maxLines: 3,
+                                              )
+                                            : Column(
+                                                children: <Widget>[
+                                                  SizedBox(height: 2),
+                                                  Icon(
                                                     gd.mdiIcon(
                                                         iconsOverrideFiltered[
                                                             index]),
-                                                    size: 50,
+                                                    size: 40,
                                                     color: ThemeInfo
                                                         .colorBottomSheetReverse
                                                         .withOpacity(0.75),
                                                   ),
-                                          ],
-                                        ),
+                                                  Text(
+                                                    "${iconsOverrideFiltered[index].replaceAll("mdi:", "")}",
+                                                    maxLines: 2,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    textScaleFactor:
+                                                        gd.textScaleFactorFix *
+                                                            0.5,
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ],
+                                              ),
                                       ),
                                     );
                                   },
@@ -907,6 +917,7 @@ class _EditModeState extends State<EditMode> {
                     ],
                   ),
                 ),
+                SizedBox(height: 20),
                 //Room
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
