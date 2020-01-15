@@ -445,7 +445,7 @@ class _EditEntityNormalState extends State<EditEntityNormal> {
               );
             },
             child: Icon(
-              widget.showEditName ? Icons.edit : Icons.edit,
+              widget.showEditName ? Icons.cancel : Icons.edit,
               size: 30,
             ),
           ),
