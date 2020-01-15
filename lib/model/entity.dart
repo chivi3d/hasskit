@@ -44,7 +44,7 @@ class Entity {
   int angle;
   //Light
   int supportedFeatures;
-  int brightness;
+  double brightness;
   List<int> rgbColor;
   int minMireds;
   int maxMireds;
@@ -240,9 +240,9 @@ class Entity {
                 ? int.parse(json['attributes']['supported_features'].toString())
                 : 0,
         brightness:
-            int.tryParse(json['attributes']['brightness'].toString()) != null
-                ? int.parse(json['attributes']['brightness'].toString())
-                : 0,
+            double.tryParse(json['attributes']['brightness'].toString()) != null
+                ? double.parse(json['attributes']['brightness'].toString())
+                : null,
         rgbColor: json['attributes']['rgb_color'] != null
             ? List<int>.from(json['attributes']['rgb_color'])
             : [],
@@ -797,9 +797,7 @@ class Entity {
         brightness != null &&
         brightness > 0) {
       openPercent = " " +
-          gd
-              .mapNumber(brightness.toDouble(), 0, 254, 0, 100)
-              .toStringAsFixed(0) +
+          gd.mapNumber(brightness, 0, 254, 0, 100).toStringAsFixed(0) +
           "%";
     }
     if (isStateOn &&

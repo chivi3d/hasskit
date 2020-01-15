@@ -134,7 +134,7 @@ class SliverNavigationBar extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 this.roomIndex > 0 && gd.roomList.length > 2
-                    ? Icon(Icons.chevron_right)
+                    ? Icon(Icons.view_carousel)
                     : Container(),
               ],
             ),
