@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hasskit/helper/general_data.dart';
 import 'package:hasskit/helper/material_design_icons.dart';
 import 'package:hasskit/helper/theme_info.dart';
-import 'package:hasskit/view/custom_popup_menu.dart';
+import 'package:hasskit/view/bottom_sheet_menu.dart';
 import 'package:hasskit/view/entity_control/entity_control_parent.dart';
 import 'package:provider/provider.dart';
 
@@ -118,10 +118,26 @@ class SliverNavigationBar extends StatelessWidget {
         return CupertinoSliverNavigationBar(
           leading: temperatureWidget,
           backgroundColor: ThemeInfo.colorBottomSheet.withOpacity(0.5),
-          largeTitle: AutoSizeText(
-            gd.getRoomName(roomIndex),
-            style: TextStyle(color: ThemeInfo.colorBottomSheetReverse),
-            overflow: TextOverflow.ellipsis,
+          largeTitle: InkWell(
+            onTap: () {
+              if (this.roomIndex > 0 && gd.roomList.length > 2) {
+                print(
+                    "CupertinoSliverNavigationBar ${this.roomIndex} ${gd.roomList.length}");
+                roomShortCut(context);
+              }
+            },
+            child: Row(
+              children: <Widget>[
+                AutoSizeText(
+                  gd.getRoomName(roomIndex),
+                  style: TextStyle(color: ThemeInfo.colorBottomSheetReverse),
+                  overflow: TextOverflow.ellipsis,
+                ),
+                this.roomIndex > 0 && gd.roomList.length > 2
+                    ? Icon(Icons.chevron_right)
+                    : Container(),
+              ],
+            ),
           ),
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
@@ -185,6 +201,59 @@ class SliverNavigationBar extends StatelessWidget {
                     )
                   : Container(),
             ],
+          ),
+        );
+      },
+    );
+  }
+
+  void roomShortCut(context) {
+    List<Widget> roomShortCuts = [];
+
+    for (int i = 1; i < gd.roomList.length; i++) {
+      var rsc = ListTile(
+        leading: Icon(Icons.view_carousel),
+        title: Text(
+          gd.roomList[i].name,
+          overflow: TextOverflow.ellipsis,
+          textScaleFactor: gd.textScaleFactorFix,
+        ),
+        contentPadding: EdgeInsets.zero,
+        onTap: () {
+          Navigator.pop(context);
+          gd.pageController.animateToPage(
+            i - 1,
+            duration: Duration(milliseconds: 1000),
+            curve: Curves.easeOut,
+          );
+        },
+      );
+      roomShortCuts.add(rsc);
+    }
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: false,
+      backgroundColor: Colors.transparent,
+      builder: (BuildContext context) {
+        return SafeArea(
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            decoration: BoxDecoration(
+              color: ThemeInfo.colorBottomSheet,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(8),
+                topRight: Radius.circular(8),
+              ),
+            ),
+            child: CustomScrollView(
+              slivers: [
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Column(children: roomShortCuts),
+                ),
+              ],
+            ),
           ),
         );
       },
