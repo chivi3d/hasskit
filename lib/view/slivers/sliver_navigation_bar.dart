@@ -223,7 +223,7 @@ class SliverNavigationBar extends StatelessWidget {
           Navigator.pop(context);
           gd.pageController.animateToPage(
             i - 1,
-            duration: Duration(milliseconds: 1000),
+            duration: Duration(milliseconds: 500),
             curve: Curves.easeOut,
           );
         },
@@ -250,7 +250,10 @@ class SliverNavigationBar extends StatelessWidget {
               slivers: [
                 SliverFillRemaining(
                   hasScrollBody: false,
-                  child: Column(children: roomShortCuts),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: roomShortCuts,
+                  ),
                 ),
               ],
             ),

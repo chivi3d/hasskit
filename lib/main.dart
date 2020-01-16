@@ -268,15 +268,21 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
     await gd.getSettings("mainInitState");
 
     deviceInfo.getDeviceInfo();
+
 //hook a location update here ready whenever it fire
     BackgroundLocation.getLocationUpdates((location) {
-      gd.settingMobileApp.updateLocation(
+      gd.settingMobileApp.updateLocationNew(
         location.latitude,
         location.longitude,
         location.accuracy,
-        location.speed,
-        location.altitude,
       );
+//      gd.settingMobileApp.updateLocation(
+//        location.latitude,
+//        location.longitude,
+//        location.accuracy,
+//        location.speed,
+//        location.altitude,
+//      );
     });
   }
 

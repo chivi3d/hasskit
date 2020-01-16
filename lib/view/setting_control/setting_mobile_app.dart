@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:background_location/background_location.dart';
+import 'package:battery/battery.dart';
 import 'package:device_info/device_info.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
@@ -341,7 +342,44 @@ class SettingMobileApp {
     }
   }
 
-  Future<void> updateLocation(double latitude, double longitude,
+  Future<void> updateLocationNew(
+      double latitude, double longitude, double accuracy) async {
+    print("Call updateLocationNew");
+    var battery = Battery();
+    int batteryLevel = await battery.batteryLevel;
+    var getLocationUpdatesData = {
+      "type": "update_location",
+      "gps": [latitude, longitude],
+      "gps_accuracy": accuracy,
+      "battery": batteryLevel,
+    };
+
+    String body = jsonEncode(getLocationUpdatesData);
+    print("getLocationUpdates.body $body");
+
+    String url =
+        gd.currentUrl + "/api/webhook/${gd.settingMobileApp.webHookId}";
+
+    print("getLocationUpdates.url $url");
+
+    http.post(url, body: body).then((response) {
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        print(
+            "updateLocationNew Response From Server With Code ${response.statusCode}");
+        gd.locationRecordTime = DateTime.now();
+        gd.locationLatitude = latitude;
+        gd.locationLongitude = longitude;
+        gd.locationUpdateTime =
+            DateTime.now().add(Duration(minutes: gd.locationUpdateInterval));
+      } else {
+        print("updateLocationNew Response Error Code ${response.statusCode}");
+      }
+    }).catchError((e) {
+      print("updateLocationNew Response Error $e");
+    });
+  }
+
+  Future<void> updateLocationS(double latitude, double longitude,
       double accuracy, double speed, double altitude) async {
     bool timeInterval = DateTime.now().isAfter(gd.locationUpdateTime);
 
@@ -439,14 +477,18 @@ class SettingMobileApp {
     }
 
     var getLocationUpdatesData = {
+//      "type": "update_location",
+//      "data": {
+//        "location_name": databaseName,
+//        "gps": [latitude, longitude],
+//        "gps_accuracy": accuracy,
+//        "speed": speed,
+//        "altitude": altitude
+//      }
       "type": "update_location",
-      "data": {
-        "location_name": databaseName,
-        "gps": [latitude, longitude],
-        "gps_accuracy": accuracy,
-        "speed": speed,
-        "altitude": altitude
-      }
+      "gps": [latitude, longitude],
+      "gps_accuracy": accuracy,
+      "battery": 45,
     };
     String body = jsonEncode(getLocationUpdatesData);
     print("getLocationUpdates.body $body");
