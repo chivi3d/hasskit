@@ -8,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:hasskit/helper/general_data.dart';
 import 'package:hasskit/helper/theme_info.dart';
+import 'package:hasskit/model/entity.dart';
 import 'package:hasskit/model/location_zone.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
@@ -353,7 +354,7 @@ class SettingMobileApp {
       return;
     }
 
-    gd.locationUpdateTime = DateTime.now().add(Duration(seconds: 15));
+    gd.locationUpdateTime = DateTime.now().add(Duration(seconds: 30));
 
 //    print(".");
 //    print("latitude $latitude");
@@ -415,9 +416,24 @@ class SettingMobileApp {
       locationGeoCoderName = "$latitude, $longitude";
     }
 
-    //Zone Name don't change
+    //found a zone name
     if (locationZoneName != "") {
-      if (locationZoneName == gd.locationName) {
+      Entity deviceTracking = gd.entities.values.toList().firstWhere(
+          (e) => e.friendlyName == gd.settingMobileApp.deviceName,
+          orElse: () => null);
+      if (deviceTracking == null) {
+        print("Case 7");
+        Fluttertoast.showToast(
+            msg: "Can not find ${gd.settingMobileApp.deviceName}",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
+            backgroundColor: ThemeInfo.colorIconActive.withOpacity(1),
+            textColor: Theme.of(gd.mediaQueryContext).textTheme.title.color,
+            fontSize: 14.0);
+        return;
+      }
+      if (locationZoneName.toLowerCase() ==
+          deviceTracking.friendlyName.toLowerCase()) {
         print("Case 1");
         return;
       } else {
