@@ -433,12 +433,13 @@ class SettingMobileApp {
         return;
       }
       if (locationZoneName.toLowerCase() ==
-          deviceTracking.friendlyName.toLowerCase()) {
+          deviceTracking.state.toLowerCase()) {
         print("Case 1");
         return;
       } else {
         gd.locationName = locationZoneName;
-        print("Case 2");
+        print(
+            "Case 2 ${locationZoneName.toLowerCase()} != ${deviceTracking.state.toLowerCase()}");
       }
     } else {
       if (gd.getDistanceFromLatLonInKm(
@@ -481,8 +482,8 @@ class SettingMobileApp {
         gd.locationRecordTime = DateTime.now();
         gd.locationLatitude = latitude;
         gd.locationLongitude = longitude;
-//        gd.locationUpdateTime =
-//            DateTime.now().add(Duration(minutes: gd.locationUpdateInterval));
+        gd.locationUpdateTime =
+            DateTime.now().add(Duration(minutes: gd.locationUpdateInterval));
       } else {
         print("updateLocation Response Error Code ${response.statusCode}");
       }
