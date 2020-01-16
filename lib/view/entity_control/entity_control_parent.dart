@@ -428,27 +428,29 @@ class _EditEntityNormalState extends State<EditEntityNormal> {
               textAlign: TextAlign.left,
             ),
           ),
-          InkWell(
-            onTap: () {
-              setState(
-                () {
-                  if (gd.entitiesOverride[widget.entityId] != null) {
-                    gd.entitiesOverride[widget.entityId].friendlyName =
-                        _controller.text.trim();
-                  } else {
-                    gd.entitiesOverride[widget.entityId] =
-                        EntityOverride(friendlyName: _controller.text.trim());
-                  }
-                  gd.entitiesOverrideSave(true);
-                  widget.showEditNameToggle();
-                },
-              );
-            },
-            child: Icon(
-              widget.showEditName ? Icons.settings : Icons.settings,
-              size: 30,
-            ),
-          ),
+          gd.deviceSetting.settingLocked
+              ? Container()
+              : InkWell(
+                  onTap: () {
+                    setState(
+                      () {
+                        if (gd.entitiesOverride[widget.entityId] != null) {
+                          gd.entitiesOverride[widget.entityId].friendlyName =
+                              _controller.text.trim();
+                        } else {
+                          gd.entitiesOverride[widget.entityId] = EntityOverride(
+                              friendlyName: _controller.text.trim());
+                        }
+                        gd.entitiesOverrideSave(true);
+                        widget.showEditNameToggle();
+                      },
+                    );
+                  },
+                  child: Icon(
+                    widget.showEditName ? Icons.settings : Icons.settings,
+                    size: 30,
+                  ),
+                ),
           SizedBox(width: 8),
         ],
       ),
