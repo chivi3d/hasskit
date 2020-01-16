@@ -76,11 +76,17 @@ class _EntityControlGoogleMapsState extends State<EntityControlGoogleMaps> {
 //                        height: 28,
 //                        color: Colors.white.withOpacity(0.8),
 //                      ),
-                      Container(
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 0, vertical: 4),
-                        height: 40,
-                        child: listViewBuilder(locationSelected),
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 0, vertical: 4),
+                            height: 40,
+                            child: listViewBuilder(locationSelected),
+                          ),
+                          SizedBox(height: 20),
+                        ],
                       )
                     ],
                   ),

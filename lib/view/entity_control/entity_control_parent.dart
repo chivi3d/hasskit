@@ -183,13 +183,13 @@ class _EntityControlParentState extends State<EntityControlParent> {
                           children: <Widget>[
                             Container(
                               height: 25,
-                              padding: EdgeInsets.symmetric(horizontal: 32),
+                              padding: EdgeInsets.symmetric(horizontal: 8),
                               child: EntityControlBinarySensor(
                                 entityId: entity.entityId,
                                 horizontalMode: true,
                               ),
                             ),
-                            SizedBox(height: 10),
+                            SizedBox(height: 25),
                           ],
                         )
                       : Container(),
@@ -200,8 +200,8 @@ class _EntityControlParentState extends State<EntityControlParent> {
                       (entity.entityType == EntityType.lightSwitches ||
                           entity.entityType == EntityType.climateFans)
                   ? Positioned(
-                      bottom: 8,
-                      left: 8,
+                      bottom: 25,
+                      left: 0,
                       child: Container(
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,

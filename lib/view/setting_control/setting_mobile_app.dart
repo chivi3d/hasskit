@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:background_location/background_location.dart';
-import 'package:battery/battery.dart';
 import 'package:device_info/device_info.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
@@ -342,62 +341,25 @@ class SettingMobileApp {
     }
   }
 
-  Future<void> updateLocationNew(
+  Future<void> updateLocation(
       double latitude, double longitude, double accuracy) async {
-    print("Call updateLocationNew");
-    var battery = Battery();
-    int batteryLevel = await battery.batteryLevel;
-    var getLocationUpdatesData = {
-      "type": "update_location",
-      "gps": [latitude, longitude],
-      "gps_accuracy": accuracy,
-      "battery": batteryLevel,
-    };
+//    print("updateLocation called");
 
-    String body = jsonEncode(getLocationUpdatesData);
-    print("getLocationUpdates.body $body");
-
-    String url =
-        gd.currentUrl + "/api/webhook/${gd.settingMobileApp.webHookId}";
-
-    print("getLocationUpdates.url $url");
-
-    http.post(url, body: body).then((response) {
-      if (response.statusCode >= 200 && response.statusCode < 300) {
-        print(
-            "updateLocationNew Response From Server With Code ${response.statusCode}");
-        gd.locationRecordTime = DateTime.now();
-        gd.locationLatitude = latitude;
-        gd.locationLongitude = longitude;
-        gd.locationUpdateTime =
-            DateTime.now().add(Duration(minutes: gd.locationUpdateInterval));
-      } else {
-        print("updateLocationNew Response Error Code ${response.statusCode}");
-      }
-    }).catchError((e) {
-      print("updateLocationNew Response Error $e");
-    });
-  }
-
-  Future<void> updateLocationS(double latitude, double longitude,
-      double accuracy, double speed, double altitude) async {
     bool timeInterval = DateTime.now().isAfter(gd.locationUpdateTime);
 
     if (!timeInterval) {
-      print(
-          "timeInterval ${(gd.locationUpdateTime.difference(DateTime.now())).inSeconds} seconds left");
+//      print(
+//          "updateLocation timeInterval ${(gd.locationUpdateTime.difference(DateTime.now())).inSeconds} seconds left");
       return;
     }
 
     gd.locationUpdateTime = DateTime.now().add(Duration(seconds: 15));
 
-    print(".");
-    print("latitude $latitude");
-    print("longitude $longitude");
-    print("altitude $altitude");
-    print("accuracy $accuracy");
-    print("speed $speed");
-    print(".");
+//    print(".");
+//    print("latitude $latitude");
+//    print("longitude $longitude");
+//    print("accuracy $accuracy");
+//    print(".");
 
     String locationZoneName = "";
     String locationGeoCoderName = "";
@@ -409,14 +371,14 @@ class SettingMobileApp {
       for (LocationZone locationZone in gd.locationZones) {
         var distance = gd.getDistanceFromLatLonInKm(
             latitude, longitude, locationZone.latitude, locationZone.longitude);
-        print(
-            "distance ${locationZone.friendlyName} $distance locationZone.radius ${locationZone.radius} ${locationZone.radius * 0.001}");
+//        print(
+//            "distance ${locationZone.friendlyName} $distance locationZone.radius ${locationZone.radius} ${locationZone.radius * 0.001}");
         if (distance < locationZone.radius * 0.001) {
           if (shortestDistance > distance) {
             shortestDistance = distance;
             shortestName = locationZone.friendlyName;
-            print(
-                "shortestName $shortestName shortestDistance $shortestDistance radius ${locationZone.radius * 0.001}");
+//            print(
+//                "shortestName $shortestName shortestDistance $shortestDistance radius ${locationZone.radius * 0.001}");
           }
         }
       }
@@ -427,8 +389,8 @@ class SettingMobileApp {
         var addresses =
             await Geocoder.local.findAddressesFromCoordinates(coordinates);
         var first = addresses.first;
-        print(
-            "addressLine ${first.addressLine} adminArea ${first.adminArea} coordinates ${first.coordinates} countryCode ${first.countryCode} featureName ${first.featureName} locality ${first.locality} postalCode ${first.postalCode} subAdminArea ${first.subAdminArea} subLocality ${first.subLocality} subThoroughfare ${first.subThoroughfare} thoroughfare ${first.thoroughfare}");
+//        print(
+//            "addressLine ${first.addressLine} adminArea ${first.adminArea} coordinates ${first.coordinates} countryCode ${first.countryCode} featureName ${first.featureName} locality ${first.locality} postalCode ${first.postalCode} subAdminArea ${first.subAdminArea} subLocality ${first.subLocality} subThoroughfare ${first.subThoroughfare} thoroughfare ${first.thoroughfare}");
 
         if (first.subThoroughfare != null && first.thoroughfare != null) {
           locationGeoCoderName =
@@ -453,11 +415,15 @@ class SettingMobileApp {
       locationGeoCoderName = "$latitude, $longitude";
     }
 
-    var databaseName = "";
     //Zone Name don't change
     if (locationZoneName != "") {
-      databaseName = locationZoneName;
-      print("Case 2");
+      if (locationZoneName == gd.locationName) {
+        print("Case 1");
+        return;
+      } else {
+        gd.locationName = locationZoneName;
+        print("Case 2");
+      }
     } else {
       if (gd.getDistanceFromLatLonInKm(
               latitude, longitude, gd.locationLatitude, gd.locationLongitude) <
@@ -467,28 +433,22 @@ class SettingMobileApp {
         return;
       } else {
         if (locationGeoCoderName == gd.locationName) {
-          databaseName = locationGeoCoderName + ".";
+          gd.locationName = locationGeoCoderName + ".";
           print("Case 5");
         } else {
-          databaseName = locationGeoCoderName;
+          gd.locationName = locationGeoCoderName;
           print("Case 6");
         }
       }
     }
 
     var getLocationUpdatesData = {
-//      "type": "update_location",
-//      "data": {
-//        "location_name": databaseName,
-//        "gps": [latitude, longitude],
-//        "gps_accuracy": accuracy,
-//        "speed": speed,
-//        "altitude": altitude
-//      }
       "type": "update_location",
-      "gps": [latitude, longitude],
-      "gps_accuracy": accuracy,
-      "battery": 45,
+      "data": {
+        "location_name": gd.locationName,
+        "gps": [latitude, longitude],
+        "gps_accuracy": accuracy,
+      }
     };
     String body = jsonEncode(getLocationUpdatesData);
     print("getLocationUpdates.body $body");
@@ -502,13 +462,11 @@ class SettingMobileApp {
       if (response.statusCode >= 200 && response.statusCode < 300) {
         print(
             "updateLocation Response From Server With Code ${response.statusCode}");
-        gd.locationRecordName = databaseName;
         gd.locationRecordTime = DateTime.now();
-        gd.locationName = databaseName;
         gd.locationLatitude = latitude;
         gd.locationLongitude = longitude;
-        gd.locationUpdateTime =
-            DateTime.now().add(Duration(minutes: gd.locationUpdateInterval));
+//        gd.locationUpdateTime =
+//            DateTime.now().add(Duration(minutes: gd.locationUpdateInterval));
       } else {
         print("updateLocation Response Error Code ${response.statusCode}");
       }

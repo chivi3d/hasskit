@@ -2615,7 +2615,6 @@ class GeneralData with ChangeNotifier {
   }
 
   List<LocationZone> locationZones = [];
-  String locationRecordName = "";
   DateTime locationRecordTime = DateTime.parse("2020-01-01 00:00:00");
 
   double getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
