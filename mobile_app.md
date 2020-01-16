@@ -100,7 +100,7 @@ mobile_app:
 ```
 https://developers.home-assistant.io/docs/en/app_integration_setup.html
 
-### iPhone Location Tracking, Always Allow
+## 7. iPhone Location Tracking, Always Allow
 By default, iOS will only allow HassKit to track your location `While Using the App`. If you want you can allow HassKit to be able to update your location always.
 
 1. Open iOS `Settings`.
